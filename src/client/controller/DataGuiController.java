@@ -1,9 +1,13 @@
 package client.controller;
 import java.io.Serializable;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import client.ClientUI;
+import client.logic.Visitor;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -16,10 +20,11 @@ import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
-public class ClientDataTableController implements Serializable, Initializable{
+public class DataGuiController implements Serializable, Initializable{
 	String firstPerson[]= {"avi", "noam ", "123", "bla@gmail.com", "054"};
 	String secondPerson[]= {"Elad", "Kobi ", "123", "eladkobi@gmail.com", "054"};
 
+	
     @FXML
     private ResourceBundle resources;
 
@@ -30,8 +35,7 @@ public class ClientDataTableController implements Serializable, Initializable{
 	private Button BtnSave;
 
 	@FXML
-	public Button ExitButton;
-	
+	public Button dataTableExit;
 	
 	@FXML
 	public Button BtnBack;
@@ -41,7 +45,7 @@ public class ClientDataTableController implements Serializable, Initializable{
 	
     
 	@FXML
-    private TableView<row> TblData;
+    private TableView<Visitor> TblData;
     
     @FXML
     private TableColumn<row, String> ColID;
@@ -66,15 +70,15 @@ public class ClientDataTableController implements Serializable, Initializable{
 		ColLname.setCellValueFactory(new PropertyValueFactory<>("LastName"));
 		ColEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
 		ColTel.setCellValueFactory(new PropertyValueFactory<>("tel"));
-		addItems();
+		//addItems();
 	}
 	
-	private void addItems() {
+	/*private void addItems() {
 		TblData.getItems().add(new row ("avi", "noam ", "123", "bla@gmail.com", "054"));
 		TblData.getItems().add(new row ("Elad", "Kobi", "123", "eladkobi@gmail.com", "054"));
 		TblData.getItems().add(new row ("Elad", "Kobi", "123", "eladkobi@gmail.com", "054"));
 		
-	}
+	}*/
 	
 	
 
@@ -111,6 +115,26 @@ public class ClientDataTableController implements Serializable, Initializable{
 		
 	}
 	
+	@FXML
+	void ButtonBack(ActionEvent event) throws Exception {
+		TblData.getItems().clear();
+		((Node) event.getSource()).getScene().getWindow().hide();
+		System.out.println("Go back to Client GUI");
+		Stage stage = new Stage();
+		ClientUI clientUI = new ClientUI();
+		clientUI.start(stage);
+	}
+
+	public void SetRows(ArrayList<Visitor> list) {
+		ObservableList<Visitor> dataOfTable = FXCollections.observableArrayList(list);
+		TblData.setItems(dataOfTable);
+		
+	}
+	@FXML
+	public void DataTableExit(ActionEvent event) throws Exception 
+    {
+		System.exit(0);
+	}
 
 	
 }

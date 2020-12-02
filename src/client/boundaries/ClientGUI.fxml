@@ -5,14 +5,14 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.ClientControllerStartScreen">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.ClientGUIController">
    <children>
-      <Button fx:id="btnShowTable" layoutX="216.0" layoutY="203.0" mnemonicParsing="false" onAction="#Show" text="Show table information" />
+      <Button fx:id="showTableBtn" layoutX="216.0" layoutY="203.0" mnemonicParsing="false" onAction="#ShowInfo" style="-fx-background-color: lightgreen;" text="Show table information" />
       <Label layoutX="261.0" layoutY="48.0" text="Client">
          <font>
             <Font size="33.0" />
          </font>
       </Label>
-      <Button layoutX="506.0" layoutY="349.0" mnemonicParsing="false" style="-fx-background-color: red;" text="Exit" />
+      <Button fx:id="exitBtn" layoutX="506.0" layoutY="349.0" mnemonicParsing="false" onAction="#ExitButton" style="-fx-background-color: red;" text="Exit" />
    </children>
 </AnchorPane>

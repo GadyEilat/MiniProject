@@ -39,7 +39,7 @@ public class ChatClient extends AbstractClient {
 		System.out.println(list);
 	}
 
-	 public void handleMessageFromClientUI(String message)  
+	/* public void handleMessageFromClientUI(String message)  
 	  {
 	    try
 	    {
@@ -51,7 +51,7 @@ public class ChatClient extends AbstractClient {
 	        ("Could not send message to server.  Terminating client.");
 	      quit();
 	    }
-	  }
+	  }*/
 	
 	
 	
@@ -62,7 +62,7 @@ public class ChatClient extends AbstractClient {
 	
 	
 	
-	/*public void handleMessageFromClientUI(String message) {
+	public void handleMessageFromClientUI(String message) {
 		try {
 
 			if (message.equals("exit")) {
@@ -72,7 +72,7 @@ public class ChatClient extends AbstractClient {
 					openConnection();
 					sendToServer(message);
 				} catch (Exception e) {
-					System.out.println("--> the server is shotdown");
+					System.out.println("--> the server is shutdown");
 				}
 				quit();
 			}
@@ -96,7 +96,7 @@ public class ChatClient extends AbstractClient {
 			quit();
 		}
 
-	}*/
+	}
 
 	public void quit() {
 		try {
