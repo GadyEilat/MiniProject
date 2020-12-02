@@ -12,7 +12,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 //import gui.DataController;
 //import gui.ClientFrameController;
-import gui.ClientDataTableController;
+import client.controller.ClientDataTableController;
 
 public class ClientUI extends Application {
 	public static ClientController chat; // only one instance
@@ -25,9 +25,8 @@ public class ClientUI extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		//chat = new ClientController("127.0.0.1", 5555);
-		//test
-		//Parent root = FXMLLoader.load(getClass().getResource("/gui/DataGui.fxml"));
-		Parent root2 = FXMLLoader.load(getClass().getResource("/gui/ClientGUI.fxml"));
+		//Parent root = FXMLLoader.load(getClass().getResource("/client/boundaries/DataGui.fxml"));
+		Parent root2 = FXMLLoader.load(getClass().getResource("/client/boundaries/ClientGUI.fxml"));
 
 		Scene scene = new Scene(root2);
 		primaryStage.setTitle("Client");
