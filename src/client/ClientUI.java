@@ -28,7 +28,7 @@ public class ClientUI extends Application {
 		Parent root = FXMLLoader.load(getClass().getResource("/client/boundaries/DataGui.fxml"));
 		Parent root2 = FXMLLoader.load(getClass().getResource("/client/boundaries/ClientGUI.fxml"));
 		
-		Scene scene = new Scene(root);
+		Scene scene = new Scene(root2);
 		primaryStage.setTitle("Client");
 		primaryStage.setScene(scene);
 
