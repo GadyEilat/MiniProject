@@ -74,7 +74,7 @@ public class ServerController  {
 	public void getExitBtn(ActionEvent event) throws Exception {
 		displayMsg("exit GoNature Server!");
 		//TimeUnit.SECONDS.sleep(5);
-		System.exit(0);			
+		System.exit(0);
 	}
 	public void displayMsg(String msg) {
 		try {
