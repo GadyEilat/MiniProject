@@ -25,7 +25,7 @@ public class ClientUI extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		//chat = new ClientController("127.0.0.1", 5555);
-		
+		//test
 		//Parent root = FXMLLoader.load(getClass().getResource("/gui/DataGui.fxml"));
 		Parent root2 = FXMLLoader.load(getClass().getResource("/gui/ClientGUI.fxml"));
 
