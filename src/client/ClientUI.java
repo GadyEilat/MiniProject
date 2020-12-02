@@ -27,7 +27,7 @@ public class ClientUI extends Application {
 		//chat = new ClientController("127.0.0.1", 5555);
 		//Parent root = FXMLLoader.load(getClass().getResource("/client/boundaries/DataGui.fxml"));
 		Parent root2 = FXMLLoader.load(getClass().getResource("/client/boundaries/ClientGUI.fxml"));
-
+		
 		Scene scene = new Scene(root2);
 		primaryStage.setTitle("Client");
 		primaryStage.setScene(scene);
