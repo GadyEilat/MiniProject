@@ -1,110 +1,109 @@
-// This file contains material supporting section 3.7 of the textbook:
-// "Object Oriented Software Engineering" and is issued under the open-source
-// license found at www.lloseng.com 
 
 package client;
 
 import ocsf.client.*;
-import client.*;
 import common.ChatIF;
+import client.logic.Visitor;
 
 import java.io.*;
 import java.util.ArrayList;
 
-/**
- * This class overrides some of the methods defined in the abstract
- * superclass in order to give more functionality to the client.
- *
- * @author Dr Timothy C. Lethbridge
- * @author Dr Robert Lagani&egrave;
- * @author Fran&ccedil;ois B&eacute;langer
- * @version July 2000
- */
-public class ChatClient extends AbstractClient
-{
-  //Instance variables **********************************************
-  
-  /**
-   * The interface type variable.  It allows the implementation of 
-   * the display method in the client.
-   */
-	  ChatIF clientUI; 
-	  public static boolean awaitResponse = false;
+public class ChatClient extends AbstractClient {
 
-  //Constructors ****************************************************
-  
-  /**
-   * Constructs an instance of the chat client.
-   *
-   * @param host The server to connect to.
-   * @param port The port number to connect on.
-   * @param clientUI The interface type variable.
-   */
-	 
-  public ChatClient(String host, int port, ChatIF clientUI) 
-    throws IOException 
-  {
-    super(host, port); //Call the superclass constructor
-    this.clientUI = clientUI;
-  }
+	public static ArrayList<Visitor> list = new ArrayList<>();
 
-  //Instance methods ************************************************
-    
-  /**
-   * This method handles all data that comes in from the server.
-   *
-   * @param msg The message from the server.
-   */
-  public void handleMessageFromServer(Object msg) 
-  {
-	  System.out.println("--> handleMessageFromServer");
-     
-	  awaitResponse = false;
-	 
-  }
+	ChatIF clientUI;
+	public boolean waitForConnection = false;
 
-  /**
-   * This method handles all data coming from the UI            
-   *
-   * @param message The message from the UI.    
-   */
-  
-  public void handleMessageFromClientUI(Object message)  
-  {
-    try
-    {
-    	openConnection();
-    	awaitResponse = true;
-    	sendToServer(message);
-		// wait for response
-		while (awaitResponse) {
-			try {
-				Thread.sleep(100);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+	public ChatClient(String host, int port, ChatIF clientUI) throws IOException {
+		super(host, port); // Call the superclass constructor
+		this.clientUI = clientUI;
+
+	}
+
+	public void handleMessageFromServer(Object msg) { //This function gets the msg from the server and prints the table
+		System.out.println("handleMessageFromServer");
+		System.out.println(msg.toString());
+		waitForConnection = false;
+		String msgO = msg.toString();
+		String[] splitFirstTime, splitSecondTime;
+		Visitor Visitor;
+		if (msgO.isEmpty())
+			System.out.println("handleMessageFromServer: msg is empty");
+		splitFirstTime = msgO.split(",");
+		for (int i = 0; i < splitFirstTime.length; i++) {
+			splitSecondTime = splitFirstTime[i].split("\\s");
+			Visitor = new Visitor(splitSecondTime[0], splitSecondTime[1], splitSecondTime[2], splitSecondTime[3], splitSecondTime[4]);
+			list.add(Visitor);
 		}
-    }
-    catch(IOException e)
-    {
-    	e.printStackTrace();
-      clientUI.display("Could not send message to server: Terminating client."+ e);
-      quit();
-    }
-  }
+		System.out.println(list);
+	}
 
-  
-  /**
-   * This method terminates the client.
-   */
-  public void quit()
-  {
-    try
-    {
-      closeConnection();
-    }
-    catch(IOException e) {}
-    System.exit(0);
-  }
+	 public void handleMessageFromClientUI(String message)  
+	  {
+	    try
+	    {
+	    	sendToServer(message);
+	    }
+	    catch(IOException e)
+	    {
+	      clientUI.display
+	        ("Could not send message to server.  Terminating client.");
+	      quit();
+	    }
+	  }
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/*public void handleMessageFromClientUI(String message) {
+		try {
+
+			if (message.equals("exit")) {
+				System.out.println("--> Update the connection");
+
+				try {
+					openConnection();
+					sendToServer(message);
+				} catch (Exception e) {
+					System.out.println("--> the server is shotdown");
+				}
+				quit();
+			}
+			System.out.println("--> handleMessageFromClientUI --> message: " + message);
+
+			openConnection();
+			waitForConnection = true;
+			sendToServer(message);
+			System.out.println("--> handleMessageFromClientUI --> sendToServer(message)");
+			while (waitForConnection) {
+				try {
+					Thread.sleep(200);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+			closeConnection();
+		} catch (IOException e) {
+			e.printStackTrace();
+			clientUI.display("Could not send message to server: Terminating client." + e);
+			quit();
+		}
+
+	}*/
+
+	public void quit() {
+		try {
+			closeConnection();
+		} catch (IOException e) {
+		}
+		System.exit(0);
+	}
 }
 //End of ChatClient class
