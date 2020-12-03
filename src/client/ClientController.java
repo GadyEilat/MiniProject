@@ -6,16 +6,6 @@ import java.io.*;
 import common.ChatIF;
 
 
-/**
- * This class constructs the UI for a chat client.  It implements the
- * chat interface in order to activate the display() method.
- * Warning: Some of the code here is cloned in ServerConsole 
- *
- * @author Fran&ccedil;ois B&eacute;langer
- * @author Dr Timothy C. Lethbridge  
- * @author Dr Robert Lagani&egrave;re
- * @version July 2000
- */
 public class ClientController implements ChatIF 
 {
   //Class variables *************************************************
@@ -60,9 +50,9 @@ public class ClientController implements ChatIF
    * This method waits for input from the console.  Once it is 
    * received, it sends it to the client's message handler.
    */
-  public void accept(String str) 
+  public void accept(Object msg) 
   {
-	  client.handleMessageFromClientUI(str);
+	  client.handleMessageFromClientUI(msg);
   }
   
   /**

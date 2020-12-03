@@ -7,21 +7,11 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Vector;
 
-
+import client.logic.Visitor;
 import ocsf.server.*;
 import server.Controller.ServerController;
 import server.database.mysqlConnection;
 
-/**
- * This class overrides some of the methods in the abstract superclass in order
- * to give more functionality to the server.
- *
- * @author Dr Timothy C. Lethbridge
- * @author Dr Robert Lagani&egrave;re
- * @author Fran&ccedil;ois B&eacute;langer
- * @author Paul Holden
- * @version July 2000
- */
 
 public class EchoServer extends AbstractServer {
 	// Class variables *************************************************
@@ -55,7 +45,20 @@ public class EchoServer extends AbstractServer {
 	 * @param
 	 */
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
+		System.out.println("hey");
 		ServerController.instance.displayMsg("Message received: " + msg.toString() + " from " + client);
+		
+		 if (msg instanceof String) {
+			 ServerController.instance.displayMsg("Message received: " + msg.toString() + " from " + client);
+			    System.out.println("Message received: " + msg + " from " + client);
+			    this.sendToAllClients(msg);		  
+			  }
+			  else if (msg instanceof Visitor) {
+				  	Visitor list = (Visitor)msg;
+				  	ServerController.instance.displayMsg("Message received: " + msg.toString() + " from " + client);
+				  	mysqlConnection.addDB(list);
+				    System.out.println("Visitor received: " + list.toString() + " from " + client);
+			  }
 	}
 
 	/**

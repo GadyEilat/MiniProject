@@ -62,7 +62,8 @@ public class ChatClient extends AbstractClient {
 	
 	
 	
-	public void handleMessageFromClientUI(String message) {
+	public void handleMessageFromClientUI(Object msg) {
+		Visitor message= (Visitor) msg;
 		try {
 
 			if (message.equals("exit")) {

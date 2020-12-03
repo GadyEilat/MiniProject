@@ -30,18 +30,19 @@ public class ServerUI extends Application {
 	        	
 //	        	port = Integer.parseInt(p); //Set port to 5555
 	        	port = p;	// set port to 5555 default or other number
-	          
 	        }
 	        catch(Throwable t)
 	        {
 	        	ServerController.instance.displayMsg("ERROR - Could not connect!");
 	        }
 	        
-	        EchoServer sv = new EchoServer(port);
 	        
 	        try 
 	        {
-	          sv.listen(); //Start listening for connections
+	        	
+	        	EchoServer sv = new EchoServer(port);
+	        	sv.listen(); //Start listening for connections
+	        	System.out.println("Server listening for connections on port " + port);
 	        } 
 	        catch (Exception ex) 
 	        {

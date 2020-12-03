@@ -58,6 +58,7 @@ public class ClientGUIController {
     @FXML
     public void ShowInfo(ActionEvent event) throws Exception {               
         try {
+        	
         	((Node) event.getSource()).getScene().getWindow().hide();
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/client/boundaries/DataGui.fxml"));
             Parent root1 = (Parent) fxmlLoader.load();

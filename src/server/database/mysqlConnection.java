@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import client.logic.Visitor;
 import server.Controller.ServerController;
 
 
@@ -24,7 +25,7 @@ public class mysqlConnection {
         
         try 
         {
-            conn = DriverManager.getConnection("jdbc:mysql://localhost/gonature?serverTimezone=IST","root","Liran159357!");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost/gonatureschema?serverTimezone=IST","root","Aa123456");
             //Connection conn = DriverManager.getConnection("jdbc:mysql://192.168.3.68/test","root","Root");
 //    		ServerController.instance.displayMsg("SQL connection succeed");
             //createTableCourses(conn);
@@ -36,10 +37,41 @@ public class mysqlConnection {
             }
    	}
 	
-	public static void addDB(ArrayList<String> msg)
+	public static void addDB(Object msg)
 	{
-		try {
-			PreparedStatement update = conn.prepareStatement("INSERT INTO visitors (Name, LastName, ID, Email, TelephoneNum) VALUES (?, ?, ?, ?, ?)");
+		//connectToDB();
+		System.out.println("shalom");
+		Visitor message = (Visitor)msg;
+		if (conn != null) {
+			try {
+				Statement st = conn.createStatement();
+				String sql = ("SELECT * FROM visitors;");
+				ResultSet rs = st.executeQuery(sql);
+				if(rs.next()) { 
+				 String fName = rs.getString("firstName"); 
+				 String lName = rs.getString("lastName");
+				 int id = rs.getInt("identificationNumber");
+				 String email = rs.getString("email");
+				 int pNumber = rs.getInt("phoneNumber");
+				 
+				 System.out.println(rs.getString(1));
+				 System.out.println(rs.getString(2));
+				 System.out.println(rs.getInt(3));
+				 System.out.println(rs.getString(4));
+				 System.out.println(rs.getInt(5));
+				 
+				 conn.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		
+		
+	/*	try {
+			
+			PreparedStatement update = conn.prepareStatement("INSERT INTO visitors (firstName, lastName, id, email, telephoneNumber) VALUES (?, ?, ?, ?, ?)");
 //			for(int i=0;i<msg.size();i++)
 //				update.setString(i+1,msg.get(i));
 //			update.executeUpdate();
@@ -48,7 +80,7 @@ public class mysqlConnection {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 	
 	}
 
