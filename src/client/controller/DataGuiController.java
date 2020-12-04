@@ -22,7 +22,7 @@ import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
-public class DataGuiController{
+public class DataGuiController extends AbstractScenes{
 	Visitor visitor;
 
     @FXML
@@ -72,11 +72,12 @@ public class DataGuiController{
 
 	@FXML
 	void ButtonBack(ActionEvent event) throws Exception {
-		((Node) event.getSource()).getScene().getWindow().hide();
-		System.out.println("Go back to Client GUI");
-		Stage stage = new Stage();
-		ClientUI clientUI = new ClientUI();
-		clientUI.start(stage);
+//		((Node) event.getSource()).getScene().getWindow().hide();
+//		Stage primaryStage = new Stage();
+//		ClientUI clientUI = new ClientUI();
+//		clientUI.start(stage);
+//		((Node) event.getSource()).getScene().getWindow().hide(); // hiding primary window
+		switchScenes("/client/boundaries/ClientGUI.fxml");
 	}
 
 

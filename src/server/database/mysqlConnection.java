@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -47,7 +48,7 @@ public class mysqlConnection {
 
 	public static ArrayList<Object> getDB(Object msg) {
 		String str = null;
-		ArrayList<Object> answer = new ArrayList<String>();
+		ArrayList<Object> answer = new ArrayList<>();
 		if (msg instanceof String) {
 			str = (String) msg;
 		}
@@ -56,10 +57,11 @@ public class mysqlConnection {
 				Statement st = conn.createStatement();
 				String sql = ("SELECT * FROM gonature.visitors where id = " + str + ";");
 				ResultSet rs = st.executeQuery(sql);
-				int i = 1;
+				ResultSetMetaData metadata = rs.getMetaData();
+			    int columnCount = metadata.getColumnCount();  
 				while (rs.next()) {
-					answer.add(rs.getString(i));
-					i++;
+					for(int i = 1;i<=columnCount;i++)
+						answer.add(rs.getString(i));
 				}
 				//conn.close();
 				rs.close();

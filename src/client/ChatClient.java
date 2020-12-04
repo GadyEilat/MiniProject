@@ -3,6 +3,7 @@ package client;
 
 import ocsf.client.*;
 import common.ChatIF;
+import client.controller.ClientGUIController;
 import client.controller.DataGuiController;
 import client.logic.Visitor;
 
@@ -35,22 +36,26 @@ public class ChatClient extends AbstractClient {
 //			Visitor = new Visitor(split[0], split[1], split[2], split[3], split[4]);
 //			DataGuiController.addItem(Visitor);
 //		}
-		if((String)msg == null) {
-			vis.setId(null);
-		}
-		else {
 		System.out.println("--> handleMessageFromServer");
 
 		waitForConnection = false;
-		String st;
-		st = (String)msg;
-		String[] result = st.split("\\s");
-		vis.setId(result[0]);
-		vis.setFname(result[1]);
-		vis.setLname(result[2]);
-		vis.setEmail(result[3]);
-		vis.setteln(result[4]);
+		ArrayList<String> st;
+		st = (ArrayList<String>)msg;
+		try {
+			ClientGUIController.instance.answerForID(st);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+
 		}
+		//String[] result = st.split("\\s");
+//		vis.setId(st.get(0));
+//		vis.setFname(st.get(1));
+//		vis.setLname(st.get(2));
+//		vis.setEmail(st.get(3));
+//		vis.setteln(st.get(4));
+//		System.out.println(vis);
+		
 	}
 
 	/*

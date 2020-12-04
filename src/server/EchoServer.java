@@ -14,7 +14,7 @@ import server.database.mysqlConnection;
 
 public class EchoServer extends AbstractServer {
 	// Class variables *************************************************
-	ArrayList<String> arrOfVisitors = new ArrayList<String>();
+	ArrayList<Object> arrOfVisitors = null;
 	String visitor = null;
 	/**
 	 * The default port to listen on.
@@ -48,18 +48,20 @@ public class EchoServer extends AbstractServer {
 		//ServerController.instance.displayMsg("Message received: " + msg.toString() + " from " + client);
 		if (msg instanceof String) {
 			
-			visitor = (String)mysqlConnection.getDB(msg);
-
+			arrOfVisitors = mysqlConnection.getDB(msg);
+			if(arrOfVisitors!=null) {
+				try {
+					client.sendToClient(arrOfVisitors);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 			// ServerController.instance.displayMsg("Message received: " + msg.toString() +
 			// " from " + client);
 			System.out.println("Message received from : " + client);
 			
-			try {
-				client.sendToClient(visitor);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+
 			//this.sendToAllClients(arrOfVisitors);
 		}
 	}

@@ -10,6 +10,9 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+
+import java.io.IOException;
+
 import client.controller.ClientGUIController;
 //import gui.DataController;
 //import gui.ClientFrameController;
@@ -17,7 +20,8 @@ import client.controller.DataGuiController;
 
 public class ClientUI extends Application {
 	public static ClientController chat; // only one instance
-
+	public static Stage primaryStage;
+	public static FXMLLoader fxmlLoader = new FXMLLoader();
 	public static void main(String args[]) throws Exception {
 		launch(args);
 	} // end main
@@ -26,10 +30,20 @@ public class ClientUI extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		chat = new ClientController("localhost", 5555);
-
-		ClientGUIController startClienr = new ClientGUIController();
-		startClienr.start(primaryStage);
+		ClientUI.primaryStage = primaryStage;
+		Parent current;
+		try {
+			
+			ClientUI.fxmlLoader = new FXMLLoader(getClass().getResource("/client/boundaries/ClientGUI.fxml"));
+			current = (Parent)fxmlLoader.load();;
+			Scene scene = new Scene(current);
+			ClientUI.primaryStage.setScene(scene); 
+			ClientUI.primaryStage.show();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 	}
+	
 
 }
