@@ -2,46 +2,61 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TreeTableColumn?>
-<?import javafx.scene.control.TreeTableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.DataGuiController">
-   <children>
-      <Pane layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0">
+<BorderPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+   <center>
+      <AnchorPane prefHeight="449.0" prefWidth="800.0" BorderPane.alignment="CENTER">
          <children>
-            <Label layoutX="195.0" layoutY="14.0" text="Visitors data table">
+            <VBox alignment="CENTER" layoutX="188.0" layoutY="28.0" prefHeight="295.0" prefWidth="482.0" AnchorPane.bottomAnchor="70.0" AnchorPane.leftAnchor="188.0" AnchorPane.rightAnchor="130.0" AnchorPane.topAnchor="28.0">
+               <children>
+                  <HBox alignment="CENTER" prefHeight="295.0" prefWidth="544.0">
+                     <children>
+                        <AnchorPane prefHeight="295.0" prefWidth="448.0">
+                           <children>
+                              <TextField fx:id="txtID" disable="true" layoutX="150.0" layoutY="43.0" />
+                              <TextField fx:id="txtName" layoutX="150.0" layoutY="87.0" />
+                              <TextField fx:id="txtLastName" layoutX="150.0" layoutY="135.0" />
+                              <TextField fx:id="txtEmail" layoutX="150.0" layoutY="178.0" />
+                              <TextField fx:id="txtTel" layoutX="150.0" layoutY="223.0" />
+                              <Text layoutX="98.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ID:" />
+                              <Text layoutX="70.0" layoutY="104.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name" />
+                              <Text layoutX="70.0" layoutY="152.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Last Name" />
+                              <Text layoutX="70.0" layoutY="195.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Email" />
+                              <Text layoutX="83.0" layoutY="240.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tel." />
+                           </children>
+                        </AnchorPane>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </children>
+      </AnchorPane>
+   </center>
+   <bottom>
+      <AnchorPane prefHeight="122.0" prefWidth="797.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button fx:id="BtnBack" layoutX="62.0" layoutY="64.0" mnemonicParsing="false" onAction="#ButtonBack" text="Back" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="50.0" />
+            <Button fx:id="BtnSave" layoutX="703.0" layoutY="49.0" mnemonicParsing="false" style="-fx-background-color: lightgreen;" text="Save" AnchorPane.bottomAnchor="50.0" AnchorPane.rightAnchor="50.0" />
+         </children>
+      </AnchorPane>
+   </bottom>
+   <top>
+      <AnchorPane prefHeight="85.0" prefWidth="800.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button fx:id="dataTableExit" layoutX="725.0" layoutY="66.0" mnemonicParsing="false" onAction="#DataExit" style="-fx-background-color: red;" text="Exit" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="50.0" />
+            <Label layoutX="335.0" layoutY="37.0" text="Visitors data">
                <font>
                   <Font size="24.0" />
                </font>
             </Label>
-            <Button fx:id="BtnBack" layoutX="21.0" layoutY="355.0" mnemonicParsing="false" onAction="#ButtonBack" text="Back" />
-            <Button fx:id="dataTableExit" layoutX="521.0" layoutY="355.0" mnemonicParsing="false" onAction="#DataTableExit" style="-fx-background-color: red;" text="Exit" />
-            <Button fx:id="BtnSave" layoutX="265.0" layoutY="355.0" mnemonicParsing="false" style="-fx-background-color: lightgreen;" text="Save" />
-            
-            <TreeTableView layoutX="31.0" layoutY="87.0" prefHeight="249.0" prefWidth="555.0" visible="false">
-               <columns>
-                  <TreeTableColumn prefWidth="96.0" style="-fx-background-color: lightblue;" text="First Name" />
-                  <TreeTableColumn prefWidth="88.0" style="-fx-background-color: lightblue;" text="Last Name" />
-                  <TreeTableColumn fx:id="VisitorsData" prefWidth="174.0" style="-fx-background-color: lightblue;" text="Identification number" />
-                  <TreeTableColumn prefWidth="62.0" style="-fx-background-color: lightblue;" text="Email" />
-                  <TreeTableColumn prefWidth="134.0" style="-fx-background-color: lightblue;" text="Phone Number" />
-               </columns>
-            </TreeTableView>
-            <TableView fx:id="TblData" layoutX="32.0" layoutY="80.0" prefHeight="240.0" prefWidth="536.0">
-               <columns>
-                  <TableColumn fx:id="ColFname" prefWidth="73.0" style="-fx-background-color: lightblue;" text="First Name" />
-                  <TableColumn fx:id="ColLname" prefWidth="88.0" style="-fx-background-color: lightblue;" text="Last Name" />
-                  <TableColumn fx:id="ColID" prefWidth="121.0" style="-fx-background-color: lightblue;" text="Last Name" />
-                  <TableColumn fx:id="ColEmail" prefWidth="137.0" style="-fx-background-color: lightblue;" text="Email" />
-                  <TableColumn fx:id="ColTel" prefWidth="130.0" style="-fx-background-color: lightblue;" text="Telephoe Number" />
-               </columns>
-            </TableView>
          </children>
-      </Pane>
-   </children>
-</AnchorPane>
+      </AnchorPane>
+   </top>
+</BorderPane>

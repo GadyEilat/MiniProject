@@ -3,6 +3,7 @@ package client;
 
 import ocsf.client.*;
 import common.ChatIF;
+import client.controller.DataGuiController;
 import client.logic.Visitor;
 
 import java.io.*;
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 public class ChatClient extends AbstractClient {
 
 	public static ArrayList<Visitor> list = new ArrayList<>();
+	public static Visitor vis = new Visitor(null, null, null, null, null);
 
 	ChatIF clientUI;
 	public boolean waitForConnection = false;
@@ -21,83 +23,86 @@ public class ChatClient extends AbstractClient {
 
 	}
 
-	public void handleMessageFromServer(Object msg) { //This function gets the msg from the server and prints the table
-		System.out.println("handleMessageFromServer");
-		System.out.println(msg.toString());
-		waitForConnection = false;
-		String msgO = msg.toString();
-		String[] splitFirstTime, splitSecondTime;
-		Visitor Visitor;
-		if (msgO.isEmpty())
-			System.out.println("handleMessageFromServer: msg is empty");
-		splitFirstTime = msgO.split(",");
-		for (int i = 0; i < splitFirstTime.length; i++) {
-			splitSecondTime = splitFirstTime[i].split("\\s");
-			Visitor = new Visitor(splitSecondTime[0], splitSecondTime[1], splitSecondTime[2], splitSecondTime[3], splitSecondTime[4]);
-			list.add(Visitor);
+	public void handleMessageFromServer(Object msg) { // This function gets the msg from the server and prints the table
+//		vis = (ArrayList<String>) msg;
+//		waitForConnection = false;
+//		String row;
+//		String[] split;
+//		Visitor Visitor;
+//		for (int i = 0; i < vis.size(); i++) {
+//			row = vis.get(i);
+//			split = row.split(",");
+//			Visitor = new Visitor(split[0], split[1], split[2], split[3], split[4]);
+//			DataGuiController.addItem(Visitor);
+//		}
+		if((String)msg == null) {
+			vis.setId(null);
 		}
-		System.out.println(list);
+		else {
+		System.out.println("--> handleMessageFromServer");
+
+		waitForConnection = false;
+		String st;
+		st = (String)msg;
+		String[] result = st.split("\\s");
+		vis.setId(result[0]);
+		vis.setFname(result[1]);
+		vis.setLname(result[2]);
+		vis.setEmail(result[3]);
+		vis.setteln(result[4]);
+		}
 	}
 
-	/* public void handleMessageFromClientUI(String message)  
-	  {
-	    try
-	    {
-	    	sendToServer(message);
-	    }
-	    catch(IOException e)
-	    {
-	      clientUI.display
-	        ("Could not send message to server.  Terminating client.");
-	      quit();
-	    }
-	  }*/
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	/*
+	 * public void handleMessageFromClientUI(String message) { try {
+	 * sendToServer(message); } catch(IOException e) { clientUI.display
+	 * ("Could not send message to server.  Terminating client."); quit(); } }
+	 */
+
 	public void handleMessageFromClientUI(Object msg) {
-		Visitor message= (Visitor) msg;
+
 		try {
-
-			if (message.equals("exit")) {
-				System.out.println("--> Update the connection");
-
-				try {
-					openConnection();
-					sendToServer(message);
-				} catch (Exception e) {
-					System.out.println("--> the server is shutdown");
-				}
-				quit();
-			}
-			System.out.println("--> handleMessageFromClientUI --> message: " + message);
-
 			openConnection();
 			waitForConnection = true;
-			sendToServer(message);
-			System.out.println("--> handleMessageFromClientUI --> sendToServer(message)");
-			while (waitForConnection) {
-				try {
-					Thread.sleep(200);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}
-			closeConnection();
+			sendToServer(msg);
 		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
-			clientUI.display("Could not send message to server: Terminating client." + e);
 			quit();
 		}
-
 	}
+//		try {
+//
+//			if (message.equals("exit")) {
+//				System.out.println("--> Update the connection");
+//
+//				try {
+//					openConnection();
+//					sendToServer(message);
+//				} catch (Exception e) {
+//					System.out.println("--> the server is shutdown");
+//				}
+//				quit();
+//			}
+//			System.out.println("--> handleMessageFromClientUI --> message: " + message);
+//
+//			openConnection();
+//			waitForConnection = true;
+//			sendToServer(message);
+//			System.out.println("--> handleMessageFromClientUI --> sendToServer(message)");
+//			while (waitForConnection) {
+//				try {
+//					Thread.sleep(200);
+//				} catch (InterruptedException e) {
+//					e.printStackTrace();
+//				}
+//			}
+//			closeConnection();
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//			clientUI.display("Could not send message to server: Terminating client." + e);
+//			quit();
+//		}
 
 	public void quit() {
 		try {

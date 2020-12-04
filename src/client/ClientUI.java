@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import client.controller.ClientGUIController;
 //import gui.DataController;
 //import gui.ClientFrameController;
 import client.controller.DataGuiController;
@@ -24,19 +25,11 @@ public class ClientUI extends Application {
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		//chat = new ClientController("127.0.0.1", 5555);
-		Parent root = FXMLLoader.load(getClass().getResource("/client/boundaries/DataGui.fxml"));
-		Parent root2 = FXMLLoader.load(getClass().getResource("/client/boundaries/ClientGUI.fxml"));
-		
-		Scene scene = new Scene(root2);
-		primaryStage.setTitle("Client");
-		primaryStage.setScene(scene);
+		chat = new ClientController("localhost", 5555);
 
-		primaryStage.show();
-		
-		//DataGuiController aFrame = new DataGuiController(); 
+		ClientGUIController startClienr = new ClientGUIController();
+		startClienr.start(primaryStage);
 
-		//aFrame.start(primaryStage);
 	}
 
 }

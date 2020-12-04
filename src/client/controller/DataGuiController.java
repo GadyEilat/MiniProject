@@ -1,4 +1,5 @@
 package client.controller;
+
 import java.io.Serializable;
 import java.net.URL;
 import java.util.ArrayList;
@@ -15,109 +16,62 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
-public class DataGuiController implements Serializable, Initializable{
-	String firstPerson[]= {"avi", "noam ", "123", "bla@gmail.com", "054"};
-	String secondPerson[]= {"Elad", "Kobi ", "123", "eladkobi@gmail.com", "054"};
-
-	
-    @FXML
-    private ResourceBundle resources;
+public class DataGuiController{
+	Visitor visitor;
 
     @FXML
-    private URL location;
-    
-	@FXML
-	private Button BtnSave;
-
-	@FXML
-	public Button dataTableExit;
-	
-	@FXML
-	public Button BtnBack;
-	
-	
-
-	
-    
-	@FXML
-    private TableView<Visitor> TblData;
-    
-    @FXML
-    private TableColumn<row, String> ColID;
+    private TextField txtID;
 
     @FXML
-    private TableColumn<row, String> ColFname;
+    private TextField txtName;
 
     @FXML
-    private TableColumn<row, String> ColLname;
+    private TextField txtLastName;
 
     @FXML
-    private TableColumn<row, String> ColEmail;
+    private TextField txtEmail;
 
     @FXML
-    private TableColumn<row, String> ColTel;
-	
-	@Override
-	public void initialize(URL location, ResourceBundle resources) {
-		// TODO Auto-generated method stub
-		ColID.setCellValueFactory(new PropertyValueFactory<>("ID"));
-		ColFname.setCellValueFactory(new PropertyValueFactory<>("FirstName"));
-		ColLname.setCellValueFactory(new PropertyValueFactory<>("LastName"));
-		ColEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
-		ColTel.setCellValueFactory(new PropertyValueFactory<>("tel"));
-		//addItems();
+    private TextField txtTel;
+
+    @FXML
+    private Button BtnBack;
+
+    @FXML
+    private Button BtnSave;
+
+    @FXML
+    private Button dataTableExit;
+
+
+    @FXML
+    void DataExit(ActionEvent event) {
+		System.exit(0);
+    }
+
+
+
+
+	public void loadVisitor(Visitor visitorInt) {
+		this.visitor = visitorInt;
+		this.txtID.setText(visitor.getId());
+		this.txtName.setText(visitor.getFname());
+		this.txtLastName.setText(visitor.getLname());
+		this.txtEmail.setText(visitor.getEmail());
+		this.txtTel.setText(visitor.getTeln());
+
+
+		// TODO: setTest
 	}
-	
-	/*private void addItems() {
-		TblData.getItems().add(new row ("avi", "noam ", "123", "bla@gmail.com", "054"));
-		TblData.getItems().add(new row ("Elad", "Kobi", "123", "eladkobi@gmail.com", "054"));
-		TblData.getItems().add(new row ("Elad", "Kobi", "123", "eladkobi@gmail.com", "054"));
-		
-	}*/
-	
-	
 
-	public class row{
-		public String getFirstName() {
-			return FirstName;
-		}
-		public String getLastName() {
-			return LastName;
-		}
-		public String getID() {
-			return ID;
-		}
-		public String getEmail() {
-			return email;
-		}
-		public String getTel() {
-			return tel;
-		}
-		private String FirstName;
-		private String LastName;
-		private String ID;
-		private String email;
-		private String tel;
-		public row(String fName, String lName, String iD, String email, String phone) {
-			super();
-			this.FirstName = fName;
-			this.LastName = lName;
-			this.ID = iD;
-			this.email = email;
-			this.tel =phone;
-		}
-		
-		
-	}
-	
 	@FXML
 	void ButtonBack(ActionEvent event) throws Exception {
-		TblData.getItems().clear();
 		((Node) event.getSource()).getScene().getWindow().hide();
 		System.out.println("Go back to Client GUI");
 		Stage stage = new Stage();
@@ -125,16 +79,5 @@ public class DataGuiController implements Serializable, Initializable{
 		clientUI.start(stage);
 	}
 
-	public void SetRows(ArrayList<Visitor> list) {
-		ObservableList<Visitor> dataOfTable = FXCollections.observableArrayList(list);
-		TblData.setItems(dataOfTable);
-		
-	}
-	@FXML
-	public void DataTableExit(ActionEvent event) throws Exception 
-    {
-		System.exit(0);
-	}
 
-	
 }
