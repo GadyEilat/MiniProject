@@ -26,10 +26,10 @@
                               <TextField fx:id="txtEmail" layoutX="150.0" layoutY="178.0" />
                               <TextField fx:id="txtTel" layoutX="150.0" layoutY="223.0" />
                               <Text layoutX="98.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ID:" />
-                              <Text layoutX="70.0" layoutY="104.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name" />
-                              <Text layoutX="70.0" layoutY="152.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Last Name" />
-                              <Text layoutX="70.0" layoutY="195.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Email" />
-                              <Text layoutX="83.0" layoutY="240.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tel." />
+                              <Text layoutX="70.0" layoutY="104.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name:" />
+                              <Text layoutX="70.0" layoutY="152.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Last Name:" />
+                              <Text layoutX="70.0" layoutY="195.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Email:" />
+                              <Text layoutX="83.0" layoutY="240.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tel.:" />
                            </children>
                         </AnchorPane>
                      </children>

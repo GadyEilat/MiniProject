@@ -58,7 +58,7 @@ public class mysqlConnection {
 				String sql = ("SELECT * FROM gonature.visitors where id = " + str + ";");
 				ResultSet rs = st.executeQuery(sql);
 				ResultSetMetaData metadata = rs.getMetaData();
-			    int columnCount = metadata.getColumnCount();  
+			    int columnCount = metadata.getColumnCount();
 				while (rs.next()) {
 					for(int i = 1;i<=columnCount;i++)
 						answer.add(rs.getString(i));

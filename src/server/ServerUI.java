@@ -8,6 +8,7 @@ import server.EchoServer;
 
 public class ServerUI extends Application {
 	final public static int DEFAULT_PORT = 5555;
+	public static int flag=0;
 
 	public static void main( String args[] ) throws Exception
 	   {   
@@ -40,9 +41,20 @@ public class ServerUI extends Application {
 	        try 
 	        {
 	        	
+	        	if (port==5555 && flag==0) { //the requested port
 	        	EchoServer sv = new EchoServer(port);
 	        	sv.listen(); //Start listening for connections
 	        	System.out.println("Server listening for connections on port " + port);
+	        	flag=1;
+	        	}
+	        	else if (port==5555 && flag==1)
+	        	{
+	        		System.out.println("Server already listening for connections on this port");
+	        	}
+	        	else
+	        	{
+	        		System.out.println("The entered port is invalid");
+	        	}
 	        } 
 	        catch (Exception ex) 
 	        {

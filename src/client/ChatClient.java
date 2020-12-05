@@ -43,10 +43,12 @@ public class ChatClient extends AbstractClient {
 
 			}
 	}
+<<<<<<< HEAD
 
+=======
+>>>>>>> branch 'main' of https://github.com/liranami/MiniProject
 
 	public void handleMessageFromClientUI(Object msg) {
-
 		try {
 			openConnection();
 			waitForConnection = true;
@@ -56,7 +58,10 @@ public class ChatClient extends AbstractClient {
 			quit();
 		}
 	}
+<<<<<<< HEAD
 
+=======
+>>>>>>> branch 'main' of https://github.com/liranami/MiniProject
 
 	public void quit() {
 		try {

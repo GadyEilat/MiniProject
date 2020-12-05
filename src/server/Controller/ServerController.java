@@ -36,18 +36,25 @@ public class ServerController  {
 	@FXML
 	private TextField portxt;
 	@FXML
-	private TextArea msgArea;
+	public TextArea msgArea;
+	
 	public static ServerController instance;
 
 	public void Run(ActionEvent event) throws Exception {
 		int port;
 		if(portxt.getText().isEmpty()) {
 			port = ServerUI.DEFAULT_PORT;
+			ServerUI.runServer(port);
 		}
 		else {
+			try { //if the port is not an int, don't runServer.
 			port = (new Integer(portxt.getText()));
+			ServerUI.runServer(port);
+			}
+			catch (NumberFormatException e) {
+				System.out.println("The entered port is invalid");
+			}
 		}
-		ServerUI.runServer(port);
 //		if(port.trim().isEmpty())
 //		{
 //			port = ServerUI.DEFAULT_PORT;

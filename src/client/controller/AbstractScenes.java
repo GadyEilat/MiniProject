@@ -20,6 +20,7 @@ public abstract class AbstractScenes implements Initializable {
 			double height = ClientUI.primaryStage.getHeight();
 			ClientUI.fxmlLoader = new FXMLLoader(getClass().getResource(fxmlFile));
 			current = (Parent) ClientUI.fxmlLoader.load();
+<<<<<<< HEAD
 			Scene scene = new Scene(current);
 			ClientUI.primaryStage.setTitle(Title);
 			ClientUI.primaryStage.setScene(scene);
@@ -39,6 +40,37 @@ public abstract class AbstractScenes implements Initializable {
 			double height = ClientUI.primaryStage.getHeight();
 			ClientUI.fxmlLoader = new FXMLLoader(getClass().getResource(fxmlFile));
 			current = (Parent) ClientUI.fxmlLoader.load();
+=======
+>>>>>>> branch 'main' of https://github.com/liranami/MiniProject
+			Scene scene = new Scene(current);
+<<<<<<< HEAD
+			scene.getStylesheets().add(cssFile);
+=======
+>>>>>>> branch 'main' of https://github.com/liranami/MiniProject
+			ClientUI.primaryStage.setTitle(Title);
+			ClientUI.primaryStage.setScene(scene);
+			ClientUI.primaryStage.setWidth(width);
+			ClientUI.primaryStage.setHeight(height);
+			ClientUI.primaryStage.show();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+<<<<<<< HEAD
+	}
+=======
+	public void switchScenes(String fxmlFile,String Title, String cssFile) {
+		Parent current;
+		try {
+>>>>>>> branch 'main' of https://github.com/liranami/MiniProject
+
+<<<<<<< HEAD
+=======
+			double width = ClientUI.primaryStage.getWidth();
+			double height = ClientUI.primaryStage.getHeight();
+			ClientUI.fxmlLoader = new FXMLLoader(getClass().getResource(fxmlFile));
+			current = (Parent) ClientUI.fxmlLoader.load();
 			Scene scene = new Scene(current);
 			scene.getStylesheets().add(cssFile);
 			ClientUI.primaryStage.setTitle(Title);
@@ -49,9 +81,9 @@ public abstract class AbstractScenes implements Initializable {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
 	}
 
+>>>>>>> branch 'main' of https://github.com/liranami/MiniProject
 	public void initialize(URL location, ResourceBundle resources) {
 		// TODO Auto-generated method stub
 

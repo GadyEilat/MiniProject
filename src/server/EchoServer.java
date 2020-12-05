@@ -3,6 +3,7 @@
 // license found at www.lloseng.com 
 package server;
 
+import java.awt.DisplayMode;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Vector;
@@ -16,6 +17,8 @@ public class EchoServer extends AbstractServer {
 	// Class variables *************************************************
 	ArrayList<Object> arrOfVisitors = null;
 	String visitor = null;
+	public static int flag = 0;
+	ServerController sc = new ServerController();
 	/**
 	 * The default port to listen on.
 	 */
@@ -45,11 +48,12 @@ public class EchoServer extends AbstractServer {
 	 * @param
 	 */
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
-		//ServerController.instance.displayMsg("Message received: " + msg.toString() + " from " + client);
+		// ServerController.instance.displayMsg("Message received: " + msg.toString() +
+		// " from " + client);
 		if (msg instanceof String) {
-			
+
 			arrOfVisitors = mysqlConnection.getDB(msg);
-			if(arrOfVisitors!=null) {
+			if (arrOfVisitors != null) {
 				try {
 					client.sendToClient(arrOfVisitors);
 				} catch (IOException e) {
@@ -58,20 +62,32 @@ public class EchoServer extends AbstractServer {
 				}
 			}
 			// ServerController.instance.displayMsg("Message received: " + msg.toString() +
-			// " from " + client);			
+			// " from " + client);
 
-			//this.sendToAllClients(arrOfVisitors);
+			// this.sendToAllClients(arrOfVisitors);
 		}
-		if (msg instanceof Visitor)
-		{
+		if (msg instanceof Visitor) {
 			boolean ans = mysqlConnection.updateDB(msg);
 			if (ans)
 				System.out.println("Email updated");
 			else
 				System.out.println("Email could not be updated");
 		}
+		if (flag == 0) { // in the first connection, display ip, host and status.
+			System.out.println("Client IP: " + client.getInetAddress().getHostAddress());
+			//sc.displayMsg("Client IP: " + client.getInetAddress().getHostAddress());
+			System.out.println("Hostname: " + client.getInetAddress().getHostName());
+			//sc.displayMsg("Hostname: " + client.getInetAddress().getHostName());
+			if (client.isAlive()) {
+				System.out.println("Client Status: Connected");
+				//sc.displayMsg("Client Status: Connected");
+			} else {
+				System.out.println("Client Status: Disconnected");
+				//sc.displayMsg("Client Status: Disconnected");
+			}
+			flag = 1;
+		}
 		System.out.println("Message received from : " + client);
-
 
 	}
 
@@ -94,7 +110,8 @@ public class EchoServer extends AbstractServer {
 	 * listening for connections.
 	 */
 	protected void serverStopped() {
-		//ServerController.instance.displayMsg("Server has stopped listening for connections.");
+		// ServerController.instance.displayMsg("Server has stopped listening for
+		// connections.");
 	}
 
 }
