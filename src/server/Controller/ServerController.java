@@ -6,6 +6,7 @@ import java.util.ResourceBundle;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -25,8 +26,8 @@ import javafx.stage.Stage;
 import server.EchoServer;
 import server.ServerUI;
 
-public class ServerController  {	
-	
+public class ServerController implements Initializable {	
+	public static ServerController instance;
 	@FXML
 	private Button btnExit = null;
 	@FXML
@@ -38,13 +39,13 @@ public class ServerController  {
 	@FXML
 	public TextArea msgArea;
 	
-	public static ServerController instance;
 
 	public void Run(ActionEvent event) throws Exception {
 		int port;
 		if(portxt.getText().isEmpty()) {
 			port = ServerUI.DEFAULT_PORT;
 			ServerUI.runServer(port);
+			displayMsg("Connecting...");
 		}
 		else {
 			try { //if the port is not an int, don't runServer.
@@ -52,7 +53,7 @@ public class ServerController  {
 			ServerUI.runServer(port);
 			}
 			catch (NumberFormatException e) {
-				System.out.println("The entered port is invalid");
+				displayMsg("The entered port is invalid");
 			}
 		}
 //		if(port.trim().isEmpty())
@@ -84,12 +85,25 @@ public class ServerController  {
 		System.exit(0);
 	}
 	public void displayMsg(String msg) {
-		try {
-			msgArea.appendText(msg + "\n");
+		Platform.runLater(new Runnable() {
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+			@Override
+			public void run() {
+				try {
+					msgArea.appendText(msg + "\n");
+
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+			
+		});
+
+	}
+
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		instance=this;
 	}
 
 }

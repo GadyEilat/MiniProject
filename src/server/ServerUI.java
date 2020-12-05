@@ -49,11 +49,11 @@ public class ServerUI extends Application {
 	        	}
 	        	else if (port==5555 && flag==1)
 	        	{
-	        		System.out.println("Server already listening for connections on this port");
+	        		ServerController.instance.displayMsg("Server already listening for connections on this port");
 	        	}
 	        	else
 	        	{
-	        		System.out.println("The entered port is invalid");
+	        		ServerController.instance.displayMsg("The entered port is invalid");
 	        	}
 	        } 
 	        catch (Exception ex) 

@@ -24,6 +24,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 public class DataGuiController extends AbstractScenes{
+	
 	Visitor visitor;
 
     @FXML
@@ -49,7 +50,6 @@ public class DataGuiController extends AbstractScenes{
 
     @FXML
     private Button dataTableExit;
-
 
     @FXML
     void DataExit(ActionEvent event) {
@@ -77,6 +77,11 @@ public class DataGuiController extends AbstractScenes{
 		visitor.setEmail(updatedEmail);
 		ClientUI.chat.accept(visitor);
 		System.out.println("Email Updated Successfully");
+	}
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		loadVisitor(ChatClient.visitor);
+
 	}
 
 

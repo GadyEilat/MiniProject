@@ -71,21 +71,6 @@ public class mysqlConnection {
 			}
 		}
 
-		/*
-		 * try {
-		 * 
-		 * PreparedStatement update = conn.
-		 * prepareStatement("INSERT INTO visitors (firstName, lastName, id, email, telephoneNumber) VALUES (?, ?, ?, ?, ?)");
-		 * 
-		 *  // for(int i=0;i<msg.size();i++) 
-		 * // update.setString(i+1,msg.get(i)); 
-		 * //
-		 * update.executeUpdate(); 
-		 * // System.out.println("Add to DB");
-		 * 
-		 * } catch (SQLException e) { // TODO Auto-generated catch block
-		 * e.printStackTrace(); }
-		 */
 		return null;
 
 	}
@@ -98,9 +83,6 @@ public class mysqlConnection {
 			if (conn != null) {
 				try {
 					PreparedStatement query =conn.prepareStatement("UPDATE visitors SET Email=? WHERE ID=?");
-					//String query = "UPDATE gonatureschema.visitors SET email=? WHERE identificationNumber=?";
-					
-					//PreparedStatement preparedStmt = conn.prepareStatement(query);
 					query.setString(1, updEmail);
 					query.setString(2, updID);
 					query.executeUpdate();

@@ -51,12 +51,11 @@ public class ClientGUIController extends AbstractScenes {
 	public void notFound() {
 
 		MsgFromController.setText("Visitor ID Not Found");
-
 	}
 	
 	
-	public void isFound(boolean found){
-		this.found=found;
+	public void isFound(){
+		switchScenes("/client/boundaries/DataGui.fxml", "GoNature Enter");
 	}
 	
 	@FXML
@@ -67,18 +66,8 @@ public class ClientGUIController extends AbstractScenes {
 			MsgFromController.setText("You must enter an ID number");
 		} else {
 			ClientUI.chat.accept(ID);
-			TimeUnit.MILLISECONDS.sleep(10);
-			TimeUnit.MILLISECONDS.sleep(30);
-			if (found) {
-				switchScenes("/client/boundaries/DataGui.fxml", "GoNature Enter");
-				DataGuiController dataGuiController = ClientUI.fxmlLoader.getController();
-				dataGuiController.loadVisitor(ChatClient.visitor);
-				found = false;
 			}
 		}
-
-	}
-
 
 	@FXML
 	public void ExitButton(ActionEvent event) throws Exception {

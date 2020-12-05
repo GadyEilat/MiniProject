@@ -39,7 +39,7 @@ public class ChatClient extends AbstractClient {
 			visitor.setId(st.get(2));
 			visitor.setEmail(st.get(3));
 			visitor.setteln(st.get(4));
-			ClientGUIController.instance.isFound(true);
+			ClientGUIController.instance.isFound();
 
 			}
 	}
