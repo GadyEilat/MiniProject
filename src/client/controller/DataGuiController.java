@@ -63,10 +63,7 @@ public class DataGuiController extends AbstractScenes{
 		this.txtLastName.setText(visitor.getLname());
 		this.txtEmail.setText(visitor.getEmail());
 		this.txtTel.setText(visitor.getTeln());
-<<<<<<< HEAD
 
-=======
->>>>>>> branch 'main' of https://github.com/liranami/MiniProject
 	}
 
 	@FXML
@@ -81,9 +78,6 @@ public class DataGuiController extends AbstractScenes{
 		ClientUI.chat.accept(visitor);
 		System.out.println("Email Updated Successfully");
 	}
-<<<<<<< HEAD
 
 
-=======
->>>>>>> branch 'main' of https://github.com/liranami/MiniProject
 }

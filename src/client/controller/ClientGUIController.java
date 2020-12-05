@@ -54,10 +54,7 @@ public class ClientGUIController extends AbstractScenes {
 
 	}
 	
-<<<<<<< HEAD
 	
-=======
->>>>>>> branch 'main' of https://github.com/liranami/MiniProject
 	public void isFound(boolean found){
 		this.found=found;
 	}
@@ -70,11 +67,8 @@ public class ClientGUIController extends AbstractScenes {
 			MsgFromController.setText("You must enter an ID number");
 		} else {
 			ClientUI.chat.accept(ID);
-<<<<<<< HEAD
 			TimeUnit.MILLISECONDS.sleep(10);
-=======
 			TimeUnit.MILLISECONDS.sleep(30);
->>>>>>> branch 'main' of https://github.com/liranami/MiniProject
 			if (found) {
 				switchScenes("/client/boundaries/DataGui.fxml", "GoNature Enter");
 				DataGuiController dataGuiController = ClientUI.fxmlLoader.getController();
@@ -82,16 +76,10 @@ public class ClientGUIController extends AbstractScenes {
 				found = false;
 			}
 		}
-<<<<<<< HEAD
 
-=======
->>>>>>> branch 'main' of https://github.com/liranami/MiniProject
 	}
 
-<<<<<<< HEAD
 
-=======
->>>>>>> branch 'main' of https://github.com/liranami/MiniProject
 	@FXML
 	public void ExitButton(ActionEvent event) throws Exception {
 		System.exit(0);
