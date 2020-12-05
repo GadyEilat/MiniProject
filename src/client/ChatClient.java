@@ -34,12 +34,14 @@ public class ChatClient extends AbstractClient {
 		if(st.isEmpty())
 			ClientGUIController.instance.notFound();
 		else {
+			//TODO: change to c'tor
 			visitor.setFname(st.get(0));
 			visitor.setLname(st.get(1));
 			visitor.setId(st.get(2));
 			visitor.setEmail(st.get(3));
 			visitor.setteln(st.get(4));
 			ClientGUIController.instance.isFound(true);
+
 			}
 			
 //		try {
@@ -59,11 +61,7 @@ public class ChatClient extends AbstractClient {
 		
 //	}
 
-	/*
-	 * public void handleMessageFromClientUI(String message) { try {
-	 * sendToServer(message); } catch(IOException e) { clientUI.display
-	 * ("Could not send message to server.  Terminating client."); quit(); } }
-	 */
+
 
 	public void handleMessageFromClientUI(Object msg) {
 
@@ -77,38 +75,7 @@ public class ChatClient extends AbstractClient {
 			quit();
 		}
 	}
-//		try {
-//
-//			if (message.equals("exit")) {
-//				System.out.println("--> Update the connection");
-//
-//				try {
-//					openConnection();
-//					sendToServer(message);
-//				} catch (Exception e) {
-//					System.out.println("--> the server is shutdown");
-//				}
-//				quit();
-//			}
-//			System.out.println("--> handleMessageFromClientUI --> message: " + message);
-//
-//			openConnection();
-//			waitForConnection = true;
-//			sendToServer(message);
-//			System.out.println("--> handleMessageFromClientUI --> sendToServer(message)");
-//			while (waitForConnection) {
-//				try {
-//					Thread.sleep(200);
-//				} catch (InterruptedException e) {
-//					e.printStackTrace();
-//				}
-//			}
-//			closeConnection();
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//			clientUI.display("Could not send message to server: Terminating client." + e);
-//			quit();
-//		}
+
 
 	public void quit() {
 		try {

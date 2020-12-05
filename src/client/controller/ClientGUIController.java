@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.concurrent.TimeUnit;
 
 import client.ChatClient;
 import client.ClientUI;
@@ -28,7 +29,6 @@ public class ClientGUIController extends AbstractScenes {
 
 	boolean found = false;
 	private Visitor visitor = new Visitor(null, null, null, null, null);
-	boolean lock = true;
 	@FXML
 	private ResourceBundle resources;
 
@@ -67,16 +67,17 @@ public class ClientGUIController extends AbstractScenes {
 //			visitor.setEmail(st.get(3));
 //			visitor.setteln(st.get(4));
 //			found = true;
-//			lock = false;
 //			
 //		}
 	}
+	
 //	public void isFound(){
-//		switchScenes("/client/boundaries/DataGui.fxml");
+//		switchScenes("/client/boundaries/DataGui.fxml", "GoNatur Enter");
 //		DataGuiController dataGuiController = ClientUI.fxmlLoader.getController();
 //		dataGuiController.loadVisitor(ChatClient.visitor);	
 //		
 //		}
+	
 	public void isFound(boolean found){
 		this.found=found;
 	}
@@ -90,24 +91,14 @@ public class ClientGUIController extends AbstractScenes {
 			MsgFromController.setText("You must enter an ID number");
 		} else {
 			ClientUI.chat.accept(ID);
+			TimeUnit.MILLISECONDS.sleep(10);
 			if (found) {
-//				((Node) event.getSource()).getScene().getWindow().hide();
-//				Stage primaryStage = new Stage();
-//				Pane root = fxmlLoader.load(getClass().getResource("/client/boundaries/DataGui.fxml").openStream());
-				switchScenes("/client/boundaries/DataGui.fxml");
+				switchScenes("/client/boundaries/DataGui.fxml", "GoNatur Enter");
 				DataGuiController dataGuiController = ClientUI.fxmlLoader.getController();
 				dataGuiController.loadVisitor(ChatClient.visitor);
-//				Scene scene = new Scene(root);
-//				primaryStage.setTitle("Student Managment Tool");
-//				primaryStage.setScene(scene);
-//				primaryStage.show();
-//
 				found = false;
 			}
-//			lock = false;
 		}
-//    	switchScenes("/client/boundaries/DataGui.fxml");
-//    	ClientUI.chat.accept("SELECT * FROM visitors;");
 
 	}
 

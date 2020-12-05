@@ -79,7 +79,7 @@ public class DataGuiController extends AbstractScenes{
 //		clientUI.start(stage);
 //		((Node) event.getSource()).getScene().getWindow().hide(); // hiding primary window
 		ChatClient.visitor = new Visitor(null, null, null, null, null);
-		switchScenes("/client/boundaries/ClientGUI.fxml");
+		switchScenes("/client/boundaries/ClientGUI.fxml", "GoNature Enter");
 	}
 	@FXML
 	void ButtonSaveEmail(ActionEvent event) throws Exception {
