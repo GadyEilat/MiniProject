@@ -12,19 +12,18 @@ import java.util.ArrayList;
 
 public class ChatClient extends AbstractClient {
 
-	public static ArrayList<Visitor> list = new ArrayList<>();
 	public static Visitor visitor = new Visitor(null, null, null, null, null);
 
 	ChatIF clientUI;
 	public boolean waitForConnection = false;
 
 	public ChatClient(String host, int port, ChatIF clientUI) throws IOException {
-		super(host, port); // Call the superclass constructor
+		super(host, port); 			// Call the superclass constructor
 		this.clientUI = clientUI;
 
 	}
 
-	public void handleMessageFromServer(Object msg) { // This function gets the msg from the server and prints the table
+	public void handleMessageFromServer(Object msg) {
 
 		System.out.println("--> handleMessageFromServer");
 
@@ -43,24 +42,7 @@ public class ChatClient extends AbstractClient {
 			ClientGUIController.instance.isFound(true);
 
 			}
-			
-//		try {
-//			ClientGUIController.instance.answerForID(st);
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-
-		}
-		//String[] result = st.split("\\s");
-//		vis.setId(st.get(0));
-//		vis.setFname(st.get(1));
-//		vis.setLname(st.get(2));
-//		vis.setEmail(st.get(3));
-//		vis.setteln(st.get(4));
-//		System.out.println(vis);
-		
-//	}
-
+	}
 
 
 	public void handleMessageFromClientUI(Object msg) {
@@ -70,7 +52,6 @@ public class ChatClient extends AbstractClient {
 			waitForConnection = true;
 			sendToServer(msg);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			quit();
 		}

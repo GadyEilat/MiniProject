@@ -67,17 +67,10 @@ public class DataGuiController extends AbstractScenes{
 		this.txtEmail.setText(visitor.getEmail());
 		this.txtTel.setText(visitor.getTeln());
 
-
-		// TODO: setTest
 	}
 
 	@FXML
 	void ButtonBack(ActionEvent event) throws Exception {
-//		((Node) event.getSource()).getScene().getWindow().hide();
-//		Stage primaryStage = new Stage();
-//		ClientUI clientUI = new ClientUI();
-//		clientUI.start(stage);
-//		((Node) event.getSource()).getScene().getWindow().hide(); // hiding primary window
 		ChatClient.visitor = new Visitor(null, null, null, null, null);
 		switchScenes("/client/boundaries/ClientGUI.fxml", "GoNature Enter");
 	}
@@ -88,8 +81,6 @@ public class DataGuiController extends AbstractScenes{
 		ClientUI.chat.accept(visitor);
 //		System.out.println("Email Updated Successfully");
 	}
-
-	
 
 
 }
