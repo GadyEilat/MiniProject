@@ -5,6 +5,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import client.ChatClient;
 import client.ClientUI;
 import client.logic.Visitor;
 import javafx.collections.FXCollections;
@@ -56,7 +57,7 @@ public class DataGuiController extends AbstractScenes{
     }
 
 
-
+    
 
 	public void loadVisitor(Visitor visitorInt) {
 		this.visitor = visitorInt;
@@ -77,8 +78,18 @@ public class DataGuiController extends AbstractScenes{
 //		ClientUI clientUI = new ClientUI();
 //		clientUI.start(stage);
 //		((Node) event.getSource()).getScene().getWindow().hide(); // hiding primary window
+		ChatClient.visitor = new Visitor(null, null, null, null, null);
 		switchScenes("/client/boundaries/ClientGUI.fxml");
 	}
+	@FXML
+	void ButtonSaveEmail(ActionEvent event) throws Exception {
+		String updatedEmail = (txtEmail.getText());
+		visitor.setEmail(updatedEmail);
+		ClientUI.chat.accept(visitor);
+//		System.out.println("Email Updated Successfully");
+	}
+
+	
 
 
 }

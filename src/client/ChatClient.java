@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class ChatClient extends AbstractClient {
 
 	public static ArrayList<Visitor> list = new ArrayList<>();
-	public static Visitor vis = new Visitor(null, null, null, null, null);
+	public static Visitor visitor = new Visitor(null, null, null, null, null);
 
 	ChatIF clientUI;
 	public boolean waitForConnection = false;
@@ -25,27 +25,28 @@ public class ChatClient extends AbstractClient {
 	}
 
 	public void handleMessageFromServer(Object msg) { // This function gets the msg from the server and prints the table
-//		vis = (ArrayList<String>) msg;
-//		waitForConnection = false;
-//		String row;
-//		String[] split;
-//		Visitor Visitor;
-//		for (int i = 0; i < vis.size(); i++) {
-//			row = vis.get(i);
-//			split = row.split(",");
-//			Visitor = new Visitor(split[0], split[1], split[2], split[3], split[4]);
-//			DataGuiController.addItem(Visitor);
-//		}
+
 		System.out.println("--> handleMessageFromServer");
 
 		waitForConnection = false;
 		ArrayList<String> st;
 		st = (ArrayList<String>)msg;
-		try {
-			ClientGUIController.instance.answerForID(st);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if(st.isEmpty())
+			ClientGUIController.instance.notFound();
+		else {
+			visitor.setFname(st.get(0));
+			visitor.setLname(st.get(1));
+			visitor.setId(st.get(2));
+			visitor.setEmail(st.get(3));
+			visitor.setteln(st.get(4));
+			ClientGUIController.instance.isFound(true);
+			}
+			
+//		try {
+//			ClientGUIController.instance.answerForID(st);
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
 
 		}
 		//String[] result = st.split("\\s");
@@ -56,7 +57,7 @@ public class ChatClient extends AbstractClient {
 //		vis.setteln(st.get(4));
 //		System.out.println(vis);
 		
-	}
+//	}
 
 	/*
 	 * public void handleMessageFromClientUI(String message) { try {

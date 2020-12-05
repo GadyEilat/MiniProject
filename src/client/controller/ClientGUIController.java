@@ -26,9 +26,9 @@ public class ClientGUIController extends AbstractScenes {
 
 	}
 
-	boolean found;
+	boolean found = false;
 	private Visitor visitor = new Visitor(null, null, null, null, null);
-	Object lock = new Object();
+	boolean lock = true;
 	@FXML
 	private ResourceBundle resources;
 
@@ -53,59 +53,72 @@ public class ClientGUIController extends AbstractScenes {
 	////////////////////////////////////////////////////////////////////////////// query
 	////////////////////////////////////////////////////////////////////////////// 2
 	////////////////////////////////////////////////////////////////////////////// string
-	public void answerForID(ArrayList<String> st) throws IOException {
-		if (st.isEmpty()) {
-			MsgFromController.setText("Visitor ID Not Found");
-			
-		} else {
-			visitor.setId(st.get(0));
-			visitor.setFname(st.get(1));
-			visitor.setLname(st.get(2));
-			visitor.setEmail(st.get(3));
-			visitor.setteln(st.get(4));
-			found = true;
-
-		}
+	////////////////////////////////////////////////////////////////////////////// ArrayList<String>
+	////////////////////////////////////////////////////////////////////////////// st
+	public void notFound() {
+//		if (st.isEmpty()) {
+		MsgFromController.setText("Visitor ID Not Found");
+//			lock = false;
+//
+//		} else {
+//			visitor.setId(st.get(0));
+//			visitor.setFname(st.get(1));
+//			visitor.setLname(st.get(2));
+//			visitor.setEmail(st.get(3));
+//			visitor.setteln(st.get(4));
+//			found = true;
+//			lock = false;
+//			
+//		}
+	}
+//	public void isFound(){
+//		switchScenes("/client/boundaries/DataGui.fxml");
+//		DataGuiController dataGuiController = ClientUI.fxmlLoader.getController();
+//		dataGuiController.loadVisitor(ChatClient.visitor);	
+//		
+//		}
+	public void isFound(boolean found){
+		this.found=found;
 	}
 
+
 	@FXML
-	public void ShowInfo(ActionEvent event) throws Exception {
-		
+	public void ShowInfo() throws Exception {
+
 		String ID = txtID.getText();
 		if (ID.trim().isEmpty()) {
 			MsgFromController.setText("You must enter an ID number");
 		} else {
 			ClientUI.chat.accept(ID);
-
 			if (found) {
 //				((Node) event.getSource()).getScene().getWindow().hide();
 //				Stage primaryStage = new Stage();
 //				Pane root = fxmlLoader.load(getClass().getResource("/client/boundaries/DataGui.fxml").openStream());
 				switchScenes("/client/boundaries/DataGui.fxml");
 				DataGuiController dataGuiController = ClientUI.fxmlLoader.getController();
-				dataGuiController.loadVisitor(visitor);
+				dataGuiController.loadVisitor(ChatClient.visitor);
 //				Scene scene = new Scene(root);
 //				primaryStage.setTitle("Student Managment Tool");
 //				primaryStage.setScene(scene);
 //				primaryStage.show();
-				
+//
 				found = false;
-			
 			}
+//			lock = false;
+		}
 //    	switchScenes("/client/boundaries/DataGui.fxml");
 //    	ClientUI.chat.accept("SELECT * FROM visitors;");
-		}
+
 	}
 
 //	public void start(Stage primaryStage) throws IOException {
-//		// Parent root =
-//		// FXMLLoader.load(getClass().getResource("/client/boundaries/DataGui.fxml"));
-////		Parent root = (Parent)FXMLLoader.load(getClass().getResource("/client/boundaries/ClientGUI.fxml"));
-////		Scene scene = new Scene(root);
-////		primaryStage.setTitle("Client");
-////		primaryStage.setScene(scene);
-////
-////		primaryStage.show();
+//		FXMLLoader.load(getClass().getResource("/client/boundaries/DataGui.fxml"));
+//		Parent root = (Parent)FXMLLoader.load(getClass().getResource("/client/boundaries/DataGui.fxml"));
+//		Scene scene = new Scene(root);
+//		ClientUI.primaryStage.setTitle("Client");
+//		ClientUI.primaryStage.setScene(scene);
+//
+//		ClientUI.primaryStage.show();
 //		switchScenes("/client/boundaries/ClientGUI.fxml");
 //	}
 

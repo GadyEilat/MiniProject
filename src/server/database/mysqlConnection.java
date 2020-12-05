@@ -75,9 +75,13 @@ public class mysqlConnection {
 		 * try {
 		 * 
 		 * PreparedStatement update = conn.
-		 * prepareStatement("INSERT INTO visitors (firstName, lastName, id, email, telephoneNumber) VALUES (?, ?, ?, ?, ?)"
-		 * ); // for(int i=0;i<msg.size();i++) // update.setString(i+1,msg.get(i)); //
-		 * update.executeUpdate(); // System.out.println("Add to DB");
+		 * prepareStatement("INSERT INTO visitors (firstName, lastName, id, email, telephoneNumber) VALUES (?, ?, ?, ?, ?)");
+		 * 
+		 *  // for(int i=0;i<msg.size();i++) 
+		 * // update.setString(i+1,msg.get(i)); 
+		 * //
+		 * update.executeUpdate(); 
+		 * // System.out.println("Add to DB");
 		 * 
 		 * } catch (SQLException e) { // TODO Auto-generated catch block
 		 * e.printStackTrace(); }
@@ -86,8 +90,29 @@ public class mysqlConnection {
 
 	}
 
-	public static void updateDB(ArrayList<String> msg) {
-
+	public static boolean updateDB(Object updatedVisitor) {
+		if (updatedVisitor instanceof Visitor) {
+			Visitor updVis= (Visitor)updatedVisitor;
+			String updEmail=updVis.getEmail();
+			String updID=updVis.getId();
+			if (conn != null) {
+				try {
+					PreparedStatement query =conn.prepareStatement("UPDATE visitors SET Email=? WHERE ID=?");
+					//String query = "UPDATE gonatureschema.visitors SET email=? WHERE identificationNumber=?";
+					
+					//PreparedStatement preparedStmt = conn.prepareStatement(query);
+					query.setString(1, updEmail);
+					query.setString(2, updID);
+					query.executeUpdate();
+					return true;
+				} catch (SQLException e) {
+					e.printStackTrace();
+					return false;
+				}
+			}
+		}
+		return false;
 	}
 
 }
+

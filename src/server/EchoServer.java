@@ -58,12 +58,21 @@ public class EchoServer extends AbstractServer {
 				}
 			}
 			// ServerController.instance.displayMsg("Message received: " + msg.toString() +
-			// " from " + client);
-			System.out.println("Message received from : " + client);
-			
+			// " from " + client);			
 
 			//this.sendToAllClients(arrOfVisitors);
 		}
+		if (msg instanceof Visitor)
+		{
+			boolean ans = mysqlConnection.updateDB(msg);
+			if (ans)
+				System.out.println("Email updated");
+			else
+				System.out.println("Email could not be updated");
+		}
+		System.out.println("Message received from : " + client);
+
+
 	}
 
 	/**

@@ -1,6 +1,15 @@
 package client.logic;
 
-public class Visitor {
+import java.io.Serializable;
+
+public class Visitor implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
 	private String id;
 	private String fname;
 	private String lname;

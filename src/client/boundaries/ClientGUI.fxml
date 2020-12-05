@@ -29,7 +29,7 @@
                               </Label>
                               <TextField fx:id="txtID" layoutX="3.0" layoutY="138.0" prefHeight="25.0" prefWidth="157.0" />
                               <Text layoutX="59.0" layoutY="96.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter ID:" />
-                              <Text fx:id="MsgFromController" layoutX="26.0" layoutY="188.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="112.0" />
+                              <Text fx:id="MsgFromController" fill="#ff3333" layoutX="26.0" layoutY="188.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="112.0" />
                            </children>
                         </AnchorPane>
                      </children>
