@@ -49,8 +49,8 @@ public class EchoServer extends AbstractServer {
 	 */
 
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
-		// ServerController.instance.displayMsg("Message received: " + msg.toString() +
-		// " from " + client);
+
+		ServerController.instance.displayMsg("Message received : "+ msg + "\nfrom : " + client);
 		if (msg instanceof String) {
 
 			arrOfVisitors = mysqlConnection.getDB(msg);
@@ -58,14 +58,10 @@ public class EchoServer extends AbstractServer {
 				try {
 					client.sendToClient(arrOfVisitors);
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
-			// ServerController.instance.displayMsg("Message received: " + msg.toString() +
-			// " from " + client);
 
-			// this.sendToAllClients(arrOfVisitors);
 		}
 		if (msg instanceof Visitor) {
 			boolean ans = mysqlConnection.updateDB(msg);
@@ -84,7 +80,7 @@ public class EchoServer extends AbstractServer {
 			}
 			flag = 1;
 		}
-		ServerController.instance.displayMsg("Message received : "+ msg + "\nfrom : " + client);
+
 	}
 
 	/**

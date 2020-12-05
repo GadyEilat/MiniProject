@@ -60,6 +60,7 @@ public class ChatClient extends AbstractClient {
 	public void quit() {
 		try {
 			closeConnection();
+			
 		} catch (IOException e) {
 		}
 		System.exit(0);

@@ -19,7 +19,6 @@ public abstract class AbstractScenes implements Initializable {
 
 			@Override
 			public void run() {
-				// TODO Auto-generated method stub
 				Parent current;
 				try {
 					double width = ClientUI.primaryStage.getWidth();
@@ -62,7 +61,6 @@ public abstract class AbstractScenes implements Initializable {
 //	}
 
 	public void initialize(URL location, ResourceBundle resources) {
-		// TODO Auto-generated method stub
 
 	}
 }
