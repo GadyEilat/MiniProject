@@ -45,7 +45,6 @@ public class ServerController implements Initializable {
 		if(portxt.getText().isEmpty()) {
 			port = ServerUI.DEFAULT_PORT;
 			ServerUI.runServer(port);
-			displayMsg("Connecting...");
 		}
 		else {
 			try { //if the port is not an int, don't runServer.

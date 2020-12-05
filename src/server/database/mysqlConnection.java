@@ -29,6 +29,7 @@ public class mysqlConnection {
 			// DriverManager.getConnection("jdbc:mysql://192.168.3.68/test","root","Root");
 //    		ServerController.instance.displayMsg("SQL connection succeed");
 			// createTableCourses(conn);
+			ServerController.instance.displayMsg("Connected To DB Visitors");
 		} catch (SQLException ex) {/* handle any errors */
 			System.out.println("SQLException: " + ex.getMessage());
 			System.out.println("SQLState: " + ex.getSQLState());
