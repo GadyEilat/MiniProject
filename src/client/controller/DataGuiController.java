@@ -56,9 +56,6 @@ public class DataGuiController extends AbstractScenes{
 		System.exit(0);
     }
 
-
-    
-
 	public void loadVisitor(Visitor visitorInt) {
 		this.visitor = visitorInt;
 		this.txtID.setText(visitor.getId());
@@ -66,30 +63,18 @@ public class DataGuiController extends AbstractScenes{
 		this.txtLastName.setText(visitor.getLname());
 		this.txtEmail.setText(visitor.getEmail());
 		this.txtTel.setText(visitor.getTeln());
-
-
-		// TODO: setTest
 	}
 
 	@FXML
 	void ButtonBack(ActionEvent event) throws Exception {
-//		((Node) event.getSource()).getScene().getWindow().hide();
-//		Stage primaryStage = new Stage();
-//		ClientUI clientUI = new ClientUI();
-//		clientUI.start(stage);
-//		((Node) event.getSource()).getScene().getWindow().hide(); // hiding primary window
 		ChatClient.visitor = new Visitor(null, null, null, null, null);
-		switchScenes("/client/boundaries/ClientGUI.fxml");
+		switchScenes("/client/boundaries/ClientGUI.fxml", "GoNature Enter");
 	}
 	@FXML
 	void ButtonSaveEmail(ActionEvent event) throws Exception {
 		String updatedEmail = (txtEmail.getText());
 		visitor.setEmail(updatedEmail);
 		ClientUI.chat.accept(visitor);
-//		System.out.println("Email Updated Successfully");
+		System.out.println("Email Updated Successfully");
 	}
-
-	
-
-
 }
