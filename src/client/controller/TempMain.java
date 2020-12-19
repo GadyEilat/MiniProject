@@ -22,13 +22,11 @@ public class TempMain extends Application{
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		controller = new ExistingOrderController();
 		TempMain.primaryStage = primaryStage;
 		TempMain.primaryStage.setTitle("Existing Order");
 		Parent current;
 		try {
 			TempMain.fxmlLoader = new FXMLLoader(getClass().getResource("/client/boundaries/Existing Order.fxml"));
-			fxmlLoader.setController(controller);
 			current = (Parent)fxmlLoader.load();
 			Scene scene = new Scene(current);
 			scene.getStylesheets().add("client/boundaries/ManagerStyle.css");
