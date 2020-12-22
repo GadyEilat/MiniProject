@@ -21,6 +21,9 @@ public class ChangeOrderDetailsController extends AbstractScenes{
     private Text msgFromController;
     
     @FXML
+    private Text helloTxt;
+    
+    @FXML
     private URL location;
 
     @FXML
@@ -29,6 +32,9 @@ public class ChangeOrderDetailsController extends AbstractScenes{
     @FXML
     private Button applyBtn;
 
+    @FXML
+    private Button btnLogout;
+    
     @FXML
     private TextField timeTxt;
 
@@ -75,11 +81,6 @@ public class ChangeOrderDetailsController extends AbstractScenes{
     }
 
     @FXML
-    void GoBack(MouseEvent event) {
-    	switchScenes("/client/boundaries/Order Management.fxml", "Order Management");
-    }
-
-    @FXML
     void OrderManagement(ActionEvent event) { //same as last button, but in different position
     	switchScenes("/client/boundaries/Order Management.fxml", "Order Management");
     }
@@ -87,6 +88,11 @@ public class ChangeOrderDetailsController extends AbstractScenes{
     @FXML
     void PrintDetails(ActionEvent event) {
     	//fix -- Printing.
+    }
+    
+    @FXML
+    void Exit(ActionEvent event) {
+    	switchScenes("/client/boundaries/Existing Order.fxml", "Existing Order");
     }
 
     @FXML

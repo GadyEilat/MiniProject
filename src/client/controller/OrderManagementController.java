@@ -7,6 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.text.Text;
 
 public class OrderManagementController extends AbstractScenes{
 
@@ -20,7 +21,13 @@ public class OrderManagementController extends AbstractScenes{
     private TextField orderNumberTxt;
 
     @FXML
+    private Text helloTxt;
+    
+    @FXML
     private Button changeBtn;
+
+    @FXML
+    private Button btnLogout;
 
     @FXML
     private TextField timeTxt;
@@ -57,15 +64,15 @@ public class OrderManagementController extends AbstractScenes{
     }
 
     @FXML
-    void ExistingOrder(MouseEvent event) {
-    	switchScenes("/client/boundaries/Existing Order.fxml", "Existing Order");
-    }
-
-    @FXML
     void PrintDetails(ActionEvent event) {
     	//fix
     }
 
+    @FXML
+    void Exit(ActionEvent event) {
+    	switchScenes("/client/boundaries/Existing Order.fxml", "Existing Order");
+    }
+    
     @FXML
     void initialize() {
     }
