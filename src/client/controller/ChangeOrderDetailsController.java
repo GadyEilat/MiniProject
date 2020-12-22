@@ -9,12 +9,17 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 
 public class ChangeOrderDetailsController extends AbstractScenes{
 
     @FXML
     private ResourceBundle resources;
 
+    @FXML
+    private Text msgFromController;
+    
     @FXML
     private URL location;
 
@@ -51,6 +56,17 @@ public class ChangeOrderDetailsController extends AbstractScenes{
     @FXML
     void Apply(ActionEvent event) {
     	//Save Changes to Order Details in DB --> Fix.
+    	String time = timeTxt.getText();
+		if (time.trim().isEmpty()) {
+			msgFromController.setFill(Color.RED);
+			msgFromController.setText("Please enter a time");
+		}
+		else
+		{
+			//actually check in DB whatever needed.
+			msgFromController.setFill(Color.GREEN);
+			msgFromController.setText("Updated Successfully");
+		}
     }
 
     @FXML

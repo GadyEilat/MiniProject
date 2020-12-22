@@ -3,6 +3,7 @@ package client.controller;
 import java.io.IOException;
 
 import client.ClientController;
+import client.ClientUI;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -23,7 +24,7 @@ public class TempMain extends Application{
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		TempMain.primaryStage = primaryStage;
-		TempMain.primaryStage.setTitle("Existing Order");
+		//TempMain.primaryStage.setTitle("Existing Order");
 		Parent current;
 		try {
 			TempMain.fxmlLoader = new FXMLLoader(getClass().getResource("/client/boundaries/Existing Order.fxml"));
@@ -35,7 +36,7 @@ public class TempMain extends Application{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
+		
 	}
 	
 

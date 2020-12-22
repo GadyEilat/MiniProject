@@ -48,14 +48,14 @@ public class ExistingOrderController extends AbstractScenes{
     
     @FXML
     void NextButton(ActionEvent event) {
-    	switchScenes("/client/boundaries/Order Management.fxml", "Order Management");
-//    	String OrderNum = OrderNumberTxt.getText();
-//		if (OrderNum.trim().isEmpty()) {
-//			msgFromController.setText("You must enter an existing order number");
-//		} 
-//		else { //send to server and check the order number?
-//			//ClientUI.chat.accept(OrderNum);
-//		}
+    	String OrderNum = OrderNumberTxt.getText();
+		if (OrderNum.trim().isEmpty()) {
+			msgFromController.setText("Please enter an existing order number");
+		} 
+		else { //send to server and check the order number? (FIX)
+//			ClientUI.chat.accept(OrderNum);
+			switchScenes("/client/boundaries/Order Management.fxml", "Order Management");
+		}
     }
 
     @FXML
