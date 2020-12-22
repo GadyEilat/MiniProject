@@ -21,11 +21,12 @@ public abstract class AbstractScenes implements Initializable {
 			public void run() {
 				Parent current;
 				try {
-					double width = ClientUI.primaryStage.getWidth();
-					double height = ClientUI.primaryStage.getHeight();
-					ClientUI.fxmlLoader = new FXMLLoader(getClass().getResource(fxmlFile));
-					current = (Parent) ClientUI.fxmlLoader.load();
+					double width = TempMain.primaryStage.getWidth();
+					double height = TempMain.primaryStage.getHeight();
+					TempMain.fxmlLoader = new FXMLLoader(getClass().getResource(fxmlFile));
+					current = (Parent) TempMain.fxmlLoader.load();
 					Scene scene = new Scene(current);
+<<<<<<< HEAD
 					ClientUI.primaryStage.setTitle(Title);
 					ClientUI.primaryStage.setScene(scene);
 					ClientUI.primaryStage.setWidth(width);
@@ -33,6 +34,13 @@ public abstract class AbstractScenes implements Initializable {
 					ClientUI.primaryStage.setMinHeight(600);
 					ClientUI.primaryStage.setMinWidth(800);
 					ClientUI.primaryStage.show();
+=======
+					TempMain.primaryStage.setTitle(Title);
+					TempMain.primaryStage.setScene(scene);
+					TempMain.primaryStage.setWidth(width);
+					TempMain.primaryStage.setHeight(height);
+					TempMain.primaryStage.show();
+>>>>>>> refs/remotes/origin/GadyUpdated
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
