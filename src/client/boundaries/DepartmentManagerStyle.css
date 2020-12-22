@@ -1,0 +1,26 @@
+.button {
+	-fx-background-radius: 20;
+	-fx-background-color: #54f761;
+	-fx-text-fill: black;
+}
+.button:hover {
+	-fx-background-color: #1ab009;
+}
+#btnLogout{
+	-fx-background-color: RED;	
+}
+#btnLogout:hover {
+	-fx-background-color: #cc2323;	
+}
+#btnCancelOfDiscount{
+	-fx-background-color: RED;	
+}
+#btnCancelOfMaxVisitors{
+	-fx-background-color: RED;	
+}
+#btnCancelOfDiscountt:hover {
+	-fx-background-color: #cc2323;	
+}
+#btnCancelOfMaxVisitors:hover {
+	-fx-background-color: #cc2323;	
+}

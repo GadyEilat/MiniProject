@@ -24,18 +24,14 @@ public class mysqlConnection {
 
 		try {
 			conn = DriverManager.getConnection("jdbc:mysql://localhost/gonature?serverTimezone=IST", "root","Liran159357!");
-			// Connection conn =
-			// DriverManager.getConnection("jdbc:mysql://192.168.3.68/test","root","Root");
-//    		ServerController.instance.displayMsg("SQL connection succeed");
-			// createTableCourses(conn);
-			ServerController.instance.displayMsg("Connected To DB Visitors");
+			ServerController.instance.displayMsg("SQL connection succeed");
 		} catch (SQLException ex) {/* handle any errors */
 			System.out.println("SQLException: " + ex.getMessage());
 			System.out.println("SQLState: " + ex.getSQLState());
 			System.out.println("VendorError: " + ex.getErrorCode());
 		}
 	}
-	
+
 	public static void DisconnectConnection() {
 		try {
 			if (!conn.isClosed())
@@ -44,7 +40,6 @@ public class mysqlConnection {
 			e.printStackTrace();
 		}
 	}
-
 
 	public static ArrayList<Object> getDB(Object msg) {
 		String str = null;
@@ -58,12 +53,12 @@ public class mysqlConnection {
 				String sql = ("SELECT * FROM gonature.visitors where id = " + str + ";");
 				ResultSet rs = st.executeQuery(sql);
 				ResultSetMetaData metadata = rs.getMetaData();
-			    int columnCount = metadata.getColumnCount();
+				int columnCount = metadata.getColumnCount();
 				while (rs.next()) {
-					for(int i = 1;i<=columnCount;i++)
+					for (int i = 1; i <= columnCount; i++)
 						answer.add(rs.getString(i));
 				}
-				//conn.close();
+				// conn.close();
 				rs.close();
 				return answer;
 			} catch (SQLException e) {
@@ -77,12 +72,12 @@ public class mysqlConnection {
 
 	public static boolean updateDB(Object updatedVisitor) {
 		if (updatedVisitor instanceof Visitor) {
-			Visitor updVis= (Visitor)updatedVisitor;
-			String updEmail=updVis.getEmail();
-			String updID=updVis.getId();
+			Visitor updVis = (Visitor) updatedVisitor;
+			String updEmail = updVis.getEmail();
+			String updID = updVis.getId();
 			if (conn != null) {
 				try {
-					PreparedStatement query =conn.prepareStatement("UPDATE visitors SET Email=? WHERE ID=?");
+					PreparedStatement query = conn.prepareStatement("UPDATE visitors SET Email=? WHERE ID=?");
 					query.setString(1, updEmail);
 					query.setString(2, updID);
 					query.executeUpdate();
@@ -97,4 +92,3 @@ public class mysqlConnection {
 	}
 
 }
-

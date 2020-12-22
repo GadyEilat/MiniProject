@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Vector;
 
 import client.logic.Visitor;
+import common.DataTransfer;
+import common.logic.Worker;
 import javafx.application.Platform;
 import ocsf.server.*;
 import server.Controller.ServerController;
@@ -51,6 +53,35 @@ public class EchoServer extends AbstractServer {
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
 
 		ServerController.instance.displayMsg("Message received : "+ msg + "\nfrom : " + client);
+		DataTransfer data = (DataTransfer)msg;
+		Object object = data.getObject();
+		switch (data.getTypeOfMessage()) {
+		case REQUESTINFO:
+			
+			break;
+		case UPDATEINFO:
+			
+			break;
+		case LOGIN_REQUEST:
+			if(object instanceof Worker) {
+				
+			}
+			break;
+		case LOGOUT:
+			
+			break;
+		default:
+			break;
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		if (msg instanceof String) {
 
 			arrOfVisitors = mysqlConnection.getDB(msg);
@@ -70,16 +101,7 @@ public class EchoServer extends AbstractServer {
 			else
 				ServerController.instance.displayMsg("Email could not be updated");
 		}
-		if (flag == 0) { // in the first connection, display ip, host and status.
-			ServerController.instance.displayMsg("Client IP: " + client.getInetAddress().getHostAddress());
-			ServerController.instance.displayMsg("Hostname: " + client.getInetAddress().getHostName());
-			if (client.isAlive()) {
-				ServerController.instance.displayMsg("Client Status: Connected");
-			} else {
-				ServerController.instance.displayMsg("Client Status: Disconnected");
-			}
-			flag = 1;
-		}
+
 
 	}
 

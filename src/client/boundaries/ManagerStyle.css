@@ -1,0 +1,13 @@
+.button {
+	-fx-background-radius: 20.0;
+	-fx-background-color: #54f761;
+	-fx-text-fill: black;
+}
+
+.button:hover {
+	-fx-background-color: #1ab009;
+}
+
+#BackButton{
+	-fx-background-radius: 30.0;
+}

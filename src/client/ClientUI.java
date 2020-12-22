@@ -34,11 +34,15 @@ public class ClientUI extends Application {
 		Parent current;
 		try {
 			
-			ClientUI.fxmlLoader = new FXMLLoader(getClass().getResource("/client/boundaries/ClientGUI.fxml"));
+			ClientUI.fxmlLoader = new FXMLLoader(getClass().getResource("/client/boundaries/main.fxml"));
 			current = (Parent)fxmlLoader.load();;
 			Scene scene = new Scene(current);
 			ClientUI.primaryStage.setScene(scene); 
+			ClientUI.primaryStage.setMinHeight(600);
+			ClientUI.primaryStage.setMinWidth(800);
+			ClientUI.primaryStage.setTitle("Main Entrance");
 			ClientUI.primaryStage.show();
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

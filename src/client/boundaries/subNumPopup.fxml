@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="330.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Text layoutX="147.0" layoutY="189.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Subscriber Number">
+         <font>
+            <Font size="36.0" />
+         </font>
+      </Text>
+      <Text layoutX="249.0" layoutY="245.0" strokeType="OUTSIDE" strokeWidth="0.0" text="58413596">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Text>
+      <ImageView fitHeight="106.0" fitWidth="155.0" layoutX="231.0" layoutY="30.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="/LOGONATURE.png" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>
