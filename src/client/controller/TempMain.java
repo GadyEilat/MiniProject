@@ -28,6 +28,7 @@ public class TempMain extends Application{
 		try {
 			TempMain.fxmlLoader = new FXMLLoader(getClass().getResource("/client/boundaries/Existing Order.fxml"));
 			current = (Parent)fxmlLoader.load();
+			System.out.println("a");
 			Scene scene = new Scene(current);
 			scene.getStylesheets().add("client/boundaries/ManagerStyle.css");
 			TempMain.primaryStage.setScene(scene); 
