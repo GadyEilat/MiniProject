@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane prefHeight="600.0" prefWidth="800.0" stylesheets="@../../../res/ManagerStyle.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.TourGuideNewOrderController">
+   <center>
+      <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0">
+         <children>
+            <VBox alignment="CENTER" layoutX="57.0" layoutY="64.0" prefHeight="278.0" prefWidth="467.0" AnchorPane.bottomAnchor="145.0" AnchorPane.leftAnchor="57.0" AnchorPane.rightAnchor="76.0" AnchorPane.topAnchor="64.0">
+               <children>
+                  <HBox alignment="CENTER" prefHeight="301.0" prefWidth="464.0">
+                     <children>
+                        <AnchorPane prefHeight="158.0" prefWidth="467.0">
+                           <children>
+                              <Label layoutX="141.0" layoutY="62.0" text="Park" />
+                              <Label layoutX="89.0" layoutY="103.0" text="Date and time" />
+                              <Label layoutX="58.0" layoutY="148.0" text="Number of visitors" />
+                              <TextField fx:id="newOrderGetEmail" layoutX="187.0" layoutY="187.0" />
+                              <Button fx:id="continueToPayBtn" layoutX="156.0" layoutY="230.0" mnemonicParsing="false" onAction="#continueToPayButton" style="-fx-background-color: lightgreen;" text="Continue" />
+                              <Label layoutX="208.0" text="New Order">
+                                 <font>
+                                    <Font name="System Bold" size="15.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="136.0" layoutY="192.0" text="Email" />
+                              <Button fx:id="waitingListTourBtn" layoutX="281.0" layoutY="230.0" mnemonicParsing="false" onAction="#waitingListTourButton" style="-fx-background-color: lightblue;" text="Enter waiting list" />
+                              <DatePicker fx:id="chooseDayBtn" layoutX="288.0" layoutY="98.0" onAction="#chooseDayButton" prefHeight="31.0" prefWidth="130.0" />
+                              <ComboBox fx:id="ChooseAnotherName" layoutX="188.0" layoutY="98.0" prefHeight="31.0" prefWidth="91.0" />
+                              <ComboBox fx:id="parkNamBtn" layoutX="185.0" layoutY="57.0" onAction="#parkNamButton" prefHeight="31.0" prefWidth="94.0" />
+                              <ComboBox fx:id="chooseNumVisitorsBtn" layoutX="183.0" layoutY="142.0" onAction="#chooseNumVisitorsButton" prefHeight="31.0" prefWidth="50.0" />
+                              <CheckBox fx:id="isGroupOrder" layoutX="272.0" layoutY="147.0" mnemonicParsing="false" text="Group order" />
+                              <Label layoutX="139.0" layoutY="25.0" text="Name" />
+                              <TextField fx:id="NameOnOrder" layoutX="186.0" layoutY="20.0" />
+                                    
+                           </children>
+                        </AnchorPane>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+            <Label layoutX="24.0" layoutY="448.0" text="Menu">
+               <font>
+                  <Font size="11.0" />
+               </font>
+            </Label>
+            <Button fx:id="backButton" layoutX="15.0" layoutY="464.0" mnemonicParsing="false" onAction="#backButton" prefHeight="36.0" prefWidth="10.0" style="-fx-border-radius: 20;" stylesheets="@../../../../../../סמסטר%20א%202021/ממשקי%20אדם/מדריך/ManagerStyle.css">
+               <graphic>
+                  <ImageView fitHeight="31.0" fitWidth="26.0" onMouseClicked="#backButton">
+                     <image>
+                        <Image url="@../../../res/return-button-icon.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Text fx:id="txtErrorOrder" layoutX="56.0" layoutY="393.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="245.6708984375" />
+         </children>
+      </AnchorPane>
+   </center>
+   <top>
+      <AnchorPane style="-fx-background-color: #c9c4c4;" BorderPane.alignment="CENTER">
+         <children>
+            <Text fx:id="TourNo" layoutX="206.0" layoutY="63.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="106.33984375" AnchorPane.leftAnchor="205.0" AnchorPane.topAnchor="42.0">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Text>
+            <Button fx:id="LogOutBtn" layoutX="707.0" layoutY="42.0" mnemonicParsing="false" onAction="#LogOutButton" style="-fx-background-color: red;" text="Log Out" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="40.0" />
+            <ImageView fitHeight="82.0" fitWidth="104.0">
+               <image>
+                  <Image url="@../../../res/LOGONATURE.png" />
+               </image>
+            </ImageView>
+         </children>
+      </AnchorPane>
+   </top>
+   <left>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <VBox layoutX="60.0" layoutY="95.0" spacing="25.0" style="-fx-background-color: #c9c4c4;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <padding>
+                  <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+               </padding>
+               <children>
+                  <Button fx:id="updateDetalisGuideBtn" mnemonicParsing="false" onAction="#updateDetalisGuideButton" prefHeight="90.0" prefWidth="165.0" text="Update personal details" />
+                  <Button fx:id="NewOrderBtn" mnemonicParsing="false" onAction="#NewOrderButton" opacity="0.64" prefHeight="90.0" prefWidth="165.0" text="New order" />
+                  <Button fx:id="myOrdersBtn" mnemonicParsing="false" onAction="#myOrdersButton" prefHeight="90.0" prefWidth="165.0" text="My orders" />
+                  <Button fx:id="myOrdersBtn1" mnemonicParsing="false" onAction="#myOrdersButton" prefHeight="90.0" prefWidth="165.0" text="Change order" />
+               </children>
+            </VBox>
+         </children>
+      </AnchorPane>
+   </left>
+</BorderPane>
