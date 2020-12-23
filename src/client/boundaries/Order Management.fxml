@@ -31,6 +31,8 @@
                               <TextField fx:id="timeTxt" editable="false" layoutX="150.0" layoutY="155.0" text="14:30" AnchorPane.leftAnchor="168.0" AnchorPane.rightAnchor="168.0" />
                               <TextField fx:id="dateTxt" editable="false" layoutX="168.0" layoutY="121.0" prefHeight="25.0" prefWidth="131.0" text="24/11/2020" />
                               <TextField fx:id="parkTxt" editable="false" layoutX="168.0" layoutY="88.0" prefHeight="25.0" prefWidth="132.0" text="Shlomo's Park" />
+                              <Label layoutX="43.0" layoutY="193.0" prefHeight="17.0" prefWidth="107.0" text="Amount Of Visitors" />
+                              <TextField fx:id="amountOfVisitorsTxt" editable="false" layoutX="168.0" layoutY="189.0" prefHeight="25.0" prefWidth="131.0" text="3" />
                            </children>
                         </AnchorPane>
                      </children>

@@ -21,6 +21,9 @@ public class ChangeOrderDetailsController extends AbstractScenes{
     private Text msgFromController;
     
     @FXML
+    private TextField amountOfVisitorsTxt;
+    
+    @FXML
     private Text helloTxt;
     
     @FXML

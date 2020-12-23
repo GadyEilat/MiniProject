@@ -21,6 +21,9 @@ public class OrderManagementController extends AbstractScenes{
     private TextField orderNumberTxt;
 
     @FXML
+    private TextField amountOfVisitorsTxt;
+    
+    @FXML
     private Text helloTxt;
     
     @FXML

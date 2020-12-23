@@ -7,13 +7,15 @@ public class Order {
 	private String date;
 	private String email;
 	private String orderNumber;
+	private String numOfVisitors;
 
-	public Order(String parkName, String hour, String date, String email, String orderNumber) {
+	public Order(String parkName, String hour, String date, String email, String orderNumber, String numOfVisitors) {
 		this.parkName = parkName;
 		this.hour = hour;
 		this.date = date;
 		this.email = email;
 		this.orderNumber = orderNumber;
+		this.numOfVisitors=numOfVisitors;
 	}
 
 	public String getParkName() {
@@ -54,6 +56,13 @@ public class Order {
 
 	public void setOrderNumber(String orderNumber) {
 		this.orderNumber = orderNumber;
+	}
+	
+	public String getNumOfVisitors() {
+		return numOfVisitors;
+	}
+	public void setNumOfVisitors(String numOfVisitors) {
+		this.numOfVisitors = numOfVisitors;
 	}
 
 //	@Override

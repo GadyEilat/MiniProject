@@ -27,17 +27,19 @@
                            <children>
                               <Label layoutX="68.0" layoutY="61.0" prefHeight="17.0" prefWidth="82.0" text="Order Number" />
                               <TextField fx:id="orderNumberTxt" editable="false" layoutX="150.0" layoutY="57.0" text="726582" AnchorPane.leftAnchor="168.0" AnchorPane.rightAnchor="168.0" />
-                              <Button fx:id="applyBtn" layoutX="181.0" layoutY="195.0" mnemonicParsing="false" onAction="#Apply" prefHeight="30.0" prefWidth="105.0" text="Apply" />
+                              <Button fx:id="applyBtn" layoutX="181.0" layoutY="222.0" mnemonicParsing="false" onAction="#Apply" prefHeight="30.0" prefWidth="105.0" text="Apply" />
                               <Label layoutX="119.0" layoutY="159.0" prefHeight="17.0" prefWidth="33.0" text="Time" />
                               <Label layoutX="119.0" layoutY="125.0" prefHeight="17.0" prefWidth="33.0" text="Date" />
                               <Label layoutX="120.0" layoutY="92.0" prefHeight="17.0" prefWidth="30.0" text="Park" />
                               <TextField fx:id="timeTxt" layoutX="150.0" layoutY="155.0" text="14:30" AnchorPane.leftAnchor="168.0" AnchorPane.rightAnchor="168.0" />
                               <DatePicker fx:id="datePicker" layoutX="150.0" layoutY="121.0" prefHeight="25.0" prefWidth="151.0" promptText="24/11/2020" AnchorPane.leftAnchor="168.0" AnchorPane.rightAnchor="168.0" />
-                              <Text fx:id="msgFromController" fill="RED" layoutX="170.0" layoutY="247.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="126.13671875">
+                              <Text fx:id="msgFromController" fill="RED" layoutX="171.0" layoutY="269.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="126.13671875">
                                  <font>
                                     <Font size="11.0" />
                                  </font></Text>
                               <ComboBox fx:id="parkComboBox" editable="true" layoutX="168.0" layoutY="88.0" prefHeight="25.0" prefWidth="132.0" promptText="Shlomo's Park" />
+                              <Label layoutX="43.0" layoutY="193.0" prefHeight="17.0" prefWidth="107.0" text="Amount Of Visitors" />
+                              <TextField fx:id="amountOfVisitorsTxt" layoutX="168.0" layoutY="189.0" prefHeight="25.0" prefWidth="131.0" text="3" />
                            </children>
                         </AnchorPane>
                      </children>
