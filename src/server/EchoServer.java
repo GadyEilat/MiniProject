@@ -3,7 +3,6 @@
 // license found at www.lloseng.com 
 package server;
 
-import java.awt.DisplayMode;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Vector;
@@ -56,27 +55,27 @@ public class EchoServer extends AbstractServer {
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
 
 		ServerController.instance.displayMsg("Message received : "+ msg + "\nfrom : " + client);
-//		DataTransfer data = (DataTransfer)msg;
-//		Object object = data.getObject();
-//		switch (data.getTypeOfMessage()) {
-//		case REQUESTINFO:
-//			
-//			break;
-//		case UPDATEINFO:
-//			
-//			break;
-//		case LOGIN_REQUEST:
-//			if(object instanceof Worker) {
-//				
-//			}
-//			break;
-//		case LOGOUT:
-//			
-//			break;
-//		default:
-//			break;
-//		}
-//		
+		DataTransfer data = (DataTransfer)msg;
+		Object object = data.getObject();
+		switch (data.getTypeOfMessage()) {
+		case REQUESTINFO:
+			
+			break;
+		case UPDATEINFO:
+			
+			break;
+		case LOGIN_REQUEST:
+			if(object instanceof Worker) {
+				
+			}
+			break;
+		case LOGOUT:
+			
+			break;
+		default:
+			break;
+		}
+		
 		
 		if (msg instanceof String) {
 
