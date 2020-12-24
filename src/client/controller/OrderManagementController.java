@@ -1,6 +1,9 @@
 package client.controller;
 import java.net.URL;
+
 import java.util.ResourceBundle;
+
+import client.ClientUI;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -9,7 +12,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 
-public class OrderManagementController extends AbstractScenes{
+public class OrderManagementController extends AbstractScenes {
+	
 
     @FXML
     private ResourceBundle resources;
@@ -56,10 +60,14 @@ public class OrderManagementController extends AbstractScenes{
     @FXML
     private Button cancelOrderBtn;
 
-    @FXML
-    void CancelOrder(ActionEvent event) {
-    	switchScenes("/client/boundaries/Cancel Confirmation.fxml", "Cancel Confirmation");
-    }
+	@FXML
+	void CancelOrder(ActionEvent event) {
+		//ClientUI.primaryStage.setHeight(188);
+		//ClientUI.primaryStage.setWidth(347);
+		switchScenes("/client/boundaries/Cancel Confirmation.fxml", "Cancel Confirmation");
+	}
+
+    
 
     @FXML
     void ChangeOrderDetails(ActionEvent event) {

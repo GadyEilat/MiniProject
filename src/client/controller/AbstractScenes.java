@@ -41,6 +41,35 @@ public abstract class AbstractScenes implements Initializable {
 		});
 		
 	}
+	
+//	public void switchScenesSmall(String fxmlFile, String Title)
+//	{
+//		Platform.runLater(new Runnable() {
+//
+//			@Override
+//			public void run() {
+//				Parent current;
+//				try {
+//					ClientUI.fxmlLoader = new FXMLLoader(getClass().getResource(fxmlFile));
+//					current = (Parent) ClientUI.fxmlLoader.load();
+//					Scene scene = new Scene(current);
+//					ClientUI.primaryStage.setTitle(Title);
+//					ClientUI.primaryStage.setScene(scene);
+//					ClientUI.primaryStage.setWidth(347);
+//					ClientUI.primaryStage.setHeight(188);
+//					ClientUI.primaryStage.setWidth(347);
+//					ClientUI.primaryStage.setHeight(188);
+//					ClientUI.primaryStage.setMaxWidth(347);
+//					ClientUI.primaryStage.setMaxHeight(188);
+//					ClientUI.primaryStage.show();
+//				} catch (IOException e) {
+//					e.printStackTrace();
+//				}
+//			}
+//			
+//		});
+//		
+//	}
 
 //	public void switchScenes(String fxmlFile,String Title, String cssFile) {
 //		Parent current;
