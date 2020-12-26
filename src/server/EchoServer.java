@@ -8,6 +8,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Vector;
 
+import client.logic.Order;
 import client.logic.TourGuide;
 import client.logic.TourGuideOrder;
 import client.logic.Visitor;
@@ -22,6 +23,7 @@ import server.database.mysqlConnection;
 public class EchoServer extends AbstractServer {
 	// Class variables *************************************************
 	ArrayList<Object> arrOfVisitors = null;
+	Order order = new Order(null, null, null, null, null, null);
 	String visitor = null;
 	public static int flag = 0;
 	/**
@@ -92,7 +94,21 @@ public class EchoServer extends AbstractServer {
 
 			}
 		}
-	
+		
+		if (msg instanceof Order)
+		{
+			order = mysqlConnection.getDBOrder(msg);
+			if (order != null) {
+				try {
+					client.sendToClient(order);
+					
+				}
+				catch (IOException e) {
+					e.printStackTrace();
+				}
+
+			}
+		}
 		
 		if (msg instanceof TourGuide) {
 			boolean ans = mysqlConnection.updateDB(msg);

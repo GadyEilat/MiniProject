@@ -10,6 +10,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Random;
 
+import client.logic.Order;
 import client.logic.TourGuide;
 import client.logic.TourGuideOrder;
 import client.logic.Visitor;
@@ -28,7 +29,7 @@ public class mysqlConnection {
 		}
 
 		try {
-			conn = DriverManager.getConnection("jdbc:mysql://localhost/gonature?serverTimezone=IST", "root","ha89kha89k");
+			conn = DriverManager.getConnection("jdbc:mysql://localhost/gonature?serverTimezone=IST", "root","Aa123456");
 			ServerController.instance.displayMsg("SQL connection succeed");
 		} catch (SQLException ex) {/* handle any errors */
 			System.out.println("SQLException: " + ex.getMessage());
@@ -45,6 +46,39 @@ public class mysqlConnection {
 			e.printStackTrace();
 		}
 	}
+	
+	public static Order getDBOrder(Object msg) {
+		if (msg instanceof Order) //if its an order for Gady's screens.
+		{
+			Order ord = (Order)msg;
+			Order ordInDB = new Order(null,null,null,null,null,null);
+			if (conn != null) {
+				try {
+					Statement st = conn.createStatement();
+					String sql = ("SELECT * FROM gonature.orders where OrderNumber = " + ord.getOrderNumber() + ";");
+					ResultSet rs = st.executeQuery(sql);
+					ResultSetMetaData metadata = rs.getMetaData();
+				    //int columnCount = metadata.getColumnCount();
+					while (rs.next()) {
+						ordInDB.setParkName(rs.getString(1));
+						ordInDB.setDate(rs.getString(2));
+						ordInDB.setHour(rs.getString(3));
+						ordInDB.setNumOfVisitors(rs.getString(4));
+						ordInDB.setEmail(rs.getString(5));
+						//colm 6 tour??
+						ordInDB.setOrderNumber(rs.getString(7));
+					}
+					//conn.close();
+					rs.close();
+					return ordInDB;
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			
+			}
+		}
+		return null;
+	}
 
 	public static ArrayList<Object> getDB(Object msg) {
 	String str = null;
@@ -52,6 +86,37 @@ public class mysqlConnection {
 		if (msg instanceof String) {
 			str = (String) msg;
 		}
+//		if (msg instanceof Order) //if its an order for Gady's screens.
+//		{
+//			Order ord = (Order)msg;
+//			
+//			if (conn != null) {
+//				try {
+//					Statement st = conn.createStatement();
+//					String sql = ("SELECT * FROM gonature.orders where OrderNumber = " + ord.getOrderNumber() + ";");
+//					ResultSet rs = st.executeQuery(sql);
+//					ResultSetMetaData metadata = rs.getMetaData();
+//				    //int columnCount = metadata.getColumnCount();
+//					while (rs.next()) {
+//						ord.setParkName(rs.getString(1));
+//						ord.setDate(rs.getString(2));
+//						ord.setHour(rs.getString(3));
+//						ord.setNumOfVisitors(rs.getString(4));
+//						ord.setEmail(rs.getString(5));
+//						//colm 6 tour??
+//						//colm 7 is order number, staying the same.
+//						
+//							
+//					}
+//					//conn.close();
+//					rs.close();
+//					return ord;
+//				} catch (SQLException e) {
+//					e.printStackTrace();
+//				}
+//			
+//			}
+//		}
 		if (conn != null) {
 			try {
 				Statement st = conn.createStatement();

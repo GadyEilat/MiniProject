@@ -1,7 +1,13 @@
 package client.logic;
 
-public class Order {
+import java.io.Serializable;
 
+public class Order implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String parkName;
 	private String hour;
 	private String date;

@@ -3,6 +3,8 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import client.ClientUI;
+import client.logic.Order;
+import client.logic.Visitor;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -13,6 +15,9 @@ import javafx.scene.text.Text;
 
 public class ExistingOrderController extends AbstractScenes{
 
+	public static Order order = new Order(null,null,null,null,null,null);
+	public static String recievedOrderNum= null;	
+	    
     @FXML
     private ResourceBundle resources;
 
@@ -45,6 +50,8 @@ public class ExistingOrderController extends AbstractScenes{
 	public void isFound() {
 		switchScenes("/client/boundaries/Order Management.fxml", "Order Management");
 	}
+	
+	public static ExistingOrderController instance;
     
     @FXML
     void NextButton(ActionEvent event) {
@@ -53,12 +60,14 @@ public class ExistingOrderController extends AbstractScenes{
 			msgFromController.setText("Please enter an existing order number");
 		} 
 		else { //send to server and check the order number? (FIX)
-//			ClientUI.chat.accept(OrderNum);
-			switchScenes("/client/boundaries/Order Management.fxml", "Order Management");
+			order.setOrderNumber(OrderNum);
+			System.out.println(order.getOrderNumber());
+			ClientUI.chat.accept(order);
 		}
     }
 
     @FXML
-    void initialize() {
+    public void initialize(URL location, ResourceBundle resources) {
+    	instance=this;
     }
 }
