@@ -34,11 +34,14 @@ public class ExistingOrderController extends AbstractScenes{
     private Button nextBtn;
 
     @FXML
-    private ImageView backBtn;
+    private Button BackBtn;
 
     @FXML
-    void GoBack(MouseEvent event) {
+    private ImageView backBtnImage;
 
+    @FXML
+    void GoBack(ActionEvent event) {
+    	switchScenes("/client/boundaries/Travelers.fxml", "Travelers");
     }
 
     public void notFound() {

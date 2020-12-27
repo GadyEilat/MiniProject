@@ -3,7 +3,7 @@
 	<classpathentry kind="src" path="res"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="D:/Aviv/mini paths/mysql-connector-java-8.0.13.jar"/>
-	<classpathentry kind="lib" path="D:/Aviv/סמסטר 5/מיני פרויקט-תוכנה/charm-glisten-4.4.1.jar"/>
+	<classpathentry kind="lib" path="lib/mysql-connector-java-8.0.13.jar"/>
+	<classpathentry kind="lib" path="D:/Gady&apos;s Files/Documents/0 My Documents/אורט בראודה/עבודות/סמסטר 6/שיטות הנדסיות לפיתוח מערכות תוכנה/פרויקט/charm-glisten-4.4.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
