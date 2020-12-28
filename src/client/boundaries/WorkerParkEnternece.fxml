@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.gluonhq.charm.glisten.control.TextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane prefHeight="600.0" prefWidth="800.0" stylesheets="@../../../../חומר%20למבחן%20מסדים/ManagerStyle.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+   <center>
+      <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0">
+         <children>
+            <VBox alignment="CENTER" layoutX="57.0" layoutY="64.0" prefHeight="278.0" prefWidth="467.0" AnchorPane.bottomAnchor="145.0" AnchorPane.leftAnchor="57.0" AnchorPane.rightAnchor="76.0" AnchorPane.topAnchor="64.0">
+               <children>
+                  <HBox alignment="CENTER" prefHeight="295.0" prefWidth="467.0">
+                     <children>
+                        <AnchorPane prefHeight="158.0" prefWidth="467.0">
+                           <children>
+                              <Button fx:id="completeTourOrderBtn" layoutX="202.0" layoutY="226.0" mnemonicParsing="false" onAction="#completeTourOrderButton" style="-fx-background-color: lightgreen;" text="Complete" />
+                              <Label layoutX="202.0" layoutY="14.0" text="New Visit">
+                                 <font>
+                                    <Font name="System Bold" size="19.0" />
+                                 </font>
+                              </Label>
+                              <ProgressBar layoutX="109.0" layoutY="63.0" prefWidth="200.0" progress="0.38" />
+                              <Label layoutX="30.0" layoutY="64.0" text="Park Status" />
+                              <TextField layoutX="163.0" layoutY="132.0" />
+                              <TextField layoutX="163.0" layoutY="177.0" />
+                              <Label layoutX="117.0" layoutY="132.0" text="Name" />
+                              <Label layoutX="37.0" layoutY="182.0" text="Number of visitors" />
+                           </children>
+                        </AnchorPane>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </children>
+      </AnchorPane>
+   </center>
+   <top>
+      <AnchorPane style="-fx-background-color: #c9c4c4;" BorderPane.alignment="CENTER">
+         <children>
+            <Button fx:id="LogOutBtn" layoutX="707.0" layoutY="42.0" mnemonicParsing="false" onAction="#LogOutButton" stylesheets="@../ManagerStyle.css" text="Log Out" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="40.0" />
+            <ImageView fitHeight="82.0" fitWidth="104.0" layoutX="14.0" layoutY="-1.0">
+               <image>
+                  <Image url="@../../../../חומר%20למבחן%20בדיסקרטית/New%20folder/LOGONATURE.png" />
+               </image>
+            </ImageView>
+         </children>
+      </AnchorPane>
+   </top>
+   <left>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <VBox layoutX="60.0" layoutY="95.0" spacing="25.0" style="-fx-background-color: #c9c4c4;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <padding>
+                  <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+               </padding>
+            </VBox>
+         </children>
+      </AnchorPane>
+   </left>
+</BorderPane>

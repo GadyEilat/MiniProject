@@ -237,11 +237,25 @@ public static boolean updateDBOrders(Object updatedTourOrder) {
 	//ObservableList<Object>
 	public static ObservableList<Object> getTourGuideOrders(Object msg) {
 		ObservableList <Object> oblist=FXCollections.observableArrayList();
-        
+        String TourID=(String)msg;
 		try {
-			ResultSet rs= conn.createStatement().executeQuery("select * from orders");
+			ResultSet rs= conn.createStatement().executeQuery("select * from orders WHERE NameOnOrder='Zvika'");
+			
+//			Statement st = conn.createStatement();
+//			String sql = ("SELECT * FROM gonature.orders where NameOnOrder = " + TourID + ";");
+//			ResultSet rs = st.executeQuery(sql);
+			
 			while(rs.next()) {
-				oblist.add(new TourGuideOrder(rs.getString("OrderNumber"), rs.getString("Date"), rs.getString("Park"), null, null, null, null));
+				TourGuideOrder newT=new TourGuideOrder(null, null, null, null, null, null, null);
+				newT.setParkName(rs.getString(1));
+				newT.setTime(rs.getString(2));
+				newT.setDate(rs.getString(3));
+				newT.setNumOfVisitors(rs.getString(4));
+				newT.setEmail(rs.getString(5));
+				newT.setOrderNumber(rs.getString(6));
+				newT.setNameOnOrder(rs.getString(7));
+				oblist.add(newT);
+				//oblist.add(new TourGuideOrder(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(3), null, null, null));
 				
 			}
 			rs.close();
@@ -256,7 +270,7 @@ public static boolean updateDBOrders(Object updatedTourOrder) {
 	
         
 		return null;
-	}
+}
 
 }
 

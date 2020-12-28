@@ -73,7 +73,7 @@ public class MyOrdersGuideController extends AbstractScenes {
     @FXML
     private TableColumn<TourGuideOrder, String> col_Park;
 
-    
+    public static MyOrdersGuideController instance;
     
 ObservableList <TourGuideOrder> oblist=FXCollections.observableArrayList();
     
@@ -120,19 +120,31 @@ ObservableList <TourGuideOrder> oblist=FXCollections.observableArrayList();
     
     @Override
    	public void initialize(URL location, ResourceBundle resources) {
+    	instance = this;
        	loadGuide(ChatClient.tourguide);
-      	col_orderNum.setCellValueFactory(new PropertyValueFactory<TourGuideOrder, String>("OrderNumber"));
+       	col_Park.setCellValueFactory(new PropertyValueFactory<TourGuideOrder, String>("parkName"));
+      	col_orderNum.setCellValueFactory(new PropertyValueFactory<TourGuideOrder, String>("orderNumber"));
       	col_Date.setCellValueFactory(new PropertyValueFactory<TourGuideOrder, String>("Date"));
-       	col_Park.setCellValueFactory(new PropertyValueFactory<TourGuideOrder, String>("Park"));
-     //  	TableOrders.setItems(oblist);
+       	
+       	
         //Load dummy data
-       	//TableOrders.setItems(getOrder());
+       //	TableOrders.setItems(getOrder());
+      	String guideName=ChatClient.tourguide.getFname();
+      	
        	Integer xd=5;
        	ClientUI.chat.accept(xd);
-       	
+       	TableOrders.setItems(oblist);
    	}
 
 
+    public void getLine(TourGuideOrder t) {
+    	
+    	oblist.add(new TourGuideOrder(t.getParkName(), t.getTime(), t.getDate(), t.getNumOfVisitors(), t.getEmail(), t.getOrderNumber(), t.getNameOnOrder()));
+    }
+    
+    
+    
+    
 	private ObservableList<TourGuideOrder> getOrder() {
 		ObservableList <TourGuideOrder> oblist=FXCollections.observableArrayList();
 		oblist.add(new TourGuideOrder("Elad1", "Elad2", "Elad3", "Elad4", "Elad5", "Elad6", "Elad7"));

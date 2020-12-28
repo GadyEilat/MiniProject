@@ -44,7 +44,7 @@
                               <ComboBox fx:id="chooseNumVisitorsBtn" layoutX="183.0" layoutY="142.0" onAction="#chooseNumVisitorsButton" prefHeight="31.0" prefWidth="50.0" />
                               <CheckBox fx:id="isGroupOrder" layoutX="272.0" layoutY="147.0" mnemonicParsing="false" text="Group order" />
                               <Label layoutX="139.0" layoutY="25.0" text="Name" />
-                              <TextField fx:id="NameOnOrder" layoutX="186.0" layoutY="20.0" />
+                              <TextField fx:id="NameOnOrder" editable="false" layoutX="186.0" layoutY="20.0" />
                                     
                            </children>
                         </AnchorPane>
@@ -67,6 +67,7 @@
                </graphic>
             </Button>
             <Text fx:id="txtErrorOrder" layoutX="56.0" layoutY="393.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="245.6708984375" />
+            <Button layoutX="29.0" layoutY="25.0" mnemonicParsing="false" onAction="#CheckPrices" text="Prices" />
          </children>
       </AnchorPane>
    </center>

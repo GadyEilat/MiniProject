@@ -25,6 +25,7 @@ public class EchoServer extends AbstractServer {
 	ArrayList<Object> arrOfVisitors = null;
 	Order order = new Order(null, null, null, null, null, null);
 	String visitor = null;
+	String TourID;
 	public static int flag = 0;
 	/**
 	 * The default port to listen on.
@@ -127,19 +128,22 @@ public class EchoServer extends AbstractServer {
 				ServerController.instance.displayMsg("TourGuide details could not be updated");
 		}
 		
-		if (msg instanceof Integer) {
-			ObservableList<Object> ans3 = mysqlConnection.getTourGuideOrders(msg);
-			if (ans3 != null) {
-				try {
-					client.sendToClient(ans3);
-					
-				}
-				catch (IOException e) {
-					e.printStackTrace();
-				}
+		
+			ObservableList<Object> ans3 = mysqlConnection.getTourGuideOrders(TourID);
+			//DataTransfer data = new DataTransfer(TypeOfMessage.SUCCSESS, ans3);
 
+			if (ans3 != null) {
+				for (int i = 0; i < ans3.size(); i++) {
+					try {
+						client.sendToClient(ans3.get(i));
+						//client.sendToClient(ans3);
+					}
+
+					catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
 			}
-		}
 			if (flag == 0) { // in the first connection, display ip, host and status.
 			ServerController.instance.displayMsg("Client IP: " + client.getInetAddress().getHostAddress());
 			ServerController.instance.displayMsg("Hostname: " + client.getInetAddress().getHostName());

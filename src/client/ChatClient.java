@@ -3,17 +3,18 @@ package client;
 
 import ocsf.client.*;
 import common.ChatIF;
+import common.DataTransfer;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import client.controller.ClientGUIController;
 import client.controller.DataGuiController;
 import client.controller.ExistingOrderController;
+import client.controller.MyOrdersGuideController;
 import client.controller.TourGuideLoginController;
-import client.logic.Order;
 import client.logic.TourGuide;
 import client.logic.TourGuideOrder;
 import client.logic.Visitor;
-
+import client.logic.Order;
 import java.io.*;
 import java.util.ArrayList;
 
