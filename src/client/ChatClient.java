@@ -10,6 +10,7 @@ import client.controller.ClientGUIController;
 import client.controller.DataGuiController;
 import client.controller.ExistingOrderController;
 import client.controller.MyOrdersGuideController;
+import client.controller.OrderManagementController;
 import client.controller.TourGuideLoginController;
 import client.logic.TourGuide;
 import client.logic.TourGuideOrder;
@@ -21,7 +22,7 @@ import java.util.ArrayList;
 public class ChatClient extends AbstractClient {
 
 	public static Visitor visitor = new Visitor(null, null, null, null, null);
-	public static Order order = new Order(null,null,null,null,null,null);
+	public static Order order = new Order(null,null,null,null,null,null, null);
     public static TourGuide tourguide = new TourGuide(null, null, null, null, null);
     public static TourGuideOrder tourguideorder= new TourGuideOrder(null,null,null,null,null,null,null);
     public static ObservableList <TourGuideOrder> oblist=FXCollections.observableArrayList();
@@ -68,6 +69,7 @@ public class ChatClient extends AbstractClient {
 			String check = ExistingOrderController.order.getOrderNumber();
 			if (check.equals(recievedOrd.getOrderNumber()))
 			{
+				ExistingOrderController.order=recievedOrd; //update the instance of the order in "existing" to be not null...
 				ExistingOrderController.instance.isFound();
 			}
 			else

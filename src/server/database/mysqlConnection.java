@@ -51,7 +51,7 @@ public class mysqlConnection {
 		if (msg instanceof Order) //if its an order for Gady's screens.
 		{
 			Order ord = (Order)msg;
-			Order ordInDB = new Order(null,null,null,null,null,null);
+			Order ordInDB = new Order(null,null,null,null,null,null, null);
 			if (conn != null) {
 				try {
 					Statement st = conn.createStatement();
@@ -65,8 +65,9 @@ public class mysqlConnection {
 						ordInDB.setHour(rs.getString(3));
 						ordInDB.setNumOfVisitors(rs.getString(4));
 						ordInDB.setEmail(rs.getString(5));
-						//colm 6 tour??
-						ordInDB.setOrderNumber(rs.getString(7));
+						ordInDB.setOrderNumber(rs.getString(6));
+						ordInDB.setNameOnOrder(rs.getString(7));
+						//8 no need.
 					}
 					//conn.close();
 					rs.close();
