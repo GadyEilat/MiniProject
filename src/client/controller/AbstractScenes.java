@@ -30,8 +30,6 @@ public abstract class AbstractScenes implements Initializable {
 					ClientUI.primaryStage.setScene(scene);
 					ClientUI.primaryStage.setWidth(width);
 					ClientUI.primaryStage.setHeight(height);
-					ClientUI.primaryStage.setMinHeight(600);
-					ClientUI.primaryStage.setMinWidth(800);
 					ClientUI.primaryStage.show();
 				} catch (IOException e) {
 					e.printStackTrace();

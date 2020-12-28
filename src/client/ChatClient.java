@@ -3,10 +3,12 @@ package client;
 
 import ocsf.client.*;
 import common.ChatIF;
+import common.DataTransfer;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import client.controller.ClientGUIController;
 import client.controller.DataGuiController;
+import client.controller.MyOrdersGuideController;
 import client.controller.TourGuideLoginController;
 import client.logic.TourGuide;
 import client.logic.TourGuideOrder;
@@ -31,6 +33,8 @@ public class ChatClient extends AbstractClient {
 	}
 
 	public void handleMessageFromServer(Object msg) {
+		//DataTransfer data= (DataTransfer)msg;
+		//Object object= data.getObject();
 if(msg instanceof ArrayList<?>) {
 		System.out.println("--> handleMessageFromServer");
 		//System.out.println("--> HELLLLOOOOO");
@@ -51,12 +55,13 @@ if(msg instanceof ArrayList<?>) {
 			}
 }
 
-if(msg instanceof ObservableList <?>) {
+if(msg instanceof TourGuideOrder) {
 	System.out.println("--> handleMessageFromServer");
 	waitForConnection = false;
 	//ObservableList <TourGuideOrder> oblistt=FXCollections.observableArrayList();
-	oblist=(ObservableList <TourGuideOrder>)msg;
-	
+	//oblist=(ObservableList <TourGuideOrder>)msg;
+	System.out.print(msg.toString());
+	MyOrdersGuideController.instance.getLine((TourGuideOrder) msg);
 }
 
 

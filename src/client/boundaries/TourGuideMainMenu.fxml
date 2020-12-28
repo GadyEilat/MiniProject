@@ -51,7 +51,7 @@
                      </font></Button>
                   <Button fx:id="NewOrderBtn" mnemonicParsing="false" onAction="#NewOrderButton" prefHeight="90.0" prefWidth="165.0" text="New order" />
                   <Button fx:id="myOrdersBtn" mnemonicParsing="false" onAction="#myOrdersButton" prefHeight="90.0" prefWidth="165.0" text="My orders" />
-                  <Button fx:id="myOrdersBtn1" mnemonicParsing="false" onAction="#myOrdersButton" prefHeight="90.0" prefWidth="165.0" text="Change order" />
+                  <Button fx:id="changeOrdersGuide" mnemonicParsing="false" onAction="#changeOrdersGuideBtn" prefHeight="90.0" prefWidth="165.0" text="Change order" />
                </children>
                <padding>
                   <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />

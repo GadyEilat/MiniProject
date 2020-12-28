@@ -2,10 +2,13 @@ package client.controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.concurrent.TimeUnit;
+
+import javax.swing.JOptionPane;
 
 import client.ChatClient;
 import client.ClientUI;
@@ -188,49 +191,43 @@ public class TourGuideNewOrderController extends AbstractScenes {
 	    
 	    @FXML
 	    void continueToPayButton(ActionEvent event) {
-	    	//String orderPark =parkNamBtn.getSelectionModel().getSelectedItem().toString();
 	    	String orderPark =parkNamBtn.getValue();
+			LocalDate orderDate = chooseDayBtn.getValue();
+//			if (orderDate== null || java.time.LocalDate.now().isAfter(orderDate))
+//				JOptionPane.showMessageDialog(null, "You must enter right date", "error",
+//						JOptionPane.INFORMATION_MESSAGE);
+//			else {
+			
 	    	
-	    	String orderDate = chooseDayBtn.getValue().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
-	    	//String orderDate=chooseDayBtn.getValue(); 
-	    	//String ordeTime = ChooseAnotherName.getSelectionModel().getSelectedItem().toString();
 	    	String orderTime=ChooseAnotherName.getValue();
-	    	//String orderNumOfVisitors = chooseNumVisitorsBtn.getSelectionModel().getSelectedItem().toString();
 	    	String orderNumOfVisitors=chooseNumVisitorsBtn.getValue(); 
 	    	String orderEmail = (newOrderGetEmail.getText());
             String nameOnOrder= (NameOnOrder.getText());
             
-            if(nameOnOrder.trim().isEmpty()|| orderTime==null || orderNumOfVisitors==null ||orderEmail.trim().isEmpty()   ) {
+            if(nameOnOrder.trim().isEmpty()||orderDate==null||java.time.LocalDate.now().isAfter(orderDate) ||  orderTime==null || orderNumOfVisitors==null ||orderEmail.trim().isEmpty()   ) {
             	Alert alert = new Alert(AlertType.INFORMATION);
             	alert.setHeaderText(null);
-            	alert.setContentText("Fields missing");
+            	alert.setContentText("Fields missing or wrong date");
             	alert.show();
             }
-            
-
-
-            else {		
+           
+            else {
+            	
+            	//Check max num at that day
+            	
+            	
+            	String orderDate2=orderDate.toString();	
 	    	tourguideorderr.setParkName(orderPark);
-	    	tourguideorderr.setDate(orderDate);
+	    	tourguideorderr.setDate(orderDate2);
 	    	tourguideorderr.setTime(orderTime);
 	    	tourguideorderr.setNumOfVisitors(orderNumOfVisitors);
 	    	tourguideorderr.setEmail(orderEmail);
 	    	tourguideorderr.setNameOnOrder(nameOnOrder);
 	    	ClientUI.chat.accept(tourguideorderr);
-	    	//createAndSend(targetObj,orderDate, "123");
-	    	
-	    	
-//	    	ChatClient.tourguideorder.setParkName(orderPark);
-//	    	ChatClient.tourguideorder.setDate(orderDate);
-//	    	ChatClient.tourguideorder.setTime(ordeTime);
-//	    	ChatClient.tourguideorder.setNumOfVisitors(orderNumOfVisitors);
-//	    	ChatClient.tourguideorder.setEmail(orderEmail);
-	    
-	    	//ClientUI.chat.accept(ChatClient.tourguideorder);
 	    	switchScenes("/client/boundaries/TourGuidePayment.fxml", "GoNature Enter");
 			System.out.println("Order Updated Successfully");
             }
-	    	
+			//}	
 	    }
 
 	    @FXML
@@ -240,9 +237,24 @@ public class TourGuideNewOrderController extends AbstractScenes {
 
 	    @FXML
 	    void parkNamButton(ActionEvent event) {
-
+               
 	    }
 
+	    @FXML
+	    void CheckPrices(ActionEvent event) {
+	    	   try {
+	    	        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/client/boundaries/payments.fxml"));
+	    	        Parent root = (Parent) fxmlLoader.load();
+	    	        Scene scene = new Scene(root);
+	    	        Stage stage = new Stage();
+	    	        stage.setScene(scene);
+	    	        stage.show();
+	    	} catch (IOException e) {
+	    	    e.printStackTrace();
+	    	  }
+	    }
+	    
+	    
 	    @FXML
 	    void updateDetalisGuideButton(ActionEvent event) {
 	    	switchScenes("/client/boundaries/TourGuideChangeDetails.fxml", "Change Details");
@@ -263,7 +275,12 @@ public class TourGuideNewOrderController extends AbstractScenes {
 		}
 	    
 	    
-	    
+	    private void alertMessage(){
+	    	Alert alert = new Alert(AlertType.INFORMATION);
+        	alert.setHeaderText(null);
+        	alert.setContentText("Fields missing");
+        	alert.show();	
+	    }
 	    
 	    
 	    

@@ -40,6 +40,9 @@ public class ClientGUIController extends AbstractScenes {
 	@FXML
 	private TextField txtID;
 
+    @FXML
+    private Text tourName;
+    
 	@FXML
 	private Button exitBtn;
 
