@@ -12,8 +12,10 @@ import client.logic.Order;
 import client.logic.TourGuide;
 import client.logic.TourGuideOrder;
 import client.logic.Visitor;
+import client.logic.Worker;
 import common.DataTransfer;
-import common.logic.Worker;
+import common.TypeOfMessage;
+import common.TypeOfMessageReturn;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import ocsf.server.*;
@@ -22,7 +24,7 @@ import server.database.mysqlConnection;
 
 public class EchoServer extends AbstractServer {
 	// Class variables *************************************************
-	ArrayList<Object> arrOfVisitors = null;
+	ArrayList<Object> arrOfAnswer = null;
 	Order order = new Order(null, null, null, null, null, null, null);
 	String visitor = null;
 	String TourID;
@@ -83,10 +85,10 @@ public class EchoServer extends AbstractServer {
 		
 		if (msg instanceof String) {
 
-			arrOfVisitors = mysqlConnection.getDB(msg);
-			if (arrOfVisitors != null) {
+			arrOfAnswer = mysqlConnection.getDB(msg);
+			if (arrOfAnswer != null) {
 				try {
-					client.sendToClient(arrOfVisitors);
+					client.sendToClient(arrOfAnswer);
 					
 				}
 				catch (IOException e) {

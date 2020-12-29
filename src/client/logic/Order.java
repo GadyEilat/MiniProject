@@ -16,6 +16,15 @@ public class Order implements Serializable{
 	private String numOfVisitors;
 	private String nameOnOrder;
 
+
+	public String getNameOnOrder() {
+		return nameOnOrder;
+	}
+
+	public void setNameOnOrder(String nameOnOrder) {
+		this.nameOnOrder = nameOnOrder;
+	}
+
 	public Order(String parkName, String hour, String date, String email, String orderNumber, String numOfVisitors, String nameOnOrder) {
 		this.parkName = parkName;
 		this.hour = hour;

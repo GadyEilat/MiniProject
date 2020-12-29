@@ -30,7 +30,9 @@ public class EntranceController extends AbstractScenes{
     
     @FXML
     void travelerEnter(ActionEvent event) {
-    	//TODO: switchScenes
+    	switchScenes("/client/boundaries/Travelers.fxml", "Traveler");
+    	
+    	
     }
     
     @FXML
