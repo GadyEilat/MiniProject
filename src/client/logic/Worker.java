@@ -11,18 +11,30 @@ public class Worker implements Serializable{
 	private String userName;
 	private String password;
 	private String role;
+	private String Park;
 
-	public Worker(String userName, String password) {
+	public Worker(String userName, String password, String role, String Park ) {
 		this.userName = userName;
 		this.password = password;
+		this.Park = Park;
+
+		
 	}
 
 	public String getUserName() {
 		return userName;
 	}
 
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
 	public String getPassword() {
 		return password;
+	}
+	
+	public String getPark() {
+		return Park;
 	}
 
 	public String getRole() {

@@ -1,6 +1,10 @@
 package client.controller;
 import java.net.URL;
+
 import java.util.ResourceBundle;
+
+import client.ClientUI;
+import client.logic.Order;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -9,7 +13,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 
-public class OrderManagementController extends AbstractScenes{
+public class OrderManagementController extends AbstractScenes {
+	public Order ord = new Order(null,null,null,null,null,null,null);
 
     @FXML
     private ResourceBundle resources;
@@ -56,10 +61,14 @@ public class OrderManagementController extends AbstractScenes{
     @FXML
     private Button cancelOrderBtn;
 
-    @FXML
-    void CancelOrder(ActionEvent event) {
-    	switchScenes("/client/boundaries/Cancel Confirmation.fxml", "Cancel Confirmation");
-    }
+    public static OrderManagementController instance;
+    
+	@FXML
+	void CancelOrder(ActionEvent event) {
+		switchScenes("/client/boundaries/Cancel Confirmation.fxml", "Cancel Confirmation");
+	}
+
+    
 
     @FXML
     void ChangeOrderDetails(ActionEvent event) {
@@ -77,6 +86,21 @@ public class OrderManagementController extends AbstractScenes{
     }
     
     @FXML
-    void initialize() {
+    public void initialize(URL location, ResourceBundle resources) {
+    	instance=this;
+    	ord=ExistingOrderController.instance.order;
+//		OrderManagementController.instance.ord.setDate(recievedOrd.getDate());
+//		OrderManagementController.instance.ord.setEmail(recievedOrd.getEmail());
+//		OrderManagementController.instance.ord.setHour(recievedOrd.getHour());
+//		OrderManagementController.instance.ord.setNameOnOrder(recievedOrd.getNameOnOrder());
+//		OrderManagementController.instance.ord.setNumOfVisitors(recievedOrd.getNumOfVisitors());
+//		OrderManagementController.instance.ord.setOrderNumber(recievedOrd.getOrderNumber());
+//		OrderManagementController.instance.ord.setParkName(recievedOrd.getParkName());
+    	parkTxt.setText(ord.getParkName());
+    	orderNumberTxt.setText(ord.getOrderNumber());
+    	amountOfVisitorsTxt.setText(ord.getNumOfVisitors());
+    	helloTxt.setText("Hello " + ord.getNameOnOrder());
+    	timeTxt.setText(ord.getHour());
+    	dateTxt.setText(ord.getDate());
     }
 }

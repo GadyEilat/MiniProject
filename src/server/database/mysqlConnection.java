@@ -10,6 +10,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Random;
 
+import client.logic.Order;
 import client.logic.TourGuide;
 import client.logic.TourGuideOrder;
 import client.logic.Visitor;
@@ -45,17 +46,85 @@ public class mysqlConnection {
 			e.printStackTrace();
 		}
 	}
+	
+	public static Order getDBOrder(Object msg) {
+		if (msg instanceof Order) //if its an order for Gady's screens.
+		{
+			Order ord = (Order)msg;
+			Order ordInDB = new Order(null,null,null,null,null,null, null);
+			if (conn != null) {
+				try {
+					Statement st = conn.createStatement();
+					String sql = ("SELECT * FROM gonature.orders where OrderNumber = " + ord.getOrderNumber() + ";");
+					ResultSet rs = st.executeQuery(sql);
+					ResultSetMetaData metadata = rs.getMetaData();
+				    //int columnCount = metadata.getColumnCount();
+					while (rs.next()) {
+						ordInDB.setParkName(rs.getString(1));
+						ordInDB.setDate(rs.getString(2));
+						ordInDB.setHour(rs.getString(3));
+						ordInDB.setNumOfVisitors(rs.getString(4));
+						ordInDB.setEmail(rs.getString(5));
+						ordInDB.setOrderNumber(rs.getString(6));
+						ordInDB.setNameOnOrder(rs.getString(7));
+						//8 no need.
+					}
+					//conn.close();
+					rs.close();
+					return ordInDB;
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			
+			}
+		}
+		return null;
+	}
 
 	public static ArrayList<Object> getDB(Object msg) {
 	String str = null;
+	String sql;
 		ArrayList<Object> answer = new ArrayList<>();
 		if (msg instanceof String) {
 			str = (String) msg;
+			sql = (str);
 		}
+		else
+			sql = (" ");
+//		if (msg instanceof Order) //if its an order for Gady's screens.
+//		{
+//			Order ord = (Order)msg;
+//			
+//			if (conn != null) {
+//				try {
+//					Statement st = conn.createStatement();
+//					String sql = ("SELECT * FROM gonature.orders where OrderNumber = " + ord.getOrderNumber() + ";");
+//					ResultSet rs = st.executeQuery(sql);
+//					ResultSetMetaData metadata = rs.getMetaData();
+//				    //int columnCount = metadata.getColumnCount();
+//					while (rs.next()) {
+//						ord.setParkName(rs.getString(1));
+//						ord.setDate(rs.getString(2));
+//						ord.setHour(rs.getString(3));
+//						ord.setNumOfVisitors(rs.getString(4));
+//						ord.setEmail(rs.getString(5));
+//						//colm 6 tour??
+//						//colm 7 is order number, staying the same.
+//						
+//							
+//					}
+//					//conn.close();
+//					rs.close();
+//					return ord;
+//				} catch (SQLException e) {
+//					e.printStackTrace();
+//				}
+//			
+//			}
+//		}
 		if (conn != null) {
 			try {
 				Statement st = conn.createStatement();
-				String sql = ("SELECT * FROM gonature.tourguides where id = " + str + ";");
 				ResultSet rs = st.executeQuery(sql);
 				ResultSetMetaData metadata = rs.getMetaData();
 			    int columnCount = metadata.getColumnCount();
@@ -172,11 +241,25 @@ public static boolean updateDBOrders(Object updatedTourOrder) {
 	//ObservableList<Object>
 	public static ObservableList<Object> getTourGuideOrders(Object msg) {
 		ObservableList <Object> oblist=FXCollections.observableArrayList();
-        
+        String TourID=(String)msg;
 		try {
-			ResultSet rs= conn.createStatement().executeQuery("select * from orders");
+			ResultSet rs= conn.createStatement().executeQuery("select * from orders WHERE NameOnOrder='Zvika'");
+			
+//			Statement st = conn.createStatement();
+//			String sql = ("SELECT * FROM gonature.orders where NameOnOrder = " + TourID + ";");
+//			ResultSet rs = st.executeQuery(sql);
+			
 			while(rs.next()) {
-				oblist.add(new TourGuideOrder(rs.getString("OrderNumber"), rs.getString("Date"), rs.getString("Park"), null, null, null, null));
+				TourGuideOrder newT=new TourGuideOrder(null, null, null, null, null, null, null);
+				newT.setParkName(rs.getString(1));
+				newT.setTime(rs.getString(2));
+				newT.setDate(rs.getString(3));
+				newT.setNumOfVisitors(rs.getString(4));
+				newT.setEmail(rs.getString(5));
+				newT.setOrderNumber(rs.getString(6));
+				newT.setNameOnOrder(rs.getString(7));
+				oblist.add(newT);
+				//oblist.add(new TourGuideOrder(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(3), null, null, null));
 				
 			}
 			rs.close();
@@ -191,7 +274,7 @@ public static boolean updateDBOrders(Object updatedTourOrder) {
 	
         
 		return null;
-	}
+}
 
 }
 

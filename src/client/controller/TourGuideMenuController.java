@@ -51,7 +51,8 @@ public class TourGuideMenuController extends AbstractScenes  {
 
     @FXML
     private Button myOrdersBtn;
-    
+    @FXML
+    private Button changeOrdersGuide;
     
     
     
@@ -82,7 +83,10 @@ public class TourGuideMenuController extends AbstractScenes  {
          
     }    
 
-    
+    @FXML
+    void changeOrdersGuideBtn(ActionEvent event) {
+
+    }
     
     
     @Override

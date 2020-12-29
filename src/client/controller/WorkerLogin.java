@@ -56,10 +56,10 @@ public class WorkerLogin extends AbstractScenes {
 			msgText.setText("You must enter Password");
 		}
 		else {
-//			usrAndPass = new Worker(userName,password);
-//			DataTransfer data = new DataTransfer(TypeOfMessage.LOGIN_REQUEST,usrAndPass);
-//			ClientUI.chat.accept(data);
-			checkLogInAnswer(userName);
+			usrAndPass = new Worker(userName,password);
+			DataTransfer data = new DataTransfer(TypeOfMessage.LOGIN_REQUEST,usrAndPass);
+			ClientUI.chat.accept(data);
+//			checkLogInAnswer(userName);
 		}
 	}
 	

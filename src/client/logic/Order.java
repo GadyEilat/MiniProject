@@ -1,23 +1,40 @@
 package client.logic;
 
-public class Order {
+import java.io.Serializable;
 
+public class Order implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String parkName;
 	private String hour;
 	private String date;
 	private String email;
 	private String orderNumber;
 	private String numOfVisitors;
+	private String nameOnOrder;
 
-	public Order(String parkName, String hour, String date, String email, String orderNumber, String numOfVisitors) {
+
+	public Order(String parkName, String hour, String date, String email, String orderNumber, String numOfVisitors, String nameOnOrder) {
 		this.parkName = parkName;
 		this.hour = hour;
 		this.date = date;
 		this.email = email;
 		this.orderNumber = orderNumber;
 		this.numOfVisitors=numOfVisitors;
+		this.nameOnOrder=nameOnOrder;
 	}
 
+	public String getNameOnOrder() {
+		return nameOnOrder;
+	}
+	
+	public void setNameOnOrder(String nameOnOrder) {
+		this.nameOnOrder = nameOnOrder;
+	}
+	
 	public String getParkName() {
 		return parkName;
 	}
