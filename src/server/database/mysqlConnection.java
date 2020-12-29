@@ -29,7 +29,7 @@ public class mysqlConnection {
 		}
 
 		try {
-			conn = DriverManager.getConnection("jdbc:mysql://localhost/gonature?serverTimezone=IST", "root","DA123456");
+			conn = DriverManager.getConnection("jdbc:mysql://localhost/gonature?serverTimezone=IST", "root","Aa123456");
 			ServerController.instance.displayMsg("SQL connection succeed");
 		} catch (SQLException ex) {/* handle any errors */
 			System.out.println("SQLException: " + ex.getMessage());
@@ -51,7 +51,7 @@ public class mysqlConnection {
 		if (msg instanceof Order) //if its an order for Gady's screens.
 		{
 			Order ord = (Order)msg;
-			Order ordInDB = new Order(null,null,null,null,null,null, null);
+			Order ordInDB = new Order(null,null,null,null,null,null,null);
 			if (conn != null) {
 				try {
 					Statement st = conn.createStatement();

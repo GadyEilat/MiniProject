@@ -49,16 +49,12 @@ public class ChatClient extends AbstractClient {
 		case LOGIN_SUCCESSFUL:
 			if(object instanceof Worker) {
 				Worker worker = (Worker)object;
-
 			}
 			break;
 
 		default:
 			break;
 		}
-		
-		
-		
 		
 		if (msg instanceof ArrayList<?>) {
 			System.out.println("--> handleMessageFromServer");
@@ -114,7 +110,6 @@ public class ChatClient extends AbstractClient {
 			quit();
 		}
 	}
-
 
 	public void quit() {
 		try {

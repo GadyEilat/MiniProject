@@ -61,7 +61,7 @@ public class ExistingOrderController extends AbstractScenes{
     	String OrderNum = OrderNumberTxt.getText();
 		if (OrderNum.trim().isEmpty()) {
 			msgFromController.setText("Please enter an existing order number");
-		} 
+		}
 		else { //send to server and check the order number? (FIX)
 			order.setOrderNumber(OrderNum);
 			System.out.println(order.getOrderNumber());

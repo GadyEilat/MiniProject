@@ -99,13 +99,12 @@ public class EchoServer extends AbstractServer {
 			break;
 		}
 		
-		
-		if (msg instanceof String) {
-
-			arrOfAnswer = mysqlConnection.getDB(msg);
-			if (arrOfAnswer != null) {
+		if (msg instanceof Order)
+		{
+			order = mysqlConnection.getDBOrder(msg);
+			if (order != null) {
 				try {
-					client.sendToClient(arrOfAnswer);
+					client.sendToClient(order);
 					
 				}
 				catch (IOException e) {
@@ -115,12 +114,12 @@ public class EchoServer extends AbstractServer {
 			}
 		}
 		
-		if (msg instanceof Order)
-		{
-			order = mysqlConnection.getDBOrder(msg);
-			if (order != null) {
+		if (msg instanceof String) {
+
+			arrOfAnswer = mysqlConnection.getDB(msg);
+			if (arrOfAnswer != null) {
 				try {
-					client.sendToClient(order);
+					client.sendToClient(arrOfAnswer);
 					
 				}
 				catch (IOException e) {
