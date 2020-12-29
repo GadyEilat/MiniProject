@@ -23,7 +23,7 @@ import server.database.mysqlConnection;
 public class EchoServer extends AbstractServer {
 	// Class variables *************************************************
 	ArrayList<Object> arrOfVisitors = null;
-	Order order = new Order(null, null, null, null, null, null);
+	Order order = new Order(null, null, null, null, null, null, null);
 	String visitor = null;
 	String TourID;
 	public static int flag = 0;
@@ -128,7 +128,8 @@ public class EchoServer extends AbstractServer {
 				ServerController.instance.displayMsg("TourGuide details could not be updated");
 		}
 		
-		
+		if (msg instanceof Integer) {
+
 			ObservableList<Object> ans3 = mysqlConnection.getTourGuideOrders(TourID);
 			//DataTransfer data = new DataTransfer(TypeOfMessage.SUCCSESS, ans3);
 
@@ -144,6 +145,7 @@ public class EchoServer extends AbstractServer {
 					}
 				}
 			}
+		
 			if (flag == 0) { // in the first connection, display ip, host and status.
 			ServerController.instance.displayMsg("Client IP: " + client.getInetAddress().getHostAddress());
 			ServerController.instance.displayMsg("Hostname: " + client.getInetAddress().getHostName());
@@ -156,7 +158,7 @@ public class EchoServer extends AbstractServer {
 	}
 		
 		
-		
+	}	
 		
 		//if (msg instanceof String) {
 

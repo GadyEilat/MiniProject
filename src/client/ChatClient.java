@@ -21,7 +21,7 @@ import java.util.ArrayList;
 public class ChatClient extends AbstractClient {
 
 	public static Visitor visitor = new Visitor(null, null, null, null, null);
-	public static Order order = new Order(null,null,null,null,null,null);
+	public static Order order = new Order(null,null,null,null,null,null, null);
     public static TourGuide tourguide = new TourGuide(null, null, null, null, null);
     public static TourGuideOrder tourguideorder= new TourGuideOrder(null,null,null,null,null,null,null);
     public static ObservableList <TourGuideOrder> oblist=FXCollections.observableArrayList();
@@ -53,11 +53,14 @@ public class ChatClient extends AbstractClient {
 			}
 		}
 
-		if (msg instanceof ObservableList<?>) {
+		if (msg instanceof TourGuideOrder) {
 			System.out.println("--> handleMessageFromServer");
 			waitForConnection = false;
-			// ObservableList <TourGuideOrder> oblistt=FXCollections.observableArrayList();
-			oblist = (ObservableList<TourGuideOrder>) msg;
+			//ObservableList <TourGuideOrder> oblistt=FXCollections.observableArrayList();
+			//oblist=(ObservableList <TourGuideOrder>)msg;
+			System.out.print(msg.toString());
+			MyOrdersGuideController.instance.getLine((TourGuideOrder) msg);
+		
 		}
 		
 		if (msg instanceof Order)
