@@ -39,22 +39,22 @@ public class ChatClient extends AbstractClient {
 	}
 
 	public void handleMessageFromServer(Object msg) {
-		DataTransfer data = (DataTransfer)msg;
-		Object object = data.getObject();
-		DataTransfer returnData;
-		switch (data.getTypeOfMessageReturn()) {
-		case LOGIN_FAILED:
-			
-			break;
-		case LOGIN_SUCCESSFUL:
-			if(object instanceof Worker) {
-				Worker worker = (Worker)object;
-			}
-			break;
-
-		default:
-			break;
-		}
+//		DataTransfer data = (DataTransfer)msg;
+//		Object object = data.getObject();
+//		DataTransfer returnData;
+//		switch (data.getTypeOfMessageReturn()) {
+//		case LOGIN_FAILED:
+//			
+//			break;
+//		case LOGIN_SUCCESSFUL:
+//			if(object instanceof Worker) {
+//				Worker worker = (Worker)object;
+//			}
+//			break;
+//
+//		default:
+//			break;
+//		}
 		
 		if (msg instanceof ArrayList<?>) {
 			System.out.println("--> handleMessageFromServer");
