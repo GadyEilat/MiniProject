@@ -13,10 +13,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-import client.controller.ClientGUIController;
-//import gui.DataController;
-//import gui.ClientFrameController;
-import client.controller.DataGuiController;
+
 
 public class ClientUI extends Application {
 	public static ClientController chat; // only one instance
@@ -34,7 +31,7 @@ public class ClientUI extends Application {
 		Parent current;
 		try {
 			
-			ClientUI.fxmlLoader = new FXMLLoader(getClass().getResource("/client/boundaries/TourGuideLogin.fxml"));
+			ClientUI.fxmlLoader = new FXMLLoader(getClass().getResource("/client/boundaries/main.fxml"));
 			current = (Parent)fxmlLoader.load();;
 			Scene scene = new Scene(current);
 			ClientUI.primaryStage.setScene(scene); 

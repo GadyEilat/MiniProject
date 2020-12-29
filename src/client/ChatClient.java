@@ -5,8 +5,6 @@ import ocsf.client.*;
 import common.ChatIF;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import client.controller.ClientGUIController;
-import client.controller.DataGuiController;
 import client.controller.TourGuideLoginController;
 import client.logic.TourGuide;
 import client.logic.TourGuideOrder;

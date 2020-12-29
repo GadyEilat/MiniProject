@@ -1,7 +1,13 @@
 package common;
 
-public class DataTransfer {
+import java.io.Serializable;
 
+public class DataTransfer implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private TypeOfMessage typeOfMessage;
 	private Object object;
 
