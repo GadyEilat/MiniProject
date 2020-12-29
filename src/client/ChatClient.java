@@ -2,8 +2,10 @@
 package client;
 
 import ocsf.client.*;
+import server.database.mysqlConnection;
 import common.ChatIF;
 import common.DataTransfer;
+import common.TypeOfMessageReturn;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import client.controller.ClientGUIController;
@@ -15,8 +17,10 @@ import client.controller.TourGuideLoginController;
 import client.logic.TourGuide;
 import client.logic.TourGuideOrder;
 import client.logic.Visitor;
+import client.logic.Worker;
 import client.logic.Order;
 import java.io.*;
+import common.TypeOfMessageReturn;
 import java.util.ArrayList;
 
 public class ChatClient extends AbstractClient {
@@ -35,6 +39,27 @@ public class ChatClient extends AbstractClient {
 	}
 
 	public void handleMessageFromServer(Object msg) {
+		DataTransfer data = (DataTransfer)msg;
+		Object object = data.getObject();
+		DataTransfer returnData;
+		switch (data.getTypeOfMessageReturn()) {
+		case LOGIN_FAILED:
+			
+			break;
+		case LOGIN_SUCCESSFUL:
+			if(object instanceof Worker) {
+				Worker worker = (Worker)object;
+
+			}
+			break;
+
+		default:
+			break;
+		}
+		
+		
+		
+		
 		if (msg instanceof ArrayList<?>) {
 			System.out.println("--> handleMessageFromServer");
 			// System.out.println("--> HELLLLOOOOO");
