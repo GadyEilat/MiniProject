@@ -89,13 +89,6 @@ public class OrderManagementController extends AbstractScenes {
     public void initialize(URL location, ResourceBundle resources) {
     	instance=this;
     	ord=ExistingOrderController.instance.order;
-//		OrderManagementController.instance.ord.setDate(recievedOrd.getDate());
-//		OrderManagementController.instance.ord.setEmail(recievedOrd.getEmail());
-//		OrderManagementController.instance.ord.setHour(recievedOrd.getHour());
-//		OrderManagementController.instance.ord.setNameOnOrder(recievedOrd.getNameOnOrder());
-//		OrderManagementController.instance.ord.setNumOfVisitors(recievedOrd.getNumOfVisitors());
-//		OrderManagementController.instance.ord.setOrderNumber(recievedOrd.getOrderNumber());
-//		OrderManagementController.instance.ord.setParkName(recievedOrd.getParkName());
     	parkTxt.setText(ord.getParkName());
     	orderNumberTxt.setText(ord.getOrderNumber());
     	amountOfVisitorsTxt.setText(ord.getNumOfVisitors());

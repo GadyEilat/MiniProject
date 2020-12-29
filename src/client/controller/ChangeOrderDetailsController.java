@@ -1,8 +1,16 @@
 package client.controller;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.ResourceBundle;
 
 import client.ClientUI;
+import client.logic.Order;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -15,7 +23,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
 public class ChangeOrderDetailsController extends AbstractScenes{
-
+	public Order ord = new Order(null,null,null,null,null,null,null);
+	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+	
     @FXML
     private ResourceBundle resources;
 
@@ -47,7 +57,7 @@ public class ChangeOrderDetailsController extends AbstractScenes{
     private DatePicker datePicker;
 
     @FXML
-    private ComboBox<?> parkComboBox;
+    private ComboBox<String> parkComboBox;
 
     @FXML
     private ImageView backBtn;
@@ -64,6 +74,9 @@ public class ChangeOrderDetailsController extends AbstractScenes{
     @FXML
     private Button cancelOrderBtn;
 
+    public static ChangeOrderDetailsController instance;
+    ObservableList<String> list;
+    
     @FXML
     void Apply(ActionEvent event) {
     	//Save Changes to Order Details in DB --> Fix.
@@ -99,8 +112,34 @@ public class ChangeOrderDetailsController extends AbstractScenes{
     void Exit(ActionEvent event) {
     	switchScenes("/client/boundaries/Existing Order.fxml", "Existing Order");
     }
+    
+    private void setParkComboBox() {
+    	ArrayList<String> al = new ArrayList<String>();	
+		al.add("Park1");
+		al.add("Park2");
+		al.add("Park3");
+		list = FXCollections.observableArrayList(al);
+		parkComboBox.setItems(list);
+    }
+    
+    public static final LocalDate LOCAL_DATE (String dateString){ //method for dealing with dates.
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate localDate = LocalDate.parse(dateString, formatter);
+        return localDate;
+    }
 
     @FXML
-    void initialize() {
+    public void initialize(URL location, ResourceBundle resources) {
+    	instance=this;
+    	ord= OrderManagementController.instance.ord;
+    	setParkComboBox(); // call a func above.
+    	parkComboBox.getSelectionModel().select(ord.getParkName());
+    	orderNumberTxt.setText(ord.getOrderNumber());
+    	amountOfVisitorsTxt.setText(ord.getNumOfVisitors());
+    	helloTxt.setText("Hello " + ord.getNameOnOrder());
+    	timeTxt.setText(ord.getHour());
+    	try {
+            datePicker.setValue(LOCAL_DATE(ord.getDate()));
+        } catch (NullPointerException e) {}
     }
 }

@@ -61,8 +61,8 @@ public class mysqlConnection {
 				    //int columnCount = metadata.getColumnCount();
 					while (rs.next()) {
 						ordInDB.setParkName(rs.getString(1));
-						ordInDB.setDate(rs.getString(2));
-						ordInDB.setHour(rs.getString(3));
+						ordInDB.setHour(rs.getString(2));
+						ordInDB.setDate(rs.getString(3));
 						ordInDB.setNumOfVisitors(rs.getString(4));
 						ordInDB.setEmail(rs.getString(5));
 						ordInDB.setOrderNumber(rs.getString(6));
