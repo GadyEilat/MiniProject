@@ -29,7 +29,7 @@ public class mysqlConnection {
 		}
 
 		try {
-			conn = DriverManager.getConnection("jdbc:mysql://localhost/gonature?serverTimezone=IST", "root","Aa123456");
+			conn = DriverManager.getConnection("jdbc:mysql://localhost/gonature?serverTimezone=IST", "root","DA123456");
 			ServerController.instance.displayMsg("SQL connection succeed");
 		} catch (SQLException ex) {/* handle any errors */
 			System.out.println("SQLException: " + ex.getMessage());
@@ -83,10 +83,14 @@ public class mysqlConnection {
 
 	public static ArrayList<Object> getDB(Object msg) {
 	String str = null;
+	String sql;
 		ArrayList<Object> answer = new ArrayList<>();
 		if (msg instanceof String) {
 			str = (String) msg;
+			sql = (str);
 		}
+		else
+			sql = (" ");
 //		if (msg instanceof Order) //if its an order for Gady's screens.
 //		{
 //			Order ord = (Order)msg;
@@ -121,7 +125,6 @@ public class mysqlConnection {
 		if (conn != null) {
 			try {
 				Statement st = conn.createStatement();
-				String sql = ("SELECT * FROM gonature.tourguides where id = " + str + ";");
 				ResultSet rs = st.executeQuery(sql);
 				ResultSetMetaData metadata = rs.getMetaData();
 			    int columnCount = metadata.getColumnCount();
