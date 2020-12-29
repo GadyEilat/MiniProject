@@ -1,12 +1,11 @@
 package client.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import client.ClientUI;
 import common.DataTransfer;
 import common.TypeOfMessage;
-import common.logic.Worker;
+import client.logic.Worker;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -57,7 +56,7 @@ public class WorkerLogin extends AbstractScenes {
 			msgText.setText("You must enter Password");
 		}
 		else {
-			usrAndPass = new Worker(userName,password);
+			usrAndPass = new Worker(userName,password, null, null);
 			DataTransfer data = new DataTransfer(TypeOfMessage.LOGIN_REQUEST,usrAndPass);
 			ClientUI.chat.accept(data);
 //			checkLogInAnswer(userName);

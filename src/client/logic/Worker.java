@@ -9,11 +9,16 @@ public class Worker implements Serializable {
 	private String userName;
 	private String password;
 	private String role;
+	private String Park;
 
-	public Worker(String userName, String password, String role) {
+
+	public Worker(String userName, String password, String role, String Park ) {
 		this.userName = userName;
 		this.password = password;
 		this.role = role;
+		this.Park = Park;
+
+		
 	}
 
 	public String getUserName() {
@@ -26,6 +31,10 @@ public class Worker implements Serializable {
 
 	public String getPassword() {
 		return password;
+	}
+	
+	public String getPark() {
+		return Park;
 	}
 
 	public void setPassword(String password) {
