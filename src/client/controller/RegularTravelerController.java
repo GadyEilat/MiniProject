@@ -69,9 +69,12 @@ public class RegularTravelerController extends AbstractScenes{
     	if (guideID.trim().isEmpty()) {
     		errorLogin.setText("You must enter an ID number");
     	}
-        else {
+        else if(guideID.length()==9 && guideID.matches("[0-9]+")){
 //		ClientUI.chat.accept(guideID);
 		switchScenes("/client/boundaries/TravelerNewOrder.fxml", "");
+		}
+        else {
+        	errorLogin.setText("You must enter a valid ID number");
 		}
     }
 

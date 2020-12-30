@@ -20,33 +20,36 @@
          <children>
             <VBox alignment="CENTER" layoutX="29.0" layoutY="60.0" prefHeight="278.0" prefWidth="467.0" AnchorPane.bottomAnchor="149.0" AnchorPane.leftAnchor="29.0" AnchorPane.rightAnchor="104.0" AnchorPane.topAnchor="60.0">
                <children>
-                  <HBox alignment="CENTER" prefHeight="295.0" prefWidth="467.0">
+                  <HBox alignment="CENTER" prefHeight="309.0" prefWidth="667.0">
                      <children>
-                        <AnchorPane prefHeight="158.0" prefWidth="467.0">
+                        <AnchorPane prefHeight="299.0" prefWidth="467.0">
                            <children>
-                              <Label layoutX="141.0" layoutY="62.0" text="Park" />
-                              <Label layoutX="89.0" layoutY="103.0" text="Date and time" />
-                              <Label layoutX="58.0" layoutY="148.0" text="Number of visitors" />
-                              <TextField fx:id="enterEmail" layoutX="187.0" layoutY="187.0" />
-                              <Button fx:id="continueToPayBtn" layoutX="220.0" layoutY="230.0" mnemonicParsing="false" onAction="#continueToPayButton" text="Continue" />
-                              <Label layoutX="220.0" layoutY="14.0" text="New Order">
+                              <Label layoutX="144.0" layoutY="114.0" text="Park" />
+                              <Label layoutX="92.0" layoutY="149.0" text="Date and time" />
+                              <Label layoutX="72.0" layoutY="183.0" text="Number of visitors" />
+                              <TextField fx:id="enterEmail" layoutX="192.0" layoutY="212.0" />
+                              <Button fx:id="continueToPayBtn" layoutX="207.0" layoutY="267.0" mnemonicParsing="false" onAction="#continueToPayButton" text="Continue" />
+                              <Label layoutX="208.0" layoutY="29.0" text="New Order">
                                  <font>
-                                    <Font name="System Bold" size="15.0" />
+                                    <Font name="System Bold Italic" size="20.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="136.0" layoutY="192.0" text="Email" />
-                              <Button fx:id="waitingListTourBtn" layoutX="336.0" layoutY="230.0" mnemonicParsing="false" onAction="#waitingListTourButton" style="-fx-background-color: lightblue;" text="Enter waiting list" />
-                              <ComboBox fx:id="numVisitorsBtn" layoutX="189.0" layoutY="144.0" onAction="#numVisitorsButton" prefHeight="25.0" prefWidth="34.0" />
-                              <ComboBox fx:id="parkNameBtn" layoutX="189.0" layoutY="58.0" onAction="#parkNameButton" prefHeight="25.0" prefWidth="90.0" />
-                              <ComboBox fx:id="chooseTime" layoutX="189.0" layoutY="99.0" prefHeight="25.0" prefWidth="89.0" />
-                              <DatePicker fx:id="chooseDayBtn" layoutX="292.0" layoutY="99.0" onAction="#chooseDayButton" prefHeight="25.0" prefWidth="103.0" />
+                              <Label layoutX="141.0" layoutY="216.0" text="Email" />
+                              <Button fx:id="waitingListTourBtn" layoutX="349.0" layoutY="268.0" mnemonicParsing="false" onAction="#waitingListTourButton" style="-fx-background-color: lightblue;" text="Enter waiting list" />
+                              <ComboBox fx:id="numVisitorsBtn" layoutX="192.0" layoutY="179.0" onAction="#numVisitorsButton" prefHeight="25.0" prefWidth="34.0" />
+                              <ComboBox fx:id="parkNameBtn" layoutX="192.0" layoutY="110.0" onAction="#parkNameButton" prefHeight="25.0" prefWidth="90.0" />
+                              <ComboBox fx:id="chooseTime" layoutX="192.0" layoutY="145.0" prefHeight="25.0" prefWidth="89.0" />
+                              <DatePicker fx:id="chooseDayBtn" layoutX="298.0" layoutY="145.0" onAction="#chooseDayButton" prefHeight="25.0" prefWidth="109.0" promptText="dd/mm/yyyy" />
+                              <Text fx:id="errorEmail" fill="#eb0707" layoutX="179.0" layoutY="256.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="174.13671875" />
+                              <Label layoutX="112.0" layoutY="77.0" prefHeight="17.0" prefWidth="64.0" text="First Name" />
+                              <TextField fx:id="firstName" layoutX="191.0" layoutY="73.0" prefHeight="25.0" prefWidth="118.0" />
                            </children>
                         </AnchorPane>
                      </children>
                   </HBox>
                </children>
             </VBox>
-            <Button fx:id="backBtn" layoutX="6.0" layoutY="470.0" mnemonicParsing="false" onAction="#backButton">
+            <Button fx:id="backBtn" layoutX="6.0" layoutY="470.0" mnemonicParsing="false" onAction="#backButton" AnchorPane.bottomAnchor="35.0" AnchorPane.leftAnchor="35.0">
                <graphic>
                   <ImageView fx:id="backBtn1" fitHeight="29.0" fitWidth="30.0">
                      <image>
@@ -61,13 +64,7 @@
    <top>
       <AnchorPane style="-fx-background-color: #c9c4c4;" BorderPane.alignment="CENTER">
          <children>
-            <Text layoutX="206.0" layoutY="63.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hello Aviv" wrappingWidth="106.33984375" AnchorPane.leftAnchor="205.0" AnchorPane.topAnchor="42.0">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Text>
-            <Button fx:id="LogOutBtn" layoutX="707.0" layoutY="42.0" mnemonicParsing="false" onAction="#LogOutButton" text="Log Out" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="40.0" />
-            <ImageView fitHeight="98.0" fitWidth="135.0" layoutY="4.0">
+            <ImageView fitHeight="106.0" fitWidth="155.0" layoutY="4.0" AnchorPane.leftAnchor="6.0" AnchorPane.topAnchor="7.0">
                <image>
                   <Image url="@../../../res/LOGONATURE.png" />
                </image>

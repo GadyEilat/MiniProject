@@ -50,6 +50,7 @@ public class TravelersController extends AbstractScenes {
 	  
 	    @FXML
 	    void backButton(ActionEvent event) {
+	    	switchScenes("/client/boundaries/main.fxml", "GoNature");
 
 	    }
    /* public void notFound() {

@@ -7,6 +7,7 @@ import client.ClientUI;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.stage.Stage;
 
 public class CancelConfirmationController extends AbstractScenes{
 
@@ -25,6 +26,8 @@ public class CancelConfirmationController extends AbstractScenes{
     @FXML
     void Cancel(ActionEvent event) {
     	//Cancel the Order --> Remove it from DataBase (Fix)
+    	Stage current;
+    	
     	switchScenes("/client/boundaries/Order Management.fxml", "ExistingOrder.fxml");
     }
 

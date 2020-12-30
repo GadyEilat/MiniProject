@@ -15,15 +15,7 @@ public class Order implements Serializable{
 	private String orderNumber;
 	private String numOfVisitors;
 	private String nameOnOrder;
-
-
-	public String getNameOnOrder() {
-		return nameOnOrder;
-	}
-
-	public void setNameOnOrder(String nameOnOrder) {
-		this.nameOnOrder = nameOnOrder;
-	}
+	private String ID;
 
 	public Order(String parkName, String hour, String date, String email, String orderNumber, String numOfVisitors, String nameOnOrder) {
 		this.parkName = parkName;
@@ -33,8 +25,24 @@ public class Order implements Serializable{
 		this.orderNumber = orderNumber;
 		this.numOfVisitors=numOfVisitors;
 		this.nameOnOrder=nameOnOrder;
+		this.ID=ID;
+	}
+	
+	public String getID() {
+		return ID;
 	}
 
+	public void setID(String iD) {
+		ID = iD;
+	}
+
+	public String getNameOnOrder() {
+		return nameOnOrder;
+	}
+
+	public void setNameOnOrder(String nameOnOrder) {
+		this.nameOnOrder = nameOnOrder;
+	}
 	public String getParkName() {
 		return parkName;
 	}

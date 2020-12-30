@@ -5,6 +5,8 @@ import java.util.ResourceBundle;
 import client.ClientUI;
 import client.logic.Order;
 import client.logic.Visitor;
+import common.DataTransfer;
+import common.TypeOfMessage;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -15,7 +17,7 @@ import javafx.scene.text.Text;
 
 public class ExistingOrderController extends AbstractScenes{
 
-	public static Order order = new Order(null,null,null,null,null,null, null);
+	public static Order order = new Order(null,null,null,null,null,null, null, null);
 	public static String recievedOrderNum= null;	
 	    
     @FXML
@@ -61,11 +63,13 @@ public class ExistingOrderController extends AbstractScenes{
     	String OrderNum = OrderNumberTxt.getText();
 		if (OrderNum.trim().isEmpty()) {
 			msgFromController.setText("Please enter an existing order number");
-		} 
+		}
 		else { //send to server and check the order number? (FIX)
 			order.setOrderNumber(OrderNum);
 			System.out.println(order.getOrderNumber());
-			ClientUI.chat.accept(order);
+			DataTransfer data = new DataTransfer(TypeOfMessage.GET_ORDER,order);
+			ClientUI.chat.accept(data);
+			//ClientUI.chat.accept(order);
 		}
     }
 

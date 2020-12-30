@@ -54,7 +54,7 @@ public class mysqlConnection {
 		if (msg instanceof Order) //if its an order for Gady's screens.
 		{
 			Order ord = (Order)msg;
-			Order ordInDB = new Order(null,null,null,null,null,null, null);
+			Order ordInDB = new Order(null,null,null,null,null,null,null,null);
 			if (conn != null) {
 				try {
 					Statement st = conn.createStatement();
@@ -64,8 +64,8 @@ public class mysqlConnection {
 				    //int columnCount = metadata.getColumnCount();
 					while (rs.next()) {
 						ordInDB.setParkName(rs.getString(1));
-						ordInDB.setDate(rs.getString(2));
-						ordInDB.setHour(rs.getString(3));
+						ordInDB.setHour(rs.getString(2));
+						ordInDB.setDate(rs.getString(3));
 						ordInDB.setNumOfVisitors(rs.getString(4));
 						ordInDB.setEmail(rs.getString(5));
 						ordInDB.setOrderNumber(rs.getString(6));
@@ -84,6 +84,52 @@ public class mysqlConnection {
 		return null;
 	}
 
+	public static Order newDBOrder(Object msg) {
+		if (msg instanceof Order) //if its an order for Aviv's screens.
+		{
+			Order order = (Order)msg;
+			String updEmail=order.getEmail();
+			String upPark=order.getParkName();
+			String upDate= order.getDate();
+			String upTime=order.getHour();
+			String upNumOfVisitors=order.getNumOfVisitors();
+			String nameOnOrder=order.getNameOnOrder();
+			String upOrderNum= generateRandomChars("123456789", 5);
+			String upTourGroupString= "False";
+			order.setOrderNumber(upOrderNum);
+	
+			if (conn != null) {
+				try {
+					
+					String sql = "INSERT INTO orders (Park, Time, Date, NumOfVisitors, Email,orderNumber,NameOnOrder, TourGroup )" + " values ( ?, ?, ?, ?, ?, ?, ?, ?)";
+					PreparedStatement preparedStmt = conn.prepareStatement(sql);
+				      preparedStmt.setString (1, upPark);
+				      preparedStmt.setString (2, upTime);
+				      preparedStmt.setString (3, upDate);
+				      preparedStmt.setString (4, upNumOfVisitors);
+				      preparedStmt.setString (5, updEmail);
+				      preparedStmt.setString (6, upOrderNum);
+				      preparedStmt.setString (7, nameOnOrder);
+				      preparedStmt.setString (8, upTourGroupString);
+				      preparedStmt.execute();
+				      
+				      //conn.close();
+				      return order;
+					}
+					
+				 catch (SQLException e) {
+					e.printStackTrace();
+				}
+			
+			}	
+		
+		}
+	
+		return null;
+	}
+	
+	
+	
 	public static ArrayList<Object> getDB(Object msg) {
 	String str = null;
 	String sql;
@@ -94,37 +140,7 @@ public class mysqlConnection {
 		}
 		else
 			sql = (" ");
-//		if (msg instanceof Order) //if its an order for Gady's screens.
-//		{
-//			Order ord = (Order)msg;
-//			
-//			if (conn != null) {
-//				try {
-//					Statement st = conn.createStatement();
-//					String sql = ("SELECT * FROM gonature.orders where OrderNumber = " + ord.getOrderNumber() + ";");
-//					ResultSet rs = st.executeQuery(sql);
-//					ResultSetMetaData metadata = rs.getMetaData();
-//				    //int columnCount = metadata.getColumnCount();
-//					while (rs.next()) {
-//						ord.setParkName(rs.getString(1));
-//						ord.setDate(rs.getString(2));
-//						ord.setHour(rs.getString(3));
-//						ord.setNumOfVisitors(rs.getString(4));
-//						ord.setEmail(rs.getString(5));
-//						//colm 6 tour??
-//						//colm 7 is order number, staying the same.
-//						
-//							
-//					}
-//					//conn.close();
-//					rs.close();
-//					return ord;
-//				} catch (SQLException e) {
-//					e.printStackTrace();
-//				}
-//			
-//			}
-//		}
+
 		if (conn != null) {
 			try {
 				Statement st = conn.createStatement();
