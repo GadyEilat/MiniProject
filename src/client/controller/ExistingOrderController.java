@@ -15,7 +15,7 @@ import javafx.scene.text.Text;
 
 public class ExistingOrderController extends AbstractScenes{
 
-	public static Order order = new Order(null,null,null,null,null,null, null);
+	public static Order order = new Order(null,null,null,null,null,null, null, null);
 	public static String recievedOrderNum= null;	
 	    
     @FXML

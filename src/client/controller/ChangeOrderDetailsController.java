@@ -1,4 +1,5 @@
 package client.controller;
+import java.io.IOException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -13,6 +14,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -21,9 +25,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 public class ChangeOrderDetailsController extends AbstractScenes{
-	public Order ord = new Order(null,null,null,null,null,null,null);
+	public Order ord = new Order(null,null,null,null,null,null,null,null);
 	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 	
     @FXML
@@ -94,8 +100,19 @@ public class ChangeOrderDetailsController extends AbstractScenes{
     }
 
     @FXML
-    void CancelOrder(ActionEvent event) {
-    	switchScenes("/client/boundaries/Cancel Confirmation.fxml", "Cancel Confirmation");
+    void CancelOrder(ActionEvent event) throws IOException{
+		Stage helpWindow = new Stage();
+		FXMLLoader fxmlLoad = new FXMLLoader(getClass().getResource("/client/boundaries/Cancel Confirmation.fxml"));
+		Parent current = fxmlLoad.load();
+		helpWindow.initModality(Modality.APPLICATION_MODAL);
+		helpWindow.setTitle("Cancel Confirmation");
+		Scene scene = new Scene(current);
+		helpWindow.setMinHeight(230);
+		helpWindow.setMinWidth(350);
+		helpWindow.setMaxHeight(230);
+		helpWindow.setMaxWidth(350);
+		helpWindow.setScene(scene);
+		helpWindow.showAndWait();
     }
 
     @FXML

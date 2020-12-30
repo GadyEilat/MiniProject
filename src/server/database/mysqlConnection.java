@@ -51,7 +51,7 @@ public class mysqlConnection {
 		if (msg instanceof Order) //if its an order for Gady's screens.
 		{
 			Order ord = (Order)msg;
-			Order ordInDB = new Order(null,null,null,null,null,null,null);
+			Order ordInDB = new Order(null,null,null,null,null,null,null, null);
 			if (conn != null) {
 				try {
 					Statement st = conn.createStatement();
@@ -91,37 +91,7 @@ public class mysqlConnection {
 		}
 		else
 			sql = (" ");
-//		if (msg instanceof Order) //if its an order for Gady's screens.
-//		{
-//			Order ord = (Order)msg;
-//			
-//			if (conn != null) {
-//				try {
-//					Statement st = conn.createStatement();
-//					String sql = ("SELECT * FROM gonature.orders where OrderNumber = " + ord.getOrderNumber() + ";");
-//					ResultSet rs = st.executeQuery(sql);
-//					ResultSetMetaData metadata = rs.getMetaData();
-//				    //int columnCount = metadata.getColumnCount();
-//					while (rs.next()) {
-//						ord.setParkName(rs.getString(1));
-//						ord.setDate(rs.getString(2));
-//						ord.setHour(rs.getString(3));
-//						ord.setNumOfVisitors(rs.getString(4));
-//						ord.setEmail(rs.getString(5));
-//						//colm 6 tour??
-//						//colm 7 is order number, staying the same.
-//						
-//							
-//					}
-//					//conn.close();
-//					rs.close();
-//					return ord;
-//				} catch (SQLException e) {
-//					e.printStackTrace();
-//				}
-//			
-//			}
-//		}
+
 		if (conn != null) {
 			try {
 				Statement st = conn.createStatement();

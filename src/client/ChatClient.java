@@ -26,7 +26,7 @@ import java.util.ArrayList;
 public class ChatClient extends AbstractClient {
 
 	public static Visitor visitor = new Visitor(null, null, null, null, null);
-	public static Order order = new Order(null,null,null,null,null,null, null);
+	public static Order order = new Order(null,null,null,null,null,null, null,null);
     public static TourGuide tourguide = new TourGuide(null, null, null, null, null);
     public static TourGuideOrder tourguideorder= new TourGuideOrder(null,null,null,null,null,null,null);
     public static ObservableList <TourGuideOrder> oblist=FXCollections.observableArrayList();

@@ -39,7 +39,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 
 public class TravelerNewOrderController extends AbstractScenes{
-	Order TravelerOrder = new Order(null,null,null,null,null,null,null);
+	Order TravelerOrder = new Order(null,null,null,null,null,null,null, null);
     @FXML
     private ResourceBundle resources;
 

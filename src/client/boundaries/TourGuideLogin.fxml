@@ -43,7 +43,7 @@
                </font>
             </Label>
             <Label layoutX="281.0" layoutY="235.0" text="ID" />
-            <Button fx:id="LogINGuideBtn" layoutX="370.0" layoutY="297.0" mnemonicParsing="false" onAction="#LogINGuideButton" style="-fx-background-color: lightgreen;" text="Log in" />
+            <Button fx:id="LogINGuideBtn" layoutX="370.0" layoutY="297.0" mnemonicParsing="false" onAction="#LogINGuideButton" text="Log in" />
             <Label layoutX="730.0" layoutY="500.0" text="Main Menu">
                <font>
                   <Font size="11.0" />

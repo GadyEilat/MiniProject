@@ -25,7 +25,7 @@ import server.database.mysqlConnection;
 public class EchoServer extends AbstractServer {
 	// Class variables *************************************************
 	ArrayList<Object> arrOfAnswer = null;
-	Order order = new Order(null, null, null, null, null, null, null);
+	Order order = new Order(null, null, null, null, null, null, null, null);
 	String visitor = null;
 	String TourID;
 	public static int flag = 0;

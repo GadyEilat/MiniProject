@@ -62,7 +62,7 @@
                   <Font size="18.0" />
                </font>
             </Text>
-            <ImageView fitHeight="89.0" fitWidth="119.0" layoutY="1.0">
+            <ImageView fitHeight="106.0" fitWidth="155.0" layoutY="1.0">
                <image>
                   <Image url="@../../../res/LOGONATURE.png" />
                </image>
