@@ -85,7 +85,11 @@ public class TourGuideMenuController extends AbstractScenes  {
 
     @FXML
     void changeOrdersGuideBtn(ActionEvent event) {
+    	switchScenes("/client/boundaries/Change Order Details.fxml", "Change Details");
+
+
     	switchScenes("/client/boundaries/Existing Order.fxml", "New Order");
+
     }
     
     

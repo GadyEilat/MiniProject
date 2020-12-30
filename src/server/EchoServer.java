@@ -138,11 +138,11 @@ public class EchoServer extends AbstractServer {
 		case TOURGUIDELOGIN:
 			if (object instanceof String) {
 
-				arrOfVisitors = mysqlConnection.getDB(object);
-				TourID=(String)arrOfVisitors.get(2);
-				if (arrOfVisitors != null) {
+				arrOfAnswer = mysqlConnection.getDB(object);
+				TourID=(String)arrOfAnswer.get(2);
+				if (arrOfAnswer != null) {
 					try {
-						returnData = new DataTransfer(TypeOfMessageReturn.TOUR_DETAILS,arrOfVisitors);
+						returnData = new DataTransfer(TypeOfMessageReturn.TOUR_DETAILS,arrOfAnswer);
 						client.sendToClient(returnData);
 						
 					}
