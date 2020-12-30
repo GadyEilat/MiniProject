@@ -4,51 +4,41 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import com.gluonhq.charm.glisten.control.ProgressBar;
-
 import client.ChatClient;
 import client.logic.Worker;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 
-public class ManagerController extends AbstractScenes {
-	public static ManagerController instance;
+public class ManagerDiscountController extends AbstractScenes {
+	public static ManagerDiscountController instance;
 
-	@FXML
-	private Text currentVisitors;
+    @FXML
+    private TextField discountField;
 
-	@FXML
-	private Text maxVisitors;
+    @FXML
+    private DatePicker datePicker;
 
-	@FXML
-	private Text numOfSubscribers;
+    @FXML
+    private Button btnSave;
 
-	@FXML
-	private ProgressBar progressBar;
+    @FXML
+    private Text managerName;
 
-	@FXML
-	private Text managerName;
+    @FXML
+    private Button btnLogout;
 
-	@FXML
-	private Button btnLogout;
+    @FXML
+    private Button btnStatus;
 
-	@FXML
-	private Button btnStatus;
+    @FXML
+    private Button btnReport;
 
-	@FXML
-	private Button btnReport;
-
-	@FXML
-	private Button btmManagingPark;
-
-	@FXML
-	private Button btnDiscount;
+    @FXML
+    private Button btmManagingPark;
 
 	@FXML
 	void logout(ActionEvent event) {
@@ -57,10 +47,10 @@ public class ManagerController extends AbstractScenes {
 		switchScenes("/client/boundaries/workerLogin.fxml", "Worker Login");
 	}
 
-	@FXML
-	void showDiscount(ActionEvent event) {
-		switchScenes("/client/boundaries/DiscountManager.fxml", "Manager");
-	}
+    @FXML
+    void saveDiscountAndDate(ActionEvent event) {
+
+    }
 
 	@FXML
 	void showManagingPark(ActionEvent event) throws IOException {
@@ -77,19 +67,9 @@ public class ManagerController extends AbstractScenes {
 	void showStatus(ActionEvent event) {
 		switchScenes("/client/boundaries/manager.fxml", "Manager");
 	}
-
-
-	public void updateNumberOfVisitorAndSub() {
-
-	}
-
-
-
 	public void initialize(URL location, ResourceBundle resources) {
 		instance = this;
 		managerName.setText("Hello " + ChatClient.worker.getWorkerName());
-		maxVisitors.setText(ChatClient.worker.getPark().getMaxVisitors());
-		numOfSubscribers.setText(ChatClient.worker.getPark().getNumOfSub());
 
 	}
 

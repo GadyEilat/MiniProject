@@ -11,16 +11,38 @@ public class Worker implements Serializable{
 	private String userName;
 	private String password;
 	private String role;
-	private String Park;
+	private ParkInfo Park;
+	private String scene;
+	private String workerName;
 
-	public Worker(String userName, String password, String role, String Park ) {
+
+	public Worker(String userName, String password, String role, ParkInfo Park ,String workerName, String scene) {
 		this.userName = userName;
 		this.password = password;
+		this.role=role;
 		this.Park = Park;
-
-		
+		this.workerName=workerName;
+		this.scene=scene;
+	}
+	public Worker(String userName, String password, String role, ParkInfo Park) {
+		this.userName = userName;
+		this.password = password;
+		this.role=role;
+		this.Park = Park;
 	}
 
+	public void setPark(ParkInfo park) {
+		Park = park;
+	}
+
+	public String getScene() {
+		return scene;
+	}
+	
+	public String getWorkerName() {
+		return workerName;
+	}
+	
 	public String getUserName() {
 		return userName;
 	}
@@ -33,7 +55,7 @@ public class Worker implements Serializable{
 		return password;
 	}
 	
-	public String getPark() {
+	public ParkInfo getPark() {
 		return Park;
 	}
 
@@ -45,9 +67,9 @@ public class Worker implements Serializable{
 		this.role = role;
 	}
 
-//	@Override
-//	public String toString() {
-//		return "Worker [userName=" + userName + ", password=" + password + "]";
-//	}
+	@Override
+	public String toString() {
+		return "Worker [userName =" + userName +"]";
+	}
 
 }

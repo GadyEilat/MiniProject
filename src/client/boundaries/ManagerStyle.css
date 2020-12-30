@@ -17,6 +17,12 @@
 #BackButton{
 	-fx-background-radius: 30;
 }
+#btnLogout{
+	-fx-background-color: RED;	
+}
+#btnLogout:hover {
+	-fx-background-color: #cc2323;	
+}
 .button:hover {
 	-fx-background-color: #1ab009;
 }

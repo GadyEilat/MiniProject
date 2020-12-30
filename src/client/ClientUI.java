@@ -41,7 +41,7 @@ public class ClientUI extends Application {
 			ClientUI.primaryStage.setScene(scene); 
 			ClientUI.primaryStage.setMinHeight(600);
 			ClientUI.primaryStage.setMinWidth(800);
-			ClientUI.primaryStage.setTitle("Main Entrance");
+			ClientUI.primaryStage.setTitle("GoNature");
 			ClientUI.primaryStage.show();
 
 		} catch (IOException e) {

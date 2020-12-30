@@ -12,7 +12,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane prefHeight="600.0" prefWidth="800.0" stylesheets="@ManagerStyle.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.ManagerController">
+<BorderPane prefHeight="600.0" prefWidth="800.0" stylesheets="@ManagerStyle.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.ManagerManageParkController">
    <center>
       <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0">
          <children>
@@ -22,14 +22,19 @@
                      <children>
                         <AnchorPane prefHeight="414.0" prefWidth="482.0">
                            <children>
-                              <Button fx:id="btnChange" layoutX="57.0" layoutY="208.0" mnemonicParsing="false" onAction="#changeTheSetting" text="Change" />
-                              <Text layoutX="19.0" layoutY="78.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Max Visitors" />
-                              <TextField fx:id="maxVisitorField" layoutX="130.0" layoutY="61.0" />
-                              <Text fx:id="maxVisitorCurrent" layoutX="306.0" layoutY="78.0" strokeType="OUTSIDE" strokeWidth="0.0" text="700" />
+                              <Button fx:id="btnChange" layoutX="174.0" layoutY="204.0" mnemonicParsing="false" onAction="#changeTheSetting" text="Change" />
+                              <Text layoutX="19.0" layoutY="108.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Max Visitors" />
+                              <TextField fx:id="maxVisitorField" layoutX="128.0" layoutY="91.0" />
+                              <Text fx:id="maxVisitorCurrent" layoutX="306.0" layoutY="108.0" strokeType="OUTSIDE" strokeWidth="0.0" text="700" />
                               <Text layoutX="19.0" layoutY="144.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Gap For visitors" />
-                              <TextField fx:id="gapForVisitors" layoutX="128.0" layoutY="127.0" />
+                              <TextField fx:id="gapForVisitorsField" layoutX="128.0" layoutY="127.0" />
                               <Text fx:id="gapForVisitorsCurrent" layoutX="306.0" layoutY="144.0" strokeType="OUTSIDE" strokeWidth="0.0" text="100" />
                               <Text layoutX="296.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Current" />
+                              <Text fx:id="msgText" fill="RED" layoutX="94.0" layoutY="183.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="221.748046875" />
+                              <Text layoutX="21.0" layoutY="72.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Max Time" />
+                              <TextField fx:id="MaxTimeField" layoutX="128.0" layoutY="55.0" />
+                              <Text fx:id="MaxTimeCurrent" layoutX="303.0" layoutY="72.0" strokeType="OUTSIDE" strokeWidth="0.0" text="4" />
+                              <Text fx:id="maxVisitorCurrent11" layoutX="315.0" layoutY="72.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hours" />
                            </children>
                         </AnchorPane>
                      </children>
@@ -42,12 +47,12 @@
    <top>
       <AnchorPane style="-fx-background-color: #c9c4c4;" BorderPane.alignment="CENTER">
          <children>
-            <Text layoutX="206.0" layoutY="63.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hello Liran" wrappingWidth="106.33984375" AnchorPane.leftAnchor="205.0" AnchorPane.topAnchor="42.0">
+            <Text fx:id="managerName" layoutX="206.0" layoutY="63.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hello Liran" wrappingWidth="264.33984375" AnchorPane.leftAnchor="205.0" AnchorPane.topAnchor="42.0">
                <font>
                   <Font size="20.0" />
                </font>
             </Text>
-            <Button fx:id="btnLogout" layoutX="707.0" layoutY="42.0" mnemonicParsing="false" onAction="#logout" style="-fx-background-color: red;" text="Log Out" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="40.0" />
+            <Button fx:id="btnLogout" layoutX="707.0" layoutY="42.0" mnemonicParsing="false" onAction="#logout" text="Log Out" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="40.0" />
             <ImageView fitHeight="106.0" fitWidth="155.0" layoutY="-5.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="6.0" AnchorPane.topAnchor="7.0">
                <image>
                   <Image url="/LOGONATURE.png" />
