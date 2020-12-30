@@ -59,58 +59,95 @@ public class EchoServer extends AbstractServer {
 	 */
 
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
-
 		ServerController.instance.displayMsg("Message received : " + msg + "\nfrom : " + client);
-//		DataTransfer data = (DataTransfer)msg;
-//		Object object = data.getObject();
-//		DataTransfer returnData;
-//		switch (data.getTypeOfMessage()) {
-//		case REQUESTINFO:
-//			
-//			break;
-//		case UPDATEINFO:
-//			
-//			break;
-//		case LOGIN_REQUEST:
-//			if(object instanceof Worker) {
-//				Worker worker = (Worker)object;
-//				String str = "SELECT Role , Park FROM gonature.worker WHERE UserName = "+worker.getUserName()+" AND Password = "+worker.getPassword()+";";
-//				arrOfAnswer = mysqlConnection.getDB(str);
-//				if (arrOfAnswer != null) {
-//					
-//					Worker RoleAndPark = new Worker(null,null,(String)arrOfAnswer.get(0) , (String)arrOfAnswer.get(1));
-//					returnData = new DataTransfer(TypeOfMessageReturn.LOGIN_SUCCESSFUL,RoleAndPark);
-//				}
-//				else
-//					returnData = new DataTransfer(TypeOfMessageReturn.LOGIN_FAILED,null);
-//				try {
-//					client.sendToClient(data);
-//					
-//				}
-//				catch (IOException e) {
-//					e.printStackTrace();
-//				}
-//			}
-//			break;
-//		case LOGOUT:
-//			
-//			break;
-//		default:
-//			break;
-//		}
-
-		if (msg instanceof Order) {
-			order = mysqlConnection.getDBOrder(msg);
-			if (order != null) {
+		DataTransfer data = (DataTransfer) msg;
+		Object object = data.getObject();
+		DataTransfer returnData;
+		switch (data.getTypeOfMessage()) {
+		case NEW_ORDER:
+			if (object instanceof Order) {
+				object = mysqlConnection.newDBOrder(object);
+				if (object != null) {
+					ServerController.instance.displayMsg("New Order created");
+					returnData = new DataTransfer(TypeOfMessageReturn.NEWORDER_SUCCESS, object);
+				} else {
+					ServerController.instance.displayMsg("New Order could not be created");
+					returnData = new DataTransfer(TypeOfMessageReturn.NEWORDER_FAILED, null);
+				}
 				try {
-					client.sendToClient(order);
+					client.sendToClient(returnData);
 
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-
 			}
+			break;
+
+		case GET_ORDER:
+			if (object instanceof Order) {
+				order = mysqlConnection.getDBOrder(object);
+				if (order != null) {
+					ServerController.instance.displayMsg("Got Existing Order Details");
+					returnData = new DataTransfer(TypeOfMessageReturn.RETURN_ORDER, order);
+				} else {
+					ServerController.instance.displayMsg("Couldn't recieve existing order details");
+					returnData = new DataTransfer(TypeOfMessageReturn.RETURN_ORDER_FAILED, null);
+				}
+				try {
+					client.sendToClient(returnData);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			break;
+		case REQUESTINFO:
+
+			break;
+		case UPDATEINFO:
+
+			break;
+		case LOGIN_REQUEST:
+			if (object instanceof Worker) {
+				Worker worker = (Worker) object;
+				String str = "SELECT Role , Park FROM gonature.worker WHERE UserName = " + worker.getUserName()
+						+ " AND Password = " + worker.getPassword() + ";";
+				arrOfAnswer = mysqlConnection.getDB(str);
+				if (arrOfAnswer != null) {
+
+					Worker RoleAndPark = new Worker(null, null, (String) arrOfAnswer.get(0),
+							(String) arrOfAnswer.get(1));
+					returnData = new DataTransfer(TypeOfMessageReturn.LOGIN_SUCCESSFUL, RoleAndPark);
+				} else
+					returnData = new DataTransfer(TypeOfMessageReturn.LOGIN_FAILED, null);
+				try {
+					client.sendToClient(data);
+
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			break;
+		case LOGOUT:
+
+			break;
+		default:
+			break;
 		}
+
+//		if (msg instanceof Order)
+//
+//		{
+//			order = mysqlConnection.getDBOrder(msg);
+//			if (order != null) {
+//				try {
+//					client.sendToClient(order);
+//
+//				} catch (IOException e) {
+//					e.printStackTrace();
+//				}
+//
+//			}
+//		}
 
 		if (msg instanceof String) {
 
@@ -143,6 +180,7 @@ public class EchoServer extends AbstractServer {
 		}
 
 		if (msg instanceof Integer) {
+
 			ObservableList<Object> ans3 = mysqlConnection.getTourGuideOrders(TourID);
 			// DataTransfer data = new DataTransfer(TypeOfMessage.SUCCSESS, ans3);
 
@@ -169,27 +207,6 @@ public class EchoServer extends AbstractServer {
 				flag = 1;
 			}
 		}
-
-		// if (msg instanceof String) {
-
-		// arrOfVisitors = mysqlConnection.getDB(msg);
-		// if (arrOfVisitors != null) {
-		// try {
-		// client.sendToClient(arrOfVisitors);
-		// } catch (IOException e) {
-		// e.printStackTrace();
-		// }
-		// }
-
-		// }
-		// if (msg instanceof Visitor) {
-		// boolean ans = mysqlConnection.updateDB(msg);
-		// if (ans)
-		// ServerController.instance.displayMsg("Email updated");
-		// else
-		// ServerController.instance.displayMsg("Email could not be updated");
-		// }
-
 	}
 
 	/**

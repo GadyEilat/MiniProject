@@ -6,12 +6,17 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import client.ChatClient;
 import client.ClientUI;
 import client.logic.Order;
 
 import client.logic.Visitor;
+import client.logic.Worker;
+import common.DataTransfer;
+import common.TypeOfMessage;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -39,7 +44,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 
 public class TravelerNewOrderController extends AbstractScenes{
-	Order TravelerOrder = new Order(null,null,null,null,null,null,null, null);
+	public Order TravelerOrder = new Order(null,null,null,null,null,null,null, null);
     @FXML
     private ResourceBundle resources;
 
@@ -70,18 +75,36 @@ public class TravelerNewOrderController extends AbstractScenes{
     @FXML
     private Button backBtn;
 
-  
+    @FXML
+    private Text errorEmail;
+    
+    @FXML
+    private TextField firstName;
 
     @FXML
     private Button LogOutBtn;
 
-    
+    public static TravelerNewOrderController instance;
     ObservableList<String> list,list2,list3;
+    
+    public void notFound() {
+    	errorEmail.setText("Error! cannot create Order");
+	}
+	public void isFound() {
+		switchScenes("/client/boundaries/TravelerOrderSuccess.fxml", "Order Success");
+		
+	}
     
     private void setTimeComboBox() {
 		ArrayList<String> al = new ArrayList<String>();	
-		al.add("8:00-12:00");
-		al.add("12:00-16:00");
+		al.add("8:00");
+		al.add("9:00");
+		al.add("10:00");
+		al.add("11:00");
+		al.add("12:00");
+		al.add("13:00");
+		al.add("14:00");
+		al.add("15:00");
 
 		list = FXCollections.observableArrayList(al);
 		chooseTime.setItems(list);
@@ -107,11 +130,7 @@ public class TravelerNewOrderController extends AbstractScenes{
 		a3.add("8");
 		a3.add("9");
 		a3.add("10");
-		/*a3.add("11");
-		a3.add("12");
-		a3.add("13");
-		a3.add("14");
-		a3.add("15");*/
+	
 		list3 = FXCollections.observableArrayList(a3);
 		numVisitorsBtn.setItems(list3);
 	}
@@ -142,16 +161,28 @@ public class TravelerNewOrderController extends AbstractScenes{
     	String ordeTime = chooseTime.getSelectionModel().getSelectedItem().toString();
     	String orderNumOfVisitors = numVisitorsBtn.getSelectionModel().getSelectedItem().toString();
     	String orderEmail = (enterEmail.getText());
-        
-    	TravelerOrder.setParkName(orderPark);
-    	TravelerOrder.setDate(orderDate);
-    	TravelerOrder.setHour(ordeTime);
-    	TravelerOrder.setNumOfVisitors(orderNumOfVisitors);
-    	TravelerOrder.setEmail(orderEmail);
-    //	ClientUI.chat.accept(TravelerOrder);
-    	System.out.println("Order Updated Successfully");
+    	String orderName = (firstName.getText());
+    	if(validate(orderEmail))
+    	{
+    		TravelerOrder.setParkName(orderPark);
+        	TravelerOrder.setDate(orderDate);
+        	TravelerOrder.setHour(ordeTime);
+        	TravelerOrder.setNumOfVisitors(orderNumOfVisitors);
+        	TravelerOrder.setEmail(orderEmail);
+        	TravelerOrder.setNameOnOrder(orderName);
+        	
+			DataTransfer data = new DataTransfer(TypeOfMessage.NEW_ORDER,TravelerOrder);
+			ClientUI.chat.accept(data);
+        	
+        	System.out.println("Order Updated Successfully");
+        	
+        //	switchScenes("/client/boundaries/TravelerOrderSuccess.fxml", "");
+    	}
+    	else {
+    		errorEmail.setText("You must enter a valid Email");
+		}
     	
-    	switchScenes("/client/boundaries/TravelerOrderSuccess.fxml", "");
+    	
     }
 
     @FXML
@@ -168,13 +199,22 @@ public class TravelerNewOrderController extends AbstractScenes{
     void waitingListTourButton(ActionEvent event) {
     	System.out.print("Entered waiting list sucssesfully");
     }
+//Checking if it's a valid Email
+    public static final Pattern VALID_EMAIL_ADDRESS_REGEX = 
+    	    Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+
+    public static boolean validate(String emailStr) {
+    	        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr);
+    	        return matcher.find();
+    	}
     
     @Override
 	public void initialize(URL location, ResourceBundle resources) {
-    	//loadGuide(ChatClient.tourguide);
+    	instance=this;
     	setTimeComboBox();
     	setParkComboBox();
     	setNumOfVisitorsComboBox();
 	}
+	
     
 }
