@@ -60,75 +60,91 @@ public class EchoServer extends AbstractServer {
 
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
 
-		ServerController.instance.displayMsg("Message received : "+ msg + "\nfrom : " + client);
-		DataTransfer data = (DataTransfer)msg;
+		ServerController.instance.displayMsg("Message received : " + msg + "\nfrom : " + client);
+		DataTransfer data = (DataTransfer) msg;
 		Object object = data.getObject();
 		DataTransfer returnData;
 		switch (data.getTypeOfMessage()) {
+		case NEW_ORDER:
+			if (object instanceof Order) {
+				object = mysqlConnection.newDBOrder(object);
+				if (object != null) {
+					ServerController.instance.displayMsg("New Order created");
+					returnData = new DataTransfer(TypeOfMessageReturn.NEWORDER_SUCCESS, object);
+				} else {
+					ServerController.instance.displayMsg("New Order could not be created");
+					returnData = new DataTransfer(TypeOfMessageReturn.NEWORDER_FAILED, null);
+				}
+				try {
+					client.sendToClient(returnData);
+
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			break;
+
 		case REQUESTINFO:
-			
+
 			break;
 		case UPDATEINFO:
-			
+
 			break;
 		case LOGIN_REQUEST:
-			if(object instanceof Worker) {
-				Worker worker = (Worker)object;
-				String str = "SELECT Role , Park FROM gonature.worker WHERE UserName = "+worker.getUserName()+" AND Password = "+worker.getPassword()+";";
+			if (object instanceof Worker) {
+				Worker worker = (Worker) object;
+				String str = "SELECT Role , Park FROM gonature.worker WHERE UserName = " + worker.getUserName()
+						+ " AND Password = " + worker.getPassword() + ";";
 				arrOfAnswer = mysqlConnection.getDB(str);
 				if (arrOfAnswer != null) {
-					
-					Worker RoleAndPark = new Worker(null,null,(String)arrOfAnswer.get(0) , (String)arrOfAnswer.get(1));
-					returnData = new DataTransfer(TypeOfMessageReturn.LOGIN_SUCCESSFUL,RoleAndPark);
-				}
-				else
-					returnData = new DataTransfer(TypeOfMessageReturn.LOGIN_FAILED,null);
+
+					Worker RoleAndPark = new Worker(null, null, (String) arrOfAnswer.get(0),
+							(String) arrOfAnswer.get(1));
+					returnData = new DataTransfer(TypeOfMessageReturn.LOGIN_SUCCESSFUL, RoleAndPark);
+				} else
+					returnData = new DataTransfer(TypeOfMessageReturn.LOGIN_FAILED, null);
 				try {
 					client.sendToClient(data);
-					
-				}
-				catch (IOException e) {
+
+				} catch (IOException e) {
 					e.printStackTrace();
 				}
 			}
 			break;
 		case LOGOUT:
-			
+
 			break;
 		default:
 			break;
 		}
-		
-		if (msg instanceof Order)
-		{
+
+		if (msg instanceof Order) {
 			order = mysqlConnection.getDBOrder(msg);
 			if (order != null) {
 				try {
 					client.sendToClient(order);
-					
-				}
-				catch (IOException e) {
+
+				} catch (IOException e) {
 					e.printStackTrace();
 				}
 
 			}
 		}
-		
+
 		if (msg instanceof String) {
 
 			arrOfAnswer = mysqlConnection.getDB(msg);
 			if (arrOfAnswer != null) {
 				try {
 					client.sendToClient(arrOfAnswer);
-					
-				}
-				catch (IOException e) {
+
+				} catch (IOException e) {
 					e.printStackTrace();
 				}
 
 			}
 		}
-		
+
 		if (msg instanceof TourGuide) {
 			boolean ans = mysqlConnection.updateDB(msg);
 			if (ans)
@@ -136,8 +152,7 @@ public class EchoServer extends AbstractServer {
 			else
 				ServerController.instance.displayMsg("TourGuide details could not be updated");
 		}
-		
-		
+
 		if (msg instanceof TourGuideOrder) {
 			boolean ans2 = mysqlConnection.updateDBOrders(msg);
 			if (ans2)
@@ -145,16 +160,17 @@ public class EchoServer extends AbstractServer {
 			else
 				ServerController.instance.displayMsg("TourGuide details could not be updated");
 		}
-		
-		
+
+		if (msg instanceof Integer) {
+
 			ObservableList<Object> ans3 = mysqlConnection.getTourGuideOrders(TourID);
-			//DataTransfer data = new DataTransfer(TypeOfMessage.SUCCSESS, ans3);
+			// DataTransfer data = new DataTransfer(TypeOfMessage.SUCCSESS, ans3);
 
 			if (ans3 != null) {
 				for (int i = 0; i < ans3.size(); i++) {
 					try {
 						client.sendToClient(ans3.get(i));
-						//client.sendToClient(ans3);
+						// client.sendToClient(ans3);
 					}
 
 					catch (IOException e) {
@@ -163,39 +179,36 @@ public class EchoServer extends AbstractServer {
 				}
 			}
 			if (flag == 0) { // in the first connection, display ip, host and status.
-			ServerController.instance.displayMsg("Client IP: " + client.getInetAddress().getHostAddress());
-			ServerController.instance.displayMsg("Hostname: " + client.getInetAddress().getHostName());
-			if (client.isAlive()) {
-				ServerController.instance.displayMsg("Client Status: Connected");
-			} else {
-				ServerController.instance.displayMsg("Client Status: Disconnected");
+				ServerController.instance.displayMsg("Client IP: " + client.getInetAddress().getHostAddress());
+				ServerController.instance.displayMsg("Hostname: " + client.getInetAddress().getHostName());
+				if (client.isAlive()) {
+					ServerController.instance.displayMsg("Client Status: Connected");
+				} else {
+					ServerController.instance.displayMsg("Client Status: Disconnected");
+				}
+				flag = 1;
 			}
-			flag = 1;
-	}
-		
-		
-		
-		
-		//if (msg instanceof String) {
+		}
 
-			//arrOfVisitors = mysqlConnection.getDB(msg);
-			//if (arrOfVisitors != null) {
-				//try {
-				//	client.sendToClient(arrOfVisitors);
-				//} catch (IOException e) {
-				//	e.printStackTrace();
-				//}
-			//}
+		// if (msg instanceof String) {
 
-		//}
-		//if (msg instanceof Visitor) {
-			//boolean ans = mysqlConnection.updateDB(msg);
-			//if (ans)
-			//	ServerController.instance.displayMsg("Email updated");
-		//	else
-			//	ServerController.instance.displayMsg("Email could not be updated");
-	//	}
+		// arrOfVisitors = mysqlConnection.getDB(msg);
+		// if (arrOfVisitors != null) {
+		// try {
+		// client.sendToClient(arrOfVisitors);
+		// } catch (IOException e) {
+		// e.printStackTrace();
+		// }
+		// }
 
+		// }
+		// if (msg instanceof Visitor) {
+		// boolean ans = mysqlConnection.updateDB(msg);
+		// if (ans)
+		// ServerController.instance.displayMsg("Email updated");
+		// else
+		// ServerController.instance.displayMsg("Email could not be updated");
+		// }
 
 	}
 

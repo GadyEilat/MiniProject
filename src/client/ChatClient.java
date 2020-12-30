@@ -14,6 +14,8 @@ import client.controller.ExistingOrderController;
 import client.controller.MyOrdersGuideController;
 import client.controller.OrderManagementController;
 import client.controller.TourGuideLoginController;
+import client.controller.TravelerNewOrderController;
+import client.controller.TravelersOrderSController;
 import client.logic.TourGuide;
 import client.logic.TourGuideOrder;
 import client.logic.Visitor;
@@ -26,36 +28,53 @@ import java.util.ArrayList;
 public class ChatClient extends AbstractClient {
 
 	public static Visitor visitor = new Visitor(null, null, null, null, null);
-	public static Order order = new Order(null,null,null,null,null,null, null);
-    public static TourGuide tourguide = new TourGuide(null, null, null, null, null);
-    public static TourGuideOrder tourguideorder= new TourGuideOrder(null,null,null,null,null,null,null);
-    public static ObservableList <TourGuideOrder> oblist=FXCollections.observableArrayList();
+	public static Order order = new Order(null, null, null, null, null, null, null);
+	public static TourGuide tourguide = new TourGuide(null, null, null, null, null);
+	public static TourGuideOrder tourguideorder = new TourGuideOrder(null, null, null, null, null, null, null);
+	public static ObservableList<TourGuideOrder> oblist = FXCollections.observableArrayList();
 	ChatIF clientUI;
 	public boolean waitForConnection = false;
 
 	public ChatClient(String host, int port, ChatIF clientUI) throws IOException {
-		super(host, port); 			// Call the superclass constructor
+		super(host, port); // Call the superclass constructor
 		this.clientUI = clientUI;
 	}
 
 	public void handleMessageFromServer(Object msg) {
-		DataTransfer data = (DataTransfer)msg;
+		DataTransfer data = (DataTransfer) msg;
 		Object object = data.getObject();
 		DataTransfer returnData;
 		switch (data.getTypeOfMessageReturn()) {
 		case LOGIN_FAILED:
-			
+
 			break;
 		case LOGIN_SUCCESSFUL:
-			if(object instanceof Worker) {
-				Worker worker = (Worker)object;
+			if (object instanceof Worker) {
+				Worker worker = (Worker) object;
+
 			}
 			break;
 
+		case NEWORDER_SUCCESS:
+			if (object instanceof Order) {
+				if (order != null) {
+					System.out.println("--> handleMessageFromServer");
+					waitForConnection = false;
+					order = (Order) object;
+					TravelerNewOrderController.instance.TravelerOrder=order;
+					TravelerNewOrderController.instance.isFound();
+				}
+				else {
+					TravelerNewOrderController.instance.notFound();
+				}
+			}
+			break;
+		case NEWORDER_FAILED:
+			break;
 		default:
 			break;
 		}
-		
+
 		if (msg instanceof ArrayList<?>) {
 			System.out.println("--> handleMessageFromServer");
 			// System.out.println("--> HELLLLOOOOO");
@@ -81,20 +100,17 @@ public class ChatClient extends AbstractClient {
 			// ObservableList <TourGuideOrder> oblistt=FXCollections.observableArrayList();
 			oblist = (ObservableList<TourGuideOrder>) msg;
 		}
-		
-		if (msg instanceof Order)
-		{
+
+		if (msg instanceof Order) {
 			System.out.println("--> handleMessageFromServer");
 			waitForConnection = false;
-			Order recievedOrd = (Order)msg;
+			Order recievedOrd = (Order) msg;
 			String check = ExistingOrderController.order.getOrderNumber();
-			if (check.equals(recievedOrd.getOrderNumber()))
-			{
-				ExistingOrderController.order=recievedOrd; //update the instance of the order in "existing" to be not null...
+			if (check.equals(recievedOrd.getOrderNumber())) {
+				ExistingOrderController.order = recievedOrd; // update the instance of the order in "existing" to be not
+																// null...
 				ExistingOrderController.instance.isFound();
-			}
-			else
-			{
+			} else {
 				ExistingOrderController.instance.notFound();
 			}
 		}
@@ -114,7 +130,7 @@ public class ChatClient extends AbstractClient {
 	public void quit() {
 		try {
 			closeConnection();
-			
+
 		} catch (IOException e) {
 		}
 		System.exit(0);

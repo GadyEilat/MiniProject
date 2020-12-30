@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
 
 import client.ChatClient;
 import client.ClientUI;
-
+import client.logic.Order;
 import client.logic.Visitor;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -39,10 +39,8 @@ import javafx.scene.control.Button;
 
 
 public class TravelersOrderSController extends AbstractScenes {
-
-
-
-
+	
+	public Order OrderSuccess = new Order(null,null,null,null,null,null,null);
 
     @FXML
     private ResourceBundle resources;
@@ -57,7 +55,7 @@ public class TravelersOrderSController extends AbstractScenes {
     private TextField OrderNumber;
 
     @FXML
-    private TextField nameText;
+    private Text helloText;
 
     @FXML
     private Button returnToMenuTourBTN;
@@ -65,6 +63,7 @@ public class TravelersOrderSController extends AbstractScenes {
     @FXML
     private Button LogOutBtn;
 
+    public static TravelersOrderSController instance;
     @FXML
     void LogOutButton(ActionEvent event) {
 
@@ -75,5 +74,14 @@ public class TravelersOrderSController extends AbstractScenes {
 
     }
 
+    @Override
+   	public void initialize(URL location, ResourceBundle resources) {
+       	instance=this;
+       	OrderSuccess=TravelerNewOrderController.instance.TravelerOrder;
+       	helloText.setText("Hello " + OrderSuccess.getNameOnOrder());
+       	OrderNumber.setText(OrderSuccess.getOrderNumber());
+       	dateText.setText(OrderSuccess.getDate());
+
+    }
 }
 

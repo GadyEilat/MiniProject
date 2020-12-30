@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="600.0" prefWidth="800.0" stylesheets="@../../../res/ManagerStyle.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.TravelersController">
+<BorderPane prefHeight="600.0" prefWidth="800.0" stylesheets="@mainEnter.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.TravelersController">
    <center>
     <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="467.0" prefWidth="583.0">
          <children>
@@ -29,7 +29,7 @@
                   </HBox>
                </children>
             </VBox>
-            <Button fx:id="backBtn" layoutX="6.0" layoutY="479.0" mnemonicParsing="false" onAction="#backButton">
+            <Button fx:id="backBtn" layoutX="55.0" layoutY="394.0" mnemonicParsing="false" onAction="#backButton" AnchorPane.bottomAnchor="35.0" AnchorPane.leftAnchor="35.0">
                <graphic>
                   <ImageView fx:id="backBtn1" fitHeight="29.0" fitWidth="30.0">
                      <image>
@@ -49,7 +49,7 @@
                   <Font name="System Bold Italic" size="24.0" />
                </font>
             </Label>
-            <ImageView fitHeight="94.0" fitWidth="118.0">
+            <ImageView fitHeight="106.0" fitWidth="155.0" AnchorPane.leftAnchor="6.0" AnchorPane.topAnchor="7.0">
                <image>
                   <Image url="@../../../res/LOGONATURE.png" />
                </image>

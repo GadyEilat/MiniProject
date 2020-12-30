@@ -81,6 +81,52 @@ public class mysqlConnection {
 		return null;
 	}
 
+	public static Order newDBOrder(Object msg) {
+		if (msg instanceof Order) //if its an order for Aviv's screens.
+		{
+			Order order = (Order)msg;
+			String updEmail=order.getEmail();
+			String upPark=order.getParkName();
+			String upDate= order.getDate();
+			String upTime=order.getHour();
+			String upNumOfVisitors=order.getNumOfVisitors();
+			String nameOnOrder=order.getNameOnOrder();
+			String upOrderNum= generateRandomChars("123456789", 5);
+			String upTourGroupString= "False";
+			order.setOrderNumber(upOrderNum);
+	
+			if (conn != null) {
+				try {
+					
+					String sql = "INSERT INTO orders (Park, Time, Date, NumOfVisitors, Email,orderNumber,NameOnOrder, TourGroup )" + " values ( ?, ?, ?, ?, ?, ?, ?, ?)";
+					PreparedStatement preparedStmt = conn.prepareStatement(sql);
+				      preparedStmt.setString (1, upPark);
+				      preparedStmt.setString (2, upTime);
+				      preparedStmt.setString (3, upDate);
+				      preparedStmt.setString (4, upNumOfVisitors);
+				      preparedStmt.setString (5, updEmail);
+				      preparedStmt.setString (6, upOrderNum);
+				      preparedStmt.setString (7, nameOnOrder);
+				      preparedStmt.setString (8, upTourGroupString);
+				      preparedStmt.execute();
+				      
+				      //conn.close();
+				      return order;
+					}
+					
+				 catch (SQLException e) {
+					e.printStackTrace();
+				}
+			
+			}	
+		
+		}
+	
+		return null;
+	}
+	
+	
+	
 	public static ArrayList<Object> getDB(Object msg) {
 	String str = null;
 	String sql;
