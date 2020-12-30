@@ -138,7 +138,7 @@ public class EchoServer extends AbstractServer {
 		case TOURGUIDELOGIN:
 			if (object instanceof String) {
 
-				arrOfAnswer = mysqlConnection.getDB(object);
+				arrOfAnswer = mysqlConnection.getDB("SELECT * FROM gonature.tourguides where id = '" + (String)object + "';");
 				TourID=(String)arrOfAnswer.get(2);
 				if (arrOfAnswer != null) {
 					try {
