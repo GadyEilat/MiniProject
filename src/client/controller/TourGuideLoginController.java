@@ -10,6 +10,8 @@ import client.ChatClient;
 import client.ClientUI;
 import client.logic.TourGuide;
 import client.logic.Visitor;
+import common.DataTransfer;
+import common.TypeOfMessage;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -67,7 +69,9 @@ public class TourGuideLoginController extends AbstractScenes {
     		MsgFromController.setText("You must enter an ID number");
     	}
         else {
-		ClientUI.chat.accept(guideID);
+           	DataTransfer data = new DataTransfer(TypeOfMessage.TOURGUIDELOGIN,guideID);
+	
+		ClientUI.chat.accept(data);
 		//switchScenes("/client/boundaries/TourGuideMainMenu.fxml", "");
 		}
     	

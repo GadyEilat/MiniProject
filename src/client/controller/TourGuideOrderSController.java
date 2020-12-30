@@ -120,6 +120,11 @@ public class TourGuideOrderSController extends AbstractScenes {
     	switchScenes("/client/boundaries/TourGuideMyOrders.fxml", "My Orders");
     }
     
+    @FXML
+    void changeOrder(ActionEvent event) {
+    	switchScenes("/client/boundaries/Existing Order.fxml", "New Order");
+    }
+    
     
     @Override
   		public void initialize(URL location, ResourceBundle resources) {

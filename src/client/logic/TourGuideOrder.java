@@ -17,10 +17,11 @@ public class TourGuideOrder implements Serializable {
 	private String email;
 	private String orderNumber;
 	private String nameOnOrder;
+	private String ID;
 	
 	
 	public TourGuideOrder(String parkName, String time, String date, String numOfVisitors, String email,
-			String orderNumber, String nameOnOrder) {
+			String orderNumber, String nameOnOrder, String ID) {
 		this.parkName = parkName;
 		this.time = time;
 		this.date = date;
@@ -28,7 +29,26 @@ public class TourGuideOrder implements Serializable {
 		this.email = email;
 		this.orderNumber = orderNumber;
 		this.nameOnOrder=nameOnOrder;
+		this.ID=ID;
 	}
+	
+	
+	
+	
+	public String getID() {
+		return ID;
+	}
+
+
+
+
+	public void setID(String iD) {
+		ID = iD;
+	}
+
+
+
+
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}

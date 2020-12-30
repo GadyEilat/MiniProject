@@ -13,7 +13,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane prefHeight="600.0" prefWidth="800.0" stylesheets="@../../../res/ManagerStyle.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.TourChangeDetailsController">
+<BorderPane prefHeight="600.0" prefWidth="800.0" stylesheets="@ManagerStyle.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.TourChangeDetailsController">
    <center>
       <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0">
          <children>
@@ -29,7 +29,7 @@
                               <TextField fx:id="ChangeName" layoutX="187.0" layoutY="57.0" onAction="#changeNameTourG" />
                               <TextField fx:id="changeLNameTour" layoutX="187.0" layoutY="101.0" onAction="#changeLNameTourM" />
                               <TextField fx:id="changeEmailTour" layoutX="187.0" layoutY="143.0" onAction="#changeEmailTourM" />
-                              <Button fx:id="updateDetailsTourBtn" layoutX="221.0" layoutY="233.0" mnemonicParsing="false" onAction="#updateDetailsTourButton" style="-fx-background-color: lightgreen;" text="Update" />
+                              <Button fx:id="updateDetailsTourBtn" layoutX="221.0" layoutY="233.0" mnemonicParsing="false" onAction="#updateDetailsTourButton" text="Update" />
                               <Label layoutX="187.0" layoutY="14.0" text="Update personal details">
                                  <font>
                                     <Font name="System Bold" size="15.0" />
@@ -48,7 +48,7 @@
                   <Font size="11.0" />
                </font>
             </Label>
-            <Button fx:id="backButtonUpdateDetails" layoutX="14.0" layoutY="468.0" mnemonicParsing="false" onAction="#backButton" prefHeight="31.0" prefWidth="48.0" style="-fx-border-radius: 20;" stylesheets="@../../../../../../סמסטר%20א%202021/ממשקי%20אדם/מדריך/ManagerStyle.css">
+            <Button fx:id="backButtonUpdateDetails" layoutX="14.0" layoutY="468.0" mnemonicParsing="false" onAction="#backButton" prefHeight="31.0" prefWidth="48.0" style="-fx-border-radius: 20;">
                <graphic>
                   <ImageView fitHeight="22.0" fitWidth="31.0" onMouseClicked="#backButton">
                      <image>
@@ -83,7 +83,7 @@
                   <Button fx:id="updateDetalisGuideBtn" mnemonicParsing="false" onAction="#updateDetalisGuideButton" opacity="0.53" prefHeight="90.0" prefWidth="165.0" text="Update personal details" />
                   <Button fx:id="NewOrderBtn" mnemonicParsing="false" onAction="#NewOrderButton" prefHeight="90.0" prefWidth="165.0" text="New order" />
                   <Button fx:id="myOrdersBtn" mnemonicParsing="false" onAction="#myOrdersButton" prefHeight="90.0" prefWidth="165.0" text="My orders" />
-                  <Button fx:id="myOrdersBtn1" mnemonicParsing="false" onAction="#myOrdersButton" prefHeight="90.0" prefWidth="165.0" text="Change order" />
+                  <Button fx:id="myOrdersBtn1" mnemonicParsing="false" onAction="#changeOrder" prefHeight="90.0" prefWidth="165.0" text="Change order" />
                </children>
             </VBox>
          </children>

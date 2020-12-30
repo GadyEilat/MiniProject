@@ -13,7 +13,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane prefHeight="600.0" prefWidth="800.0" stylesheets="@../../../res/ManagerStyle.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.TourGuideOrderSController">
+<BorderPane prefHeight="600.0" prefWidth="800.0" stylesheets="@ManagerStyle.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.TourGuideOrderSController">
    <center>
       <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0">
          <children>
@@ -47,7 +47,7 @@
                   <Font size="11.0" />
                </font>
             </Label>
-            <Button layoutY="469.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="14.0" style="-fx-border-radius: 20;" stylesheets="@../../../../../../סמסטר%20א%202021/ממשקי%20אדם/מדריך/ManagerStyle.css">
+            <Button layoutY="469.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="14.0" style="-fx-border-radius: 20;">
                <graphic>
                   <ImageView fx:id="BackButton1" fitHeight="28.0" fitWidth="29.0">
                      <image>
@@ -87,7 +87,7 @@
                   <Button fx:id="updateDetalisGuideBtn" mnemonicParsing="false" onAction="#updateDetalisGuideButton" prefHeight="90.0" prefWidth="165.0" text="Update personal details" />
                   <Button fx:id="NewOrderBtn" mnemonicParsing="false" onAction="#NewOrderButton" opacity="0.64" prefHeight="90.0" prefWidth="165.0" stylesheets="@../../../../../../סמסטר%20א%202021/ממשקי%20אדם/מדריך/ManagerStyle.css" text="New order" />
                   <Button fx:id="myOrdersBtn" mnemonicParsing="false" onAction="#myOrdersButton" prefHeight="90.0" prefWidth="165.0" text="My orders" />
-                  <Button fx:id="myOrdersBtn1" mnemonicParsing="false" onAction="#myOrdersButton" prefHeight="90.0" prefWidth="165.0" text="Change order" />
+                  <Button fx:id="myOrdersBtn1" mnemonicParsing="false" onAction="#changeOrder" prefHeight="90.0" prefWidth="165.0" text="Change order" />
                </children>
             </VBox>
          </children>
