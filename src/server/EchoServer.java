@@ -13,6 +13,7 @@ import client.logic.TourGuide;
 import client.logic.TourGuideOrder;
 import client.logic.Visitor;
 import client.logic.Worker;
+import client.logic.maxVis;
 import common.DataTransfer;
 import common.TypeOfMessage;
 import common.TypeOfMessageReturn;
@@ -134,24 +135,99 @@ public class EchoServer extends AbstractServer {
 		case LOGOUT:
 
 			break;
+		case TOURGUIDELOGIN:
+			if (object instanceof String) {
+
+				arrOfVisitors = mysqlConnection.getDB(object);
+				TourID=(String)arrOfVisitors.get(2);
+				if (arrOfVisitors != null) {
+					try {
+						returnData = new DataTransfer(TypeOfMessageReturn.TOUR_DETAILS,arrOfVisitors);
+						client.sendToClient(returnData);
+						
+					}
+					catch (IOException e) {
+						e.printStackTrace();
+					}
+
+				}
+			}
+			break;
+		case TOURGETORDERS:
+			if(object instanceof Integer){
+				ObservableList<Object> ans3 = mysqlConnection.getTourGuideOrders(TourID);
+				//DataTransfer data = new DataTransfer(TypeOfMessage.SUCCSESS, ans3);
+
+				if (ans3 != null) {
+					for (int i = 0; i < ans3.size(); i++) {
+						try {
+							returnData = new DataTransfer(TypeOfMessageReturn.TOUR_MYORDERS,ans3.get(i));
+							client.sendToClient(returnData);
+							//client.sendToClient(ans3);
+						}
+
+						catch (IOException e) {
+							e.printStackTrace();
+						}
+					}
+				}
+			}
+			break;
+		case TOURGUIDEDETAILS:
+			if (object instanceof TourGuide) {
+				TourGuide updGuide= (TourGuide)object;
+				String updEmail=updGuide.getEmail();
+				String upName=updGuide.getFname();
+				String upLName= updGuide.getLname();
+				String upNumber=updGuide.getTeln();
+				
+				String query ="UPDATE tourguides SET Name='"+upName+"', LastName='"+upLName+"', Email='"+updEmail+"', phoneNumber='"+upNumber+"' WHERE ID='"+updGuide.getId()+"'";
+				
+				boolean ans = mysqlConnection.updateDB(query);
+				if (ans)
+					ServerController.instance.displayMsg("TourGuide details updated");
+				else
+					ServerController.instance.displayMsg("TourGuide details could not be updated");
+			}
+			break;
+			
+		case TOURGUIDENEWORDER:
+			if (object instanceof TourGuideOrder) {
+				boolean ans2 = mysqlConnection.updateDBOrders(object);
+				if (ans2)
+					ServerController.instance.displayMsg("TourGuide details updated");
+				else
+					ServerController.instance.displayMsg("TourGuide details could not be updated");
+			}
+			break;
+			
+			
+		case CHECKMAXVIS:
+			if(object instanceof maxVis)
+			{
+			    Object visMax= new maxVis(null, null, null);
+			      visMax=mysqlConnection.checkMaxVisitors("2020-12-31");
+			      
+			      visMax=(Object)visMax;
+			      
+			  	if (visMax != null) {
+					try {
+						client.sendToClient(visMax);
+
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}         
+			}
+			
+			break;
+			
+			
 		default:
 			break;
 		}
 
-//		if (msg instanceof Order)
-//
-//		{
-//			order = mysqlConnection.getDBOrder(msg);
-//			if (order != null) {
-//				try {
-//					client.sendToClient(order);
-//
-//				} catch (IOException e) {
-//					e.printStackTrace();
-//				}
-//
-//			}
-//		}
+
 
 		if (msg instanceof String) {
 

@@ -13,6 +13,8 @@ import client.ChatClient;
 import client.ClientUI;
 import client.logic.TourGuide;
 import client.logic.Visitor;
+import common.DataTransfer;
+import common.TypeOfMessage;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -122,10 +124,17 @@ public class TourChangeDetailsController extends AbstractScenes {
     	tourguide.setLname(updatedLName);
     	tourguide.setEmail(updatedEmail);
 		tourguide.setteln(updatedPhone);
-		ClientUI.chat.accept(tourguide);
+       	DataTransfer data = new DataTransfer(TypeOfMessage.TOURGUIDEDETAILS,tourguide);
+		ClientUI.chat.accept(data);
 		System.out.println("tourguide Updated Successfully");
     }
 
+    
+    @FXML
+    void changeOrder(ActionEvent event) {
+    	switchScenes("/client/boundaries/Existing Order.fxml", "New Order");
+    }
+    
     @FXML
     void updateDetalisGuideButton(ActionEvent event) {
 

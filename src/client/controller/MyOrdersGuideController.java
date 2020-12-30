@@ -10,6 +10,8 @@ import client.ClientUI;
 import client.logic.TourGuide;
 import client.logic.TourGuideOrder;
 import client.logic.Visitor;
+import common.DataTransfer;
+import common.TypeOfMessage;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -131,15 +133,17 @@ ObservableList <TourGuideOrder> oblist=FXCollections.observableArrayList();
        //	TableOrders.setItems(getOrder());
       	String guideName=ChatClient.tourguide.getFname();
       	
+      	
        	Integer xd=5;
-       	ClientUI.chat.accept(xd);
+       	DataTransfer data = new DataTransfer(TypeOfMessage.TOURGETORDERS,xd);
+       	ClientUI.chat.accept(data);
        	TableOrders.setItems(oblist);
    	}
 
 
     public void getLine(TourGuideOrder t) {
     	
-    	oblist.add(new TourGuideOrder(t.getParkName(), t.getTime(), t.getDate(), t.getNumOfVisitors(), t.getEmail(), t.getOrderNumber(), t.getNameOnOrder()));
+    	oblist.add(new TourGuideOrder(t.getParkName(), t.getTime(), t.getDate(), t.getNumOfVisitors(), t.getEmail(), t.getOrderNumber(), t.getNameOnOrder(), null));
     }
     
     
@@ -147,8 +151,8 @@ ObservableList <TourGuideOrder> oblist=FXCollections.observableArrayList();
     
 	private ObservableList<TourGuideOrder> getOrder() {
 		ObservableList <TourGuideOrder> oblist=FXCollections.observableArrayList();
-		oblist.add(new TourGuideOrder("Elad1", "Elad2", "Elad3", "Elad4", "Elad5", "Elad6", "Elad7"));
-		oblist.add(new TourGuideOrder("Elad1", "Elad2", "Elad3", "Elad4", "Elad5", "Elad6", "Elad7"));
+		//oblist.add(new TourGuideOrder("Elad1", "Elad2", "Elad3", "Elad4", "Elad5", "Elad6", "Elad7"));
+		//oblist.add(new TourGuideOrder("Elad1", "Elad2", "Elad3", "Elad4", "Elad5", "Elad6", "Elad7"));
           return oblist;
 	}
     
