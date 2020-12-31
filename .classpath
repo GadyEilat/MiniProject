@@ -4,9 +4,6 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="lib" path="lib/mysql-connector-java-8.0.13.jar"/>
 	<classpathentry kind="lib" path="res/charm-glisten-4.4.1.jar"/>
-<<<<<<< HEAD
-=======
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
->>>>>>> refs/heads/Liran
 	<classpathentry kind="output" path="bin"/>
 </classpath>
