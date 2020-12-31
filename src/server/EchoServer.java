@@ -142,7 +142,7 @@ public class EchoServer extends AbstractServer {
 		default:
 			break;
 		}
-
+ 
 
 
 		if (flag == 0) { // in the first connection, display ip, host and status.
