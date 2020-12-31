@@ -165,33 +165,18 @@ public class mysqlConnection {
 		return null;
 
 	}
-
-	public static boolean updateDB(String updatedTourGuide) {
-//		if (updatedTourGuide instanceof TourGuide) {
-//			TourGuide updGuide= (TourGuide)updatedTourGuide;
-//			String updEmail=updGuide.getEmail();
-//			String upName=updGuide.getFname();
-//			String upLName= updGuide.getLname();
-//			String upNumber=updGuide.getTeln();
-			//String updID=updGuide.getId();
+	
+	public static boolean updateDB(String msg) {
 			if (conn != null) {
 				try {
 					Statement st = conn.createStatement();
-					st.executeUpdate(updatedTourGuide);
-//					PreparedStatement query =conn.prepareStatement("UPDATE tourguides SET Name=?, LastName=?, Email=?, phoneNumber=? WHERE ID=?");
-//					query.setString(1, upName);
-//					query.setString(2, upLName);
-//					query.setString(3, updEmail);
-//					query.setString(4, upNumber);
-//					query.setString(5, updGuide.getId());
-					//query.executeUpdate();
+					st.executeUpdate(msg);
 					return true;
 				} catch (SQLException e) {
 					e.printStackTrace();
 					return false;
 				}
 			}
-		//}
 		return false;
 
 	}

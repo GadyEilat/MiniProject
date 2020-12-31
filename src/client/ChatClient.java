@@ -8,13 +8,14 @@ import common.DataTransfer;
 import common.TypeOfMessageReturn;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import client.controller.ClientGUIController;
-import client.controller.DataGuiController;
 import client.controller.ExistingOrderController;
+import client.controller.ManagerController;
 import client.controller.MyOrdersGuideController;
 import client.controller.OrderManagementController;
+import client.controller.ClientGUIController;
 import client.controller.TourGuideLoginController;
 import client.controller.TravelerNewOrderController;
+import client.controller.WorkerLogin;
 import client.logic.TourGuide;
 import client.logic.TourGuideOrder;
 import client.logic.Visitor;
@@ -31,6 +32,7 @@ public class ChatClient extends AbstractClient {
 	public static Order order = new Order(null, null, null, null, null, null, null, null);
 	public static TourGuide tourguide = new TourGuide(null, null, null, null, null);
 	public static TourGuideOrder tourguideorder = new TourGuideOrder(null, null, null, null, null, null, null, null);
+    public static Worker worker;
 	public static ObservableList<TourGuideOrder> oblist = FXCollections.observableArrayList();
 	ChatIF clientUI;
 	public boolean waitForConnection = false;
@@ -41,18 +43,16 @@ public class ChatClient extends AbstractClient {
 	}
 
 	public void handleMessageFromServer(Object msg) {
-
-		DataTransfer data = (DataTransfer) msg;
-		Object object = data.getObject();
-		DataTransfer returnData;
-		switch (data.getTypeOfMessageReturn()) {
+		DataTransfer returnData = (DataTransfer) msg;
+		Object object = returnData.getObject();
+		switch (returnData.getTypeOfMessageReturn()) {
 		case LOGIN_FAILED:
-
+			WorkerLogin.instance.logInAnswerFailed();
 			break;
 		case LOGIN_SUCCESSFUL:
-			if (object instanceof Worker) {
-				Worker worker = (Worker) object;
-
+			if(object instanceof Worker) {
+				worker = (Worker)object;
+				WorkerLogin.instance.checkLogInAnswer(worker);
 			}
 			break;
 		case RETURN_ORDER_FAILED:

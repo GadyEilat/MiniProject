@@ -13,10 +13,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-import client.controller.ClientGUIController;
-//import gui.DataController;
-//import gui.ClientFrameController;
-import client.controller.DataGuiController;
+
 
 public class ClientUI extends Application {
 	public static ClientController chat; // only one instance
@@ -39,7 +36,7 @@ public class ClientUI extends Application {
 			ClientUI.primaryStage.setScene(scene); 
 			ClientUI.primaryStage.setMinHeight(600);
 			ClientUI.primaryStage.setMinWidth(800);
-			ClientUI.primaryStage.setTitle("Main Entrance");
+			ClientUI.primaryStage.setTitle("GoNature");
 			ClientUI.primaryStage.show();
 
 		} catch (IOException e) {

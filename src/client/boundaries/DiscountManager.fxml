@@ -13,7 +13,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane prefHeight="600.0" prefWidth="800.0" stylesheets="@ManagerStyle.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.ManagerController">
+<BorderPane prefHeight="600.0" prefWidth="800.0" stylesheets="@ManagerStyle.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.ManagerDiscountController">
    <center>
       <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0">
          <children>
@@ -41,12 +41,12 @@
    <top>
       <AnchorPane style="-fx-background-color: #c9c4c4;" BorderPane.alignment="CENTER">
          <children>
-            <Text layoutX="206.0" layoutY="63.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hello Liran" wrappingWidth="106.33984375" AnchorPane.leftAnchor="205.0" AnchorPane.topAnchor="42.0">
+            <Text fx:id="managerName" layoutX="206.0" layoutY="63.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hello Liran" wrappingWidth="260.33984375" AnchorPane.leftAnchor="205.0" AnchorPane.topAnchor="42.0">
                <font>
                   <Font size="20.0" />
                </font>
             </Text>
-            <Button fx:id="btnLogout" layoutX="707.0" layoutY="42.0" mnemonicParsing="false" onAction="#logout" style="-fx-background-color: red;" text="Log Out" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="40.0" />
+            <Button fx:id="btnLogout" layoutX="707.0" layoutY="42.0" mnemonicParsing="false" onAction="#logout" text="Log Out" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="40.0" />
             <ImageView fitHeight="106.0" fitWidth="155.0" layoutY="-5.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="6.0" AnchorPane.topAnchor="7.0">
                <image>
                   <Image url="/LOGONATURE.png" />
