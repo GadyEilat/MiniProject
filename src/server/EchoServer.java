@@ -107,7 +107,7 @@ public class EchoServer extends AbstractServer {
 
 			break;
 		case UPDATEINFO:
-
+			
 			break;
 		case LOGIN_REQUEST:
 			if (object instanceof Worker) {
@@ -173,6 +173,17 @@ public class EchoServer extends AbstractServer {
 					ServerController.instance.displayMsg("parkInfo UPDATEINFO_REQUEST details updated");
 				else
 					ServerController.instance.displayMsg("parkInfo UPDATEINFO_REQUEST details could not be updated");
+			}
+			if(object instanceof ArrayList<?>) {
+				ArrayList<String> discount = (ArrayList<String>)object;
+				String insertNewDiscount = "INSERT INTO gonature.discountdates (`Dates`, `Discount`, `Approve`, `numOfPark`) VALUES ('" + discount.get(1)
+						+ "', '" + discount.get(0) + "', 'toCheck', '" + discount.get(2) + "');";
+				boolean ans = mysqlConnection.updateDB(insertNewDiscount);
+				if (ans)
+					ServerController.instance.displayMsg("Discount UPDATEINFO_REQUEST details updated");
+				else
+					ServerController.instance.displayMsg("Discount UPDATEINFO_REQUEST details could not be updated");
+
 			}
 
 		case TOURGUIDENEWORDER:

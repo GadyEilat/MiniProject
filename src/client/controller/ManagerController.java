@@ -90,7 +90,6 @@ public class ManagerController extends AbstractScenes {
 		managerName.setText("Hello " + ChatClient.worker.getWorkerName());
 		maxVisitors.setText(ChatClient.worker.getPark().getMaxVisitors());
 		numOfSubscribers.setText(ChatClient.worker.getPark().getNumOfSub());
-
 	}
 
 }
