@@ -23,10 +23,10 @@
                         <AnchorPane prefHeight="414.0" prefWidth="482.0">
                            <children>
                               <Text fx:id="currentNumOfVisitors" layoutX="330.0" layoutY="74.0" strokeType="OUTSIDE" strokeWidth="0.0" text="480" />
-                              <Text layoutX="24.0" layoutY="75.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Number Of Visitors :" wrappingWidth="121.33983612060547" />
-                              <Text fx:id="MaxOfVisitors" layoutX="362.0" layoutY="74.0" strokeType="OUTSIDE" strokeWidth="0.0" text="700" />
+                              <Text layoutX="28.0" layoutY="74.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Number Of Visitors :" wrappingWidth="115.33983612060547" />
+                              <Text fx:id="currentMaxOfVisitors" layoutX="362.0" layoutY="74.0" strokeType="OUTSIDE" strokeWidth="0.0" text="700" />
                               <Text layoutX="354.0" layoutY="74.0" strokeType="OUTSIDE" strokeWidth="0.0" text="/" />
-                              <ProgressBar fx:id="progressBar" layoutX="150.0" layoutY="61.0" prefHeight="18.0" prefWidth="167.0" progress="0.68571" />
+                              <ProgressBar fx:id="progressBar" layoutX="150.0" layoutY="58.0" prefHeight="23.0" prefWidth="167.0" progress="0.68571" />
                            </children>
                         </AnchorPane>
                      </children>
@@ -39,7 +39,7 @@
    <top>
       <AnchorPane style="-fx-background-color: #c9c4c4;" BorderPane.alignment="CENTER">
          <children>
-            <Text fx:id="departmentManagerName" layoutX="206.0" layoutY="63.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hello Liran" wrappingWidth="278.33984375" AnchorPane.leftAnchor="205.0" AnchorPane.topAnchor="42.0">
+            <Text layoutX="206.0" layoutY="63.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hello Liran" wrappingWidth="106.33984375" AnchorPane.leftAnchor="205.0" AnchorPane.topAnchor="42.0">
                <font>
                   <Font size="20.0" />
                </font>
