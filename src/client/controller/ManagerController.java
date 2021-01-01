@@ -64,7 +64,6 @@ public class ManagerController extends AbstractScenes {
 
 	@FXML
 	void showManagingPark(ActionEvent event) throws IOException {
-
 		switchScenes("/client/boundaries/managingPark.fxml", "Manager");
 	}
 
@@ -82,8 +81,6 @@ public class ManagerController extends AbstractScenes {
 	public void updateNumberOfVisitorAndSub() {
 
 	}
-
-
 
 	public void initialize(URL location, ResourceBundle resources) {
 		instance = this;
