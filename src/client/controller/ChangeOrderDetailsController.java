@@ -104,12 +104,20 @@ public class ChangeOrderDetailsController extends AbstractScenes{
     @FXML
     void Apply(ActionEvent event) {
     	ord.setNumOfVisitors(amountOfVisitorsComboBox.getSelectionModel().getSelectedItem());
+    	String save = OrderManagementController.instance.ord.getDate();
     	ord.setDate(datePicker.getValue().toString());
+    	if (java.time.LocalDate.now().isAfter(datePicker.getValue())) {
+    		msgFromController.setText("Invalid Date");
+    		ord.setDate(save);
+    		datePicker.setValue(LOCAL_DATE(save));
+    	}
+    	else {
     	ord.setNumOfVisitors(amountOfVisitorsComboBox.getSelectionModel().getSelectedItem());
     	ord.setHour(timeComboBox.getSelectionModel().getSelectedItem());
     	ord.setParkName(parkComboBox.getSelectionModel().getSelectedItem());
     	DataTransfer data = new DataTransfer(TypeOfMessage.UPDATEINFO,ord);
 		ClientUI.chat.accept(data);
+    	}
 
 		
 //			msgFromController.setFill(Color.GREEN);
