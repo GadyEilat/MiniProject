@@ -14,7 +14,7 @@ public class Worker implements Serializable{
 	private ParkInfo Park;
 	private String scene;
 	private String workerName;
-
+	public Worker() {}
 
 	public Worker(String userName, String password, String role, ParkInfo Park ,String workerName, String scene) {
 		this.userName = userName;
