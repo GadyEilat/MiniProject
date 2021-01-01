@@ -53,7 +53,7 @@ public class ManagerDiscountController extends AbstractScenes {
 		ChatClient.worker = new Worker(null, null, null, null, null, null);
 		switchScenes("/client/boundaries/workerLogin.fxml", "Worker Login");
 	}
-
+	
     @FXML
     void saveDiscountAndDate(ActionEvent event) {
     		String discount = discountField.getText();
@@ -68,26 +68,30 @@ public class ManagerDiscountController extends AbstractScenes {
         		ArrayList<String> dateAndDiscount = new ArrayList<String>(); 
         		dateAndDiscount.add(discount);
         		dateAndDiscount.add(date);
+        		dateAndDiscount.add(ChatClient.worker.getPark().getNumberOfPark());
     			DataTransfer data = new DataTransfer(TypeOfMessage.UPDATEINFO_REQUEST, dateAndDiscount);
+    			discountField.clear();
+                datePicker.setValue(null);
     			ClientUI.chat.accept(data);
     		}
     }
-
+    
 	@FXML
 	void showManagingPark(ActionEvent event) throws IOException {
 
 		switchScenes("/client/boundaries/managingPark.fxml", "Manager");
 	}
-
+	
 	@FXML
 	void showReport(ActionEvent event) {
 		switchScenes("/client/boundaries/reportManager.fxml", "Manager");
 	}
-
+	
 	@FXML
 	void showStatus(ActionEvent event) {
 		switchScenes("/client/boundaries/manager.fxml", "Manager");
 	}
+	
 	public void initialize(URL location, ResourceBundle resources) {
 		instance = this;
 		managerName.setText("Hello " + ChatClient.worker.getWorkerName());

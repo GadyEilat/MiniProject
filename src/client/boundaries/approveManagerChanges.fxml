@@ -2,7 +2,6 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -13,7 +12,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane prefHeight="600.0" prefWidth="800.0" stylesheets="@DepartmentManagerStyle.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.DepartmantManagerApproveController">
+<BorderPane prefHeight="600.0" prefWidth="800.0" stylesheets="@DepartmentManagerStyle.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.DepartmantManagerController">
    <center>
       <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0">
          <children>
@@ -24,17 +23,14 @@
                         <AnchorPane prefHeight="414.0" prefWidth="482.0">
                            <children>
                               <Text layoutY="109.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Max Visitors" />
-                              <TextField fx:id="maxVisitorsField" disable="true" layoutX="97.0" layoutY="92.0" prefHeight="25.0" prefWidth="165.0" />
+                              <TextField fx:id="maxVisitorsField" disable="true" layoutX="113.0" layoutY="92.0" />
                               <Button fx:id="btnCancelOfMaxVisitors" layoutX="351.0" layoutY="92.0" mnemonicParsing="false" onAction="#cancelTheChangesOfMaxVisitors" text="Cancel" />
                               <Button fx:id="btnApproveOfMaxVisitors" layoutX="277.0" layoutY="92.0" mnemonicParsing="false" onAction="#approveChangeOfMaxVisitors" style="-fx-background-radius: 8;" text="Approve" />
-                              <Text layoutY="164.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Discounts" />
-                              <Button fx:id="btnApproveOfDiscount" layoutX="277.0" layoutY="147.0" mnemonicParsing="false" onAction="#approveChangeOfDiscount" style="-fx-background-radius: 8;" text="Approve" />
-                              <Button fx:id="btnCancelOfDiscount" layoutX="353.0" layoutY="147.0" mnemonicParsing="false" onAction="#cancelChangesOfDiscount" text="Cancel" />
-                              <Text layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Max Hours" />
-                              <TextField fx:id="maxHourField" disable="true" layoutX="97.0" layoutY="38.0" prefHeight="25.0" prefWidth="165.0" />
-                              <Button fx:id="btnCancelOfMaxHours" layoutX="351.0" layoutY="38.0" mnemonicParsing="false" onAction="#cancelTheChangesOfMaxHour" text="Cancel" />
-                              <Button fx:id="btnApproveOfMaxHours" layoutX="277.0" layoutY="38.0" mnemonicParsing="false" onAction="#approveChangeOfMaxVHour" style="-fx-background-radius: 8;" text="Approve" />
-                              <ListView layoutX="97.0" layoutY="147.0" prefHeight="173.0" prefWidth="167.0" />
+                              <Text layoutX="-2.0" layoutY="170.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Discount" />
+                              <TextField fx:id="discountFiled" disable="true" layoutX="111.0" layoutY="153.0" prefHeight="25.0" prefWidth="85.0" />
+                              <Text layoutX="214.0" layoutY="170.0" strokeType="OUTSIDE" strokeWidth="0.0" text="\%" />
+                              <Button fx:id="btnApproveOfDiscount" layoutX="275.0" layoutY="153.0" mnemonicParsing="false" onAction="#approveChangeOfDiscount" style="-fx-background-radius: 8;" text="Approve" />
+                              <Button fx:id="btnCancelOfDiscount" layoutX="351.0" layoutY="153.0" mnemonicParsing="false" onAction="#cancelChangesOfDiscount" text="Cancel" />
                            </children>
                         </AnchorPane>
                      </children>
@@ -47,7 +43,7 @@
    <top>
       <AnchorPane style="-fx-background-color: #c9c4c4;" BorderPane.alignment="CENTER">
          <children>
-            <Text fx:id="departmentManagerName" layoutX="206.0" layoutY="63.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hello Liran" wrappingWidth="247.33984375" AnchorPane.leftAnchor="205.0" AnchorPane.topAnchor="42.0">
+            <Text layoutX="206.0" layoutY="63.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hello Liran" wrappingWidth="106.33984375" AnchorPane.leftAnchor="205.0" AnchorPane.topAnchor="42.0">
                <font>
                   <Font size="20.0" />
                </font>

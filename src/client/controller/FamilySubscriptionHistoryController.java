@@ -1,5 +1,10 @@
 package client.controller;
 
+import client.ChatClient;
+import client.ClientUI;
+import client.logic.Subscriber;
+import common.DataTransfer;
+import common.TypeOfMessage;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -8,51 +13,10 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 
-public class FamilySubscription extends AbstractScenes{
-
-	/////////////////// History Of family scene
+public class FamilySubscriptionHistoryController extends AbstractScenes{
 
 	@FXML
 	private TableView<?> tableOfHistory;
-
-	//////////////////// Edit info scene
-
-	@FXML
-	private TextField firstNameField;
-
-	@FXML
-	private TextField lastNameField;
-
-	@FXML
-	private TextField telEditField;
-
-	@FXML
-	private TextField idNumberField;
-
-	@FXML
-	private TextField emailField;
-
-	@FXML
-	private TextField credit4Digit1;
-
-	@FXML
-	private ComboBox<?> familyNumberField;
-
-	@FXML
-	private TextField credit4Digit3;
-
-	@FXML
-	private TextField credit4Digit2;
-
-	@FXML
-	private TextField credit4Digit4;
-
-	@FXML
-	private Button btnSave;
-
-	/////////////////// New order scene
-
-	//////////////// For All scenes
 
 	@FXML
 	private Text familyName;
@@ -71,11 +35,15 @@ public class FamilySubscription extends AbstractScenes{
 
 	@FXML
 	void logout(ActionEvent event) {
+		ChatClient.subscriber = new Subscriber();
 		switchScenes("/client/boundaries/FamilySubEnter.fxml", "Family Subscription");
 	}
 
 	@FXML
 	void showEditInfo(ActionEvent event) {
+		Subscriber subscriber = new Subscriber(null, null, null, null, null, null, null, ChatClient.subscriber.getSubscriberNumber());
+		DataTransfer data = new DataTransfer(TypeOfMessage.REQUESTINFO, subscriber);
+		ClientUI.chat.accept(data);
 		switchScenes("/client/boundaries/EditInfoFamily.fxml", "Family Subscription");
 
 	}
@@ -99,13 +67,5 @@ public class FamilySubscription extends AbstractScenes{
 
 	}
 
-	//////////////////// Edit info scene
-
-	@FXML
-	void updateFamilyInfo(ActionEvent event) {
-
-	}
-
-	/////////////////// New order scene
 
 }

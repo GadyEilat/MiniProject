@@ -13,6 +13,7 @@ import client.controller.ManagerController;
 import client.controller.MyOrdersGuideController;
 import client.controller.OrderManagementController;
 import client.controller.ChangeOrderDetailsController;
+import client.controller.SubscriptionEntryController;
 import client.controller.ClientGUIController;
 import client.controller.TourGuideLoginController;
 import client.controller.TravelerNewOrderController;
@@ -23,6 +24,7 @@ import client.logic.Visitor;
 import client.logic.maxVis;
 import client.logic.Worker;
 import client.logic.Order;
+import client.logic.Subscriber;
 import java.io.*;
 import common.TypeOfMessageReturn;
 import java.util.ArrayList;
@@ -34,6 +36,7 @@ public class ChatClient extends AbstractClient {
 	public static TourGuide tourguide = new TourGuide(null, null, null, null, null);
 	public static TourGuideOrder tourguideorder = new TourGuideOrder(null, null, null, null, null, null, null, null);
     public static Worker worker;
+    public static Subscriber subscriber;
 	public static ObservableList<TourGuideOrder> oblist = FXCollections.observableArrayList();
 	ChatIF clientUI;
 	public boolean waitForConnection = false;
@@ -48,13 +51,24 @@ public class ChatClient extends AbstractClient {
 		Object object = returnData.getObject();
 		switch (returnData.getTypeOfMessageReturn()) {
 		case LOGIN_FAILED:
-			WorkerLogin.instance.logInAnswerFailed();
+			if(object instanceof Worker) {
+				WorkerLogin.instance.logInAnswerFailed();
+			}
+			if (object instanceof Subscriber) {
+				SubscriptionEntryController.instance.subscriberNotFound();
+			}
+			
 			break;
 		case LOGIN_SUCCESSFUL:
 			if(object instanceof Worker) {
 				worker = (Worker)object;
 				WorkerLogin.instance.checkLogInAnswer(worker);
 			}
+			if (object instanceof Subscriber) {
+				subscriber = (Subscriber)object;
+				SubscriptionEntryController.instance.subscriberFound();
+			}		
+			
 			break;
 		
 		case DELETE_ORDER_FAILED:
@@ -144,7 +158,11 @@ public class ChatClient extends AbstractClient {
 			}
 
 			break;
-
+		case REQUESTINFO_SUCCESS:
+			if (object instanceof Subscriber) {
+				subscriber = (Subscriber)object;
+			}
+			break;
 		default:
 			break;
 		}

@@ -10,6 +10,7 @@ import java.util.Vector;
 import client.ClientUI;
 import client.logic.Order;
 import client.logic.ParkInfo;
+import client.logic.Subscriber;
 import client.logic.TourGuide;
 import client.logic.TourGuideOrder;
 import client.logic.Visitor;
@@ -104,6 +105,32 @@ public class EchoServer extends AbstractServer {
 			}
 			break;
 		case REQUESTINFO:
+			if (object instanceof Subscriber) {
+				Subscriber subscriber = (Subscriber) object;
+				String checkSubExist = "SELECT * FROM gonature.subscriber WHERE subscriberNumber ='"+subscriber.getSubscriberNumber()+"';";
+				arrOfAnswer = mysqlConnection.getDB(checkSubExist);
+				
+				if (!arrOfAnswer.isEmpty()) {
+					subscriber.setId((String) arrOfAnswer.get(0));
+					subscriber.setFname((String) arrOfAnswer.get(1));
+					subscriber.setLname((String) arrOfAnswer.get(2));
+					subscriber.setEmail((String) arrOfAnswer.get(3));
+					subscriber.setteln((String) arrOfAnswer.get(4));
+					subscriber.setAmountOfFamilyMember((String) arrOfAnswer.get(5));
+					subscriber.setCreditCard((String) arrOfAnswer.get(6));
+					subscriber.setSubscriberNumber((String) arrOfAnswer.get(7));	
+
+					returnData = new DataTransfer(TypeOfMessageReturn.REQUESTINFO_SUCCESS, subscriber);
+					try {
+						client.sendToClient(returnData);
+
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				} else
+					ServerController.instance.displayMsg("subscriber REQUESTINFO details failed");
+											
+			}
 
 			break;
 		case UPDATEINFO:
@@ -126,6 +153,21 @@ public class EchoServer extends AbstractServer {
 					e.printStackTrace();
 				}
 			}
+			if (object instanceof Subscriber) {
+				Subscriber subscriber = (Subscriber) object;
+				String upDateSub = "UPDATE `gonature`.`subscriber` SET `ID` = '"+subscriber.getId()+"', `FirstName` = '"+subscriber.getFname()+"', "
+						+ "`LastName` = '"+subscriber.getLname()+"', `Email` = '"+subscriber.getEmail()+"', `Telephone` = '"+subscriber.getTeln()+"', "
+						+ "`AmountOfFamilyMembers` = '"+subscriber.getAmountOfFamilyMember()+"', `CreditCard` = '"+subscriber.getCreditCard()+"' WHERE "
+								+ "(`ID` = '"+subscriber.getId()+"') and " + "(`subscriberNumber` = '"+subscriber.getSubscriberNumber()+"');";
+				boolean Answer = mysqlConnection.updateDB(upDateSub);
+				if(Answer) {
+					ServerController.instance.displayMsg("subscriber UPDATEINFO details updated");
+
+				} else {
+					ServerController.instance.displayMsg("subscriber UPDATEINFO details failed");
+				}
+				
+			}
 
 			break;
 		case LOGIN_REQUEST:
@@ -133,9 +175,9 @@ public class EchoServer extends AbstractServer {
 				Worker worker = (Worker) object;
 				Worker RoleAndPark = null;
 				ParkInfo parkInfo;
-				String str = "SELECT Role, Park, name FROM gonature.worker WHERE UserName = '" + worker.getUserName()
+				String checkUserAndPassword = "SELECT Role, Park, name FROM gonature.worker WHERE UserName = '" + worker.getUserName()
 						+ "' AND Password = '" + worker.getPassword() + "';";
-				arrOfAnswer = mysqlConnection.getDB(str);
+				arrOfAnswer = mysqlConnection.getDB(checkUserAndPassword);
 				if (!arrOfAnswer.isEmpty()) {
 					String scene;
 					String role = (String) arrOfAnswer.get(0);
@@ -168,7 +210,36 @@ public class EchoServer extends AbstractServer {
 
 					returnData = new DataTransfer(TypeOfMessageReturn.LOGIN_SUCCESSFUL, RoleAndPark);
 				} else
-					returnData = new DataTransfer(TypeOfMessageReturn.LOGIN_FAILED, null);
+					returnData = new DataTransfer(TypeOfMessageReturn.LOGIN_FAILED, new Worker());
+				try {
+					client.sendToClient(returnData);
+
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			
+			
+			
+			if (object instanceof Subscriber) {
+				Subscriber subscriber = (Subscriber) object;
+				String checkSubExist = "SELECT * FROM gonature.subscriber WHERE subscriberNumber ='"+subscriber.getSubscriberNumber()+"' "
+						+ "OR ID = '"+subscriber.getId()+"'; ";
+				arrOfAnswer = mysqlConnection.getDB(checkSubExist);
+				
+				if (!arrOfAnswer.isEmpty()) {
+					subscriber.setId((String) arrOfAnswer.get(0));
+					subscriber.setFname((String) arrOfAnswer.get(1));
+					subscriber.setLname((String) arrOfAnswer.get(2));
+					subscriber.setEmail((String) arrOfAnswer.get(3));
+					subscriber.setteln((String) arrOfAnswer.get(4));
+					subscriber.setAmountOfFamilyMember((String) arrOfAnswer.get(5));
+					subscriber.setCreditCard((String) arrOfAnswer.get(6));
+					subscriber.setSubscriberNumber((String) arrOfAnswer.get(7));	
+
+					returnData = new DataTransfer(TypeOfMessageReturn.LOGIN_SUCCESSFUL, subscriber);
+				} else
+					returnData = new DataTransfer(TypeOfMessageReturn.LOGIN_FAILED, new Subscriber());
 				try {
 					client.sendToClient(returnData);
 
@@ -192,6 +263,17 @@ public class EchoServer extends AbstractServer {
 					ServerController.instance.displayMsg("parkInfo UPDATEINFO_REQUEST details updated");
 				else
 					ServerController.instance.displayMsg("parkInfo UPDATEINFO_REQUEST details could not be updated");
+			}
+			if(object instanceof ArrayList<?>) {
+				ArrayList<String> discount = (ArrayList<String>)object;
+				String insertNewDiscount = "INSERT INTO gonature.discountdates (`Dates`, `Discount`, `Approve`, `numOfPark`) VALUES ('" + discount.get(1)
+						+ "', '" + discount.get(0) + "', 'toCheck', '" + discount.get(2) + "');";
+				boolean ans = mysqlConnection.updateDB(insertNewDiscount);
+				if (ans)
+					ServerController.instance.displayMsg("Discount UPDATEINFO_REQUEST details updated");
+				else
+					ServerController.instance.displayMsg("Discount UPDATEINFO_REQUEST details could not be updated");
+
 			}
 
 		case TOURGUIDENEWORDER:
