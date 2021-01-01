@@ -39,9 +39,6 @@ public class ChangeOrderDetailsController extends AbstractScenes{
     private Text msgFromController;
     
     @FXML
-    private TextField amountOfVisitorsTxt;
-    
-    @FXML
     private Text helloTxt;
     
     @FXML
@@ -57,8 +54,11 @@ public class ChangeOrderDetailsController extends AbstractScenes{
     private Button btnLogout;
     
     @FXML
-    private TextField timeTxt;
+    private ComboBox<String> timeComboBox;
 
+    @FXML
+    private ComboBox<String> amountOfVisitorsComboBox;
+    
     @FXML
     private DatePicker datePicker;
 
@@ -82,21 +82,21 @@ public class ChangeOrderDetailsController extends AbstractScenes{
 
     public static ChangeOrderDetailsController instance;
     ObservableList<String> list;
+    ObservableList<String> list2;
+    ObservableList<String> list3;
     
     @FXML
     void Apply(ActionEvent event) {
-    	//Save Changes to Order Details in DB --> Fix.
-    	String time = timeTxt.getText();
-		if (time.trim().isEmpty()) {
-			msgFromController.setFill(Color.RED);
-			msgFromController.setText("Please enter a time");
-		}
-		else
-		{
+    	ord.setNumOfVisitors(amountOfVisitorsComboBox.getSelectionModel().getSelectedItem());
+    	ord.setDate(datePicker.getValue().toString());
+    	ord.setNumOfVisitors(amountOfVisitorsComboBox.getSelectionModel().getSelectedItem());
+    	ord.setHour(timeComboBox.getSelectionModel().getSelectedItem());
+    	ord.setParkName(parkComboBox.getSelectionModel().getSelectedItem());
+		ClientUI.chat.accept(ord); //go to DB to update this order. I"M HERE!!!
 			//actually check in DB whatever needed.
+		
 			msgFromController.setFill(Color.GREEN);
 			msgFromController.setText("Updated Successfully");
-		}
     }
 
     @FXML
@@ -139,6 +139,37 @@ public class ChangeOrderDetailsController extends AbstractScenes{
 		parkComboBox.setItems(list);
     }
     
+    private void setTimeComboBox() {
+    	ArrayList<String> al2 = new ArrayList<String>();
+    	al2.add("8:00");
+    	al2.add("9:00");
+    	al2.add("10:00");
+    	al2.add("11:00");
+    	al2.add("12:00");
+    	al2.add("13:00");
+    	al2.add("14:00");
+    	al2.add("15:00");
+    	list2=FXCollections.observableArrayList(al2);
+    	timeComboBox.setItems(list2);
+    	
+    }
+    
+    private void setAmountOfVisitorsComboBox() {
+    	ArrayList<String> al3 = new ArrayList<String>();
+    	al3.add("1");
+    	al3.add("2");
+    	al3.add("3");
+    	al3.add("4");
+    	al3.add("5");
+    	al3.add("6");
+    	al3.add("7");
+    	al3.add("8");
+    	al3.add("9");
+    	al3.add("10");
+    	list3=FXCollections.observableArrayList(al3);
+    	amountOfVisitorsComboBox.setItems(list3);
+    }
+    
     public static final LocalDate LOCAL_DATE (String dateString){ //method for dealing with dates.
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate localDate = LocalDate.parse(dateString, formatter);
@@ -152,9 +183,11 @@ public class ChangeOrderDetailsController extends AbstractScenes{
     	setParkComboBox(); // call a func above.
     	parkComboBox.getSelectionModel().select(ord.getParkName());
     	orderNumberTxt.setText(ord.getOrderNumber());
-    	amountOfVisitorsTxt.setText(ord.getNumOfVisitors());
+    	setAmountOfVisitorsComboBox(); //call func above
+    	amountOfVisitorsComboBox.getSelectionModel().select(ord.getNumOfVisitors()); 
     	helloTxt.setText("Hello " + ord.getNameOnOrder());
-    	timeTxt.setText(ord.getHour());
+    	setTimeComboBox(); // call func above.
+    	timeComboBox.getSelectionModel().select(ord.getHour());
     	try {
             datePicker.setValue(LOCAL_DATE(ord.getDate()));
         } catch (NullPointerException e) {}

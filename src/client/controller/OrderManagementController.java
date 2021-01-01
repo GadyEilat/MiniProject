@@ -110,7 +110,7 @@ public class OrderManagementController extends AbstractScenes {
     	parkTxt.setText(ord.getParkName());
     	orderNumberTxt.setText(ord.getOrderNumber());
     	amountOfVisitorsTxt.setText(ord.getNumOfVisitors());
-    	//helloTxt.setText("Hello " + ord.getNameOnOrder());
+    	helloTxt.setText("Hello " + ord.getNameOnOrder());
     	timeTxt.setText(ord.getHour());
     	dateTxt.setText(ord.getDate());
     }

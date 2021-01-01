@@ -31,15 +31,15 @@
                               <Label layoutX="119.0" layoutY="159.0" prefHeight="17.0" prefWidth="33.0" text="Time" />
                               <Label layoutX="119.0" layoutY="125.0" prefHeight="17.0" prefWidth="33.0" text="Date" />
                               <Label layoutX="120.0" layoutY="92.0" prefHeight="17.0" prefWidth="30.0" text="Park" />
-                              <TextField fx:id="timeTxt" layoutX="150.0" layoutY="155.0" text="14:30" AnchorPane.leftAnchor="168.0" AnchorPane.rightAnchor="168.0" />
-                              <DatePicker fx:id="datePicker" layoutX="150.0" layoutY="121.0" prefHeight="25.0" prefWidth="151.0" promptText="24/11/2020" AnchorPane.leftAnchor="168.0" AnchorPane.rightAnchor="168.0" />
+                              <DatePicker fx:id="datePicker" editable="false" layoutX="150.0" layoutY="121.0" prefHeight="25.0" prefWidth="151.0" promptText="Choose Date" AnchorPane.leftAnchor="168.0" AnchorPane.rightAnchor="168.0" />
                               <Text fx:id="msgFromController" fill="RED" layoutX="171.0" layoutY="269.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="126.13671875">
                                  <font>
                                     <Font size="11.0" />
                                  </font></Text>
-                              <ComboBox fx:id="parkComboBox" editable="true" layoutX="168.0" layoutY="88.0" prefHeight="25.0" prefWidth="132.0" promptText="Shlomo's Park" />
+                              <ComboBox fx:id="parkComboBox" layoutX="168.0" layoutY="88.0" prefHeight="25.0" prefWidth="132.0" promptText="Choose Park" />
                               <Label layoutX="43.0" layoutY="193.0" prefHeight="17.0" prefWidth="107.0" text="Amount Of Visitors" />
-                              <TextField fx:id="amountOfVisitorsTxt" layoutX="168.0" layoutY="189.0" prefHeight="25.0" prefWidth="131.0" text="3" />
+                              <ComboBox fx:id="timeComboBox" layoutX="168.0" layoutY="155.0" prefHeight="25.0" prefWidth="132.0" promptText="Choose Time" />
+                              <ComboBox fx:id="amountOfVisitorsComboBox" layoutX="168.0" layoutY="189.0" prefHeight="25.0" prefWidth="132.0" promptText="Choose Amount" />
                            </children>
                         </AnchorPane>
                      </children>
