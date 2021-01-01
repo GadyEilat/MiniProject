@@ -12,6 +12,7 @@ import client.controller.ExistingOrderController;
 import client.controller.ManagerController;
 import client.controller.MyOrdersGuideController;
 import client.controller.OrderManagementController;
+import client.controller.ChangeOrderDetailsController;
 import client.controller.ClientGUIController;
 import client.controller.TourGuideLoginController;
 import client.controller.TravelerNewOrderController;
@@ -55,6 +56,25 @@ public class ChatClient extends AbstractClient {
 				WorkerLogin.instance.checkLogInAnswer(worker);
 			}
 			break;
+		
+		case DELETE_ORDER_FAILED:
+			//not suppose to happen.
+			break;
+		case DELETE_ORDER_SUCCESS:
+			
+			break;
+			
+		case UPDATE_FAILED:
+			if (object instanceof Order) {
+				ChangeOrderDetailsController.instance.notUpdated();
+			}
+			break;
+		case UPDATE_SUCCESS:
+			if (object instanceof Order) {
+			ChangeOrderDetailsController.instance.updated();
+			}
+			break;
+			
 		case RETURN_ORDER_FAILED:
 			System.out.println("Couldn't recieve details from DB");
 			break;
@@ -64,9 +84,9 @@ public class ChatClient extends AbstractClient {
 					System.out.println("--> handleMessageFromServer");
 					waitForConnection = false;
 					Order recievedOrd = (Order) object;
-					String check = ExistingOrderController.order.getOrderNumber();
+					String check = ExistingOrderController.instance.order.getOrderNumber();
 					if (check.equals(recievedOrd.getOrderNumber())) {
-						ExistingOrderController.order = recievedOrd; // update the instance of the order in "existing"
+						ExistingOrderController.instance.order = recievedOrd; // update the instance of the order in "existing"
 																		// to be not null...
 						ExistingOrderController.instance.isFound();
 					} else {
@@ -83,7 +103,8 @@ public class ChatClient extends AbstractClient {
 					order = (Order) object;
 					TravelerNewOrderController.instance.TravelerOrder = order;
 					TravelerNewOrderController.instance.isFound();
-				} else {
+				} 
+				else {
 					TravelerNewOrderController.instance.notFound();
 				}
 			}

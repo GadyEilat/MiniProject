@@ -57,12 +57,12 @@
    <top>
       <AnchorPane prefHeight="115.0" prefWidth="800.0" style="-fx-background-color: #c9c4c4;" BorderPane.alignment="CENTER">
          <children>
-            <Text fx:id="helloTxt" layoutX="206.0" layoutY="63.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hello Gady" wrappingWidth="106.33984375" AnchorPane.leftAnchor="205.0" AnchorPane.topAnchor="42.0">
+            <Text fx:id="helloTxt" layoutX="206.0" layoutY="63.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hello Gady" wrappingWidth="116.33984375" AnchorPane.leftAnchor="205.0" AnchorPane.topAnchor="42.0">
                <font>
-                  <Font size="18.0" />
+                  <Font size="20.0" />
                </font>
             </Text>
-            <ImageView fitHeight="106.0" fitWidth="155.0" layoutY="1.0">
+            <ImageView fitHeight="106.0" fitWidth="155.0" layoutY="1.0" AnchorPane.leftAnchor="6.0" AnchorPane.topAnchor="7.0">
                <image>
                   <Image url="@../../../res/LOGONATURE.png" />
                </image>

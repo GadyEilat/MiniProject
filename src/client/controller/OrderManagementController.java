@@ -4,6 +4,7 @@ import java.net.URL;
 
 import java.util.ResourceBundle;
 
+import client.ChatClient;
 import client.ClientUI;
 import client.logic.Order;
 import javafx.event.ActionEvent;
@@ -21,7 +22,8 @@ import javafx.stage.Stage;
 
 public class OrderManagementController extends AbstractScenes {
 	public Order ord = new Order(null,null,null,null,null,null,null,null);
-
+	public int wasCanceled = 0;
+	
     @FXML
     private ResourceBundle resources;
 
@@ -36,7 +38,7 @@ public class OrderManagementController extends AbstractScenes {
     
     @FXML
     private Text helloTxt;
-    
+
     @FXML
     private Button changeBtn;
 
@@ -70,7 +72,7 @@ public class OrderManagementController extends AbstractScenes {
     public static OrderManagementController instance;
     
 	@FXML
-	void CancelOrder(ActionEvent event) throws IOException{
+	void CancelOrder(ActionEvent event) throws IOException {
 		Stage helpWindow = new Stage();
 		FXMLLoader fxmlLoad = new FXMLLoader(getClass().getResource("/client/boundaries/Cancel Confirmation.fxml"));
 		Parent current = fxmlLoad.load();
@@ -83,10 +85,7 @@ public class OrderManagementController extends AbstractScenes {
 		helpWindow.setMaxWidth(350);
 		helpWindow.setScene(scene);
 		helpWindow.showAndWait();
-
 	}
-
-    
 
     @FXML
     void ChangeOrderDetails(ActionEvent event) {
@@ -100,10 +99,10 @@ public class OrderManagementController extends AbstractScenes {
 
     @FXML
     void Exit(ActionEvent event) {
+    	ChatClient.order = new Order();
     	switchScenes("/client/boundaries/Existing Order.fxml", "Existing Order");
     }
     
-    @FXML
     public void initialize(URL location, ResourceBundle resources) {
     	instance=this;
     	ord=ExistingOrderController.instance.order;

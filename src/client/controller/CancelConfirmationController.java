@@ -3,14 +3,19 @@ import java.net.URL;
 
 import java.util.ResourceBundle;
 
+import client.ChatClient;
 import client.ClientUI;
+import client.logic.Order;
+import common.DataTransfer;
+import common.TypeOfMessage;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
 public class CancelConfirmationController extends AbstractScenes{
-
+	public String orderNumberToBeDeleted=null;
+	
     @FXML
     private ResourceBundle resources;
 
@@ -25,19 +30,21 @@ public class CancelConfirmationController extends AbstractScenes{
 
     @FXML
     void Cancel(ActionEvent event) {
-    	//Cancel the Order --> Remove it from DataBase (Fix)
-    	Stage current;
-    	
-    	switchScenes("/client/boundaries/Order Management.fxml", "ExistingOrder.fxml");
+    	orderNumberToBeDeleted=OrderManagementController.instance.ord.getOrderNumber();
+    	DataTransfer data = new DataTransfer(TypeOfMessage.DELETE_INFO,orderNumberToBeDeleted);
+		ClientUI.chat.accept(data);
+		switchScenes("/client/boundaries/Existing Order.fxml", "Existing Order");
+    	Stage stage = (Stage) cancelBtn.getScene().getWindow();
+    	ChatClient.order = new Order();
+        stage.close();
     }
 
     @FXML
     void DontCancel(ActionEvent event) { //go back to previous window
-    	//fix --> need to check which window was before (Order Management or Change Order Details)???
-    	switchScenes("/client/boundaries/Order Management.fxml", "Order Management");
+    	Stage stage = (Stage) dontCancelBtn.getScene().getWindow();
+        stage.close();	
     }
 
-    @FXML
-    void initialize() {
+    public void initialize() {
     }
 }

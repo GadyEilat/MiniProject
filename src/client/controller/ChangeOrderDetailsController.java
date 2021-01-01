@@ -8,8 +8,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.ResourceBundle;
 
+import client.ChatClient;
 import client.ClientUI;
 import client.logic.Order;
+import common.DataTransfer;
+import common.TypeOfMessage;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -31,6 +34,7 @@ import javafx.stage.Stage;
 public class ChangeOrderDetailsController extends AbstractScenes{
 	public Order ord = new Order(null,null,null,null,null,null,null,null);
 	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+	public int wasCanceled = 0; //a flag for telling if you canceled the order.
 	
     @FXML
     private ResourceBundle resources;
@@ -84,6 +88,18 @@ public class ChangeOrderDetailsController extends AbstractScenes{
     ObservableList<String> list;
     ObservableList<String> list2;
     ObservableList<String> list3;
+  
+    public void updated()
+    {
+    	msgFromController.setFill(Color.GREEN);
+		msgFromController.setText("Updated Successfully");
+    }
+    
+    public void notUpdated()
+    {
+    	msgFromController.setFill(Color.RED);
+		msgFromController.setText("Couldn't update");
+    }
     
     @FXML
     void Apply(ActionEvent event) {
@@ -92,11 +108,12 @@ public class ChangeOrderDetailsController extends AbstractScenes{
     	ord.setNumOfVisitors(amountOfVisitorsComboBox.getSelectionModel().getSelectedItem());
     	ord.setHour(timeComboBox.getSelectionModel().getSelectedItem());
     	ord.setParkName(parkComboBox.getSelectionModel().getSelectedItem());
-		ClientUI.chat.accept(ord); //go to DB to update this order. I"M HERE!!!
-			//actually check in DB whatever needed.
+    	DataTransfer data = new DataTransfer(TypeOfMessage.UPDATEINFO,ord);
+		ClientUI.chat.accept(data);
+
 		
-			msgFromController.setFill(Color.GREEN);
-			msgFromController.setText("Updated Successfully");
+//			msgFromController.setFill(Color.GREEN);
+//			msgFromController.setText("Updated Successfully");
     }
 
     @FXML
@@ -127,6 +144,7 @@ public class ChangeOrderDetailsController extends AbstractScenes{
     
     @FXML
     void Exit(ActionEvent event) {
+    	ChatClient.order = new Order();
     	switchScenes("/client/boundaries/Existing Order.fxml", "Existing Order");
     }
     
@@ -176,7 +194,6 @@ public class ChangeOrderDetailsController extends AbstractScenes{
         return localDate;
     }
 
-    @FXML
     public void initialize(URL location, ResourceBundle resources) {
     	instance=this;
     	ord= OrderManagementController.instance.ord;

@@ -28,6 +28,10 @@ public class Order implements Serializable{
 		this.ID=ID;
 	}
 	
+	public Order() {
+		
+	}
+	
 	public String getID() {
 		return ID;
 	}

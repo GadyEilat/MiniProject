@@ -17,7 +17,7 @@ import javafx.scene.text.Text;
 
 public class ExistingOrderController extends AbstractScenes{
 
-	public static Order order = new Order(null,null,null,null,null,null, null, null);
+	public Order order = new Order(null,null,null,null,null,null, null, null);
 	public static String recievedOrderNum= null;	
 	    
     @FXML
@@ -46,6 +46,9 @@ public class ExistingOrderController extends AbstractScenes{
     	switchScenes("/client/boundaries/Travelers.fxml", "Travelers");
     }
 
+    public void wasCanceled() {
+    	switchScenes("/client/boundaries/Travelers.fxml", "Travelers");
+    }
     public void notFound() {
 
 		msgFromController.setText("Order Number Not Found");
@@ -66,14 +69,11 @@ public class ExistingOrderController extends AbstractScenes{
 		}
 		else { //send to server and check the order number? (FIX)
 			order.setOrderNumber(OrderNum);
-			System.out.println(order.getOrderNumber());
-			DataTransfer data = new DataTransfer(TypeOfMessage.GET_ORDER,order);
+			DataTransfer data = new DataTransfer(TypeOfMessage.GET_INFO,order);
 			ClientUI.chat.accept(data);
-			//ClientUI.chat.accept(order);
 		}
     }
 
-    @FXML
     public void initialize(URL location, ResourceBundle resources) {
     	instance=this;
     }

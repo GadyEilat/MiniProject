@@ -231,6 +231,19 @@ public static boolean updateDBOrders(Object updatedTourOrder) {
 		return false;
 	}
 	
+	public static boolean deleteFromDB(String msg) {
+		if (conn != null) {
+			try {
+				Statement st = conn.createStatement();
+				st.executeUpdate(msg);
+				return true;
+			} catch (SQLException e) {
+				e.printStackTrace();
+				return false;
+			}
+		}
+	return false;
+	}
 	
 	
 	public static String generateRandomChars(String candidateChars, int length) {
@@ -317,15 +330,3 @@ public static boolean updateDBOrders(Object updatedTourOrder) {
 	
 
 }
-
-
-
-
-
-
-
-
-
-
-
-

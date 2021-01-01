@@ -39,7 +39,7 @@
                                     <Font name="System Bold Italic" size="24.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="44.0" layoutY="406.0" text="Menu">
+                              <Label layoutX="44.0" layoutY="402.0" text="Menu">
                                  <font>
                                     <Font size="11.0" />
                                  </font>
@@ -65,7 +65,7 @@
                   <Font size="18.0" />
                </font>
             </Text>
-            <ImageView fitHeight="106.0" fitWidth="155.0" layoutY="1.0">
+            <ImageView fitHeight="106.0" fitWidth="155.0" layoutY="1.0" AnchorPane.leftAnchor="6.0" AnchorPane.topAnchor="7.0">
                <image>
                   <Image url="@../../../res/LOGONATURE.png" />
                </image>
