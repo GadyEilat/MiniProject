@@ -11,7 +11,11 @@ public class maxVis implements Serializable {
 	
 	private String Date;
 	private String visitorsInOrder;
-	private String MaxVisitors;
+	private String Park;
+	private int Allowed1;
+	private int Allowed2;
+	private String Time;
+	private int maxTime;
 	
 	
 	
@@ -23,13 +27,29 @@ public class maxVis implements Serializable {
 	
 	@Override
 	public String toString() {
-		return "maxVis [Date=" + Date + ", visitorsInOrder=" + visitorsInOrder + ", MaxVisitors=" + MaxVisitors + "]";
+		return "maxVis [Date=" + Date + ", visitorsInOrder=" + visitorsInOrder + ", MaxVisitors=" + Park + "]";
 	}
-	public maxVis(String date, String visitorsInOrder, String maxVisitors) {
+	public maxVis(String date, String visitorsInOrder, String park, int allowed1, int allowed2, String time, int maxtime) {
 		//super();
 		this.Date = date;
 		this.visitorsInOrder = visitorsInOrder;
-		this.MaxVisitors = maxVisitors;
+		this.Park = park;
+		this.Allowed1= allowed1;
+		this.Allowed2= allowed2;
+		this.Time= time;
+		this.maxTime=maxtime;
+	}
+	public int getAllowed1() {
+		return Allowed1;
+	}
+	public int getAllowed2() {
+		return Allowed2;
+	}
+	public void setAllowed1(int allowed1) {
+		Allowed1 = allowed1;
+	}
+	public void setAllowed2(int allowed2) {
+		Allowed2 = allowed2;
 	}
 	public String getDate() {
 		return Date;
@@ -37,8 +57,8 @@ public class maxVis implements Serializable {
 	public String getVisitorsInOrder() {
 		return visitorsInOrder;
 	}
-	public String getMaxVisitors() {
-		return MaxVisitors;
+	public String getPark() {
+		return Park;
 	}
 	public void setDate(String date) {
 		Date = date;
@@ -46,9 +66,25 @@ public class maxVis implements Serializable {
 	public void setVisitorsInOrder(String visitorsInOrder) {
 		this.visitorsInOrder = visitorsInOrder;
 	}
-	public void setMaxVisitors(String maxVisitors) {
-		MaxVisitors = maxVisitors;
+	public void setPark(String park) {
+		Park = park;
 	}
+	
+	public String getTime() {
+		return Time;
+	}
+	public void setTime(String time) {
+		Time = time;
+	}
+	public int getMaxTime() {
+		return maxTime;
+	}
+	public void setMaxTime(int maxTime) {
+		this.maxTime = maxTime;
+	}
+	
+	
+	
 	
 
 }

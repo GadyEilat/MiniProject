@@ -42,20 +42,17 @@
                   </HBox>
                </children>
             </VBox>
-            <Label layoutX="43.0" layoutY="448.0" text="Menu">
+            <Label layoutX="29.0" layoutY="431.0" text="Menu">
                <font>
                   <Font size="11.0" />
                </font>
             </Label>
-            <Button fx:id="backButton" layoutX="33.0" layoutY="464.0" mnemonicParsing="false" onAction="#backButton" prefHeight="31.0" prefWidth="48.0" style="-fx-border-radius: 20;">
-               <graphic>
-                  <ImageView fx:id="BackButton1" fitHeight="29.0" fitWidth="26.0" onMouseClicked="#backButton">
-                     <image>
-                        <Image url="@../../../res/return-button-icon.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
+            <Button fx:id="backButton" layoutX="19.0" layoutY="445.0" mnemonicParsing="false" onAction="#backButton" prefHeight="31.0" prefWidth="48.0" style="-fx-border-radius: 20;" AnchorPane.bottomAnchor="19.0" AnchorPane.leftAnchor="19.0" />
+            <ImageView fx:id="BackButton1" fitHeight="29.0" fitWidth="26.0" layoutX="32.0" layoutY="456.0" onMouseClicked="#backButton">
+               <image>
+                  <Image url="@../../../res/return-button-icon.png" />
+               </image>
+            </ImageView>
          </children>
       </AnchorPane>
    </center>
