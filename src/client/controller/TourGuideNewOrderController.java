@@ -255,7 +255,7 @@ public class TourGuideNewOrderController extends AbstractScenes {
            	if(thereIsSpot) {
            	//System.out.print(thereIsSpot);
 	    	//ClientUI.chat.accept(data);
-	    	switchScenes("/client/boundaries/TourGuidePayment.fxml", "GoNature Enter");
+	    	switchScenes("/client/boundaries/TourGuideOrderSuccssed.fxml", "GoNature Enter");
 			System.out.println("Order Updated Successfully");
            	}
            	else {
