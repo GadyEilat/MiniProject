@@ -66,7 +66,7 @@ public class TravelersOrderSController extends AbstractScenes {
     public static TravelersOrderSController instance;
     @FXML
     void LogOutButton(ActionEvent event) {
-
+    	switchScenes("/client/boundaries/main.fxml", "GoNature");
     }
 
     @FXML

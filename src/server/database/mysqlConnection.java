@@ -101,12 +101,13 @@ public class mysqlConnection {
 			String nameOnOrder=order.getNameOnOrder();
 			String upOrderNum= generateRandomChars("123456789", 5);
 			String upTourGroupString= "False";
+			String insID=order.getID();
 			order.setOrderNumber(upOrderNum);
 	
 			if (conn != null) {
 				try {
 					
-					String sql = "INSERT INTO orders (Park, Time, Date, NumOfVisitors, Email,orderNumber,NameOnOrder, TourGroup )" + " values ( ?, ?, ?, ?, ?, ?, ?, ?)";
+					String sql = "INSERT INTO orders (Park, Time, Date, NumOfVisitors, Email,orderNumber,NameOnOrder, TourGroup, ID )" + " values ( ?, ?, ?, ?, ?, ?, ?, ?,?)";
 					PreparedStatement preparedStmt = conn.prepareStatement(sql);
 				      preparedStmt.setString (1, upPark);
 				      preparedStmt.setString (2, upTime);
@@ -116,6 +117,7 @@ public class mysqlConnection {
 				      preparedStmt.setString (6, upOrderNum);
 				      preparedStmt.setString (7, nameOnOrder);
 				      preparedStmt.setString (8, upTourGroupString);
+				      preparedStmt.setString (9, insID);
 				      preparedStmt.execute();
 				      
 				      //conn.close();

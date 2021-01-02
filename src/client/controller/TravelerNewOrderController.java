@@ -2,6 +2,7 @@ package client.controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -36,67 +37,68 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 
-public class TravelerNewOrderController extends AbstractScenes{	
-	public Order TravelerOrder = new Order(null,null,null,null,null,null,null, null);
-    @FXML
-    private ResourceBundle resources;
+public class TravelerNewOrderController extends AbstractScenes {
+	public Order TravelerOrder = new Order(null, null, null, null, null, null, null, null);
+	public String newTravelerID = null;
+	@FXML
+	private ResourceBundle resources;
 
-    @FXML
-    private URL location;
+	@FXML
+	private URL location;
 
-    @FXML
-    private TextField enterEmail;
+	@FXML
+	private TextField enterEmail;
 
-    @FXML
-    private Button continueToPayBtn;
+	@FXML
+	private Button continueToPayBtn;
 
-    @FXML
-    private Button waitingListTourBtn;
+	@FXML
+	private Button waitingListTourBtn;
 
-    @FXML
-    private ComboBox<String> numVisitorsBtn;
+	@FXML
+	private ComboBox<String> numVisitorsBtn;
 
-    @FXML
-    private ComboBox<String> parkNameBtn;
+	@FXML
+	private ComboBox<String> parkNameBtn;
 
-    @FXML
-    private ComboBox<String> chooseTime;
+	@FXML
+	private ComboBox<String> chooseTime;
 
-    @FXML
-    private DatePicker chooseDayBtn;
+	@FXML
+	private DatePicker chooseDayBtn;
 
-    @FXML
-    private Button backBtn;
+	@FXML
+	private Button backBtn;
 
-    @FXML
-    private Text errorEmail;
-    
-    @FXML
-    private TextField firstName;
+	@FXML
+	private Text errorEmail;
 
-    @FXML
-    private Button LogOutBtn;
+	@FXML
+	private TextField firstName;
 
-    public static TravelerNewOrderController instance;
-    ObservableList<String> list,list2,list3;
-    
-    public void notFound() {
-    	errorEmail.setText("Error! cannot create Order");
+	@FXML
+	private Button LogOutBtn;
+
+	public static TravelerNewOrderController instance;
+	ObservableList<String> list, list2, list3;
+
+	public void notFound() {
+		errorEmail.setText("Error! cannot create Order");
 	}
+
 	public void isFound() {
 		switchScenes("/client/boundaries/TravelerOrderSuccess.fxml", "Order Success");
-		
+
 	}
-    
-    private void setTimeComboBox() {
-		ArrayList<String> al = new ArrayList<String>();	
+
+	private void setTimeComboBox() {
+		ArrayList<String> al = new ArrayList<String>();
 		al.add("8:00");
 		al.add("9:00");
 		al.add("10:00");
@@ -109,17 +111,18 @@ public class TravelerNewOrderController extends AbstractScenes{
 		list = FXCollections.observableArrayList(al);
 		chooseTime.setItems(list);
 	}
-    private void setParkComboBox() {
-		ArrayList<String> a2 = new ArrayList<String>();	
+
+	private void setParkComboBox() {
+		ArrayList<String> a2 = new ArrayList<String>();
 		a2.add("Park1");
 		a2.add("Park2");
 		a2.add("Park3");
 		list2 = FXCollections.observableArrayList(a2);
 		parkNameBtn.setItems(list2);
 	}
-    
-    private void setNumOfVisitorsComboBox() {
-		ArrayList<String> a3 = new ArrayList<String>();	
+
+	private void setNumOfVisitorsComboBox() {
+		ArrayList<String> a3 = new ArrayList<String>();
 		a3.add("1");
 		a3.add("2");
 		a3.add("3");
@@ -130,91 +133,98 @@ public class TravelerNewOrderController extends AbstractScenes{
 		a3.add("8");
 		a3.add("9");
 		a3.add("10");
-	
+
 		list3 = FXCollections.observableArrayList(a3);
 		numVisitorsBtn.setItems(list3);
 	}
-    
-    
-    
-   
-    
-    @FXML
-    void LogOutButton(ActionEvent event) {
-    	switchScenes("/client/boundaries/Travelers.fxml", "");
-    }
 
-    @FXML
-    void backButton(ActionEvent event) {
-    	switchScenes("/client/boundaries/RegularTraveler.fxml", "");
-    }
-
-    @FXML
-    void chooseDayButton(ActionEvent event) {
-
-    }
-
-    @FXML
-    void continueToPayButton(ActionEvent event) {
-    	String orderPark =parkNameBtn.getSelectionModel().getSelectedItem().toString();
-    	String orderDate = chooseDayBtn.getValue().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
-    	String ordeTime = chooseTime.getSelectionModel().getSelectedItem().toString();
-    	String orderNumOfVisitors = numVisitorsBtn.getSelectionModel().getSelectedItem().toString();
-    	String orderEmail = (enterEmail.getText());
-    	String orderName = (firstName.getText());
-    	if(validate(orderEmail))
-    	{
-    		TravelerOrder.setParkName(orderPark);
-        	TravelerOrder.setDate(orderDate);
-        	TravelerOrder.setHour(ordeTime);
-        	TravelerOrder.setNumOfVisitors(orderNumOfVisitors);
-        	TravelerOrder.setEmail(orderEmail);
-        	TravelerOrder.setNameOnOrder(orderName);
-        	
-			DataTransfer data = new DataTransfer(TypeOfMessage.NEW_ORDER,TravelerOrder);
-			ClientUI.chat.accept(data);
-        	
-        	System.out.println("Order Updated Successfully");
-        	
-        //	switchScenes("/client/boundaries/TravelerOrderSuccess.fxml", "");
-    	}
-    	else {
-    		errorEmail.setText("You must enter a valid Email");
-		}
-    	
-    	
-    }
-
-    @FXML
-    void numVisitorsButton(ActionEvent event) {
-
-    }
-
-    @FXML
-    void parkNameButton(ActionEvent event) {
-
-    }
-
-    @FXML
-    void waitingListTourButton(ActionEvent event) {
-    	System.out.print("Entered waiting list sucssesfully");
-    }
-//Checking if it's a valid Email
-    public static final Pattern VALID_EMAIL_ADDRESS_REGEX = 
-    	    Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
-
-    public static boolean validate(String emailStr) {
-    	        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr);
-    	        return matcher.find();
-    	}
-    
-    @Override
-	public void initialize(URL location, ResourceBundle resources) {
-    	instance=this;
-    	setTimeComboBox();
-    	setParkComboBox();
-    	setNumOfVisitorsComboBox();
+	@FXML
+	void LogOutButton(ActionEvent event) {
+		switchScenes("/client/boundaries/Travelers.fxml", "");
 	}
+
+	@FXML
+	void backButton(ActionEvent event) {
+		switchScenes("/client/boundaries/RegularTraveler.fxml", "");
+	}
+
+	@FXML
+	void chooseDayButton(ActionEvent event) {
+
+	}
+
+	@FXML
+	void continueToPayButton(ActionEvent event) {
+		String orderPark = parkNameBtn.getSelectionModel().getSelectedItem().toString();
+		String orderDate = chooseDayBtn.getValue().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+		String ordeTime = chooseTime.getSelectionModel().getSelectedItem().toString();
+		String orderNumOfVisitors = numVisitorsBtn.getSelectionModel().getSelectedItem().toString();
+		String orderEmail = (enterEmail.getText());
+		String orderName = (firstName.getText());
 	
-    
+		if (java.time.LocalDate.now().isAfter(chooseDayBtn.getValue())) {
+			errorEmail.setText("Invalid Date");
+		} else {
+
+			if (validate(orderEmail)) {
+				TravelerOrder.setParkName(orderPark);
+				TravelerOrder.setDate(orderDate);
+				TravelerOrder.setHour(ordeTime);
+				TravelerOrder.setNumOfVisitors(orderNumOfVisitors);
+				TravelerOrder.setEmail(orderEmail);
+				TravelerOrder.setNameOnOrder(orderName);
+				TravelerOrder.setID(newTravelerID);
+
+				DataTransfer data = new DataTransfer(TypeOfMessage.NEW_ORDER, TravelerOrder);
+				ClientUI.chat.accept(data);
+
+				System.out.println("Order Updated Successfully");
+
+				// switchScenes("/client/boundaries/TravelerOrderSuccess.fxml", "");
+			} else {
+				errorEmail.setText("You must enter a valid Email");
+			}
+		}
+
+	}
+
+	@FXML
+	void numVisitorsButton(ActionEvent event) {
+
+	}
+
+	@FXML
+	void parkNameButton(ActionEvent event) {
+
+	}
+
+	@FXML
+	void waitingListTourButton(ActionEvent event) {
+		System.out.print("Entered waiting list sucssesfully");
+	}
+
+//Checking if it's a valid Email
+	public static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$",
+			Pattern.CASE_INSENSITIVE);
+
+	public static boolean validate(String emailStr) {
+		Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr);
+		return matcher.find();
+	}
+
+	public static final LocalDate LOCAL_DATE(String dateString) { // method for dealing with dates.
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		LocalDate localDate = LocalDate.parse(dateString, formatter);
+		return localDate;
+	}
+
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		instance = this;
+		newTravelerID = RegularTravelerController.instance.ID;
+		setTimeComboBox();
+		setParkComboBox();
+		setNumOfVisitorsComboBox();
+	}
+
 }

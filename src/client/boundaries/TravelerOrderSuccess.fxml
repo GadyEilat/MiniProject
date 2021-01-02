@@ -24,13 +24,13 @@
                            <children>
                               <Label layoutX="99.0" layoutY="61.0" text="Order number" />
                               <Label layoutX="146.0" layoutY="103.0" text="Date" />
-                              <TextField fx:id="dateText" layoutX="187.0" layoutY="98.0" />
+                              <TextField fx:id="dateText" editable="false" layoutX="187.0" layoutY="98.0" />
                               <Label layoutX="105.0" layoutY="14.0" text="Congratulations your order is complete!">
                                  <font>
                                     <Font name="System Bold" size="15.0" />
                                  </font>
                               </Label>
-                              <TextField fx:id="OrderNumber" layoutX="187.0" layoutY="57.0" />
+                              <TextField fx:id="OrderNumber" editable="false" layoutX="187.0" layoutY="57.0" />
                            </children>
                         </AnchorPane>
                      </children>
