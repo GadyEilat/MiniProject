@@ -40,7 +40,7 @@ import javafx.scene.control.Button;
 
 public class TravelersOrderSController extends AbstractScenes {
 	
-	public Order OrderSuccess = new Order(null,null,null,null,null,null,null);
+	public Order OrderSuccess = new Order(null,null,null,null,null,null,null,null);
 
     @FXML
     private ResourceBundle resources;

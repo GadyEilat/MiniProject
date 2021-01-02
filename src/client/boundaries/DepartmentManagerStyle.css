@@ -18,9 +18,15 @@
 #btnCancelOfMaxVisitors{
 	-fx-background-color: RED;	
 }
+#btnCancelOfMaxHours {
+	-fx-background-color: RED;	
+}
 #btnCancelOfDiscountt:hover {
 	-fx-background-color: #cc2323;	
 }
 #btnCancelOfMaxVisitors:hover {
+	-fx-background-color: #cc2323;	
+}
+#btnCancelOfMaxHours:hover {
 	-fx-background-color: #cc2323;	
 }

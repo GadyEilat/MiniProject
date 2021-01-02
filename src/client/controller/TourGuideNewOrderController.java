@@ -7,6 +7,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.JOptionPane;
 
@@ -15,6 +17,9 @@ import client.ClientUI;
 import client.logic.TourGuide;
 import client.logic.TourGuideOrder;
 import client.logic.Visitor;
+import client.logic.maxVis;
+import common.DataTransfer;
+import common.TypeOfMessage;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -44,8 +49,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 public class TourGuideNewOrderController extends AbstractScenes {
 	TourGuide tourguide;
-	static TourGuideOrder tourguideorderr = new TourGuideOrder(null,null,null,null,null,null,null);
+	static TourGuideOrder tourguideorderr = new TourGuideOrder(null,null,null,null,null,null,null,null);
 	private TourGuideOrderSController targetObj=null;
+	public static TourGuideNewOrderController instance;
 	
 	    @FXML 
 	    private ResourceBundle resources;
@@ -82,6 +88,9 @@ public class TourGuideNewOrderController extends AbstractScenes {
 
 	    @FXML
 	    private Button LogOutBtn;
+	    
+	    @FXML
+	    private TextField getIDTourOrder;
 
 	    @FXML
 	    private Button updateDetalisGuideBtn;
@@ -113,8 +122,14 @@ public class TourGuideNewOrderController extends AbstractScenes {
 	    
 	    private void setTimeComboBox() {
 			ArrayList<String> al = new ArrayList<String>();	
-			al.add("8:00-12:00");
-			al.add("12:00-16:00");
+			al.add("8:00");
+			al.add("9:00");
+			al.add("10:00");
+			al.add("11:00");
+			al.add("12:00");
+			al.add("13:00");
+			al.add("14:00");
+			al.add("15:00");
 	
 			list = FXCollections.observableArrayList(al);
 			ChooseAnotherName.setItems(list);
@@ -150,7 +165,7 @@ public class TourGuideNewOrderController extends AbstractScenes {
 		}
 	    
 	    
-	    
+	     
 	    public void loadGuide(TourGuide tourguideO) {
 	    	this.tourguide = tourguideO;
 	         this.TourNo.setText(tourguideO.getFname());
@@ -203,8 +218,9 @@ public class TourGuideNewOrderController extends AbstractScenes {
 	    	String orderNumOfVisitors=chooseNumVisitorsBtn.getValue(); 
 	    	String orderEmail = (newOrderGetEmail.getText());
             String nameOnOrder= (NameOnOrder.getText());
-            
-            if(nameOnOrder.trim().isEmpty()||orderDate==null||java.time.LocalDate.now().isAfter(orderDate) ||  orderTime==null || orderNumOfVisitors==null ||orderEmail.trim().isEmpty()   ) {
+            String orderID=(getIDTourOrder.getText());
+            boolean emailT=validate(orderEmail);
+            if(nameOnOrder.trim().isEmpty()||orderDate==null||java.time.LocalDate.now().isAfter(orderDate) ||  orderTime==null || orderNumOfVisitors==null ||orderEmail.trim().isEmpty()||orderID.trim().isEmpty()||emailT==false) {
             	Alert alert = new Alert(AlertType.INFORMATION);
             	alert.setHeaderText(null);
             	alert.setContentText("Fields missing or wrong date");
@@ -223,7 +239,11 @@ public class TourGuideNewOrderController extends AbstractScenes {
 	    	tourguideorderr.setNumOfVisitors(orderNumOfVisitors);
 	    	tourguideorderr.setEmail(orderEmail);
 	    	tourguideorderr.setNameOnOrder(nameOnOrder);
-	    	ClientUI.chat.accept(tourguideorderr);
+	    	tourguideorderr.setID(orderID);
+	    	
+           	DataTransfer data = new DataTransfer(TypeOfMessage.TOURGUIDENEWORDER,tourguideorderr);
+
+	    	ClientUI.chat.accept(data);
 	    	switchScenes("/client/boundaries/TourGuidePayment.fxml", "GoNature Enter");
 			System.out.println("Order Updated Successfully");
             }
@@ -259,14 +279,21 @@ public class TourGuideNewOrderController extends AbstractScenes {
 	    void updateDetalisGuideButton(ActionEvent event) {
 	    	switchScenes("/client/boundaries/TourGuideChangeDetails.fxml", "Change Details");
 	    }
+	    
+	    @FXML
+	    void changeOrder(ActionEvent event) {
+	    	switchScenes("/client/boundaries/Existing Order.fxml", "New Order");
+	    }
 
 	    @FXML
 	    void waitingListTourButton(ActionEvent event) {
+	    	checkDate("t");
             System.out.print("Enterd waiting list sucssesfully");
 	    }
 
 	    @Override
 		public void initialize(URL location, ResourceBundle resources) {
+	    	instance = this;
 	    	loadGuide(ChatClient.tourguide);
 	    	setTimeComboBox();
 	    	setParkComboBox();
@@ -284,23 +311,39 @@ public class TourGuideNewOrderController extends AbstractScenes {
 	    
 	    
 	    
+	    public maxVis checkDate(String s) {
+	    	 maxVis visMax= new maxVis(null, null, null);
+	           	DataTransfer data2 = new DataTransfer(TypeOfMessage.CHECKMAXVIS,visMax);
+		    	ClientUI.chat.accept(data2);
+	    	return visMax;
+	    }
+	    
+	    public void checkDate2(maxVis t) {
+	    	 maxVis visMax= new maxVis(null, null, null);
+		    	visMax.setDate(t.getDate());
+		    	visMax.setMaxVisitors(t.getMaxVisitors());
+		    	visMax.setVisitorsInOrder(t.getVisitorsInOrder());
+		    	System.out.print(visMax.toString());
+	    } 
+	    
+	    
+	    
+	    public static final Pattern VALID_EMAIL_ADDRESS_REGEX = 
+	    	    Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+
+	    	public static boolean validate(String emailStr) {
+	    	        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr);
+	    	        return matcher.find();
+	    	}
 	    
 	    
 	    
 	    
 	    
-//	    @FXML
-//	    void initialize() {
-//	        assert continueToPayBtn != null : "fx:id=\"continueToPayBtn\" was not injected: check your FXML file 'TourGuideNewOrder.fxml'.";
-//	        assert chooseNumVisitorsBtn != null : "fx:id=\"chooseNumVisitorsBtn\" was not injected: check your FXML file 'TourGuideNewOrder.fxml'.";
-//	        assert chooseDayBtn != null : "fx:id=\"chooseDayBtn\" was not injected: check your FXML file 'TourGuideNewOrder.fxml'.";
-//	        assert chooseTimeBtn != null : "fx:id=\"chooseTimeBtn\" was not injected: check your FXML file 'TourGuideNewOrder.fxml'.";
-//	        assert parkNamBtn != null : "fx:id=\"parkNamBtn\" was not injected: check your FXML file 'TourGuideNewOrder.fxml'.";
-//	        assert waitingListTourBtn != null : "fx:id=\"waitingListTourBtn\" was not injected: check your FXML file 'TourGuideNewOrder.fxml'.";
-//	        assert LogOutBtn != null : "fx:id=\"LogOutBtn\" was not injected: check your FXML file 'TourGuideNewOrder.fxml'.";
-//	        assert updateDetalisGuideBtn != null : "fx:id=\"updateDetalisGuideBtn\" was not injected: check your FXML file 'TourGuideNewOrder.fxml'.";
-//	        assert NewOrderBtn != null : "fx:id=\"NewOrderBtn\" was not injected: check your FXML file 'TourGuideNewOrder.fxml'.";
-//	        assert myOrdersBtn != null : "fx:id=\"myOrdersBtn\" was not injected: check your FXML file 'TourGuideNewOrder.fxml'.";
-//
-//	    }
+	    
+	    
+	    
+	    
+	    
+	   
 }

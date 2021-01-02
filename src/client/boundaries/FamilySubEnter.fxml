@@ -27,9 +27,9 @@
                                  </image>
                               </ImageView>
                               <Button fx:id="btnEnter" layoutX="68.0" layoutY="256.0" mnemonicParsing="false" onAction="#checkSubNumAndEnter" text="Enter" />
-                              <TextField fx:id="subNumField" disable="true" layoutX="18.0" layoutY="194.0" prefHeight="25.0" prefWidth="146.0" />
-                              <Text layoutX="36.0" layoutY="174.0" strokeType="OUTSIDE" strokeWidth="0.0" text="subscription number" />
-                              <Text fx:id="msgText" fill="RED" layoutX="17.0" layoutY="244.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="148.13671875" />
+                              <TextField fx:id="subNumField" layoutX="18.0" layoutY="194.0" prefHeight="25.0" prefWidth="146.0" />
+                              <Text layoutX="29.0" layoutY="174.0" strokeType="OUTSIDE" strokeWidth="0.0" text="subscription/id number" />
+                              <Text fx:id="msgText" fill="RED" layoutX="17.0" layoutY="244.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="148.13671875" />
                            </children>
                         </AnchorPane>
                      </children>
@@ -53,6 +53,15 @@
                   <ImageView fx:id="helpButton" fitHeight="35.0" fitWidth="40.0">
                      <image>
                         <Image url="/help-sign-icon.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button fx:id="btnBack" layoutX="31.0" layoutY="32.0" mnemonicParsing="false" onAction="#backToMain">
+               <graphic>
+                  <ImageView fitHeight="35.0" fitWidth="40.0">
+                     <image>
+                        <Image url="@../../../res/return-button-icon.png" />
                      </image>
                   </ImageView>
                </graphic>

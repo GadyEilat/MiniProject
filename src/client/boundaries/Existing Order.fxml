@@ -22,7 +22,7 @@
                      <children>
                         <AnchorPane prefHeight="514.0" prefWidth="793.0">
                            <children>
-                              <Button fx:id="BackBtn" layoutX="21.0" layoutY="459.0" mnemonicParsing="false" onAction="#GoBack" prefHeight="38.0" prefWidth="54.0">
+                              <Button fx:id="BackBtn" layoutX="39.0" layoutY="444.0" mnemonicParsing="false" onAction="#GoBack" prefHeight="31.0" prefWidth="42.0" AnchorPane.bottomAnchor="35.0" AnchorPane.leftAnchor="35.0">
                                  <graphic>
                                     <ImageView fx:id="backBtnImage" fitHeight="32.0" fitWidth="31.0">
                                        <image>
@@ -39,7 +39,7 @@
                                     <Font name="System Bold Italic" size="24.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="33.0" layoutY="443.0" text="Menu">
+                              <Label layoutX="44.0" layoutY="402.0" text="Menu">
                                  <font>
                                     <Font size="11.0" />
                                  </font>
@@ -65,7 +65,7 @@
                   <Font size="18.0" />
                </font>
             </Text>
-            <ImageView fitHeight="89.0" fitWidth="119.0" layoutY="1.0">
+            <ImageView fitHeight="106.0" fitWidth="155.0" layoutY="1.0" AnchorPane.leftAnchor="6.0" AnchorPane.topAnchor="7.0">
                <image>
                   <Image url="@../../../res/LOGONATURE.png" />
                </image>

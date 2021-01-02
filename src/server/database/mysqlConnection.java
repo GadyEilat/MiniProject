@@ -9,11 +9,14 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import client.logic.Order;
 import client.logic.TourGuide;
 import client.logic.TourGuideOrder;
 import client.logic.Visitor;
+import client.logic.maxVis;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import server.Controller.ServerController;
@@ -29,7 +32,12 @@ public class mysqlConnection {
 		}
 
 		try {
+//			conn = DriverManager.getConnection("jdbc:mysql://localhost/gonature?serverTimezone=IST", "root","ha89kha89k");
+
+//			conn = DriverManager.getConnection("jdbc:mysql://localhost/gonature?serverTimezone=IST", "root","Liran159357!");
 			conn = DriverManager.getConnection("jdbc:mysql://localhost/gonature?serverTimezone=IST", "root","Aa123456");
+//			conn = DriverManager.getConnection("jdbc:mysql://localhost/gonature?serverTimezone=IST", "root","DA123456");
+
 			ServerController.instance.displayMsg("SQL connection succeed");
 		} catch (SQLException ex) {/* handle any errors */
 			System.out.println("SQLException: " + ex.getMessage());
@@ -51,7 +59,7 @@ public class mysqlConnection {
 		if (msg instanceof Order) //if its an order for Gady's screens.
 		{
 			Order ord = (Order)msg;
-			Order ordInDB = new Order(null,null,null,null,null,null,null);
+			Order ordInDB = new Order(null,null,null,null,null,null,null,null);
 			if (conn != null) {
 				try {
 					Statement st = conn.createStatement();
@@ -137,37 +145,7 @@ public class mysqlConnection {
 		}
 		else
 			sql = (" ");
-//		if (msg instanceof Order) //if its an order for Gady's screens.
-//		{
-//			Order ord = (Order)msg;
-//			
-//			if (conn != null) {
-//				try {
-//					Statement st = conn.createStatement();
-//					String sql = ("SELECT * FROM gonature.orders where OrderNumber = " + ord.getOrderNumber() + ";");
-//					ResultSet rs = st.executeQuery(sql);
-//					ResultSetMetaData metadata = rs.getMetaData();
-//				    //int columnCount = metadata.getColumnCount();
-//					while (rs.next()) {
-//						ord.setParkName(rs.getString(1));
-//						ord.setDate(rs.getString(2));
-//						ord.setHour(rs.getString(3));
-//						ord.setNumOfVisitors(rs.getString(4));
-//						ord.setEmail(rs.getString(5));
-//						//colm 6 tour??
-//						//colm 7 is order number, staying the same.
-//						
-//							
-//					}
-//					//conn.close();
-//					rs.close();
-//					return ord;
-//				} catch (SQLException e) {
-//					e.printStackTrace();
-//				}
-//			
-//			}
-//		}
+
 		if (conn != null) {
 			try {
 				Statement st = conn.createStatement();
@@ -189,31 +167,18 @@ public class mysqlConnection {
 		return null;
 
 	}
-
-	public static boolean updateDB(Object updatedTourGuide) {
-		if (updatedTourGuide instanceof TourGuide) {
-			TourGuide updGuide= (TourGuide)updatedTourGuide;
-			String updEmail=updGuide.getEmail();
-			String upName=updGuide.getFname();
-			String upLName= updGuide.getLname();
-			String upNumber=updGuide.getTeln();
-			//String updID=updGuide.getId();
+	
+	public static boolean updateDB(String msg) {
 			if (conn != null) {
 				try {
-					PreparedStatement query =conn.prepareStatement("UPDATE tourguides SET Name=?, LastName=?, Email=?, phoneNumber=? WHERE ID=?");
-					query.setString(1, upName);
-					query.setString(2, upLName);
-					query.setString(3, updEmail);
-					query.setString(4, upNumber);
-					query.setString(5, updGuide.getId());
-					query.executeUpdate();
+					Statement st = conn.createStatement();
+					st.executeUpdate(msg);
 					return true;
 				} catch (SQLException e) {
 					e.printStackTrace();
 					return false;
 				}
 			}
-		}
 		return false;
 
 	}
@@ -228,12 +193,13 @@ public static boolean updateDBOrders(Object updatedTourOrder) {
 			String upNumOfVisitors=updGuide.getNumOfVisitors();
 			String nameOnOrder=updGuide.getNameOnOrder();
 			String upOrderNum= generateRandomChars("123456789", 5);
+			String tourID=updGuide.getID();
 			//string upOrderNumber=
 			//String updID=updGuide.getId();
 			if (conn != null) {
 				try {
 					
-					String query = " insert into orders (Park, Date, Time, NumOfVisitors, Email,TourGroup,orderNumber,NameOnOrder )"+ " values (?, ?, ?, ?, ?, ?, ?, ?)";
+					String query = " insert into orders (Park, Date, Time, NumOfVisitors, Email,TourGroup,orderNumber,NameOnOrder,ID )"+ " values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 					        
 					PreparedStatement preparedStmt = conn.prepareStatement(query);
 				      preparedStmt.setString (1, upPark);
@@ -244,6 +210,7 @@ public static boolean updateDBOrders(Object updatedTourOrder) {
 				      preparedStmt.setString (6, "True");
 				      preparedStmt.setString (7, upOrderNum);
 				      preparedStmt.setString (8, nameOnOrder);
+				      preparedStmt.setString (9, tourID);
 				      preparedStmt.execute();
 				      
 				      conn.close();
@@ -266,6 +233,19 @@ public static boolean updateDBOrders(Object updatedTourOrder) {
 		return false;
 	}
 	
+	public static boolean deleteFromDB(String msg) {
+		if (conn != null) {
+			try {
+				Statement st = conn.createStatement();
+				st.executeUpdate(msg);
+				return true;
+			} catch (SQLException e) {
+				e.printStackTrace();
+				return false;
+			}
+		}
+	return false;
+	}
 	
 	
 	public static String generateRandomChars(String candidateChars, int length) {
@@ -280,6 +260,7 @@ public static boolean updateDBOrders(Object updatedTourOrder) {
 	}
 	
 	
+
 	
 	
 	
@@ -289,14 +270,14 @@ public static boolean updateDBOrders(Object updatedTourOrder) {
 		ObservableList <Object> oblist=FXCollections.observableArrayList();
         String TourID=(String)msg;
 		try {
-			ResultSet rs= conn.createStatement().executeQuery("select * from orders WHERE NameOnOrder='Zvika'");
+			//ResultSet rs= conn.createStatement().executeQuery("select * from orders WHERE NameOnOrder='Zvika'");
 			
-//			Statement st = conn.createStatement();
-//			String sql = ("SELECT * FROM gonature.orders where NameOnOrder = " + TourID + ";");
-//			ResultSet rs = st.executeQuery(sql);
+			Statement st = conn.createStatement();
+			String sql = ("SELECT * FROM gonature.orders where ID = '" + TourID + "';");
+			ResultSet rs = st.executeQuery(sql);
 			
 			while(rs.next()) {
-				TourGuideOrder newT=new TourGuideOrder(null, null, null, null, null, null, null);
+				TourGuideOrder newT=new TourGuideOrder(null, null, null, null, null, null, null, null);
 				newT.setParkName(rs.getString(1));
 				newT.setTime(rs.getString(2));
 				newT.setDate(rs.getString(3));
@@ -322,16 +303,32 @@ public static boolean updateDBOrders(Object updatedTourOrder) {
 		return null;
 }
 
+	
+	
+	
+	public static maxVis checkMaxVisitors(Object msg) {
+		String date=(String)msg;
+		maxVis maxNum= new maxVis(null, null, null);
+		try {
+			//ResultSet rs= conn.createStatement().executeQuery("SELECT COUNT (Date) FROM orders Where Date='2020-12-31'");
+				ResultSet rs= conn.createStatement().executeQuery("select * from maxvisitors WHERE Date='" + date + "';");
+
+			while(rs.next()) {
+				maxNum.setDate(rs.getString(1));
+				maxNum.setVisitorsInOrder(rs.getString(2));
+				maxNum.setMaxVisitors(rs.getString(3));
+				
+			}
+		rs.close();
+		return maxNum;
+		
+	}
+		catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}		
+		return null;
+	}
+	
+
 }
-
-
-
-
-
-
-
-
-
-
-
-

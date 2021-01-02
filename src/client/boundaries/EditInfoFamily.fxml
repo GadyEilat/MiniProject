@@ -13,7 +13,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane prefHeight="600.0" prefWidth="800.0" stylesheets="@DepartmentManagerStyle.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane prefHeight="600.0" prefWidth="800.0" stylesheets="@DepartmentManagerStyle.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.SubscriptionEditController">
    <center>
       <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0">
          <children>
@@ -34,7 +34,7 @@
                               <Text layoutX="15.0" layoutY="112.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ID Number" />
                               <Text layoutX="15.0" layoutY="156.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Telephone" />
                               <Text layoutX="15.0" layoutY="207.0" strokeType="OUTSIDE" strokeWidth="0.0" text="E-mail" />
-                              <Text layoutX="14.0" layoutY="256.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Famaly Members" />
+                              <Text layoutX="14.0" layoutY="256.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Family Members" />
                               <ComboBox fx:id="familyNumberField" layoutX="133.0" layoutY="241.0" prefHeight="25.0" prefWidth="146.0" promptText="Number of Famaly Members" />
                               <Text layoutX="15.0" layoutY="304.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Credit Card Number" />
                               <TextField fx:id="credit4Digit3" layoutX="258.0" layoutY="288.0" prefHeight="25.0" prefWidth="48.0" />
@@ -67,6 +67,7 @@
                   <Image url="/LOGONATURE.png" />
                </image>
             </ImageView>
+            <Text fx:id="subNumber" layoutX="205.0" layoutY="85.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="229.33984375" />
          </children>
       </AnchorPane>
    </top>

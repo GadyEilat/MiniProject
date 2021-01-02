@@ -17,6 +17,11 @@ public class DataTransfer implements Serializable{
 		this.typeOfMessage = typeOfMessage;
 		this.object = object;
 	}
+	
+	public DataTransfer(TypeOfMessageReturn typeOfMessageReturn, Object object) {
+		this.typeOfMessageReturn = typeOfMessageReturn;
+		this.object = object;
+	}
 
 	public TypeOfMessageReturn getTypeOfMessageReturn() {
 		return typeOfMessageReturn;
@@ -26,10 +31,7 @@ public class DataTransfer implements Serializable{
 		this.typeOfMessageReturn = typeOfMessageReturn;
 	}
 
-	public DataTransfer(TypeOfMessageReturn typeOfMessageReturn, Object object) {
-		this.typeOfMessageReturn = typeOfMessageReturn;
-		this.object = object;
-	}
+
 
 	public TypeOfMessage getTypeOfMessage() {
 		return typeOfMessage;

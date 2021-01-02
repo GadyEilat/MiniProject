@@ -1,4 +1,5 @@
 package client.controller;
+import java.io.IOException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -7,12 +8,18 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.ResourceBundle;
 
+import client.ChatClient;
 import client.ClientUI;
 import client.logic.Order;
+import common.DataTransfer;
+import common.TypeOfMessage;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -21,19 +28,19 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 public class ChangeOrderDetailsController extends AbstractScenes{
-	public Order ord = new Order(null,null,null,null,null,null,null);
+	public Order ord = new Order(null,null,null,null,null,null,null,null);
 	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+	public int wasCanceled = 0; //a flag for telling if you canceled the order.
 	
     @FXML
     private ResourceBundle resources;
 
     @FXML
     private Text msgFromController;
-    
-    @FXML
-    private TextField amountOfVisitorsTxt;
     
     @FXML
     private Text helloTxt;
@@ -51,8 +58,11 @@ public class ChangeOrderDetailsController extends AbstractScenes{
     private Button btnLogout;
     
     @FXML
-    private TextField timeTxt;
+    private ComboBox<String> timeComboBox;
 
+    @FXML
+    private ComboBox<String> amountOfVisitorsComboBox;
+    
     @FXML
     private DatePicker datePicker;
 
@@ -76,26 +86,58 @@ public class ChangeOrderDetailsController extends AbstractScenes{
 
     public static ChangeOrderDetailsController instance;
     ObservableList<String> list;
+    ObservableList<String> list2;
+    ObservableList<String> list3;
+  
+    public void updated()
+    {
+    	msgFromController.setFill(Color.GREEN);
+		msgFromController.setText("Updated Successfully");
+    }
+    
+    public void notUpdated()
+    {
+    	msgFromController.setFill(Color.RED);
+		msgFromController.setText("Couldn't update");
+    }
     
     @FXML
     void Apply(ActionEvent event) {
-    	//Save Changes to Order Details in DB --> Fix.
-    	String time = timeTxt.getText();
-		if (time.trim().isEmpty()) {
-			msgFromController.setFill(Color.RED);
-			msgFromController.setText("Please enter a time");
-		}
-		else
-		{
-			//actually check in DB whatever needed.
-			msgFromController.setFill(Color.GREEN);
-			msgFromController.setText("Updated Successfully");
-		}
+    	ord.setNumOfVisitors(amountOfVisitorsComboBox.getSelectionModel().getSelectedItem());
+    	String save = OrderManagementController.instance.ord.getDate();
+    	ord.setDate(datePicker.getValue().toString());
+    	if (java.time.LocalDate.now().isAfter(datePicker.getValue())) {
+    		msgFromController.setText("Invalid Date");
+    		ord.setDate(save);
+    		datePicker.setValue(LOCAL_DATE(save));
+    	}
+    	else {
+    	ord.setNumOfVisitors(amountOfVisitorsComboBox.getSelectionModel().getSelectedItem());
+    	ord.setHour(timeComboBox.getSelectionModel().getSelectedItem());
+    	ord.setParkName(parkComboBox.getSelectionModel().getSelectedItem());
+    	DataTransfer data = new DataTransfer(TypeOfMessage.UPDATEINFO,ord);
+		ClientUI.chat.accept(data);
+    	}
+
+		
+//			msgFromController.setFill(Color.GREEN);
+//			msgFromController.setText("Updated Successfully");
     }
 
     @FXML
-    void CancelOrder(ActionEvent event) {
-    	switchScenes("/client/boundaries/Cancel Confirmation.fxml", "Cancel Confirmation");
+    void CancelOrder(ActionEvent event) throws IOException{
+		Stage helpWindow = new Stage();
+		FXMLLoader fxmlLoad = new FXMLLoader(getClass().getResource("/client/boundaries/Cancel Confirmation.fxml"));
+		Parent current = fxmlLoad.load();
+		helpWindow.initModality(Modality.APPLICATION_MODAL);
+		helpWindow.setTitle("Cancel Confirmation");
+		Scene scene = new Scene(current);
+		helpWindow.setMinHeight(230);
+		helpWindow.setMinWidth(350);
+		helpWindow.setMaxHeight(230);
+		helpWindow.setMaxWidth(350);
+		helpWindow.setScene(scene);
+		helpWindow.showAndWait();
     }
 
     @FXML
@@ -110,6 +152,7 @@ public class ChangeOrderDetailsController extends AbstractScenes{
     
     @FXML
     void Exit(ActionEvent event) {
+    	ChatClient.order = new Order();
     	switchScenes("/client/boundaries/Existing Order.fxml", "Existing Order");
     }
     
@@ -122,22 +165,54 @@ public class ChangeOrderDetailsController extends AbstractScenes{
 		parkComboBox.setItems(list);
     }
     
+    private void setTimeComboBox() {
+    	ArrayList<String> al2 = new ArrayList<String>();
+    	al2.add("8:00");
+    	al2.add("9:00");
+    	al2.add("10:00");
+    	al2.add("11:00");
+    	al2.add("12:00");
+    	al2.add("13:00");
+    	al2.add("14:00");
+    	al2.add("15:00");
+    	list2=FXCollections.observableArrayList(al2);
+    	timeComboBox.setItems(list2);
+    	
+    }
+    
+    private void setAmountOfVisitorsComboBox() {
+    	ArrayList<String> al3 = new ArrayList<String>();
+    	al3.add("1");
+    	al3.add("2");
+    	al3.add("3");
+    	al3.add("4");
+    	al3.add("5");
+    	al3.add("6");
+    	al3.add("7");
+    	al3.add("8");
+    	al3.add("9");
+    	al3.add("10");
+    	list3=FXCollections.observableArrayList(al3);
+    	amountOfVisitorsComboBox.setItems(list3);
+    }
+    
     public static final LocalDate LOCAL_DATE (String dateString){ //method for dealing with dates.
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate localDate = LocalDate.parse(dateString, formatter);
         return localDate;
     }
 
-    @FXML
     public void initialize(URL location, ResourceBundle resources) {
     	instance=this;
     	ord= OrderManagementController.instance.ord;
     	setParkComboBox(); // call a func above.
     	parkComboBox.getSelectionModel().select(ord.getParkName());
     	orderNumberTxt.setText(ord.getOrderNumber());
-    	amountOfVisitorsTxt.setText(ord.getNumOfVisitors());
+    	setAmountOfVisitorsComboBox(); //call func above
+    	amountOfVisitorsComboBox.getSelectionModel().select(ord.getNumOfVisitors()); 
     	helloTxt.setText("Hello " + ord.getNameOnOrder());
-    	timeTxt.setText(ord.getHour());
+    	setTimeComboBox(); // call func above.
+    	timeComboBox.getSelectionModel().select(ord.getHour());
     	try {
             datePicker.setValue(LOCAL_DATE(ord.getDate()));
         } catch (NullPointerException e) {}

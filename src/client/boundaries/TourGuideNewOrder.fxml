@@ -16,7 +16,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane prefHeight="600.0" prefWidth="800.0" stylesheets="@../../../res/ManagerStyle.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.TourGuideNewOrderController">
+<BorderPane prefHeight="600.0" prefWidth="800.0" stylesheets="@ManagerStyle.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.TourGuideNewOrderController">
    <center>
       <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0">
          <children>
@@ -30,14 +30,14 @@
                               <Label layoutX="89.0" layoutY="103.0" text="Date and time" />
                               <Label layoutX="58.0" layoutY="148.0" text="Number of visitors" />
                               <TextField fx:id="newOrderGetEmail" layoutX="187.0" layoutY="187.0" />
-                              <Button fx:id="continueToPayBtn" layoutX="156.0" layoutY="230.0" mnemonicParsing="false" onAction="#continueToPayButton" style="-fx-background-color: lightgreen;" text="Continue" />
+                              <Button fx:id="continueToPayBtn" layoutX="114.0" layoutY="261.0" mnemonicParsing="false" onAction="#continueToPayButton" text="Continue" />
                               <Label layoutX="208.0" text="New Order">
                                  <font>
                                     <Font name="System Bold" size="15.0" />
                                  </font>
                               </Label>
                               <Label layoutX="136.0" layoutY="192.0" text="Email" />
-                              <Button fx:id="waitingListTourBtn" layoutX="281.0" layoutY="230.0" mnemonicParsing="false" onAction="#waitingListTourButton" style="-fx-background-color: lightblue;" text="Enter waiting list" />
+                              <Button fx:id="waitingListTourBtn" layoutX="299.0" layoutY="261.0" mnemonicParsing="false" onAction="#waitingListTourButton" style="-fx-background-color: lightblue;" text="Enter waiting list" />
                               <DatePicker fx:id="chooseDayBtn" layoutX="288.0" layoutY="98.0" onAction="#chooseDayButton" prefHeight="31.0" prefWidth="130.0" />
                               <ComboBox fx:id="ChooseAnotherName" layoutX="188.0" layoutY="98.0" prefHeight="31.0" prefWidth="91.0" />
                               <ComboBox fx:id="parkNamBtn" layoutX="185.0" layoutY="57.0" onAction="#parkNamButton" prefHeight="31.0" prefWidth="94.0" />
@@ -45,6 +45,8 @@
                               <CheckBox fx:id="isGroupOrder" layoutX="272.0" layoutY="147.0" mnemonicParsing="false" text="Group order" />
                               <Label layoutX="139.0" layoutY="25.0" text="Name" />
                               <TextField fx:id="NameOnOrder" editable="false" layoutX="186.0" layoutY="20.0" />
+                              <Label layoutX="152.0" layoutY="226.0" text="ID" />
+                              <TextField fx:id="getIDTourOrder" layoutX="186.0" layoutY="221.0" />
                                     
                            </children>
                         </AnchorPane>
@@ -57,7 +59,7 @@
                   <Font size="11.0" />
                </font>
             </Label>
-            <Button fx:id="backButton" layoutX="15.0" layoutY="464.0" mnemonicParsing="false" onAction="#backButton" prefHeight="36.0" prefWidth="10.0" style="-fx-border-radius: 20;" stylesheets="@../../../../../../סמסטר%20א%202021/ממשקי%20אדם/מדריך/ManagerStyle.css">
+            <Button fx:id="backButton" layoutX="15.0" layoutY="464.0" mnemonicParsing="false" onAction="#backButton" prefHeight="36.0" prefWidth="10.0" style="-fx-border-radius: 20;">
                <graphic>
                   <ImageView fitHeight="31.0" fitWidth="26.0" onMouseClicked="#backButton">
                      <image>
@@ -99,7 +101,7 @@
                   <Button fx:id="updateDetalisGuideBtn" mnemonicParsing="false" onAction="#updateDetalisGuideButton" prefHeight="90.0" prefWidth="165.0" text="Update personal details" />
                   <Button fx:id="NewOrderBtn" mnemonicParsing="false" onAction="#NewOrderButton" opacity="0.64" prefHeight="90.0" prefWidth="165.0" text="New order" />
                   <Button fx:id="myOrdersBtn" mnemonicParsing="false" onAction="#myOrdersButton" prefHeight="90.0" prefWidth="165.0" text="My orders" />
-                  <Button fx:id="myOrdersBtn1" mnemonicParsing="false" onAction="#myOrdersButton" prefHeight="90.0" prefWidth="165.0" text="Change order" />
+                  <Button fx:id="myOrdersBtn1" mnemonicParsing="false" onAction="#changeOrder" prefHeight="90.0" prefWidth="165.0" text="Change order" />
                </children>
             </VBox>
          </children>

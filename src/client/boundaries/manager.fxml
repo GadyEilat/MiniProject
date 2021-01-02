@@ -41,7 +41,7 @@
    <top>
       <AnchorPane style="-fx-background-color: #c9c4c4;" BorderPane.alignment="CENTER">
          <children>
-            <Text layoutX="206.0" layoutY="63.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hello Liran" wrappingWidth="106.33984375" AnchorPane.leftAnchor="205.0" AnchorPane.topAnchor="42.0">
+            <Text fx:id="managerName" layoutX="206.0" layoutY="63.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hello Liran" wrappingWidth="106.33984375" AnchorPane.leftAnchor="205.0" AnchorPane.topAnchor="42.0">
                <font>
                   <Font size="20.0" />
                </font>

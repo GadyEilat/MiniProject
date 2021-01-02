@@ -3,29 +3,23 @@ package client.controller;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import com.gluonhq.charm.glisten.control.ProgressBar;
-
 import client.ChatClient;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 
-public class DepartmantManagerController extends AbstractScenes{
-	public static DepartmantManagerController instance;
+public class DepartmantManagerReportController extends AbstractScenes{
+	public static DepartmantManagerReportController instance;
 
     @FXML
-    private Text currentNumOfVisitors;
+    private Button btnVisitReport;
     
     @FXML
     private Text departmentManagerName;
-    
-    @FXML
-    private Text MaxOfVisitors;
 
     @FXML
-    private ProgressBar progressBar;
+    private Button btnCancellationReport;
 
     @FXML
     private Button btnLogout;
@@ -38,6 +32,17 @@ public class DepartmantManagerController extends AbstractScenes{
 
     @FXML
     private Button btnApproval;
+
+
+    @FXML
+    void showCacnellationReport(ActionEvent event) {
+
+    }
+    
+    @FXML
+    void showVisitReport(ActionEvent event) {
+
+    }
 
     @FXML
     void logout(ActionEvent event) {
@@ -60,16 +65,10 @@ public class DepartmantManagerController extends AbstractScenes{
 		switchScenes("/client/boundaries/mainDepartmantManager.fxml", "Departmant Manager");
     }
     
-
-	public void updateNumberOfVisitor() {
-		
-	}
-	
 	public void initialize(URL location, ResourceBundle resources) {
 		instance = this;
 		departmentManagerName.setText("Hello " + ChatClient.worker.getWorkerName());
-		MaxOfVisitors.setText(ChatClient.worker.getPark().getMaxVisitors());
-
 	}
+
 
 }
