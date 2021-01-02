@@ -82,7 +82,7 @@
                </font>
             </Text>
             <Button fx:id="LogOutBtn" layoutX="707.0" layoutY="42.0" mnemonicParsing="false" onAction="#LogOutButton" style="-fx-background-color: red;" text="Log Out" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="40.0" />
-            <ImageView fitHeight="82.0" fitWidth="104.0">
+            <ImageView fitHeight="106.0" fitWidth="155.0">
                <image>
                   <Image url="@../../../res/LOGONATURE.png" />
                </image>

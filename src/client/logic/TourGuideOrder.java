@@ -94,6 +94,16 @@ public class TourGuideOrder implements Serializable {
 	public void setNameOnOrder(String nameOnOrder) {
 		this.nameOnOrder = nameOnOrder;
 	}
+
+
+
+
+	@Override
+	public String toString() {
+		return "TourGuideOrder [parkName=" + parkName + ", time=" + time + ", date=" + date + ", NumOfVisitors="
+				+ NumOfVisitors + ", email=" + email + ", orderNumber=" + orderNumber + ", nameOnOrder=" + nameOnOrder
+				+ ", ID=" + ID + "]";
+	}
 	
 	
 }

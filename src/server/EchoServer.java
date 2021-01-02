@@ -12,6 +12,7 @@ import java.util.Vector;
 import client.logic.TourGuide;
 import client.logic.TourGuideOrder;
 import client.logic.Visitor;
+import client.logic.WaitingList;
 import client.logic.maxVis;
 import common.DataTransfer;
 import common.TypeOfMessageReturn;
@@ -128,24 +129,43 @@ public class EchoServer extends AbstractServer {
 			if (object instanceof TourGuideOrder) {
 				boolean ans2 = mysqlConnection.updateDBOrders(object);
 				if (ans2)
-					ServerController.instance.displayMsg("TourGuide details updated");
+					ServerController.instance.displayMsg("Order details updated");
 				else
-					ServerController.instance.displayMsg("TourGuide details could not be updated");
+					ServerController.instance.displayMsg("Order details could not be updated");
 			}
 			break;
 			
+		case TOURGUIDEWAITINGLIST:
+			if (object instanceof WaitingList) {
+				boolean ans2 = mysqlConnection.updateWaitingListTour(object);
+				if (ans2)
+					ServerController.instance.displayMsg("Waitinglist details updated");
+				else
+					ServerController.instance.displayMsg("Waitinglist details could not be updated");
+			}
+			
+			
+			break;
 			
 		case CHECKMAXVIS:
-			if(object instanceof maxVis)
+			if(object instanceof TourGuideOrder)
 			{
-			    Object visMax= new maxVis(null, null, null);
-			      visMax=mysqlConnection.checkMaxVisitors("2020-12-31");
+			    Object visMax= new maxVis(null, null, null, 0 ,0, null, 0);
+			    maxVis t= new maxVis(null, null, null, 0, 0, null, 0);
+			    t.setDate(((TourGuideOrder) object).getDate());
+			    t.setPark(((TourGuideOrder) object).getParkName());
+			    t.setVisitorsInOrder(((TourGuideOrder) object).getNumOfVisitors());
+			    t.setTime(((TourGuideOrder) object).getTime());
+			    
+			    
+			      visMax=mysqlConnection.checkMaxVisitors(t);
 			      
 			      visMax=(Object)visMax;
 			      
 			  	if (visMax != null) {
 					try {
-						client.sendToClient(visMax);
+						returnData = new DataTransfer(TypeOfMessageReturn.TOUR_MAXVISCHECK, visMax);
+						client.sendToClient(returnData);
 
 					} catch (IOException e) {
 						e.printStackTrace();
@@ -172,28 +192,28 @@ public class EchoServer extends AbstractServer {
 //	
 			
 		}
-		if (msg instanceof String) {
-
-			arrOfVisitors = mysqlConnection.getDB(msg);
-			if (arrOfVisitors != null) {
-				try {
-					client.sendToClient(arrOfVisitors);
-					
-				}
-				catch (IOException e) {
-					e.printStackTrace();
-				}
-
-			}
-		}
-	
+//		if (msg instanceof String) {
+//
+//			arrOfVisitors = mysqlConnection.getDB(msg);
+//			if (arrOfVisitors != null) {
+//				try {
+//					client.sendToClient(arrOfVisitors);
+//					
+//				}
+//				catch (IOException e) {
+//					e.printStackTrace();
+//				}
+//
+//			}
+//		}
+//	
 		
 		
 		
 		
 		if(msg instanceof maxVis)
 		{
-		    Object visMax= new maxVis(null, null, null);
+		    Object visMax= new maxVis(null, null, null, 0, 0, null, 0);
 		      visMax=mysqlConnection.checkMaxVisitors("2020-12-31");
 		      
 		      visMax=(Object)visMax;

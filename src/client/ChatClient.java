@@ -25,7 +25,7 @@ public class ChatClient extends AbstractClient {
     public static TourGuide tourguide = new TourGuide(null, null, null, null, null);
     public static TourGuideOrder tourguideorder= new TourGuideOrder(null,null,null,null,null,null,null, null);
     public static ObservableList <TourGuideOrder> oblist=FXCollections.observableArrayList();
-    public static maxVis visMax= new maxVis(null, null, null);
+    public static maxVis visMax= new maxVis(null, null, null, 0, 0, null, 0);
 	ChatIF clientUI;
 	public boolean waitForConnection = false;
 
@@ -79,6 +79,16 @@ public class ChatClient extends AbstractClient {
 			}
 			
 			break;
+		case TOUR_MAXVISCHECK:
+			if (object instanceof maxVis) {
+				visMax=(maxVis)object;
+				System.out.print(visMax.toString());
+				TourGuideNewOrderController.instance.checkDate2(visMax);
+				//TourGuideNewOrderController.instance.checkDate(null, visMax);
+			}
+
+			
+			
 			
 		default:
 			break;
