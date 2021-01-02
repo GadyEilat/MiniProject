@@ -16,6 +16,7 @@ import client.controller.ChangeOrderDetailsController;
 import client.controller.SubscriptionEntryController;
 import client.controller.ClientGUIController;
 import client.controller.TourGuideLoginController;
+import client.controller.TourGuideNewOrderController;
 import client.controller.TravelerNewOrderController;
 import client.controller.WorkerLogin;
 import client.logic.TourGuide;
@@ -59,6 +60,10 @@ public class ChatClient extends AbstractClient {
 			if (object instanceof Subscriber) {
 				SubscriptionEntryController.instance.subscriberNotFound();
 			}
+			if(object instanceof TourGuide) {
+				TourGuideLoginController.instance.notFound();
+			}
+				
 			
 			break;
 		case LOGIN_SUCCESSFUL:
@@ -128,24 +133,14 @@ public class ChatClient extends AbstractClient {
 		case NEWORDER_FAILED:
 			break;
 		case TOUR_DETAILS:
-			if (object instanceof ArrayList<?>) {
+			if (object instanceof TourGuide) {
 				System.out.println("--> handleMessageFromServer");
 				// System.out.println("--> HELLLLOOOOO");
-				waitForConnection = false;
-				ArrayList<String> st;
-				st = (ArrayList<String>) object;
-				if (st.isEmpty())
-					TourGuideLoginController.instance.notFound();
-				else {
-					// TODO: change to c'tor
-					tourguide.setFname(st.get(0));
-					tourguide.setLname(st.get(1));
-					tourguide.setId(st.get(2));
-					tourguide.setEmail(st.get(3));
-					tourguide.setteln(st.get(4));
+				//waitForConnection = false;
+				this.tourguide=(TourGuide)object;
 					TourGuideLoginController.instance.isFound();
 
-				}
+				
 			}
 			break;
 

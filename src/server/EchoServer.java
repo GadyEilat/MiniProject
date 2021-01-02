@@ -279,13 +279,18 @@ public class EchoServer extends AbstractServer {
 			break;
 			
 		case TOURGUIDELOGIN:
-			if (object instanceof String) {
-
-				arrOfVisitors = mysqlConnection.getDB(object);
-				TourID=(String)arrOfVisitors.get(2);
-				if (arrOfVisitors != null) {
+			if (object instanceof TourGuide) {
+				TourGuide tourguide= (TourGuide)object;
+				arrOfAnswer = mysqlConnection.getDB("SELECT * FROM gonature.tourguides where id = '" + tourguide.getId() + "';");
+				TourID=(String)arrOfAnswer.get(2);
+				tourguide.setFname(arrOfAnswer.get(0).toString());
+				tourguide.setLname(arrOfAnswer.get(1).toString());
+				tourguide.setId(arrOfAnswer.get(2).toString());
+				tourguide.setEmail(arrOfAnswer.get(3).toString());
+				tourguide.setteln(arrOfAnswer.get(4).toString());
+				if (!arrOfAnswer.isEmpty()) {
 					try {
-						returnData = new DataTransfer(TypeOfMessageReturn.TOUR_DETAILS,arrOfVisitors);
+						returnData = new DataTransfer(TypeOfMessageReturn.TOUR_DETAILS,tourguide);
 						client.sendToClient(returnData);
 						
 					}
@@ -293,6 +298,15 @@ public class EchoServer extends AbstractServer {
 						e.printStackTrace();
 					}
 
+				}
+				else {
+					returnData = new DataTransfer(TypeOfMessageReturn.LOGIN_FAILED,tourguide);
+					try {
+						client.sendToClient(returnData);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
 			}
 			break;
