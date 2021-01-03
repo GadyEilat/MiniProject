@@ -118,10 +118,6 @@ public class ChangeOrderDetailsController extends AbstractScenes{
     	DataTransfer data = new DataTransfer(TypeOfMessage.UPDATEINFO,ord);
 		ClientUI.chat.accept(data);
     	}
-
-		
-//			msgFromController.setFill(Color.GREEN);
-//			msgFromController.setText("Updated Successfully");
     }
 
     @FXML
