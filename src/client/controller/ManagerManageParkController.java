@@ -117,6 +117,7 @@ public class ManagerManageParkController extends AbstractScenes {
 		managerName.setText("Hello " + ChatClient.worker.getWorkerName());
 		maxVisitorCurrent.setText(ChatClient.worker.getPark().getMaxVisitors());
 		gapForVisitorsCurrent.setText(ChatClient.worker.getPark().getGapOfVisitors());
+		MaxTimeCurrent.setText(ChatClient.worker.getPark().getMaxHourToVisit());
 
 	}
 	

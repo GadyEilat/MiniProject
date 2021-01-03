@@ -31,7 +31,7 @@ public class ManagerController extends AbstractScenes {
 
 	@FXML
 	private ProgressBar progressBar;
-
+    
 	@FXML
 	private Text managerName;
 

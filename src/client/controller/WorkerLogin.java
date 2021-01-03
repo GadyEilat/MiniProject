@@ -28,7 +28,7 @@ public class WorkerLogin extends AbstractScenes {
 	public static WorkerLogin instance;
 
 	@FXML
-	private TextField userNameFeild;
+	private TextField userNameField;
 
 	@FXML
 	private Button LogInButton;
@@ -47,12 +47,12 @@ public class WorkerLogin extends AbstractScenes {
 
 	@FXML
 	void btnReturnToMain(ActionEvent event) {
-		switchScenes("/client/boundaries/main.fxml", "Main Entrance");
+		switchScenes("/client/boundaries/main.fxml", "GoNature");
 	}
 
 	@FXML
 	void checkLogIn(ActionEvent event) {
-		userName = userNameFeild.getText();
+		userName = userNameField.getText();
 		password = passwordField.getText();
 		if (userName.trim().isEmpty()) {
 			msgText.setText("You must enter User Name");

@@ -10,10 +10,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import client.controller.ExistingOrderController;
 import client.controller.ManagerController;
+import client.controller.ManagerDiscountController;
 import client.controller.MyOrdersGuideController;
 import client.controller.OrderManagementController;
 import client.controller.SubscriptionEntryController;
 import client.controller.ClientGUIController;
+import client.controller.DepartmantManagerApproveController;
 import client.controller.TourGuideLoginController;
 import client.controller.TravelerNewOrderController;
 import client.controller.WorkerLogin;
@@ -23,6 +25,7 @@ import client.logic.Visitor;
 import client.logic.maxVis;
 import client.logic.Worker;
 import client.logic.Order;
+import client.logic.ParkInfo;
 import client.logic.Subscriber;
 
 import java.io.*;
@@ -35,9 +38,12 @@ public class ChatClient extends AbstractClient {
 	public static Order order = new Order(null, null, null, null, null, null, null, null);
 	public static TourGuide tourguide = new TourGuide(null, null, null, null, null);
 	public static TourGuideOrder tourguideorder = new TourGuideOrder(null, null, null, null, null, null, null, null);
-    public static Worker worker;
-    public static Subscriber subscriber;
+	public static Worker worker;
+	public static ParkInfo parkInfo;
+	public static Subscriber subscriber;
 	public static ObservableList<TourGuideOrder> oblist = FXCollections.observableArrayList();
+	public static String datesToShow[][];
+	public static String datesToApprveShow[][];
 	ChatIF clientUI;
 	public boolean waitForConnection = false;
 
@@ -51,24 +57,24 @@ public class ChatClient extends AbstractClient {
 		Object object = returnData.getObject();
 		switch (returnData.getTypeOfMessageReturn()) {
 		case LOGIN_FAILED:
-			if(object instanceof Worker) {
+			if (object instanceof Worker) {
 				WorkerLogin.instance.logInAnswerFailed();
 			}
 			if (object instanceof Subscriber) {
 				SubscriptionEntryController.instance.subscriberNotFound();
 			}
-			
+
 			break;
 		case LOGIN_SUCCESSFUL:
-			if(object instanceof Worker) {
-				worker = (Worker)object;
+			if (object instanceof Worker) {
+				worker = (Worker) object;
 				WorkerLogin.instance.checkLogInAnswer(worker);
 			}
 			if (object instanceof Subscriber) {
-				subscriber = (Subscriber)object;
+				subscriber = (Subscriber) object;
 				SubscriptionEntryController.instance.subscriberFound();
-			}		
-			
+			}
+
 			break;
 		case RETURN_ORDER_FAILED:
 			System.out.println("Couldn't recieve details from DB");
@@ -140,9 +146,29 @@ public class ChatClient extends AbstractClient {
 			break;
 		case REQUESTINFO_SUCCESS:
 			if (object instanceof Subscriber) {
-				subscriber = (Subscriber)object;
+				subscriber = (Subscriber) object;
+			}
+			if (object instanceof ParkInfo) {
+				parkInfo = (ParkInfo) object;
+				if (parkInfo.getRole().equals("Manager")) {
+					datesToShow = parkInfo.getDiscountDates();
+					ManagerDiscountController.instance.updateDatePicker();
+				} else if (parkInfo.getRole().equals("Department Manager")) {
+					datesToApprveShow = parkInfo.getDiscountDates();
+					DepartmantManagerApproveController.instance.loadData();
+				}
 			}
 			break;
+		case REQUESTINFO_FAILED:
+			if(object instanceof ParkInfo) {
+				parkInfo = (ParkInfo)object;
+				if (parkInfo.getRole().equals("Manager")) {
+					DepartmantManagerApproveController.instance.notFond();
+				}
+				else if (parkInfo.getRole().equals("Department Manager")) {
+					ManagerDiscountController.instance.notFond();
+				}
+			}
 		default:
 			break;
 		}

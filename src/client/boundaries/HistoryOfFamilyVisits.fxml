@@ -25,9 +25,9 @@
                            <children>
                               <TableView fx:id="tableOfHistory" onSort="#showTableOfHistory" prefHeight="438.0" prefWidth="561.0">
                                  <columns>
-                                    <TableColumn prefWidth="62.0" text="#NUM" />
-                                    <TableColumn prefWidth="200.0" text="Date" />
-                                    <TableColumn prefWidth="153.0" text="Entry Hour" />
+                                    <TableColumn fx:id="col_orderNum" prefWidth="62.0" text="#" />
+                                    <TableColumn fx:id="col_Date" prefWidth="200.0" text="Date" />
+                                    <TableColumn fx:id="col_EntryHour" prefWidth="153.0" text="Entry Hour" />
                                  </columns>
                               </TableView>
                            </children>
