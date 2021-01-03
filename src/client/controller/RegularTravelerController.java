@@ -23,68 +23,64 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 
-public class RegularTravelerController extends AbstractScenes{
+public class RegularTravelerController extends AbstractScenes {
+	public String ID=null;
+	@FXML
+	private ResourceBundle resources;
 
-    @FXML
-    private ResourceBundle resources;
+	@FXML
+	private URL location;
 
-    @FXML
-    private URL location;
+	@FXML
+	private TextField TravelerID;
 
-    @FXML
-    private TextField TravelerID;
+	@FXML
+	private Button NextTravelerID;
 
-    @FXML
-    private Button NextTravelerID;
+	@FXML
+	private Text errorLogin;
 
-    @FXML
-    private Text errorLogin;
+	@FXML
+	private Button backBtn;
 
-    @FXML
-    private Button backBtn;
-
-   
-    public void notFound() {
+	public void notFound() {
 
 		errorLogin.setText("Visitor ID Not Found");
 	}
-    
-    public void isFound(){
-    	//switchScenes("/client/boundaries/TravelerNewOrder.fxml", "");
-	}
-    
-    public static RegularTravelerController instance;
-    public Object gID="4";
-    
-    @FXML
-    void NextTravelerID(ActionEvent event) {
-    	String guideID = TravelerID.getText();
-    	if (guideID.trim().isEmpty()) {
-    		errorLogin.setText("You must enter an ID number");
-    	}
-        else if(guideID.length()==9 && guideID.matches("[0-9]+")){
-//		ClientUI.chat.accept(guideID);
-		switchScenes("/client/boundaries/TravelerNewOrder.fxml", "");
-		}
-        else {
-        	errorLogin.setText("You must enter a valid ID number");
-		}
-    }
 
-    @FXML
-    void backButton(ActionEvent event) {
-    	switchScenes("/client/boundaries/Travelers.fxml", "Traveler");
-    }
-    
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
+	public void isFound() {
+		// switchScenes("/client/boundaries/TravelerNewOrder.fxml", "");
+	}
+
+	public static RegularTravelerController instance;
+	public Object gID = "4";
+
+	@FXML
+	void NextTravelerID(ActionEvent event) {
+		String guideID = TravelerID.getText();
+		if (guideID.trim().isEmpty()) {
+			errorLogin.setText("You must enter an ID number");
+		} else if (guideID.length() == 9 && guideID.matches("[0-9]+")) {
+			ID=guideID;
+			switchScenes("/client/boundaries/TravelerNewOrder.fxml", "New Order");
+		} else {
+			errorLogin.setText("You must enter a valid ID number");
+		}
+	}
+
+	@FXML
+	void backButton(ActionEvent event) {
+		switchScenes("/client/boundaries/Travelers.fxml", "Traveler");
+	}
+
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
 		instance = this;
 	}
 }

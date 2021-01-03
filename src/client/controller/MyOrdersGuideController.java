@@ -127,8 +127,6 @@ ObservableList <TourGuideOrder> oblist=FXCollections.observableArrayList();
        	col_Park.setCellValueFactory(new PropertyValueFactory<TourGuideOrder, String>("parkName"));
       	col_orderNum.setCellValueFactory(new PropertyValueFactory<TourGuideOrder, String>("orderNumber"));
       	col_Date.setCellValueFactory(new PropertyValueFactory<TourGuideOrder, String>("Date"));
-       	
-       	
         //Load dummy data
        //	TableOrders.setItems(getOrder());
       	String guideName=ChatClient.tourguide.getFname();

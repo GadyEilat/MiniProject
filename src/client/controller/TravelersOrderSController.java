@@ -66,7 +66,7 @@ public class TravelersOrderSController extends AbstractScenes {
     public static TravelersOrderSController instance;
     @FXML
     void LogOutButton(ActionEvent event) {
-
+    	switchScenes("/client/boundaries/main.fxml", "GoNature");
     }
 
     @FXML
@@ -81,7 +81,6 @@ public class TravelersOrderSController extends AbstractScenes {
        	helloText.setText("Hello " + OrderSuccess.getNameOnOrder());
        	OrderNumber.setText(OrderSuccess.getOrderNumber());
        	dateText.setText(OrderSuccess.getDate());
-
     }
 }
 

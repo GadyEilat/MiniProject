@@ -7,7 +7,10 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -16,6 +19,7 @@ import client.logic.Order;
 import client.logic.TourGuide;
 import client.logic.TourGuideOrder;
 import client.logic.Visitor;
+import client.logic.WaitingList;
 import client.logic.maxVis;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -23,6 +27,7 @@ import server.Controller.ServerController;
 
 public class mysqlConnection {
 	static Connection conn;
+	//static Connection conn2;
 
 	public static void connectToDB() {
 		try {
@@ -32,10 +37,10 @@ public class mysqlConnection {
 		}
 
 		try {
-//			conn = DriverManager.getConnection("jdbc:mysql://localhost/gonature?serverTimezone=IST", "root","ha89kha89k");
+			conn = DriverManager.getConnection("jdbc:mysql://localhost/gonature?serverTimezone=IST", "root","ha89kha89k");
 
 //			conn = DriverManager.getConnection("jdbc:mysql://localhost/gonature?serverTimezone=IST", "root","Liran159357!");
-			conn = DriverManager.getConnection("jdbc:mysql://localhost/gonature?serverTimezone=IST", "root","Aa123456");
+//			conn = DriverManager.getConnection("jdbc:mysql://localhost/gonature?serverTimezone=IST", "root","Aa123456");
 //			conn = DriverManager.getConnection("jdbc:mysql://localhost/gonature?serverTimezone=IST", "root","DA123456");
 
 			ServerController.instance.displayMsg("SQL connection succeed");
@@ -101,12 +106,13 @@ public class mysqlConnection {
 			String nameOnOrder=order.getNameOnOrder();
 			String upOrderNum= generateRandomChars("123456789", 5);
 			String upTourGroupString= "False";
+			String insID=order.getID();
 			order.setOrderNumber(upOrderNum);
 	
 			if (conn != null) {
 				try {
 					
-					String sql = "INSERT INTO orders (Park, Time, Date, NumOfVisitors, Email,orderNumber,NameOnOrder, TourGroup )" + " values ( ?, ?, ?, ?, ?, ?, ?, ?)";
+					String sql = "INSERT INTO orders (Park, Time, Date, NumOfVisitors, Email,orderNumber,NameOnOrder, TourGroup, ID )" + " values ( ?, ?, ?, ?, ?, ?, ?, ?,?)";
 					PreparedStatement preparedStmt = conn.prepareStatement(sql);
 				      preparedStmt.setString (1, upPark);
 				      preparedStmt.setString (2, upTime);
@@ -116,6 +122,7 @@ public class mysqlConnection {
 				      preparedStmt.setString (6, upOrderNum);
 				      preparedStmt.setString (7, nameOnOrder);
 				      preparedStmt.setString (8, upTourGroupString);
+				      preparedStmt.setString (9, insID);
 				      preparedStmt.execute();
 				      
 				      //conn.close();
@@ -183,6 +190,61 @@ public class mysqlConnection {
 
 	}
 
+	public static boolean updateWaitingListTour(Object updatedWaitingList) {
+		if (updatedWaitingList instanceof WaitingList) {
+			WaitingList updGuide= (WaitingList)updatedWaitingList;
+			String updEmail=updGuide.getEmail();
+			String upPark=updGuide.getParkName();
+			String upDate= updGuide.getDate();
+			String upTime=updGuide.getTime();
+			String upNumOfVisitors=updGuide.getNumOfVisitors();
+			String nameOnOrder=updGuide.getNameOnOrder();
+			String upOrderNum= generateRandomChars("123456789", 5);
+			String tourID=updGuide.getID();
+			String waitingTime=updGuide.getTimeOfEnterence();
+			//string upOrderNumber=
+			//String updID=updGuide.getId();
+			if (conn != null) {
+				try {
+					
+					String query = " insert into waitinglist (Park, Date, Time, NumOfVisitors, Email,TourGroup,orderNumber,NameOnOrder,ID,TimeOfEnterence )"+ " values (?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
+					        
+					PreparedStatement preparedStmt = conn.prepareStatement(query);
+				      preparedStmt.setString (1, upPark);
+				      preparedStmt.setString (2, upDate);
+				      preparedStmt.setString (3, upTime);
+				      preparedStmt.setString (4, upNumOfVisitors);
+				      preparedStmt.setString (5, updEmail);
+				      preparedStmt.setString (6, "True");
+				      preparedStmt.setString (7, upOrderNum);
+				      preparedStmt.setString (8, nameOnOrder);
+				      preparedStmt.setString (9, tourID);
+				      preparedStmt.setString (10, waitingTime);
+				      preparedStmt.execute();
+				      
+				      conn.close();
+					return true;
+				} catch (SQLException e) {
+					e.printStackTrace();
+					return false;
+				}
+			}
+		}
+		return false;
+		
+		
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 public static boolean updateDBOrders(Object updatedTourOrder) {
 		if (updatedTourOrder instanceof TourGuideOrder) {
 			TourGuideOrder updGuide= (TourGuideOrder)updatedTourOrder;
@@ -214,15 +276,6 @@ public static boolean updateDBOrders(Object updatedTourOrder) {
 				      preparedStmt.execute();
 				      
 				      conn.close();
-					//PreparedStatement query =conn.prepareStatement("UPDATE orders SET Park=?, Date=?, Time=?, NumOfVisitors=?, Email=?, TourGroup=? WHERE orderNumber=?");
-					//query.setString(1, upPark);
-					//query.setString(2, upDate);
-					//query.setString(3, upTime);
-					//query.setString(4, upNumOfVisitors);
-					//query.setString(5, updEmail);
-					//query.setString(6, "True");
-					//query.setString(7,"1");
-					//query.executeUpdate();
 					return true;
 				} catch (SQLException e) {
 					e.printStackTrace();
@@ -307,21 +360,46 @@ public static boolean updateDBOrders(Object updatedTourOrder) {
 	
 	
 	public static maxVis checkMaxVisitors(Object msg) {
-		String date=(String)msg;
-		maxVis maxNum= new maxVis(null, null, null);
+		maxVis orderC=(maxVis)msg;
+		maxVis maxNum= new maxVis(null, null, null, 0, 0, null, 0);
 		try {
 			//ResultSet rs= conn.createStatement().executeQuery("SELECT COUNT (Date) FROM orders Where Date='2020-12-31'");
-				ResultSet rs= conn.createStatement().executeQuery("select * from maxvisitors WHERE Date='" + date + "';");
+				ResultSet rs= conn.createStatement().executeQuery("select * from manageparks WHERE numberOfPark='" + orderC.getPark() + "';");
 
 			while(rs.next()) {
-				maxNum.setDate(rs.getString(1));
-				maxNum.setVisitorsInOrder(rs.getString(2));
-				maxNum.setMaxVisitors(rs.getString(3));
-				
+				maxNum.setDate(orderC.getDate());
+				maxNum.setVisitorsInOrder(orderC.getVisitorsInOrder());
+				maxNum.setPark(orderC.getPark());
+				maxNum.setTime(orderC.getTime());
+				maxNum.setAllowed1(Integer.valueOf(rs.getString(2))-Integer.valueOf(rs.getString(3)));
+				maxNum.setMaxTime(Integer.valueOf(rs.getString(4)));
 			}
-		rs.close();
-		return maxNum;
+		//rs.close();
+			String append=":00";
+			String twoLetters=maxNum.getTime(); // Get hour(12:00 example)
+			int loopC= Integer.valueOf(Integer.valueOf(maxNum.getMaxTime())*2);//4*2
+			String hourLoop = twoLetters.substring(0, twoLetters.indexOf(':'));//Seprate till ':'
+			String[] arrS= new String[Integer.valueOf(maxNum.getMaxTime())*2+1]; //Array for check
+			int t=Integer.valueOf(hourLoop)-(loopC/2); // 12-4
+			for(int i=0; i<=loopC; i++) {
+				//int t=loopC/2;
+				arrS[i]=String.valueOf(t)+append;
+				t++;
+			}
+			
+			
+		for(int j=0; j<=loopC; j++) {	
+		Statement stmt3 = conn.createStatement();
+		rs=stmt3.executeQuery("select * from orders WHERE Time='" + arrS[j] + "' AND Date='" + orderC.getDate() + "' AND Park='" + orderC.getPark() + "';");
+		while(rs.next()) {
+			if(rs.getString(4)!=null)
+			maxNum.setAllowed2(Integer.valueOf(rs.getString(4))+maxNum.getAllowed2());
+		}
 		
+		}
+		int xd;
+		rs.close();
+		return maxNum;	
 	}
 		catch (SQLException e) {
 		// TODO Auto-generated catch block
@@ -329,6 +407,8 @@ public static boolean updateDBOrders(Object updatedTourOrder) {
 	}		
 		return null;
 	}
+	
+	
 	
 
 }

@@ -69,7 +69,8 @@ public class TourGuideLoginController extends AbstractScenes {
     		MsgFromController.setText("You must enter an ID number");
     	}
         else {
-           	DataTransfer data = new DataTransfer(TypeOfMessage.TOURGUIDELOGIN,guideID);
+        	TourGuide tourguide= new TourGuide(guideID,null,null,null,null);
+           	DataTransfer data = new DataTransfer(TypeOfMessage.TOURGUIDELOGIN,tourguide);
 	
 		ClientUI.chat.accept(data);
 		//switchScenes("/client/boundaries/TourGuideMainMenu.fxml", "");

@@ -17,7 +17,7 @@
    <bottom>
       <AnchorPane prefHeight="43.0" prefWidth="651.0" BorderPane.alignment="CENTER">
          <children>
-            <Button layoutX="730.0" layoutY="-2.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="48.0" style="-fx-border-radius: 20;">
+            <Button layoutX="730.0" layoutY="-2.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="48.0" style="-fx-border-radius: 20;" AnchorPane.bottomAnchor="35.0" AnchorPane.leftAnchor="35.0">
                <graphic>
                   <ImageView fx:id="BackButton1" fitHeight="35.0" fitWidth="40.0">
                      <image>
@@ -40,12 +40,12 @@
             </Label>
             <Label layoutX="281.0" layoutY="235.0" text="ID" />
             <Button fx:id="LogINGuideBtn" layoutX="370.0" layoutY="297.0" mnemonicParsing="false" onAction="#LogINGuideButton" text="Log in" />
-            <Label layoutX="730.0" layoutY="535.0" text="Main Menu">
+            <Label layoutX="38.0" layoutY="529.0" text="Main Menu">
                <font>
                   <Font size="11.0" />
                </font>
             </Label>
-            <ImageView fitHeight="91.0" fitWidth="123.0" layoutX="21.0" layoutY="14.0">
+            <ImageView fitHeight="106.0" fitWidth="155.0" layoutX="21.0" layoutY="14.0">
                <image>
                   <Image url="@../../../res/LOGONATURE.png" />
                </image>

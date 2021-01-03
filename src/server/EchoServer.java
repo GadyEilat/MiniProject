@@ -7,6 +7,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Vector;
 
+import client.logic.WaitingList;
 import client.ClientUI;
 import client.logic.Order;
 import client.logic.ParkInfo;
@@ -275,6 +276,87 @@ public class EchoServer extends AbstractServer {
 					ServerController.instance.displayMsg("Discount UPDATEINFO_REQUEST details could not be updated");
 
 			}
+			break;
+			
+		case TOURGUIDELOGIN:
+			if (object instanceof TourGuide) {
+				TourGuide tourguide= (TourGuide)object;
+				arrOfAnswer = mysqlConnection.getDB("SELECT * FROM gonature.tourguides where id = '" + tourguide.getId() + "';");
+				TourID=(String)arrOfAnswer.get(2);
+				tourguide.setFname(arrOfAnswer.get(0).toString());
+				tourguide.setLname(arrOfAnswer.get(1).toString());
+				tourguide.setId(arrOfAnswer.get(2).toString());
+				tourguide.setEmail(arrOfAnswer.get(3).toString());
+				tourguide.setteln(arrOfAnswer.get(4).toString());
+				if (!arrOfAnswer.isEmpty()) {
+					try {
+						returnData = new DataTransfer(TypeOfMessageReturn.TOUR_DETAILS,tourguide);
+						client.sendToClient(returnData);
+						
+					}
+					catch (IOException e) {
+						e.printStackTrace();
+					}
+
+				}
+				else {
+					returnData = new DataTransfer(TypeOfMessageReturn.LOGIN_FAILED,tourguide);
+					try {
+						client.sendToClient(returnData);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
+			break;
+			
+			
+			
+		case TOURGETORDERS:
+			if(object instanceof Integer){
+				ObservableList<Object> ans3 = mysqlConnection.getTourGuideOrders(TourID);
+				//DataTransfer data = new DataTransfer(TypeOfMessage.SUCCSESS, ans3);
+
+				if (ans3 != null) {
+					for (int i = 0; i < ans3.size(); i++) {
+						try {
+							returnData = new DataTransfer(TypeOfMessageReturn.TOUR_MYORDERS,ans3.get(i));
+							client.sendToClient(returnData);
+							//client.sendToClient(ans3);
+						}
+
+						catch (IOException e) {
+							e.printStackTrace();
+						}
+					}
+				}
+			}
+			break;
+			
+			
+			
+			
+			
+		case TOURGUIDEDETAILS:
+			if (object instanceof TourGuide) {
+				TourGuide updGuide= (TourGuide)object;
+				String updEmail=updGuide.getEmail();
+				String upName=updGuide.getFname();
+				String upLName= updGuide.getLname();
+				String upNumber=updGuide.getTeln();
+				
+				String query ="UPDATE tourguides SET Name='"+upName+"', LastName='"+upLName+"', Email='"+updEmail+"', phoneNumber='"+upNumber+"' WHERE ID='"+updGuide.getId()+"'";
+				
+				boolean ans = mysqlConnection.updateDB(query);
+				if (ans)
+					ServerController.instance.displayMsg("TourGuide details updated");
+				else
+					ServerController.instance.displayMsg("TourGuide details could not be updated");
+			}
+			break;
+			
+			
 
 		case TOURGUIDENEWORDER:
 			if (object instanceof TourGuideOrder) {
@@ -285,25 +367,51 @@ public class EchoServer extends AbstractServer {
 					ServerController.instance.displayMsg("TourGuide details could not be updated");
 			}
 			break;
-
+		case TOURGUIDEWAITINGLIST:
+			if (object instanceof WaitingList) {
+				boolean ans2 = mysqlConnection.updateWaitingListTour(object);
+				if (ans2)
+					ServerController.instance.displayMsg("Waitinglist details updated");
+				else
+					ServerController.instance.displayMsg("Waitinglist details could not be updated");
+			}
+			
+			
+			break;
+			
 		case CHECKMAXVIS:
-			if (object instanceof maxVis) {
-				Object visMax = new maxVis(null, null, null);
-				visMax = mysqlConnection.checkMaxVisitors("2020-12-31");
-
-				visMax = (Object) visMax;
-
-				if (visMax != null) {
+			if(object instanceof TourGuideOrder)
+			{
+			    Object visMax= new maxVis(null, null, null, 0 ,0, null, 0);
+			    maxVis t= new maxVis(null, null, null, 0, 0, null, 0);
+			    t.setDate(((TourGuideOrder) object).getDate());
+			    t.setPark(((TourGuideOrder) object).getParkName());
+			    t.setVisitorsInOrder(((TourGuideOrder) object).getNumOfVisitors());
+			    t.setTime(((TourGuideOrder) object).getTime());
+			    
+			    
+			      visMax=mysqlConnection.checkMaxVisitors(t);
+			      
+			      visMax=(Object)visMax;
+			      
+			  	if (visMax != null) {
 					try {
-						client.sendToClient(visMax);
+						returnData = new DataTransfer(TypeOfMessageReturn.TOUR_MAXVISCHECK, visMax);
+						client.sendToClient(returnData);
 
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
-				}
+				}         
 			}
-
+			
 			break;
+			
+			
+			
+	
+			
+		
 			
 		case DELETE_INFO:
 			if (object instanceof String) {

@@ -16,6 +16,7 @@ import client.controller.ChangeOrderDetailsController;
 import client.controller.SubscriptionEntryController;
 import client.controller.ClientGUIController;
 import client.controller.TourGuideLoginController;
+import client.controller.TourGuideNewOrderController;
 import client.controller.TravelerNewOrderController;
 import client.controller.WorkerLogin;
 import client.logic.TourGuide;
@@ -38,6 +39,8 @@ public class ChatClient extends AbstractClient {
     public static Worker worker;
     public static Subscriber subscriber;
 	public static ObservableList<TourGuideOrder> oblist = FXCollections.observableArrayList();
+    public static maxVis visMax= new maxVis(null, null, null, 0, 0, null, 0);
+
 	ChatIF clientUI;
 	public boolean waitForConnection = false;
 
@@ -57,6 +60,10 @@ public class ChatClient extends AbstractClient {
 			if (object instanceof Subscriber) {
 				SubscriptionEntryController.instance.subscriberNotFound();
 			}
+			if(object instanceof TourGuide) {
+				TourGuideLoginController.instance.notFound();
+			}
+				
 			
 			break;
 		case LOGIN_SUCCESSFUL:
@@ -126,24 +133,14 @@ public class ChatClient extends AbstractClient {
 		case NEWORDER_FAILED:
 			break;
 		case TOUR_DETAILS:
-			if (object instanceof ArrayList<?>) {
+			if (object instanceof TourGuide) {
 				System.out.println("--> handleMessageFromServer");
 				// System.out.println("--> HELLLLOOOOO");
-				waitForConnection = false;
-				ArrayList<String> st;
-				st = (ArrayList<String>) object;
-				if (st.isEmpty())
-					TourGuideLoginController.instance.notFound();
-				else {
-					// TODO: change to c'tor
-					tourguide.setFname(st.get(0));
-					tourguide.setLname(st.get(1));
-					tourguide.setId(st.get(2));
-					tourguide.setEmail(st.get(3));
-					tourguide.setteln(st.get(4));
+				//waitForConnection = false;
+				this.tourguide=(TourGuide)object;
 					TourGuideLoginController.instance.isFound();
 
-				}
+				
 			}
 			break;
 
@@ -158,6 +155,18 @@ public class ChatClient extends AbstractClient {
 			}
 
 			break;
+		case TOUR_MAXVISCHECK:
+			if (object instanceof maxVis) {
+				visMax=(maxVis)object;
+				System.out.print(visMax.toString());
+				TourGuideNewOrderController.instance.checkDate2(visMax);
+				//TourGuideNewOrderController.instance.checkDate(null, visMax);
+			}
+			break;
+			
+			
+			
+			
 		case REQUESTINFO_SUCCESS:
 			if (object instanceof Subscriber) {
 				subscriber = (Subscriber)object;

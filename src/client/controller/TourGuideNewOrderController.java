@@ -3,6 +3,7 @@ package client.controller;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -17,6 +18,7 @@ import client.ClientUI;
 import client.logic.TourGuide;
 import client.logic.TourGuideOrder;
 import client.logic.Visitor;
+import client.logic.WaitingList;
 import client.logic.maxVis;
 import common.DataTransfer;
 import common.TypeOfMessage;
@@ -52,6 +54,7 @@ public class TourGuideNewOrderController extends AbstractScenes {
 	static TourGuideOrder tourguideorderr = new TourGuideOrder(null,null,null,null,null,null,null,null);
 	private TourGuideOrderSController targetObj=null;
 	public static TourGuideNewOrderController instance;
+	static boolean thereIsSpot=false;
 	
 	    @FXML 
 	    private ResourceBundle resources;
@@ -220,7 +223,8 @@ public class TourGuideNewOrderController extends AbstractScenes {
             String nameOnOrder= (NameOnOrder.getText());
             String orderID=(getIDTourOrder.getText());
             boolean emailT=validate(orderEmail);
-            if(nameOnOrder.trim().isEmpty()||orderDate==null||java.time.LocalDate.now().isAfter(orderDate) ||  orderTime==null || orderNumOfVisitors==null ||orderEmail.trim().isEmpty()||orderID.trim().isEmpty()||emailT==false) {
+            boolean idC=checkID(orderID);
+            if(nameOnOrder.trim().isEmpty()||orderDate==null||java.time.LocalDate.now().isAfter(orderDate) ||  orderTime==null || orderNumOfVisitors==null ||orderEmail.trim().isEmpty()||orderID.trim().isEmpty()||emailT==false||idC==false) {
             	Alert alert = new Alert(AlertType.INFORMATION);
             	alert.setHeaderText(null);
             	alert.setContentText("Fields missing or wrong date");
@@ -240,12 +244,26 @@ public class TourGuideNewOrderController extends AbstractScenes {
 	    	tourguideorderr.setEmail(orderEmail);
 	    	tourguideorderr.setNameOnOrder(nameOnOrder);
 	    	tourguideorderr.setID(orderID);
-	    	
+	    	checkDate(tourguideorderr, null);
            	DataTransfer data = new DataTransfer(TypeOfMessage.TOURGUIDENEWORDER,tourguideorderr);
-
-	    	ClientUI.chat.accept(data);
+           	try {
+				Thread.sleep(50);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+           	if(thereIsSpot) {
+           	//System.out.print(thereIsSpot);
+	    	//ClientUI.chat.accept(data);
 	    	switchScenes("/client/boundaries/TourGuidePayment.fxml", "GoNature Enter");
 			System.out.println("Order Updated Successfully");
+           	}
+           	else {
+           		Alert alert = new Alert(AlertType.INFORMATION);
+            	alert.setHeaderText(null);
+            	alert.setContentText("There is not spot. Please change date or enter waiting list.");
+            	alert.show();	
+           	}
             }
 			//}	
 	    }
@@ -287,8 +305,24 @@ public class TourGuideNewOrderController extends AbstractScenes {
 
 	    @FXML
 	    void waitingListTourButton(ActionEvent event) {
-	    	checkDate("t");
-            System.out.print("Enterd waiting list sucssesfully");
+	    	Alert alert = new Alert(AlertType.INFORMATION);
+        	alert.setHeaderText(null);
+        	alert.setContentText("Enterd waiting list sucssesfully.");
+        	alert.show();
+        	WaitingList wait= new WaitingList(null, null, null ,null ,null ,null, null, null, null);
+        	wait.setDate(tourguideorderr.getDate());
+        	wait.setEmail(tourguideorderr.getEmail());
+        	wait.setID(tourguideorderr.getID());
+        	wait.setNameOnOrder(tourguideorderr.getNameOnOrder());
+        	wait.setNumOfVisitors(tourguideorderr.getNumOfVisitors());
+            wait.setParkName(tourguideorderr.getParkName());
+            wait.setTime(tourguideorderr.getTime());
+        	DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+  		    LocalDateTime now = LocalDateTime.now();
+  		    wait.setTimeOfEnterence(dtf.format(now));
+           	DataTransfer data = new DataTransfer(TypeOfMessage.TOURGUIDEWAITINGLIST,wait);
+           	ClientUI.chat.accept(data);
+           	switchScenes("/client/boundaries/TourGuideMainMenu.fxml", "New waiting list"); 	
 	    }
 
 	    @Override
@@ -299,6 +333,8 @@ public class TourGuideNewOrderController extends AbstractScenes {
 	    	setParkComboBox();
 	    	setNumOfVisitorsComboBox();
 	    	NameOnOrder.setText(ChatClient.tourguide.getFname());
+	    	//getIDTourOrder.setText(ChatClient.tourguide.getId());
+	    	
 		}
 	    
 	    
@@ -311,19 +347,22 @@ public class TourGuideNewOrderController extends AbstractScenes {
 	    
 	    
 	    
-	    public maxVis checkDate(String s) {
-	    	 maxVis visMax= new maxVis(null, null, null);
-	           	DataTransfer data2 = new DataTransfer(TypeOfMessage.CHECKMAXVIS,visMax);
+	    public maxVis checkDate(TourGuideOrder s, maxVis t) {
+	    	 maxVis visMax= new maxVis(null, null, null, 0, 0, null, 0);
+	           	DataTransfer data2 = new DataTransfer(TypeOfMessage.CHECKMAXVIS,s);
 		    	ClientUI.chat.accept(data2);
 	    	return visMax;
 	    }
 	    
 	    public void checkDate2(maxVis t) {
-	    	 maxVis visMax= new maxVis(null, null, null);
+	    	 maxVis visMax= new maxVis(null, null, null, 0, 0, null, 0);
 		    	visMax.setDate(t.getDate());
-		    	visMax.setMaxVisitors(t.getMaxVisitors());
+		    	visMax.setPark(t.getPark());
 		    	visMax.setVisitorsInOrder(t.getVisitorsInOrder());
-		    	System.out.print(visMax.toString());
+		    	visMax.setAllowed1(t.getAllowed1());
+		    	visMax.setAllowed2(t.getAllowed2());
+		    	if(Integer.valueOf(visMax.getVisitorsInOrder()+visMax.getAllowed2())< visMax.getAllowed1())
+		    	thereIsSpot=true;
 	    } 
 	    
 	    
@@ -335,7 +374,11 @@ public class TourGuideNewOrderController extends AbstractScenes {
 	    	        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr);
 	    	        return matcher.find();
 	    	}
-	    
+	   public static boolean checkID(String ID) {
+		   if(ID.length()==9 && ID.matches("[0-9]+"))
+			   return true;
+		   return false;
+	   }
 	    
 	    
 	    
