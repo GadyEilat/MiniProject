@@ -2,6 +2,8 @@ package client.controller;
 
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import client.ChatClient;
@@ -16,6 +18,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.text.Text;
@@ -81,9 +84,31 @@ public class DepartmantManagerApproveController extends AbstractScenes {
 
 	@FXML
 	void approveChangeOfDiscount(ActionEvent event) {
-		
+		int pickDate;
+		ObservableList<Integer> selectedIndices = showAllDiscountDate.getSelectionModel().getSelectedIndices();
+		ObservableList<String> selected = showAllDiscountDate.getSelectionModel().getSelectedItems();
+		String[][] sendApproveDate = new String[selectedIndices.size()][1];
+		if(selectedIndices.isEmpty()) {
+			Alert alert = new Alert(AlertType.INFORMATION);
+        	alert.setHeaderText(null);
+        	alert.setContentText("Please select date-discount to approve");
+        	alert.show();
+		}
+		else {
+			for (int i = 0; i < selectedIndices.size(); i++) {
+				pickDate = selectedIndices.get(i);
+				sendApproveDate[i][0] = datesToApprveShow[pickDate][0];
+
+			}
+			parkInfoToApprove.setDiscountDates(sendApproveDate);
+			showAllDiscountDate.getItems().removeAll(selected);
+	    	DataTransfer data = new DataTransfer(TypeOfMessage.UPDATEINFO, parkInfoToApprove);
+	    	ClientUI.chat.accept(data);
+	    	parkInfoToApprove.setDiscountDates(null);
+		}
 		
 		disableButtonIfEmpty();
+		checkIfAllFieldClear = 0;
 	}
 
 	@FXML
@@ -91,12 +116,14 @@ public class DepartmantManagerApproveController extends AbstractScenes {
     	parkInfoToApprove.setMaxHourToVisit(maxHourField.getText());
     	maxHourField.clear();
     	disableButtonIfEmpty();
-    	if (checkIfAllFieldClear>3)
+    	if (checkIfAllFieldClear==3)
     		parkInfoToApprove.setChangeSettingToTrue(true);
     	DataTransfer data = new DataTransfer(TypeOfMessage.UPDATEINFO, parkInfoToApprove);
     	ClientUI.chat.accept(data);
     	parkInfoToApprove.setMaxHourToVisit(null);
     	parkInfoToApprove.setChangeSettingToTrue(false);
+		checkIfAllFieldClear = 0;
+
 	}
 
 	@FXML
@@ -104,12 +131,14 @@ public class DepartmantManagerApproveController extends AbstractScenes {
     	parkInfoToApprove.setMaxVisitors(maxVisitorsField.getText());
     	maxVisitorsField.clear();
     	disableButtonIfEmpty();
-    	if (checkIfAllFieldClear>3)
+    	if (checkIfAllFieldClear==3)
     		parkInfoToApprove.setChangeSettingToTrue(true);
     	DataTransfer data = new DataTransfer(TypeOfMessage.UPDATEINFO, parkInfoToApprove);
     	ClientUI.chat.accept(data);
     	parkInfoToApprove.setMaxVisitors(null);
     	parkInfoToApprove.setChangeSettingToTrue(false);
+		checkIfAllFieldClear = 0;
+
 	}
 	
     @FXML
@@ -117,31 +146,85 @@ public class DepartmantManagerApproveController extends AbstractScenes {
     	parkInfoToApprove.setGapOfVisitors(GapForVisitorsField.getText());
     	GapForVisitorsField.clear();
     	disableButtonIfEmpty();
-    	if (checkIfAllFieldClear>3)
+    	if (checkIfAllFieldClear==3)
     		parkInfoToApprove.setChangeSettingToTrue(true);
     	DataTransfer data = new DataTransfer(TypeOfMessage.UPDATEINFO, parkInfoToApprove);
     	ClientUI.chat.accept(data);
     	parkInfoToApprove.setGapOfVisitors(null);
     	parkInfoToApprove.setChangeSettingToTrue(false);
+		checkIfAllFieldClear = 0;
+
     }
 
 	@FXML
 	void cancelChangesOfDiscount(ActionEvent event) {
-
+		int pickDate;
+		ObservableList<Integer> selectedIndices = showAllDiscountDate.getSelectionModel().getSelectedIndices();
+		ObservableList<String> selected = showAllDiscountDate.getSelectionModel().getSelectedItems();
+		String[][] sendApproveDate = new String[selectedIndices.size()][1];
+		if(selectedIndices.isEmpty()) {
+			Alert alert = new Alert(AlertType.INFORMATION);
+        	alert.setHeaderText(null);
+        	alert.setContentText("Please select date-discount to cancel");
+        	alert.show();
+		}
+		else {
+			for (int i = 0; i < selectedIndices.size(); i++) {
+				pickDate = selectedIndices.get(i);
+				sendApproveDate[i][0] = datesToApprveShow[pickDate][0];
+			}
+			parkInfoToApprove.setDiscountDates(sendApproveDate);
+			showAllDiscountDate.getItems().removeAll(selected);
+	    	DataTransfer data = new DataTransfer(TypeOfMessage.DELETEINFO, parkInfoToApprove);
+	    	ClientUI.chat.accept(data);
+	    	parkInfoToApprove.setDiscountDates(null);
+		}
+		disableButtonIfEmpty();
+		checkIfAllFieldClear = 0;
 	}
 
 	@FXML
 	void cancelTheChangesOfMaxHour(ActionEvent event) {
+    	parkInfoToApprove.setMaxHourToVisit("toDelete");
+    	maxHourField.clear();
+    	disableButtonIfEmpty();
+    	if (checkIfAllFieldClear==3)
+    		parkInfoToApprove.setChangeSettingToTrue(true);
+    	DataTransfer data = new DataTransfer(TypeOfMessage.DELETEINFO, parkInfoToApprove);
+    	ClientUI.chat.accept(data);
+    	parkInfoToApprove.setMaxHourToVisit(null);
+    	parkInfoToApprove.setChangeSettingToTrue(false);
+		checkIfAllFieldClear = 0;
 
 	}
 
 	@FXML
 	void cancelTheChangesOfMaxVisitors(ActionEvent event) {
+    	parkInfoToApprove.setMaxVisitors("toDelete");
+    	maxVisitorsField.clear();
+    	disableButtonIfEmpty();
+    	if (checkIfAllFieldClear==3)
+    		parkInfoToApprove.setChangeSettingToTrue(true);
+    	DataTransfer data = new DataTransfer(TypeOfMessage.DELETEINFO, parkInfoToApprove);
+    	ClientUI.chat.accept(data);
+    	parkInfoToApprove.setMaxVisitors(null);
+    	parkInfoToApprove.setChangeSettingToTrue(false);
+		checkIfAllFieldClear = 0;
 
 	}
 
     @FXML
     void CancelGapForVisitors(ActionEvent event) {
+    	parkInfoToApprove.setGapOfVisitors("toDelete");
+    	GapForVisitorsField.clear();
+    	disableButtonIfEmpty();
+    	if (checkIfAllFieldClear==3)
+    		parkInfoToApprove.setChangeSettingToTrue(true);
+    	DataTransfer data = new DataTransfer(TypeOfMessage.DELETEINFO, parkInfoToApprove);
+    	ClientUI.chat.accept(data);
+    	parkInfoToApprove.setGapOfVisitors(null);
+    	parkInfoToApprove.setChangeSettingToTrue(false);
+		checkIfAllFieldClear = 0;
 
     }
 
@@ -184,21 +267,31 @@ public class DepartmantManagerApproveController extends AbstractScenes {
 			checkIfAllFieldClear++;
 		}
 		if(showAllDiscountDate.getItems().isEmpty()) {
-			btnApproveOfDiscount.setDisable(true);;
-			btnCancelOfDiscount.setDisable(true);;
+			btnApproveOfDiscount.setDisable(true);
+			btnCancelOfDiscount.setDisable(true);
+//			checkIfAllFieldClear++;
 		}
 	}
 	
 	public void loadData() {
 		this.parkInfo=ChatClient.parkInfo;
 		this.datesToApprveShow = ChatClient.datesToApprveShow;
-		maxHourField.setText(parkInfo.getMaxHourToVisit());
-		maxVisitorsField.setText(parkInfo.getMaxVisitors());
-		GapForVisitorsField.setText(parkInfo.getGapOfVisitors());
-		for (int i = 0; i < datesToApprveShow.length; i++) {
-			discountItems.add(datesToApprveShow[i][0]+" "+datesToApprveShow[i][1]+"%");
+		if(parkInfo.getMaxHourToVisit()!=null) {
+			maxHourField.setText(parkInfo.getMaxHourToVisit());
 		}
-		showAllDiscountDate.setItems(discountItems);
+		if(parkInfo.getMaxVisitors()!=null) {
+			maxVisitorsField.setText(parkInfo.getMaxVisitors());
+		}
+		if(parkInfo.getGapOfVisitors()!=null) {
+			GapForVisitorsField.setText(parkInfo.getGapOfVisitors());
+		}
+		if(datesToApprveShow != null) {
+			for (int i = 0; i < datesToApprveShow.length; i++) {
+				discountItems.add(datesToApprveShow[i][0]+" "+datesToApprveShow[i][1]+"%");
+			}
+			showAllDiscountDate.setItems(discountItems);
+			showAllDiscountDate.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+		}
 		parkInfoToApprove.setNumberOfPark(parkInfo.getNumberOfPark());
 		disableButtonIfEmpty();
 	}
@@ -211,6 +304,7 @@ public class DepartmantManagerApproveController extends AbstractScenes {
 
 	public void initialize(URL location, ResourceBundle resources) {
 		instance = this;
+		checkIfAllFieldClear = 0;
 		departmentManagerName.setText("Hello " + ChatClient.worker.getWorkerName());
 		DataTransfer data = new DataTransfer(TypeOfMessage.REQUESTINFO,
 				new ParkInfo(null , ChatClient.worker.getPark().getNumberOfPark(),null,null,null,ChatClient.worker.getRole()));

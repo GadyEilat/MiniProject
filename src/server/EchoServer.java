@@ -132,7 +132,7 @@ public class EchoServer extends AbstractServer {
 					ServerController.instance.displayMsg("subscriber REQUESTINFO details failed");
 
 			}
-			// update dates and discount on manager screen anf take all park setting on DM 
+			// update dates and discount on manager screen anf take all park setting on DM
 			if (object instanceof ParkInfo) {
 				ParkInfo parkInfo = (ParkInfo) object;
 				if (parkInfo.getRole().equals("Manager")) {
@@ -169,17 +169,27 @@ public class EchoServer extends AbstractServer {
 
 						}
 						parkInfo.setDatesDiscount(datesDiscount);
-						arrOfAnswer = mysqlConnection.getDB(
-								"SELECT maxVisitors,gapOfVisitors,maxHourToVisit FROM gonature.manageparkstoapprove "
-										+ "WHERE numberOfPark = '" + parkInfo.getNumberOfPark()
-										+ "' AND Approve = 'toCheck';");
-						parkInfo.setMaxVisitors(arrOfAnswer.get(0).toString());
-						parkInfo.setGapOfVisitors(arrOfAnswer.get(1).toString());
-						parkInfo.setMaxHourToVisit(arrOfAnswer.get(2).toString());
-						returnData = new DataTransfer(TypeOfMessageReturn.REQUESTINFO_SUCCESS, parkInfo);
-					} else {
-						returnData = new DataTransfer(TypeOfMessageReturn.REQUESTINFO_FAILED, parkInfo);
 					}
+					arrOfAnswer = mysqlConnection
+							.getDB("SELECT maxVisitors,gapOfVisitors,maxHourToVisit FROM gonature.manageparkstoapprove "
+									+ "WHERE numberOfPark = '" + parkInfo.getNumberOfPark()
+									+ "' AND Approve = 'toCheck';");
+					if (!arrOfAnswer.isEmpty()) {
+						if(arrOfAnswer.get(0) != null)
+							parkInfo.setMaxVisitors(arrOfAnswer.get(0).toString());
+						if(arrOfAnswer.get(1) != null)
+							parkInfo.setGapOfVisitors(arrOfAnswer.get(1).toString());
+						if(arrOfAnswer.get(2) != null)
+							parkInfo.setMaxHourToVisit(arrOfAnswer.get(2).toString());
+						
+					}
+						returnData = new DataTransfer(TypeOfMessageReturn.REQUESTINFO_SUCCESS, parkInfo);
+//						try {
+//							client.sendToClient(returnData);
+//						} catch (IOException e) {
+//							// TODO Auto-generated catch block
+//							e.printStackTrace();
+//						}
 				} else {
 					returnData = new DataTransfer(TypeOfMessageReturn.REQUESTINFO_FAILED, parkInfo);
 				}
@@ -191,6 +201,78 @@ public class EchoServer extends AbstractServer {
 				}
 
 			}
+			break;
+		case DELETEINFO:
+			if (object instanceof ParkInfo) {
+				ParkInfo parkInfo = (ParkInfo) object;
+				boolean answer;
+				if (parkInfo.getGapOfVisitors() != null) {
+					answer = mysqlConnection
+							.updateDB("UPDATE gonature.manageparkstoapprove SET gapOfVisitors = null WHERE "
+									+ "numberOfPark = '" + parkInfo.getNumberOfPark() + "';");
+					if (answer)
+						ServerController.instance.displayMsg(
+								"gapOfVisitors DELETEINFO details updated at " + parkInfo.getNumberOfPark());
+					else {
+						ServerController.instance
+								.displayMsg("gapOfVisitors DELETEINFO details failed at " + parkInfo.getNumberOfPark());
+					}
+				}
+
+				if (parkInfo.getMaxVisitors() != null) {
+					answer = mysqlConnection
+							.updateDB("UPDATE gonature.manageparkstoapprove SET maxVisitors = null WHERE "
+									+ "numberOfPark = '" + parkInfo.getNumberOfPark() + "';");
+					if (answer) {
+						ServerController.instance
+								.displayMsg("maxVisitors DELETEINFO details updated at " + parkInfo.getNumberOfPark());
+
+					} else {
+						ServerController.instance
+								.displayMsg("maxVisitors DELETEINFO details failed at " + parkInfo.getNumberOfPark());
+					}
+				}
+				if (parkInfo.getMaxHourToVisit() != null) {
+					answer = mysqlConnection
+							.updateDB("UPDATE gonature.manageparkstoapprove SET maxHourToVisit = null WHERE "
+									+ "numberOfPark = '" + parkInfo.getNumberOfPark() + "';");
+					if (answer) {
+						ServerController.instance.displayMsg(
+								"maxHourToVisit DELETEINFO details updated at " + parkInfo.getNumberOfPark());
+					} else {
+						ServerController.instance.displayMsg(
+								"maxHourToVisit DELETEINFO details failed at " + parkInfo.getNumberOfPark());
+					}
+				}
+				if (parkInfo.isChangeSettingToTrue()) {
+					answer = mysqlConnection.updateDB("UPDATE gonature.manageparkstoapprove SET Approve = 'True' WHERE "
+							+ "numberOfPark = '" + parkInfo.getNumberOfPark() + "';");
+					if (answer) {
+						ServerController.instance.displayMsg("Approve = True DELETEINFO details updated ");
+
+					} else {
+						ServerController.instance.displayMsg("Approve = True DELETEINFO details failed");
+					}
+				}
+
+				if (parkInfo.getDiscountDates() != null) {
+					String[][] deletDates = parkInfo.getDiscountDates();
+					for (int i = 0; i < deletDates.length; i++) {
+						answer = mysqlConnection.updateDB("DELETE FROM gonature.discountdates WHERE Dates = '"
+								+ deletDates[i][0] + "' AND " + "numOfPark = '" + parkInfo.getNumberOfPark() + "';");
+						if (answer) {
+							ServerController.instance.displayMsg(
+									"Date '" + deletDates[i][0] + "' for discount DELETEINFO details updated ");
+
+						} else {
+							ServerController.instance.displayMsg(
+									"Date '" + deletDates[i][0] + "' for discount DELETEINFO details failed");
+						}
+					}
+
+				}
+			}
+
 			break;
 		case UPDATEINFO:
 			if (object instanceof Subscriber) {
@@ -212,45 +294,57 @@ public class EchoServer extends AbstractServer {
 
 			}
 			if (object instanceof ParkInfo) {
-				ParkInfo parkInfo = (ParkInfo)object;
+				ParkInfo parkInfo = (ParkInfo) object;
 				boolean answer;
 				if (parkInfo.getGapOfVisitors() != null) {
-					answer = mysqlConnection.updateDB("UPDATE gonature.manageparks SET gapOfVisitors = '"+parkInfo.getGapOfVisitors()+"' WHERE "
-							+ "numberOfPark = '"+parkInfo.getNumberOfPark()+"';");
+					answer = mysqlConnection
+							.updateDB("UPDATE gonature.manageparks SET gapOfVisitors = '" + parkInfo.getGapOfVisitors()
+									+ "' WHERE " + "numberOfPark = '" + parkInfo.getNumberOfPark() + "';");
 					if (answer) {
-						answer = mysqlConnection.updateDB("UPDATE gonature.manageparkstoapprove SET gapOfVisitors = null WHERE "
-								+ "numberOfPark = '"+parkInfo.getNumberOfPark()+"';");
-						ServerController.instance.displayMsg("gapOfVisitors UPDATEINFO details updated at "+parkInfo.getNumberOfPark());
+						answer = mysqlConnection
+								.updateDB("UPDATE gonature.manageparkstoapprove SET gapOfVisitors = null WHERE "
+										+ "numberOfPark = '" + parkInfo.getNumberOfPark() + "';");
+						ServerController.instance.displayMsg(
+								"gapOfVisitors UPDATEINFO details updated at " + parkInfo.getNumberOfPark());
 
 					} else {
-						ServerController.instance.displayMsg("gapOfVisitors UPDATEINFO details failed at "+parkInfo.getNumberOfPark());
+						ServerController.instance
+								.displayMsg("gapOfVisitors UPDATEINFO details failed at " + parkInfo.getNumberOfPark());
 					}
 				}
 				if (parkInfo.getMaxVisitors() != null) {
-					answer = mysqlConnection.updateDB("UPDATE gonature.manageparks SET maxVisitors = '"+parkInfo.getMaxVisitors()+"' WHERE "
-							+ "numberOfPark = '"+parkInfo.getNumberOfPark()+"';");
+					answer = mysqlConnection
+							.updateDB("UPDATE gonature.manageparks SET maxVisitors = '" + parkInfo.getMaxVisitors()
+									+ "' WHERE " + "numberOfPark = '" + parkInfo.getNumberOfPark() + "';");
 					if (answer) {
-						ServerController.instance.displayMsg("maxVisitors UPDATEINFO details updated at "+parkInfo.getNumberOfPark());
-						answer = mysqlConnection.updateDB("UPDATE gonature.manageparkstoapprove SET maxVisitors = null WHERE "
-								+ "numberOfPark = '"+parkInfo.getNumberOfPark()+"';");
+						ServerController.instance
+								.displayMsg("maxVisitors UPDATEINFO details updated at " + parkInfo.getNumberOfPark());
+						answer = mysqlConnection
+								.updateDB("UPDATE gonature.manageparkstoapprove SET maxVisitors = null WHERE "
+										+ "numberOfPark = '" + parkInfo.getNumberOfPark() + "';");
 					} else {
-						ServerController.instance.displayMsg("maxVisitors UPDATEINFO details failed at "+parkInfo.getNumberOfPark());
+						ServerController.instance
+								.displayMsg("maxVisitors UPDATEINFO details failed at " + parkInfo.getNumberOfPark());
 					}
 				}
 				if (parkInfo.getMaxHourToVisit() != null) {
-					answer = mysqlConnection.updateDB("UPDATE gonature.manageparks SET maxHourToVisit = '"+parkInfo.getMaxHourToVisit()+"' WHERE "
-							+ "numberOfPark = '"+parkInfo.getNumberOfPark()+"';");
+					answer = mysqlConnection.updateDB(
+							"UPDATE gonature.manageparks SET maxHourToVisit = '" + parkInfo.getMaxHourToVisit()
+									+ "' WHERE " + "numberOfPark = '" + parkInfo.getNumberOfPark() + "';");
 					if (answer) {
-						ServerController.instance.displayMsg("maxHourToVisit UPDATEINFO details updated at "+parkInfo.getNumberOfPark());
-						answer = mysqlConnection.updateDB("UPDATE gonature.manageparkstoapprove SET maxHourToVisit = null WHERE "
-								+ "numberOfPark = '"+parkInfo.getNumberOfPark()+"';");
+						ServerController.instance.displayMsg(
+								"maxHourToVisit UPDATEINFO details updated at " + parkInfo.getNumberOfPark());
+						answer = mysqlConnection
+								.updateDB("UPDATE gonature.manageparkstoapprove SET maxHourToVisit = null WHERE "
+										+ "numberOfPark = '" + parkInfo.getNumberOfPark() + "';");
 					} else {
-						ServerController.instance.displayMsg("maxHourToVisit UPDATEINFO details failed at "+parkInfo.getNumberOfPark());
+						ServerController.instance.displayMsg(
+								"maxHourToVisit UPDATEINFO details failed at " + parkInfo.getNumberOfPark());
 					}
 				}
-				if(parkInfo.isChangeSettingToTrue()) {
+				if (parkInfo.isChangeSettingToTrue()) {
 					answer = mysqlConnection.updateDB("UPDATE gonature.manageparkstoapprove SET Approve = 'True' WHERE "
-							+ "numberOfPark = '"+parkInfo.getNumberOfPark()+"';");
+							+ "numberOfPark = '" + parkInfo.getNumberOfPark() + "';");
 					if (answer) {
 						ServerController.instance.displayMsg("Approve = True UPDATEINFO details updated ");
 
@@ -258,11 +352,24 @@ public class EchoServer extends AbstractServer {
 						ServerController.instance.displayMsg("Approve = True UPDATEINFO details failed");
 					}
 				}
-//				if (parkInfo.getDiscountDates() != null) {
-//					boolean answer = mysqlConnection.updateDB("UPDATE gonature.manageparks SET maxHourToVisit = '"+parkInfo.getDiscountDates()+"' WHERE "
-//							+ "numberOfPark = '"+parkInfo.getNumberOfPark()+"';");
-//				}
-				
+				if (parkInfo.getDiscountDates() != null) {
+					String[][] approveDates = parkInfo.getDiscountDates();
+					for (int i = 0; i < approveDates.length; i++) {
+						answer = mysqlConnection
+								.updateDB("UPDATE gonature.discountdates SET Approve = 'True' WHERE Dates = '"
+										+ approveDates[i][0] + "' AND " + "numOfPark = '" + parkInfo.getNumberOfPark()
+										+ "';");
+						if (answer) {
+							ServerController.instance.displayMsg(
+									"Date '" + approveDates[i][0] + "' for discount DELETEINFO details updated ");
+
+						} else {
+							ServerController.instance.displayMsg(
+									"Date '" + approveDates[i][0] + "' for discount DELETEINFO details failed");
+						}
+					}
+
+				}
 
 			}
 
@@ -362,15 +469,36 @@ public class EchoServer extends AbstractServer {
 		case UPDATEINFO_REQUEST:
 			if (object instanceof ParkInfo) {
 				ParkInfo parkInfo = (ParkInfo) object;
-				String UpdateQuery = "UPDATE gonature.manageparkstoapprove SET Approve = 'toCheck', maxVisitors = '"
-						+ parkInfo.getMaxVisitors() + "'," + " gapOfVisitors = '" + parkInfo.getGapOfVisitors() + "',"
-						+ " maxHourToVisit = '" + parkInfo.getMaxHourToVisit() + "' WHERE numberOfPark = '"
-						+ parkInfo.getNumberOfPark() + "';";
-				boolean ans = mysqlConnection.updateDB(UpdateQuery);
-				if (ans)
-					ServerController.instance.displayMsg("parkInfo UPDATEINFO_REQUEST details updated");
-				else
-					ServerController.instance.displayMsg("parkInfo UPDATEINFO_REQUEST details could not be updated");
+				String UpdateQuery;
+				if(parkInfo.getGapOfVisitors() != null) {
+					UpdateQuery = "UPDATE gonature.manageparkstoapprove SET Approve = 'toCheck', "
+							+ " gapOfVisitors = '" + parkInfo.getGapOfVisitors() + "' WHERE numberOfPark = '" + parkInfo.getNumberOfPark() + "';";
+					boolean ans = mysqlConnection.updateDB(UpdateQuery);
+					if (ans)
+						ServerController.instance.displayMsg("parkInfo UPDATEINFO_REQUEST gapOfVisitors details updated");
+					else
+						ServerController.instance.displayMsg("parkInfo UPDATEINFO_REQUEST gapOfVisitors details could not be updated");
+				}
+				if(parkInfo.getMaxHourToVisit() != null) {
+					UpdateQuery = "UPDATE gonature.manageparkstoapprove SET Approve = 'toCheck', "
+							+ " maxHourToVisit = '" + parkInfo.getMaxHourToVisit() + "' WHERE numberOfPark = '"
+							+ parkInfo.getNumberOfPark() + "';";
+					boolean ans = mysqlConnection.updateDB(UpdateQuery);
+					if (ans)
+						ServerController.instance.displayMsg("parkInfo UPDATEINFO_REQUEST maxHourToVisit details updated");
+					else
+						ServerController.instance.displayMsg("parkInfo UPDATEINFO_REQUEST maxHourToVisit details could not be updated");
+				}
+				if(parkInfo.getMaxVisitors() != null) {
+					UpdateQuery = "UPDATE gonature.manageparkstoapprove SET Approve = 'toCheck', maxVisitors = '" + parkInfo.getMaxVisitors() + "' WHERE "
+							+ "numberOfPark = '" + parkInfo.getNumberOfPark() + "';";
+					boolean ans = mysqlConnection.updateDB(UpdateQuery);
+					if (ans)
+						ServerController.instance.displayMsg("parkInfo UPDATEINFO_REQUEST maxVisitors details updated");
+					else
+						ServerController.instance.displayMsg("parkInfo UPDATEINFO_REQUEST maxVisitors details could not be updated");
+				}
+
 			}
 			if (object instanceof ArrayList<?>) {
 				ArrayList<String> discount = (ArrayList<String>) object;
