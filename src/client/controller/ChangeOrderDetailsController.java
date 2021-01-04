@@ -107,6 +107,7 @@ public class ChangeOrderDetailsController extends AbstractScenes{
     	String save = OrderManagementController.instance.ord.getDate();
     	ord.setDate(datePicker.getValue().toString());
     	if (java.time.LocalDate.now().isAfter(datePicker.getValue())) {
+    		msgFromController.setFill(Color.RED);
     		msgFromController.setText("Invalid Date");
     		ord.setDate(save);
     		datePicker.setValue(LOCAL_DATE(save));
@@ -118,10 +119,6 @@ public class ChangeOrderDetailsController extends AbstractScenes{
     	DataTransfer data = new DataTransfer(TypeOfMessage.UPDATEINFO,ord);
 		ClientUI.chat.accept(data);
     	}
-
-		
-//			msgFromController.setFill(Color.GREEN);
-//			msgFromController.setText("Updated Successfully");
     }
 
     @FXML

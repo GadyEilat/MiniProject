@@ -275,7 +275,25 @@ public class EchoServer extends AbstractServer {
 
 				}
 			}
-
+			
+			if (object instanceof String) {
+				String strToBeDeleted = (String) object;
+				String DeleteQuery = "DELETE FROM gonature.orders WHERE (OrderNumber = " + strToBeDeleted + ");";
+				boolean ans = mysqlConnection.updateDB(DeleteQuery);
+				if (ans) {
+					ServerController.instance.displayMsg("Order was deleted");
+					returnData = new DataTransfer(TypeOfMessageReturn.DELETE_ORDER_SUCCESS, null);
+				}
+				else {
+					ServerController.instance.displayMsg("Order could not be deleted");
+					returnData = new DataTransfer(TypeOfMessageReturn.DELETE_ORDER_FAILED, null);
+				}
+				try {
+					client.sendToClient(returnData);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
 			break;
 		case UPDATEINFO:
 			if (object instanceof Order) {
@@ -666,26 +684,6 @@ public class EchoServer extends AbstractServer {
 				}
 			}
 
-			break;
-
-		case DELETE_INFO:
-			if (object instanceof String) {
-				String strToBeDeleted = (String) object;
-				String DeleteQuery = "DELETE FROM gonature.orders WHERE (OrderNumber = " + strToBeDeleted + ");";
-				boolean ans = mysqlConnection.updateDB(DeleteQuery);
-				if (ans) {
-					ServerController.instance.displayMsg("Order was deleted");
-					returnData = new DataTransfer(TypeOfMessageReturn.DELETE_ORDER_SUCCESS, null);
-				} else {
-					ServerController.instance.displayMsg("Order could not be deleted");
-					returnData = new DataTransfer(TypeOfMessageReturn.DELETE_ORDER_FAILED, null);
-				}
-				try {
-					client.sendToClient(returnData);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
 			break;
 		case SENDMAIL:
 			if (object instanceof EmailDetails) {
