@@ -69,9 +69,23 @@ public class ManagerManageParkController extends AbstractScenes {
     	String maxVisitor = maxVisitorField.getText();
     	String gapForVisitors = gapForVisitorsField.getText();
 		if (maxVisitor.trim().isEmpty() && gapForVisitors.trim().isEmpty() && MaxTime.trim().isEmpty()) {
-			msgText.setText("Empty Fields");
+//			msgText.setText("Empty Fields");
+			Alert alert = new Alert(AlertType.INFORMATION);
+	    	alert.setHeaderText(null);
+	    	alert.setContentText("Empty Fields");
+	    	alert.show();
 		} else {
-			ParkInfo parkInfo = new ParkInfo(ChatClient.worker.getPark().getNumberOfPark(),maxVisitor , gapForVisitors, MaxTime,null);
+			ParkInfo parkInfo = new ParkInfo(ChatClient.worker.getPark().getNumberOfPark(),null , null, null,null);
+			if(!maxVisitor.trim().isEmpty()) {
+				parkInfo.setMaxVisitors(maxVisitor);
+			}
+			if(!gapForVisitors.trim().isEmpty()) {
+				parkInfo.setGapOfVisitors(gapForVisitors);
+			}
+			if(!MaxTime.trim().isEmpty()) {
+				parkInfo.setMaxHourToVisit(MaxTime);
+			}
+//			ParkInfo parkInfo = new ParkInfo(ChatClient.worker.getPark().getNumberOfPark(),maxVisitor , gapForVisitors, MaxTime,null);
 			DataTransfer data = new DataTransfer(TypeOfMessage.UPDATEINFO_REQUEST, parkInfo);
 			MaxTimeField.clear();
 			maxVisitorField.clear();
@@ -117,6 +131,7 @@ public class ManagerManageParkController extends AbstractScenes {
 		managerName.setText("Hello " + ChatClient.worker.getWorkerName());
 		maxVisitorCurrent.setText(ChatClient.worker.getPark().getMaxVisitors());
 		gapForVisitorsCurrent.setText(ChatClient.worker.getPark().getGapOfVisitors());
+		MaxTimeCurrent.setText(ChatClient.worker.getPark().getMaxHourToVisit());
 
 	}
 	

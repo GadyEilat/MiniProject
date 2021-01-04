@@ -28,7 +28,7 @@
                                     <Font name="Franklin Gothic Heavy" size="24.0" />
                                  </font>
                               </Text>
-                              <TextField fx:id="userNameFeild" layoutX="133.0" layoutY="127.0" />
+                              <TextField fx:id="userNameField" layoutX="133.0" layoutY="127.0" />
                               <Text layoutX="48.0" layoutY="144.0" strokeType="OUTSIDE" strokeWidth="0.0" text="User Name" />
                               <Text layoutX="53.0" layoutY="199.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Password" />
                               <Button fx:id="LogInButton" layoutX="183.0" layoutY="252.0" mnemonicParsing="false" onAction="#checkLogIn" text="Log in" />
