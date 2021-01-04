@@ -1,12 +1,14 @@
 package client.controller;
 import java.io.IOException;
 import java.net.URL;
-
+import java.text.DecimalFormat;
+import java.util.Formatter;
 import java.util.ResourceBundle;
 
 import client.ChatClient;
 import client.ClientUI;
 import client.logic.Order;
+import client.logic.TourGuideOrder;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -23,6 +25,8 @@ import javafx.stage.Stage;
 public class OrderManagementController extends AbstractScenes {
 	public Order ord = new Order(null,null,null,null,null,null,null,null);
 	public int wasCanceled = 0;
+	Double price=40.00;
+	String strPrice=null;
 	
     @FXML
     private ResourceBundle resources;
@@ -30,6 +34,9 @@ public class OrderManagementController extends AbstractScenes {
     @FXML
     private URL location;
 
+    @FXML
+    private Text priceTxt;
+    
     @FXML
     private TextField orderNumberTxt;
 
@@ -112,5 +119,8 @@ public class OrderManagementController extends AbstractScenes {
     	helloTxt.setText("Hello " + ord.getNameOnOrder());
     	timeTxt.setText(ord.getHour());
     	dateTxt.setText(ord.getDate());
+    	Double dblAmount = Double.valueOf(ord.getNumOfVisitors());
+    	price= price * dblAmount * 0.80;
+    	priceTxt.setText(String.format("Price: %.2f", price));
     }
 }
