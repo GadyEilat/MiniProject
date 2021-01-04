@@ -15,17 +15,18 @@ import javafx.scene.text.Text;
 public class DepartmantManagerController extends AbstractScenes{
 	public static DepartmantManagerController instance;
 
+
     @FXML
     private Text currentNumOfVisitors;
-    
+
     @FXML
-    private Text departmentManagerName;
-    
-    @FXML
-    private Text MaxOfVisitors;
+    private Text currentMaxOfVisitors;
 
     @FXML
     private ProgressBar progressBar;
+
+    @FXML
+    private Text departmentManagerName;
 
     @FXML
     private Button btnLogout;
@@ -68,7 +69,7 @@ public class DepartmantManagerController extends AbstractScenes{
 	public void initialize(URL location, ResourceBundle resources) {
 		instance = this;
 		departmentManagerName.setText("Hello " + ChatClient.worker.getWorkerName());
-		MaxOfVisitors.setText(ChatClient.worker.getPark().getMaxVisitors());
+		currentMaxOfVisitors.setText(ChatClient.worker.getPark().getMaxVisitors());
 
 	}
 
