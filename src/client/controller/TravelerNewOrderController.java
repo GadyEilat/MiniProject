@@ -133,9 +133,16 @@ public class TravelerNewOrderController extends AbstractScenes {
 		a3.add("8");
 		a3.add("9");
 		a3.add("10");
-
+		a3.add("11");
+		a3.add("12");
+		a3.add("13");
+		a3.add("14");
+		a3.add("15");
+		
 		list3 = FXCollections.observableArrayList(a3);
+		
 		numVisitorsBtn.setItems(list3);
+		numVisitorsBtn.getSelectionModel().selectFirst();
 	}
 
 	@FXML
