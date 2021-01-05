@@ -132,11 +132,20 @@ public class ChatClient extends AbstractClient {
 				
 			break;
 			
-		case ISNT_SUBSCRIBER:
+		case IS_GUIDE:
 			if (object instanceof Boolean) {
 				Boolean isIt = (Boolean) object;
-				if (isIt == false) {
-					OrderManagementController.instance.isSubscriber(false);
+				if (isIt == true) {
+					OrderManagementController.instance.isGuide(true);
+				}
+			}
+			break;
+			
+		case IS_REGULAR:
+			if (object instanceof Boolean) {
+				Boolean isIt = (Boolean) object;
+				if (isIt == true) {
+					OrderManagementController.instance.isRegular(true);
 				}
 			}
 			break;

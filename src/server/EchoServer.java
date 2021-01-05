@@ -108,18 +108,24 @@ public class EchoServer extends AbstractServer {
 			}
 			break;
 			
-		case CHECK_IF_SUBSCRIBER:
+		case CHECK_KIND:
 			if (object instanceof Order) {
 				Order ord = (Order) object;
-				String CheckQuery = "SELECT ID FROM gonature.subscriber WHERE ID ='"+ord.getID()+"';";
-				boolean ans = mysqlConnection.CheckSub(CheckQuery); //if ans == true, ID exist in sub. else, id doesn't exist in sub
+				String CheckQuery = "SELECT ID FROM gonature.subscriber WHERE ID ='" + ord.getID() + "';";
+				boolean ans = mysqlConnection.CheckKind(CheckQuery); // if ans == true, ID exist in sub. else
 				if (ans) {
 					ServerController.instance.displayMsg("ID belongs to a Subscriber");
 					returnData = new DataTransfer(TypeOfMessageReturn.IS_SUBSCRIBER, true);
-				}
-				else {
-					ServerController.instance.displayMsg("ID doesn't belong to a Subscriber");
-					returnData = new DataTransfer(TypeOfMessageReturn.ISNT_SUBSCRIBER, false);
+				} else {
+					CheckQuery = "SELECT ID FROM gonature.tourguides WHERE ID ='" + ord.getID() + "';";
+					ans = mysqlConnection.CheckKind(CheckQuery); // if ans == true, ID exist in tourguide.
+					if (ans) {
+						ServerController.instance.displayMsg("ID belong to a Tour Guide");
+						returnData = new DataTransfer(TypeOfMessageReturn.IS_GUIDE, true);
+					} else {
+						ServerController.instance.displayMsg("ID belong to a Regular Traveler");
+						returnData = new DataTransfer(TypeOfMessageReturn.IS_REGULAR, true);
+					}
 				}
 				try {
 					client.sendToClient(returnData);

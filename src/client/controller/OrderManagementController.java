@@ -14,6 +14,7 @@ import common.TypeOfMessage;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.print.PrinterJob;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -27,7 +28,7 @@ import javafx.stage.Stage;
 public class OrderManagementController extends AbstractScenes {
 	public Order ord = new Order(null,null,null,null,null,null,null,null);
 	public int wasCanceled = 0;
-	Double price=30.00, pricePerPerson;
+	Double price=30.00, pricePerPerson, dblAmount;
 	String strPrice=null;
 	
     @FXML
@@ -81,12 +82,26 @@ public class OrderManagementController extends AbstractScenes {
     public static OrderManagementController instance;
     
     public void isSubscriber(Boolean ans) {
-    	Double dblAmount = Double.valueOf(ord.getNumOfVisitors());
+    	dblAmount = Double.valueOf(ord.getNumOfVisitors());
     	if (ans) {
     		pricePerPerson = price*0.85*0.80;
         	price= pricePerPerson*dblAmount;
     	}
-    	else {
+    	priceTxt.setText(String.format("Price: %.2f", price));
+    		
+    }
+    public void isGuide(Boolean ans) { //not including "Tashlum Merosh", not sure how to handle that.
+    	dblAmount = Double.valueOf(ord.getNumOfVisitors());
+    	if (ans) {
+    		pricePerPerson = price*0.75;
+        	price= pricePerPerson*dblAmount;
+    	}
+    	priceTxt.setText(String.format("Price: %.2f", price));
+    		
+    }
+    public void isRegular(Boolean ans) {
+    	dblAmount = Double.valueOf(ord.getNumOfVisitors());
+    	if (ans) {
     		pricePerPerson = price*0.85;
     		price=pricePerPerson*dblAmount;
     	}
@@ -117,7 +132,13 @@ public class OrderManagementController extends AbstractScenes {
 
     @FXML
     void PrintDetails(ActionEvent event) {
-    	//fix
+//    	System.out.println("To Printer!");
+//        PrinterJob job = PrinterJob.createPrinterJob();
+//        if(job != null){
+//        job.showPrintDialog(changeBtn.getScene().getWindow()); 
+//        job.printPage(changeBtn.getParent());
+//        job.endJob();
+//        }
     }
 
     @FXML
@@ -135,7 +156,7 @@ public class OrderManagementController extends AbstractScenes {
     	helloTxt.setText("Hello " + ord.getNameOnOrder());
     	timeTxt.setText(ord.getHour());
     	dateTxt.setText(ord.getDate());
-    	DataTransfer data = new DataTransfer(TypeOfMessage.CHECK_IF_SUBSCRIBER,ord);
+    	DataTransfer data = new DataTransfer(TypeOfMessage.CHECK_KIND,ord);
 		ClientUI.chat.accept(data);
     }
 }

@@ -36,7 +36,6 @@ public class ChangeOrderDetailsController extends AbstractScenes{
 	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 	public int wasCanceled = 0; //a flag for telling if you canceled the order.
 	Double price;
-	private final static Double absolutePrice = 30.00;
 	
     @FXML
     private ResourceBundle resources;
@@ -197,6 +196,11 @@ public class ChangeOrderDetailsController extends AbstractScenes{
     	al3.add("8");
     	al3.add("9");
     	al3.add("10");
+    	al3.add("11");
+    	al3.add("12");
+    	al3.add("13");
+    	al3.add("14");
+    	al3.add("15");
     	list3=FXCollections.observableArrayList(al3);
     	amountOfVisitorsComboBox.setItems(list3);
     }
