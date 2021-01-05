@@ -107,6 +107,28 @@ public class EchoServer extends AbstractServer {
 				}
 			}
 			break;
+			
+		case CHECK_IF_SUBSCRIBER:
+			if (object instanceof Order) {
+				Order ord = (Order) object;
+				String CheckQuery = "SELECT ID FROM gonature.subscriber WHERE ID ='"+ord.getID()+"';";
+				boolean ans = mysqlConnection.CheckSub(CheckQuery); //if ans == true, ID exist in sub. else, id doesn't exist in sub
+				if (ans) {
+					ServerController.instance.displayMsg("ID belongs to a Subscriber");
+					returnData = new DataTransfer(TypeOfMessageReturn.IS_SUBSCRIBER, true);
+				}
+				else {
+					ServerController.instance.displayMsg("ID doesn't belong to a Subscriber");
+					returnData = new DataTransfer(TypeOfMessageReturn.ISNT_SUBSCRIBER, false);
+				}
+				try {
+					client.sendToClient(returnData);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			break;
+			
 		case REQUESTINFO:
 			if (object instanceof Subscriber) {
 				Subscriber subscriber = (Subscriber) object;

@@ -35,12 +35,17 @@ public class ChangeOrderDetailsController extends AbstractScenes{
 	public Order ord = new Order(null,null,null,null,null,null,null,null);
 	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 	public int wasCanceled = 0; //a flag for telling if you canceled the order.
+	Double price;
+	private final static Double absolutePrice = 30.00;
 	
     @FXML
     private ResourceBundle resources;
 
     @FXML
     private Text msgFromController;
+    
+    @FXML
+    private Text priceTxt;
     
     @FXML
     private Text helloTxt;
@@ -93,6 +98,10 @@ public class ChangeOrderDetailsController extends AbstractScenes{
     {
     	msgFromController.setFill(Color.GREEN);
 		msgFromController.setText("Updated Successfully");
+    	Double dblAmount = Double.valueOf(amountOfVisitorsComboBox.getSelectionModel().getSelectedItem());
+    	Double pricePerPerson = OrderManagementController.instance.pricePerPerson;
+    	price=pricePerPerson * dblAmount;
+    	priceTxt.setText(String.format("Price: %.2f", price));
     }
     
     public void notUpdated()
@@ -105,21 +114,20 @@ public class ChangeOrderDetailsController extends AbstractScenes{
     void Apply(ActionEvent event) {
     	ord.setNumOfVisitors(amountOfVisitorsComboBox.getSelectionModel().getSelectedItem());
     	String save = OrderManagementController.instance.ord.getDate();
-    	ord.setDate(datePicker.getValue().toString());
-    	if (java.time.LocalDate.now().isAfter(datePicker.getValue())) {
-    		msgFromController.setFill(Color.RED);
-    		msgFromController.setText("Invalid Date");
-    		ord.setDate(save);
-    		datePicker.setValue(LOCAL_DATE(save));
-    	}
-    	else {
-    	ord.setNumOfVisitors(amountOfVisitorsComboBox.getSelectionModel().getSelectedItem());
-    	ord.setHour(timeComboBox.getSelectionModel().getSelectedItem());
-    	ord.setParkName(parkComboBox.getSelectionModel().getSelectedItem());
-    	DataTransfer data = new DataTransfer(TypeOfMessage.UPDATEINFO,ord);
-		ClientUI.chat.accept(data);
-    	}
-    }
+		ord.setDate(datePicker.getValue().toString());
+		if (java.time.LocalDate.now().isAfter(datePicker.getValue())) {
+			msgFromController.setFill(Color.RED);
+			msgFromController.setText("Invalid Date");
+			ord.setDate(save);
+			datePicker.setValue(LOCAL_DATE(save));
+		} else {
+			ord.setNumOfVisitors(amountOfVisitorsComboBox.getSelectionModel().getSelectedItem());
+			ord.setHour(timeComboBox.getSelectionModel().getSelectedItem());
+			ord.setParkName(parkComboBox.getSelectionModel().getSelectedItem());
+			DataTransfer data = new DataTransfer(TypeOfMessage.UPDATEINFO, ord);
+			ClientUI.chat.accept(data);
+		}
+	}
 
     @FXML
     void CancelOrder(ActionEvent event) throws IOException{
@@ -210,6 +218,7 @@ public class ChangeOrderDetailsController extends AbstractScenes{
     	helloTxt.setText("Hello " + ord.getNameOnOrder());
     	setTimeComboBox(); // call func above.
     	timeComboBox.getSelectionModel().select(ord.getHour());
+    	priceTxt.setText(String.format("Price: %.2f", OrderManagementController.instance.price));
     	try {
             datePicker.setValue(LOCAL_DATE(ord.getDate()));
         } catch (NullPointerException e) {}
