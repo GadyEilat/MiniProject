@@ -36,7 +36,7 @@ public class ChangeOrderDetailsController extends AbstractScenes{
 	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 	public int wasCanceled = 0; //a flag for telling if you canceled the order.
 	Double price;
-	private final static Double absolutePrice = 40.00;
+	private final static Double absolutePrice = 30.00;
 	
     @FXML
     private ResourceBundle resources;
@@ -99,7 +99,8 @@ public class ChangeOrderDetailsController extends AbstractScenes{
     	msgFromController.setFill(Color.GREEN);
 		msgFromController.setText("Updated Successfully");
     	Double dblAmount = Double.valueOf(amountOfVisitorsComboBox.getSelectionModel().getSelectedItem());
-    	price= absolutePrice * dblAmount * 0.80;
+    	Double pricePerPerson = OrderManagementController.instance.pricePerPerson;
+    	price=pricePerPerson * dblAmount;
     	priceTxt.setText(String.format("Price: %.2f", price));
     }
     
