@@ -10,6 +10,7 @@ import java.util.ResourceBundle;
 
 import client.ChatClient;
 import client.ClientUI;
+import client.logic.EmailDetails;
 import client.logic.Order;
 import common.DataTransfer;
 import common.TypeOfMessage;
@@ -114,6 +115,13 @@ public class ChangeOrderDetailsController extends AbstractScenes{
     	DataTransfer data = new DataTransfer(TypeOfMessage.CHECK_KIND, ord.getID());
 		ClientUI.chat.accept(data);
     	priceTxt.setText(String.format("Price: %.2f", price));
+    	//sending a mail
+    	String toSend = "You Successfully updated your order details " + ord.getNameOnOrder() + ".\nThe new order details are:\nOrder Number: " +
+    	ord.getOrderNumber() + "\nPark: " + ord.getParkName() + "\nDate: " + ord.getDate()+ "\nTime: " + ord.getHour() + "\nAmount of visitors: " +
+    	ord.getNumOfVisitors();
+    	EmailDetails details= new EmailDetails(ord.getEmail(),"GoNature Updated Order",toSend);
+    	DataTransfer maildata = new DataTransfer(TypeOfMessage.SENDMAIL, details);
+		ClientUI.chat.accept(maildata);
     }
     
     public void notUpdated()

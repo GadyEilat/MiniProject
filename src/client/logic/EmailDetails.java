@@ -1,6 +1,12 @@
 package client.logic;
 
-public class EmailDetails {
+import java.io.Serializable;
+
+public class EmailDetails implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	String mailTo;
 	String subject;
 	String text;

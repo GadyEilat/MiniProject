@@ -5,6 +5,8 @@ import java.text.DecimalFormat;
 import java.util.Formatter;
 import java.util.ResourceBundle;
 
+import com.sun.corba.se.impl.orbutil.graph.Node;
+
 import client.ChatClient;
 import client.ClientUI;
 import client.logic.Order;
@@ -14,6 +16,9 @@ import common.TypeOfMessage;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.print.PageLayout;
+import javafx.print.PageOrientation;
+import javafx.print.Paper;
 import javafx.print.PrinterJob;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -131,14 +136,16 @@ public class OrderManagementController extends AbstractScenes {
     }
 
     @FXML
-    void PrintDetails(ActionEvent event) {
-//    	System.out.println("To Printer!");
-//        PrinterJob job = PrinterJob.createPrinterJob();
-//        if(job != null){
-//        job.showPrintDialog(changeBtn.getScene().getWindow()); 
-//        job.printPage(changeBtn.getParent());
-//        job.endJob();
-//        }
+    void PrintDetails(ActionEvent event) { //fix!!!
+//    	PrinterJob printerJob = PrinterJob.createPrinterJob();
+//    	if (printerJob != null) {
+//    	  PageLayout pageLayout = printerJob.getPrinter().createPageLayout(Paper.A5, PageOrientation.LANDSCAPE, 0, 0, 0, 0);
+//
+//    	  boolean success = printerJob.printPage(pageLayout, );
+//    	  if (success) {
+//    	    printerJob.endJob();
+//    	  }
+//    	}
     }
 
     @FXML
