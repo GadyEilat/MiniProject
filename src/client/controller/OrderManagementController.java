@@ -94,7 +94,7 @@ public class OrderManagementController extends AbstractScenes {
     	dblAmount = Double.valueOf(ord.getNumOfVisitors());
     	if (ans) {
     		pricePerPerson = price*0.75;
-        	price= pricePerPerson*dblAmount;
+        	price= pricePerPerson*(dblAmount-1);
     	}
     	priceTxt.setText(String.format("Price: %.2f", price));
     		

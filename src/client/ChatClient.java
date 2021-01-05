@@ -123,11 +123,14 @@ public class ChatClient extends AbstractClient {
 			break;
 			
 		case IS_SUBSCRIBER:
-			if (object instanceof Boolean) {
+			if (object instanceof Boolean) { //came from OrderManagementController
 				Boolean isIt = (Boolean) object;
 				if (isIt == true) {
 					OrderManagementController.instance.isSubscriber(true);
 				}
+			}
+			if (object instanceof Integer) { //came from ChangeOrderDetails
+				ChangeOrderDetailsController.instance.isOther();
 			}
 				
 			break;
@@ -139,6 +142,9 @@ public class ChatClient extends AbstractClient {
 					OrderManagementController.instance.isGuide(true);
 				}
 			}
+			if (object instanceof Integer) { //came from ChangeOrderDetails
+				ChangeOrderDetailsController.instance.isGuide();
+			}
 			break;
 			
 		case IS_REGULAR:
@@ -147,6 +153,9 @@ public class ChatClient extends AbstractClient {
 				if (isIt == true) {
 					OrderManagementController.instance.isRegular(true);
 				}
+			}
+			if (object instanceof Integer) { //came from ChangeOrderDetails
+				ChangeOrderDetailsController.instance.isOther();
 			}
 			break;
 			

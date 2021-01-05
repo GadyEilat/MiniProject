@@ -92,14 +92,27 @@ public class ChangeOrderDetailsController extends AbstractScenes{
     ObservableList<String> list;
     ObservableList<String> list2;
     ObservableList<String> list3;
-  
+    
+    public void isGuide() {
+    	Double dblAmount = Double.valueOf(amountOfVisitorsComboBox.getSelectionModel().getSelectedItem());
+    	Double pricePerPerson = OrderManagementController.instance.pricePerPerson;
+    	price= pricePerPerson*(dblAmount-1); //the only difference from the next method...
+    	priceTxt.setText(String.format("Price: %.2f", price));
+    }
+    public void isOther() {
+    	Double dblAmount = Double.valueOf(amountOfVisitorsComboBox.getSelectionModel().getSelectedItem());
+    	Double pricePerPerson = OrderManagementController.instance.pricePerPerson;
+    	price=pricePerPerson*dblAmount;
+    	priceTxt.setText(String.format("Price: %.2f", price));
+    }
+    
+    
     public void updated()
     {
     	msgFromController.setFill(Color.GREEN);
 		msgFromController.setText("Updated Successfully");
-    	Double dblAmount = Double.valueOf(amountOfVisitorsComboBox.getSelectionModel().getSelectedItem());
-    	Double pricePerPerson = OrderManagementController.instance.pricePerPerson;
-    	price=pricePerPerson * dblAmount;
+    	DataTransfer data = new DataTransfer(TypeOfMessage.CHECK_KIND, ord.getID());
+		ClientUI.chat.accept(data);
     	priceTxt.setText(String.format("Price: %.2f", price));
     }
     
