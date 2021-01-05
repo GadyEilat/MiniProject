@@ -1,12 +1,16 @@
 package client.controller;
 import java.io.IOException;
 import java.net.URL;
-
+import java.text.DecimalFormat;
+import java.util.Formatter;
 import java.util.ResourceBundle;
 
 import client.ChatClient;
 import client.ClientUI;
 import client.logic.Order;
+import client.logic.TourGuideOrder;
+import common.DataTransfer;
+import common.TypeOfMessage;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -23,6 +27,8 @@ import javafx.stage.Stage;
 public class OrderManagementController extends AbstractScenes {
 	public Order ord = new Order(null,null,null,null,null,null,null,null);
 	public int wasCanceled = 0;
+	Double price=30.00, pricePerPerson;
+	String strPrice=null;
 	
     @FXML
     private ResourceBundle resources;
@@ -30,6 +36,9 @@ public class OrderManagementController extends AbstractScenes {
     @FXML
     private URL location;
 
+    @FXML
+    private Text priceTxt;
+    
     @FXML
     private TextField orderNumberTxt;
 
@@ -70,6 +79,20 @@ public class OrderManagementController extends AbstractScenes {
     private Button cancelOrderBtn;
 
     public static OrderManagementController instance;
+    
+    public void isSubscriber(Boolean ans) {
+    	Double dblAmount = Double.valueOf(ord.getNumOfVisitors());
+    	if (ans) {
+    		pricePerPerson = price*0.85*0.80;
+        	price= pricePerPerson*dblAmount;
+    	}
+    	else {
+    		pricePerPerson = price*0.85;
+    		price=pricePerPerson*dblAmount;
+    	}
+    	priceTxt.setText(String.format("Price: %.2f", price));
+    		
+    }
     
 	@FXML
 	void CancelOrder(ActionEvent event) throws IOException {
@@ -112,5 +135,7 @@ public class OrderManagementController extends AbstractScenes {
     	helloTxt.setText("Hello " + ord.getNameOnOrder());
     	timeTxt.setText(ord.getHour());
     	dateTxt.setText(ord.getDate());
+    	DataTransfer data = new DataTransfer(TypeOfMessage.CHECK_IF_SUBSCRIBER,ord);
+		ClientUI.chat.accept(data);
     }
 }
