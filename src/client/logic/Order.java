@@ -18,15 +18,6 @@ public class Order implements Serializable{
 	private String ID;
 	private String totalPrice;
 	private String OrderKind;
-	
-	
-	
-	
-	
-	
-	
-	
-	
 
 	public Order(String parkName, String hour, String date, String email, String orderNumber, String numOfVisitors,
 			String nameOnOrder, String iD, String totalPrice, String orderkind) {

@@ -14,7 +14,7 @@ public class WaitingList implements Serializable {
 	private String nameOnOrder;
 	private String ID;
 	private String timeOfEntrance;
-	private String DateOfEntrance;
+	private String dateOfEntrance;
 	
 	public WaitingList(String parkName, String time, String date, String numOfVisitors, String email,
 			String orderNumber, String nameOnOrder, String iD, String timeofenterence, String dateofentrance) {
@@ -27,7 +27,7 @@ public class WaitingList implements Serializable {
 		this.nameOnOrder = nameOnOrder;
 		ID = iD;
 		this.timeOfEntrance= timeofenterence;
-		this.DateOfEntrance=dateofentrance;
+		this.dateOfEntrance=dateofentrance;
 	}
 
 	public String getParkName() {
@@ -98,11 +98,11 @@ public class WaitingList implements Serializable {
 
 
 	public String getDateOfEntrance() {
-		return DateOfEntrance;
+		return dateOfEntrance;
 	}
 
 	public void setDateOfEntrance(String dateOfEntrance) {
-		DateOfEntrance = dateOfEntrance;
+		dateOfEntrance = dateOfEntrance;
 	}
 
 	public String getTimeOfEntrance() {

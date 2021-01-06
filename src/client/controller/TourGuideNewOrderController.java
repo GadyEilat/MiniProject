@@ -325,6 +325,7 @@ public class TourGuideNewOrderController extends AbstractScenes {
 		    LocalDateTime datenow = LocalDateTime.now();
   		    wait.setDateOfEntrance(ddt.format(datenow));
   		    
+  		   // wait.setTimeOfEntrance(dtf.format(now));
            	DataTransfer data = new DataTransfer(TypeOfMessage.TOURGUIDEWAITINGLIST,wait);
            	ClientUI.chat.accept(data);
            	switchScenes("/client/boundaries/TourGuideMainMenu.fxml", "New waiting list"); 	

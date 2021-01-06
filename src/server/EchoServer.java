@@ -4,6 +4,10 @@
 package server;
 
 import java.io.*;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Vector;
 
@@ -351,26 +355,61 @@ public class EchoServer extends AbstractServer {
 									"Date '" + deletDates[i][0] + "' for discount DELETEINFO details failed");
 						}
 					}
-
 				}
 			}
 			
-			if (object instanceof String) {
-				String strToBeDeleted = (String) object;
-				String DeleteQuery = "DELETE FROM gonature.orders WHERE (OrderNumber = " + strToBeDeleted + ");";
+			if (object instanceof Order) {
+				Order ordToBeDeleted = (Order) object;
+				Order orderFromWaitingList = new Order(null, null, null, null, null, null, null, null, null, null);
+				String saveDate = ordToBeDeleted.getDate();
+				String saveTime = ordToBeDeleted.getHour();
+				
+				String DeleteQuery = "DELETE FROM gonature.orders WHERE (OrderNumber = "
+						+ ordToBeDeleted.getOrderNumber() + ");";
 				boolean ans = mysqlConnection.updateDB(DeleteQuery);
 				if (ans) {
 					ServerController.instance.displayMsg("Order was deleted");
-					returnData = new DataTransfer(TypeOfMessageReturn.DELETE_ORDER_SUCCESS, null);
-				}
-				else {
+				} else {
 					ServerController.instance.displayMsg("Order could not be deleted");
-					returnData = new DataTransfer(TypeOfMessageReturn.DELETE_ORDER_FAILED, null);
 				}
-				try {
-					client.sendToClient(returnData);
-				} catch (IOException e) {
-					e.printStackTrace();
+				// getting the first in line from the waiting list which fits the time and date.
+				arrOfAnswer = mysqlConnection.getDB("SELECT MIN(DateOfEntrance)  FROM gonature.waitinglist;");
+				if (!arrOfAnswer.isEmpty()) {
+					arrOfAnswer = mysqlConnection.getDB(
+							"SELECT MIN(MinDATE.TimeOfEntrance), MinDATE.OrderNumber FROM ( SELECT TimeOfEntrance,OrderNumber FROM gonature.waitinglist WHERE (Date = '"
+									+ saveDate + "' AND Time = '" + saveTime + "' AND DateOfEntrance = '"
+									+ arrOfAnswer.get(0).toString() + "' ))  AS MinDATE;");
+					// fix here.
+					if (arrOfAnswer.get(0) != null) {
+						arrOfAnswer = mysqlConnection.getDB("SELECT * FROM gonature.waitinglist WHERE OrderNumber = '"
+								+ arrOfAnswer.get(1).toString() + "';");
+						if (!arrOfAnswer.isEmpty()) {
+							orderFromWaitingList.setParkName((String) arrOfAnswer.get(0));
+							orderFromWaitingList.setHour((String) arrOfAnswer.get(1));
+							orderFromWaitingList.setDate((String) arrOfAnswer.get(2));
+							orderFromWaitingList.setNumOfVisitors((String) arrOfAnswer.get(3));
+							orderFromWaitingList.setEmail((String) arrOfAnswer.get(4));
+							orderFromWaitingList.setOrderNumber((String) arrOfAnswer.get(5));
+							orderFromWaitingList.setNameOnOrder((String) arrOfAnswer.get(6));
+							orderFromWaitingList.setOrderKind((String)arrOfAnswer.get(7));
+							orderFromWaitingList.setID((String) arrOfAnswer.get(8));
+							
+							ans = mysqlConnection.newDBOrderFromWaitingList(orderFromWaitingList);
+							if (ans) {
+								ServerController.instance.displayMsg("Order from waiting list was added");
+							}
+							else {
+								ServerController.instance.displayMsg("Order from waiting list couldn't be added");
+							} //Query to delete the order from waitinglist table that was moved to the orders table
+							String DeleteQuery2 = "DELETE FROM gonature.waitinglist WHERE (OrderNumber = '" + orderFromWaitingList.getOrderNumber() + "');";
+							 ans = mysqlConnection.updateDB(DeleteQuery2);
+							 if (ans) {
+									ServerController.instance.displayMsg("Order was deleted from waiting list");
+								} else {
+									ServerController.instance.displayMsg("Order could not be deleted from waiting list");
+								}
+						}
+					}
 				}
 			}
 			break;
@@ -644,6 +683,17 @@ public class EchoServer extends AbstractServer {
 				else
 					ServerController.instance.displayMsg("Discount UPDATEINFO_REQUEST details could not be updated");
 
+			}
+			if (object instanceof Order) {
+				Order ord = (Order) object;
+				String UpdateQuery = "UPDATE gonature.orders SET totalPrice = '" + ord.getTotalPrice()
+						+ "' WHERE OrderNumber = '" + ord.getOrderNumber() + "';";
+				boolean ans = mysqlConnection.updateDB(UpdateQuery);
+				if (ans) {
+					ServerController.instance.displayMsg("Order price was updated");
+				} else {
+					ServerController.instance.displayMsg("Order price couldn't be updated");
+				}
 			}
 			break;
 

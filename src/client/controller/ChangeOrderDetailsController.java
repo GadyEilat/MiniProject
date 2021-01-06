@@ -19,6 +19,9 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.print.PageLayout;
+import javafx.print.PageRange;
+import javafx.print.PrinterJob;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -26,14 +29,16 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.scene.transform.Scale;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 
 public class ChangeOrderDetailsController extends AbstractScenes{
-	public Order ord = new Order(null,null,null,null,null,null,null,null);
+	public Order ord = new Order(null,null,null,null,null,null,null,null,null,null);
 	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 	public int wasCanceled = 0; //a flag for telling if you canceled the order.
 	Double price;
@@ -99,12 +104,18 @@ public class ChangeOrderDetailsController extends AbstractScenes{
     	Double pricePerPerson = OrderManagementController.instance.pricePerPerson;
     	price= pricePerPerson*(dblAmount-1); //the only difference from the next method...
     	priceTxt.setText(String.format("Price: %.2f", price));
+    	ord.setTotalPrice(String.valueOf(price));
+    	DataTransfer data = new DataTransfer(TypeOfMessage.UPDATEINFO, ord);
+		ClientUI.chat.accept(data);
     }
     public void isOther() {
     	Double dblAmount = Double.valueOf(amountOfVisitorsComboBox.getSelectionModel().getSelectedItem());
     	Double pricePerPerson = OrderManagementController.instance.pricePerPerson;
     	price=pricePerPerson*dblAmount;
     	priceTxt.setText(String.format("Price: %.2f", price));
+    	ord.setTotalPrice(String.valueOf(price));
+    	DataTransfer data = new DataTransfer(TypeOfMessage.UPDATEINFO_REQUEST, ord);
+		ClientUI.chat.accept(data);
     }
     
     
@@ -115,6 +126,7 @@ public class ChangeOrderDetailsController extends AbstractScenes{
     	DataTransfer data = new DataTransfer(TypeOfMessage.CHECK_KIND, ord.getID());
 		ClientUI.chat.accept(data);
     	priceTxt.setText(String.format("Price: %.2f", price));
+    	
     	//sending a mail
     	String toSend = "You Successfully updated your order details " + ord.getNameOnOrder() + ".\nThe new order details are:\nOrder Number: " +
     	ord.getOrderNumber() + "\nPark: " + ord.getParkName() + "\nDate: " + ord.getDate()+ "\nTime: " + ord.getHour() + "\nAmount of visitors: " +
@@ -170,9 +182,31 @@ public class ChangeOrderDetailsController extends AbstractScenes{
     	switchScenes("/client/boundaries/Order Management.fxml", "Order Management");
     }
 
+    public static void printCurrWindow(Window myWindow) {
+    	print(myWindow, myWindow.getScene().getRoot().snapshot(null,null));
+    }
+    
     @FXML
     void PrintDetails(ActionEvent event) {
-    	//fix -- Printing.
+    	printCurrWindow(printDetailsBtn.getScene().getWindow());
+    }
+    
+    private static void print(Window myWindow, WritableImage screenshot) { 
+    	PrinterJob job = PrinterJob.createPrinterJob();
+    	if (job!=null) {
+    		job.getJobSettings().setPageRanges(new PageRange(1,1));
+    		if (!job.showPageSetupDialog(myWindow)|| !job.showPrintDialog(myWindow)) {
+    			return;
+    		}
+    		final PageLayout pageLayout = job.getJobSettings().getPageLayout();
+    		final double sizeX = pageLayout.getPrintableWidth() / screenshot.getWidth();
+    		final double sizeY = pageLayout.getPrintableHeight() / screenshot.getHeight();
+    		final double size = Math.min(sizeX, sizeY);
+    		final ImageView print_node = new ImageView(screenshot);
+    		print_node.getTransforms().add(new Scale(size,size));
+    		job.printPage(print_node);
+    		job.endJob();
+    	}
     }
     
     @FXML
@@ -244,6 +278,7 @@ public class ChangeOrderDetailsController extends AbstractScenes{
     	setTimeComboBox(); // call func above.
     	timeComboBox.getSelectionModel().select(ord.getHour());
     	priceTxt.setText(String.format("Price: %.2f", OrderManagementController.instance.price));
+    	ord.setTotalPrice(priceTxt.getText());
     	try {
             datePicker.setValue(LOCAL_DATE(ord.getDate()));
         } catch (NullPointerException e) {}
