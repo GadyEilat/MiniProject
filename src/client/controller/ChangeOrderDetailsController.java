@@ -10,6 +10,7 @@ import java.util.ResourceBundle;
 
 import client.ChatClient;
 import client.ClientUI;
+import client.logic.EmailDetails;
 import client.logic.Order;
 import common.DataTransfer;
 import common.TypeOfMessage;
@@ -35,12 +36,16 @@ public class ChangeOrderDetailsController extends AbstractScenes{
 	public Order ord = new Order(null,null,null,null,null,null,null,null);
 	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 	public int wasCanceled = 0; //a flag for telling if you canceled the order.
+	Double price;
 	
     @FXML
     private ResourceBundle resources;
 
     @FXML
     private Text msgFromController;
+    
+    @FXML
+    private Text priceTxt;
     
     @FXML
     private Text helloTxt;
@@ -88,11 +93,35 @@ public class ChangeOrderDetailsController extends AbstractScenes{
     ObservableList<String> list;
     ObservableList<String> list2;
     ObservableList<String> list3;
-  
+    
+    public void isGuide() {
+    	Double dblAmount = Double.valueOf(amountOfVisitorsComboBox.getSelectionModel().getSelectedItem());
+    	Double pricePerPerson = OrderManagementController.instance.pricePerPerson;
+    	price= pricePerPerson*(dblAmount-1); //the only difference from the next method...
+    	priceTxt.setText(String.format("Price: %.2f", price));
+    }
+    public void isOther() {
+    	Double dblAmount = Double.valueOf(amountOfVisitorsComboBox.getSelectionModel().getSelectedItem());
+    	Double pricePerPerson = OrderManagementController.instance.pricePerPerson;
+    	price=pricePerPerson*dblAmount;
+    	priceTxt.setText(String.format("Price: %.2f", price));
+    }
+    
+    
     public void updated()
     {
     	msgFromController.setFill(Color.GREEN);
 		msgFromController.setText("Updated Successfully");
+    	DataTransfer data = new DataTransfer(TypeOfMessage.CHECK_KIND, ord.getID());
+		ClientUI.chat.accept(data);
+    	priceTxt.setText(String.format("Price: %.2f", price));
+    	//sending a mail
+    	String toSend = "You Successfully updated your order details " + ord.getNameOnOrder() + ".\nThe new order details are:\nOrder Number: " +
+    	ord.getOrderNumber() + "\nPark: " + ord.getParkName() + "\nDate: " + ord.getDate()+ "\nTime: " + ord.getHour() + "\nAmount of visitors: " +
+    	ord.getNumOfVisitors();
+    	EmailDetails details= new EmailDetails(ord.getEmail(),"GoNature Updated Order",toSend);
+    	DataTransfer maildata = new DataTransfer(TypeOfMessage.SENDMAIL, details);
+		ClientUI.chat.accept(maildata);
     }
     
     public void notUpdated()
@@ -105,24 +134,20 @@ public class ChangeOrderDetailsController extends AbstractScenes{
     void Apply(ActionEvent event) {
     	ord.setNumOfVisitors(amountOfVisitorsComboBox.getSelectionModel().getSelectedItem());
     	String save = OrderManagementController.instance.ord.getDate();
-    	ord.setDate(datePicker.getValue().toString());
-    	if (java.time.LocalDate.now().isAfter(datePicker.getValue())) {
-    		msgFromController.setText("Invalid Date");
-    		ord.setDate(save);
-    		datePicker.setValue(LOCAL_DATE(save));
-    	}
-    	else {
-    	ord.setNumOfVisitors(amountOfVisitorsComboBox.getSelectionModel().getSelectedItem());
-    	ord.setHour(timeComboBox.getSelectionModel().getSelectedItem());
-    	ord.setParkName(parkComboBox.getSelectionModel().getSelectedItem());
-    	DataTransfer data = new DataTransfer(TypeOfMessage.UPDATEINFO,ord);
-		ClientUI.chat.accept(data);
-    	}
-
-		
-//			msgFromController.setFill(Color.GREEN);
-//			msgFromController.setText("Updated Successfully");
-    }
+		ord.setDate(datePicker.getValue().toString());
+		if (java.time.LocalDate.now().isAfter(datePicker.getValue())) {
+			msgFromController.setFill(Color.RED);
+			msgFromController.setText("Invalid Date");
+			ord.setDate(save);
+			datePicker.setValue(LOCAL_DATE(save));
+		} else {
+			ord.setNumOfVisitors(amountOfVisitorsComboBox.getSelectionModel().getSelectedItem());
+			ord.setHour(timeComboBox.getSelectionModel().getSelectedItem());
+			ord.setParkName(parkComboBox.getSelectionModel().getSelectedItem());
+			DataTransfer data = new DataTransfer(TypeOfMessage.UPDATEINFO, ord);
+			ClientUI.chat.accept(data);
+		}
+	}
 
     @FXML
     void CancelOrder(ActionEvent event) throws IOException{
@@ -192,6 +217,11 @@ public class ChangeOrderDetailsController extends AbstractScenes{
     	al3.add("8");
     	al3.add("9");
     	al3.add("10");
+    	al3.add("11");
+    	al3.add("12");
+    	al3.add("13");
+    	al3.add("14");
+    	al3.add("15");
     	list3=FXCollections.observableArrayList(al3);
     	amountOfVisitorsComboBox.setItems(list3);
     }
@@ -213,6 +243,7 @@ public class ChangeOrderDetailsController extends AbstractScenes{
     	helloTxt.setText("Hello " + ord.getNameOnOrder());
     	setTimeComboBox(); // call func above.
     	timeComboBox.getSelectionModel().select(ord.getHour());
+    	priceTxt.setText(String.format("Price: %.2f", OrderManagementController.instance.price));
     	try {
             datePicker.setValue(LOCAL_DATE(ord.getDate()));
         } catch (NullPointerException e) {}

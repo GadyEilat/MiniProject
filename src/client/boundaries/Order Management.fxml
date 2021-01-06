@@ -33,6 +33,7 @@
                               <TextField fx:id="parkTxt" editable="false" layoutX="168.0" layoutY="88.0" prefHeight="25.0" prefWidth="132.0" text="Shlomo's Park" />
                               <Label layoutX="43.0" layoutY="193.0" prefHeight="17.0" prefWidth="107.0" text="Amount Of Visitors" />
                               <TextField fx:id="amountOfVisitorsTxt" editable="false" layoutX="168.0" layoutY="189.0" prefHeight="25.0" prefWidth="131.0" text="3" />
+                              <Text fx:id="priceTxt" fill="GREEN" layoutX="168.0" layoutY="236.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Price: 40.00 NIS" wrappingWidth="131.814453125" />
                            </children>
                         </AnchorPane>
                      </children>

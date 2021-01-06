@@ -55,7 +55,6 @@ public class ServerController implements Initializable {
 				displayMsg("The entered port is invalid");
 			}
 		}
-
 	}
 
 	public void start(Stage primaryStage) throws Exception {	

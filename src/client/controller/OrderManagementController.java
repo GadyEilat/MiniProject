@@ -1,15 +1,25 @@
 package client.controller;
 import java.io.IOException;
 import java.net.URL;
-
+import java.text.DecimalFormat;
+import java.util.Formatter;
 import java.util.ResourceBundle;
+
+import com.sun.corba.se.impl.orbutil.graph.Node;
 
 import client.ChatClient;
 import client.ClientUI;
 import client.logic.Order;
+import client.logic.TourGuideOrder;
+import common.DataTransfer;
+import common.TypeOfMessage;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.print.PageLayout;
+import javafx.print.PageOrientation;
+import javafx.print.Paper;
+import javafx.print.PrinterJob;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -23,6 +33,8 @@ import javafx.stage.Stage;
 public class OrderManagementController extends AbstractScenes {
 	public Order ord = new Order(null,null,null,null,null,null,null,null);
 	public int wasCanceled = 0;
+	Double price=30.00, pricePerPerson, dblAmount;
+	String strPrice=null;
 	
     @FXML
     private ResourceBundle resources;
@@ -30,6 +42,9 @@ public class OrderManagementController extends AbstractScenes {
     @FXML
     private URL location;
 
+    @FXML
+    private Text priceTxt;
+    
     @FXML
     private TextField orderNumberTxt;
 
@@ -71,6 +86,34 @@ public class OrderManagementController extends AbstractScenes {
 
     public static OrderManagementController instance;
     
+    public void isSubscriber(Boolean ans) {
+    	dblAmount = Double.valueOf(ord.getNumOfVisitors());
+    	if (ans) {
+    		pricePerPerson = price*0.85*0.80;
+        	price= pricePerPerson*dblAmount;
+    	}
+    	priceTxt.setText(String.format("Price: %.2f", price));
+    		
+    }
+    public void isGuide(Boolean ans) { //not including "Tashlum Merosh", not sure how to handle that.
+    	dblAmount = Double.valueOf(ord.getNumOfVisitors());
+    	if (ans) {
+    		pricePerPerson = price*0.75;
+        	price= pricePerPerson*(dblAmount-1);
+    	}
+    	priceTxt.setText(String.format("Price: %.2f", price));
+    		
+    }
+    public void isRegular(Boolean ans) {
+    	dblAmount = Double.valueOf(ord.getNumOfVisitors());
+    	if (ans) {
+    		pricePerPerson = price*0.85;
+    		price=pricePerPerson*dblAmount;
+    	}
+    	priceTxt.setText(String.format("Price: %.2f", price));
+    		
+    }
+    
 	@FXML
 	void CancelOrder(ActionEvent event) throws IOException {
 		Stage helpWindow = new Stage();
@@ -93,8 +136,16 @@ public class OrderManagementController extends AbstractScenes {
     }
 
     @FXML
-    void PrintDetails(ActionEvent event) {
-    	//fix
+    void PrintDetails(ActionEvent event) { //fix!!!
+//    	PrinterJob printerJob = PrinterJob.createPrinterJob();
+//    	if (printerJob != null) {
+//    	  PageLayout pageLayout = printerJob.getPrinter().createPageLayout(Paper.A5, PageOrientation.LANDSCAPE, 0, 0, 0, 0);
+//
+//    	  boolean success = printerJob.printPage(pageLayout, );
+//    	  if (success) {
+//    	    printerJob.endJob();
+//    	  }
+//    	}
     }
 
     @FXML
@@ -112,5 +163,7 @@ public class OrderManagementController extends AbstractScenes {
     	helloTxt.setText("Hello " + ord.getNameOnOrder());
     	timeTxt.setText(ord.getHour());
     	dateTxt.setText(ord.getDate());
+    	DataTransfer data = new DataTransfer(TypeOfMessage.CHECK_KIND,ord);
+		ClientUI.chat.accept(data);
     }
 }

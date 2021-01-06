@@ -37,11 +37,11 @@ public class mysqlConnection {
 		}
 
 		try {
-			conn = DriverManager.getConnection("jdbc:mysql://localhost/gonature?serverTimezone=IST", "root","ha89kha89k");
 
+//			conn = DriverManager.getConnection("jdbc:mysql://localhost/gonature?serverTimezone=IST", "root","ha89kha89k");
 //			conn = DriverManager.getConnection("jdbc:mysql://localhost/gonature?serverTimezone=IST", "root","Liran159357!");
 //			conn = DriverManager.getConnection("jdbc:mysql://localhost/gonature?serverTimezone=IST", "root","Aa123456");
-//			conn = DriverManager.getConnection("jdbc:mysql://localhost/gonature?serverTimezone=IST", "root","DA123456");
+			conn = DriverManager.getConnection("jdbc:mysql://localhost/gonature?serverTimezone=IST", "root","DA123456");
 
 			ServerController.instance.displayMsg("SQL connection succeed");
 		} catch (SQLException ex) {/* handle any errors */
@@ -80,6 +80,7 @@ public class mysqlConnection {
 						ordInDB.setEmail(rs.getString(5));
 						ordInDB.setOrderNumber(rs.getString(6));
 						ordInDB.setNameOnOrder(rs.getString(7));
+						ordInDB.setID(rs.getString(9));
 						//8 no need.
 					}
 					//conn.close();
@@ -231,51 +232,63 @@ public class mysqlConnection {
 			}
 		}
 		return false;
-		
-		
-		
 	}
 	
+	public static boolean CheckKind(String msg) {
+		if (conn != null) {
+			try {
+				Statement st = conn.createStatement();
+				ResultSet rs = st.executeQuery(msg);
+				while(rs.next()) {
+					if (rs.getString(1) ==null) {
+						rs.close();
+						return false; //there's no such ID in there.
+					}
+					else {
+						rs.close();
+						return true;	
+					}
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+				return false;
+			}
+		}
+		return false;
+	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-public static boolean updateDBOrders(Object updatedTourOrder) {
+	public static boolean updateDBOrders(Object updatedTourOrder) {
 		if (updatedTourOrder instanceof TourGuideOrder) {
-			TourGuideOrder updGuide= (TourGuideOrder)updatedTourOrder;
-			String updEmail=updGuide.getEmail();
-			String upPark=updGuide.getParkName();
-			String upDate= updGuide.getDate();
-			String upTime=updGuide.getTime();
-			String upNumOfVisitors=updGuide.getNumOfVisitors();
-			String nameOnOrder=updGuide.getNameOnOrder();
-			String upOrderNum= generateRandomChars("123456789", 5);
-			String tourID=updGuide.getID();
-			//string upOrderNumber=
-			//String updID=updGuide.getId();
+			TourGuideOrder updGuide = (TourGuideOrder) updatedTourOrder;
+			String updEmail = updGuide.getEmail();
+			String upPark = updGuide.getParkName();
+			String upDate = updGuide.getDate();
+			String upTime = updGuide.getTime();
+			String upNumOfVisitors = updGuide.getNumOfVisitors();
+			String nameOnOrder = updGuide.getNameOnOrder();
+			String upOrderNum = generateRandomChars("123456789", 5);
+			String tourID = updGuide.getID();
+			// string upOrderNumber=
+			// String updID=updGuide.getId();
 			if (conn != null) {
 				try {
-					
-					String query = " insert into orders (Park, Date, Time, NumOfVisitors, Email,TourGroup,orderNumber,NameOnOrder,ID )"+ " values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-					        
+
+					String query = " insert into orders (Park, Date, Time, NumOfVisitors, Email,TourGroup,orderNumber,NameOnOrder,ID )"
+							+ " values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
 					PreparedStatement preparedStmt = conn.prepareStatement(query);
-				      preparedStmt.setString (1, upPark);
-				      preparedStmt.setString (2, upDate);
-				      preparedStmt.setString (3, upTime);
-				      preparedStmt.setString (4, upNumOfVisitors);
-				      preparedStmt.setString (5, updEmail);
-				      preparedStmt.setString (6, "True");
-				      preparedStmt.setString (7, upOrderNum);
-				      preparedStmt.setString (8, nameOnOrder);
-				      preparedStmt.setString (9, tourID);
-				      preparedStmt.execute();
-				      
-				      conn.close();
+					preparedStmt.setString(1, upPark);
+					preparedStmt.setString(2, upDate);
+					preparedStmt.setString(3, upTime);
+					preparedStmt.setString(4, upNumOfVisitors);
+					preparedStmt.setString(5, updEmail);
+					preparedStmt.setString(6, "True");
+					preparedStmt.setString(7, upOrderNum);
+					preparedStmt.setString(8, nameOnOrder);
+					preparedStmt.setString(9, tourID);
+					preparedStmt.execute();
+
+					conn.close();
 					return true;
 				} catch (SQLException e) {
 					e.printStackTrace();
@@ -285,7 +298,7 @@ public static boolean updateDBOrders(Object updatedTourOrder) {
 		}
 		return false;
 	}
-	
+
 	public static boolean deleteFromDB(String msg) {
 		if (conn != null) {
 			try {
@@ -297,10 +310,9 @@ public static boolean updateDBOrders(Object updatedTourOrder) {
 				return false;
 			}
 		}
-	return false;
+		return false;
 	}
-	
-	
+
 	public static String generateRandomChars(String candidateChars, int length) {
 	    StringBuilder sb = new StringBuilder();
 	    Random random = new Random();
@@ -314,6 +326,48 @@ public static boolean updateDBOrders(Object updatedTourOrder) {
 	
 	
 
+	
+	
+	public static ObservableList<Object> getHistorySubOrders(Object msg) {
+		ObservableList <Object> oblist=FXCollections.observableArrayList();
+        String subID=(String)msg;
+		try {
+				
+			Statement st = conn.createStatement();
+			String sql = ("SELECT * FROM gonature.orders where ID = '" + subID + "';");
+			ResultSet rs = st.executeQuery(sql);
+			
+			while(rs.next()) {
+				Order newS=new Order(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(5), rs.getString(6), rs.getString(4), 
+						rs.getString(7), rs.getString(9));
+				
+//				newT.setParkName(rs.getString(1));
+//				newT.setHour(rs.getString(2));
+//				newT.setDate(rs.getString(3));
+//				newT.setEmail(rs.getString(4));
+//				newT.setOrderNumber(rs.getString(5));
+//				newT.setNumOfVisitors(rs.getString(6));
+//				newT.setNameOnOrder(rs.getString(7));
+//				newT.setID(rs.getString(8));
+				
+				oblist.add(newS);
+				
+				
+			}
+			rs.close();
+			return oblist;
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+	
+        
+		return null;
+	}
+	
 	
 	
 	
@@ -354,7 +408,7 @@ public static boolean updateDBOrders(Object updatedTourOrder) {
 	
         
 		return null;
-}
+	}
 
 	
 	

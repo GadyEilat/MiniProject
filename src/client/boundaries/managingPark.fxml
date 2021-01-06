@@ -34,7 +34,7 @@
                               <Text layoutX="21.0" layoutY="72.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Max Time" />
                               <TextField fx:id="MaxTimeField" layoutX="128.0" layoutY="55.0" />
                               <Text fx:id="MaxTimeCurrent" layoutX="303.0" layoutY="72.0" strokeType="OUTSIDE" strokeWidth="0.0" text="4" />
-                              <Text fx:id="maxVisitorCurrent11" layoutX="315.0" layoutY="72.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hours" />
+                              <Text layoutX="315.0" layoutY="72.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hours" />
                            </children>
                         </AnchorPane>
                      </children>
