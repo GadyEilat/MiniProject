@@ -82,14 +82,6 @@ public class ChatClient extends AbstractClient {
 			}		
 			
 			break;
-		
-		case DELETE_ORDER_FAILED:
-			//not suppose to happen.
-			break;
-		case DELETE_ORDER_SUCCESS:
-			
-			break;
-			
 		case UPDATE_FAILED:
 			if (object instanceof Order) {
 				ChangeOrderDetailsController.instance.notUpdated();

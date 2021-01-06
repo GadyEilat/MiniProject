@@ -40,7 +40,7 @@
                               <Label layoutX="43.0" layoutY="193.0" prefHeight="17.0" prefWidth="107.0" text="Amount Of Visitors" />
                               <ComboBox fx:id="timeComboBox" layoutX="168.0" layoutY="155.0" prefHeight="25.0" prefWidth="132.0" promptText="Choose Time" />
                               <ComboBox fx:id="amountOfVisitorsComboBox" layoutX="168.0" layoutY="189.0" prefHeight="25.0" prefWidth="132.0" promptText="Choose Amount" />
-                              <Text fx:id="priceTxt" fill="GREEN" layoutX="315.0" layoutY="242.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Price: 40.00" wrappingWidth="121.13671875" />
+                              <Text fx:id="priceTxt" fill="GREEN" layoutX="315.0" layoutY="242.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="121.13671875" />
                            </children>
                         </AnchorPane>
                      </children>

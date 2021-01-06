@@ -16,6 +16,8 @@ public class Order implements Serializable{
 	private String numOfVisitors;
 	private String nameOnOrder;
 	private String ID;
+	private String totalPrice;
+	private String orderKind;
 
 	public Order(String parkName, String hour, String date, String email, String orderNumber, String numOfVisitors, String nameOnOrder, String ID) {
 		this.parkName = parkName;
@@ -28,8 +30,39 @@ public class Order implements Serializable{
 		this.ID=ID;
 	}
 	
+	public Order(String parkName, String hour, String date, String email, String orderNumber, String numOfVisitors,
+			String nameOnOrder, String ID, String totalPrice, String orderKind) {
+		super();
+		this.parkName = parkName;
+		this.hour = hour;
+		this.date = date;
+		this.email = email;
+		this.orderNumber = orderNumber;
+		this.numOfVisitors = numOfVisitors;
+		this.nameOnOrder = nameOnOrder;
+		this.ID = ID;
+		this.totalPrice = totalPrice;
+		this.orderKind=orderKind;
+	}
+	
+	public String getOrderKind() {
+		return orderKind;
+	}
+
+	public void setOrderKind(String orderKind) {
+		this.orderKind = orderKind;
+	}
+
 	public Order() {
 		
+	}
+	
+	public String getTotalPrice() {
+		return totalPrice;
+	}
+	
+	public void setTotalPrice(String totalPrice) {
+		this.totalPrice = totalPrice;
 	}
 	
 	public String getID() {

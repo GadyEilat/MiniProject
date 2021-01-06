@@ -309,7 +309,7 @@ public class TourGuideNewOrderController extends AbstractScenes {
         	alert.setHeaderText(null);
         	alert.setContentText("Enterd waiting list sucssesfully.");
         	alert.show();
-        	WaitingList wait= new WaitingList(null, null, null ,null ,null ,null, null, null, null);
+        	WaitingList wait= new WaitingList(null, null, null ,null ,null ,null, null, null, null,null);
         	wait.setDate(tourguideorderr.getDate());
         	wait.setEmail(tourguideorderr.getEmail());
         	wait.setID(tourguideorderr.getID());
@@ -319,7 +319,7 @@ public class TourGuideNewOrderController extends AbstractScenes {
             wait.setTime(tourguideorderr.getTime());
         	DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
   		    LocalDateTime now = LocalDateTime.now();
-  		    wait.setTimeOfEnterence(dtf.format(now));
+  		   // wait.setTimeOfEntrance(dtf.format(now));
            	DataTransfer data = new DataTransfer(TypeOfMessage.TOURGUIDEWAITINGLIST,wait);
            	ClientUI.chat.accept(data);
            	switchScenes("/client/boundaries/TourGuideMainMenu.fxml", "New waiting list"); 	

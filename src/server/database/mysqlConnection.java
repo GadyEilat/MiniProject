@@ -9,6 +9,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Random;
@@ -141,7 +143,47 @@ public class mysqlConnection {
 		return null;
 	}
 	
+	public static boolean newDBOrderFromWaitingList(Object msg) {
+		if (msg instanceof Order) //if its an order for Gady's screens.
+		{
+			Order order = (Order)msg;
+			String updEmail=order.getEmail();
+			String upPark=order.getParkName();
+			String upDate= order.getDate();
+			String upTime=order.getHour();
+			String upNumOfVisitors=order.getNumOfVisitors();
+			String nameOnOrder=order.getNameOnOrder();
+			String upOrderNum= order.getOrderNumber();
+			String upOrderKind= order.getOrderKind();
+			String insID=order.getID();
+
+			if (conn != null) {
+				try {
+					String sql = "INSERT INTO orders (Park, Time, Date, NumOfVisitors, Email,orderNumber,NameOnOrder, OrderKind, ID )" + " values ( ?, ?, ?, ?, ?, ?, ?, ?,?)";
+					PreparedStatement preparedStmt = conn.prepareStatement(sql);
+				      preparedStmt.setString (1, upPark);
+				      preparedStmt.setString (2, upTime);
+				      preparedStmt.setString (3, upDate);
+				      preparedStmt.setString (4, upNumOfVisitors);
+				      preparedStmt.setString (5, updEmail);
+				      preparedStmt.setString (6, upOrderNum);
+				      preparedStmt.setString (7, nameOnOrder);
+				      preparedStmt.setString (8, upOrderKind);
+				      preparedStmt.setString (9, insID);
+				      preparedStmt.execute();
+				      return true;
+					}
+					
+				 catch (SQLException e) {
+					e.printStackTrace();
+				}
+			
+			}	
+		
+		}
 	
+		return false;
+	}
 	
 	public static ArrayList<Object> getDB(Object msg) {
 	String str = null;
@@ -176,6 +218,73 @@ public class mysqlConnection {
 
 	}
 	
+	public static Order checkWaitingList(String msg) {
+		Order ordInDB = new Order(null,null,null,null,null,null,null,null,null,null);
+		ArrayList<Order> answer = new ArrayList<>();
+		ArrayList<String> timeOfEntranceArray = new ArrayList<String>();
+		ArrayList<String> dateOfEntranceArray = new ArrayList<String>();
+		ArrayList<String> updTimeOfEntranceArray = new ArrayList<String>();
+		ArrayList<String> updDateOfEntranceArray = new ArrayList<String>();
+		LocalDate myDate=null;
+		LocalDate tempDate= LocalDate.of(2999, 12, 30);
+		String timeOfEntrance="", appennd=":00", dateOfEntrance= "", tempTime= "24:00",updTime, updDate;
+		if (conn != null) {
+			try {
+				Statement st = conn.createStatement();
+				ResultSet rs = st.executeQuery(msg);
+				ResultSetMetaData metadata = rs.getMetaData();
+			    //int columnCount = metadata.getColumnCount();
+				while (rs.next()) {
+					ordInDB.setParkName(rs.getString(1));
+					ordInDB.setHour(rs.getString(2));
+					ordInDB.setDate(rs.getString(3));
+					ordInDB.setNumOfVisitors(rs.getString(4));
+					ordInDB.setEmail(rs.getString(5));
+					ordInDB.setOrderNumber(rs.getString(6));
+					ordInDB.setNameOnOrder(rs.getString(7));
+					//8 no need.
+					ordInDB.setID(rs.getString(9));
+					timeOfEntrance = rs.getString(10);
+					dateOfEntrance = rs.getString(11);
+					answer.add(ordInDB);
+					timeOfEntranceArray.add(timeOfEntrance);
+					dateOfEntranceArray.add(dateOfEntrance);
+				}
+				int[] test= new int[dateOfEntranceArray.size()];
+				for (int i=0; i<dateOfEntranceArray.size();i++) {
+					myDate=LOCAL_DATE(dateOfEntranceArray.get(i));
+					if (myDate.isBefore(tempDate)) {
+						tempDate=myDate;
+						test[i]=1;
+					}
+					else if (myDate.isEqual(tempDate)) {
+						
+					}
+					
+					
+					updDate = dateOfEntranceArray.get(i);
+				}
+				for (int i=0; i<timeOfEntranceArray.size();i++) {
+					updTime = timeOfEntranceArray.get(i);
+				}
+				
+				//conn.close();
+				rs.close();
+				return ordInDB;
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		
+		}
+	return null;
+	}
+	
+	public static final LocalDate LOCAL_DATE (String dateString){ //method for dealing with dates.
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate localDate = LocalDate.parse(dateString, formatter);
+        return localDate;
+    }
+	
 	public static boolean updateDB(String msg) {
 			if (conn != null) {
 				try {
@@ -202,7 +311,7 @@ public class mysqlConnection {
 			String nameOnOrder=updGuide.getNameOnOrder();
 			String upOrderNum= generateRandomChars("123456789", 5);
 			String tourID=updGuide.getID();
-			String waitingTime=updGuide.getTimeOfEnterence();
+			String waitingTime=updGuide.getTimeOfEntrance();
 			//string upOrderNumber=
 			//String updID=updGuide.getId();
 			if (conn != null) {

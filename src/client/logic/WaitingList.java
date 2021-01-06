@@ -13,10 +13,11 @@ public class WaitingList implements Serializable {
 	private String orderNumber;
 	private String nameOnOrder;
 	private String ID;
-	private String timeOfEnterence;
+	private String timeOfEntrance;
+	private String dateOfEntrance;
 	
 	public WaitingList(String parkName, String time, String date, String numOfVisitors, String email,
-			String orderNumber, String nameOnOrder, String iD, String timeofenterence) {
+			String orderNumber, String nameOnOrder, String ID, String timeOfEntrance, String dateOfEntrance) {
 		this.parkName = parkName;
 		this.time = time;
 		this.date = date;
@@ -24,8 +25,26 @@ public class WaitingList implements Serializable {
 		this.email = email;
 		this.orderNumber = orderNumber;
 		this.nameOnOrder = nameOnOrder;
-		ID = iD;
-		this.timeOfEnterence= timeofenterence;
+		this.ID = ID;
+		this.timeOfEntrance= timeOfEntrance;
+		this.dateOfEntrance= dateOfEntrance;
+		
+	}
+
+	public String getTimeOfEntrance() {
+		return timeOfEntrance;
+	}
+
+	public void setTimeOfEntrance(String timeOfEntrance) {
+		this.timeOfEntrance = timeOfEntrance;
+	}
+
+	public String getDateOfEntrance() {
+		return dateOfEntrance;
+	}
+
+	public void setDateOfEntrance(String dateOfEntrance) {
+		this.dateOfEntrance = dateOfEntrance;
 	}
 
 	public String getParkName() {
@@ -90,17 +109,6 @@ public class WaitingList implements Serializable {
 
 	public void setID(String iD) {
 		ID = iD;
-	}
-	
-	
-
-
-	public String getTimeOfEnterence() {
-		return timeOfEnterence;
-	}
-
-	public void setTimeOfEnterence(String timeOfEnterence) {
-		this.timeOfEnterence = timeOfEnterence;
 	}
 
 	@Override
