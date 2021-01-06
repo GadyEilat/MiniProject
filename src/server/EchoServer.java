@@ -11,11 +11,13 @@ import client.logic.WaitingList;
 import client.ClientUI;
 import client.logic.Order;
 import client.logic.ParkInfo;
+import client.logic.ParkStatus;
 import client.logic.Subscriber;
 import client.logic.TourGuide;
 import client.logic.TourGuideOrder;
 import client.logic.Visitor;
 import client.logic.Worker;
+import client.logic.casualOrder;
 import client.logic.maxVis;
 import common.DataTransfer;
 import common.TypeOfMessage;
@@ -407,6 +409,114 @@ public class EchoServer extends AbstractServer {
 			
 			break;
 			
+		case GETINFOPARKENTER:
+			
+			if (object instanceof Order) {
+				order = mysqlConnection.getDBOrder(object);
+				if (order != null) {
+					ServerController.instance.displayMsg("Got order details");
+					returnData = new DataTransfer(TypeOfMessageReturn.PARKENTERRETURNORDER, order);
+				} else {
+					ServerController.instance.displayMsg("Couldn't recieve existing order details");
+					returnData = new DataTransfer(TypeOfMessageReturn.RETURN_ORDER_FAILED, null);
+				}
+				try {
+					client.sendToClient(returnData);
+				} catch (IOException e) { 
+					e.printStackTrace();
+				}
+			
+			}
+			break;
+			
+		case PARTKENTERGETSTATUS:
+			if(object instanceof ParkStatus)
+			{
+				ParkStatus status= (ParkStatus)object;
+				String set=mysqlConnection.getPartStatus(status);
+				String get=mysqlConnection.getPartStatus2(status);
+				 String t="select * from discountdates WHERE Dates='" + status.getDate() + "' AND numOfPark='" + status.getPark() +  "'AND Approve='True';";
+	                arrOfAnswer = mysqlConnection.getDB(t);
+				status.setAmount(set);
+				status.setMaxAmount(get);
+				status.setDiscount((String) arrOfAnswer.get(1));
+				if(status.getAmount()!=null) {
+				try {
+					returnData = new DataTransfer(TypeOfMessageReturn.PARK_STATUS, status);
+					client.sendToClient(returnData);
+
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				}
+				
+				
+			}
+			break;
+		
+		case PARKENTERSENDSTATUS:
+			if(object instanceof ParkStatus)
+			{
+				ParkStatus status= (ParkStatus)object;
+				String t= status.getPark();
+				int x=Integer.valueOf(status.getAmount());
+				//String query ="UPDATE parksstatus SET "+t+"="+t+"+ "+x+" WHERE DATE='"+status.getDate()+"';";
+				String query ="UPDATE parksstatuss SET "+t+"="+t+"+ "+x+ ";";
+				boolean ans2 = mysqlConnection.updateDB(query);
+				if (ans2)
+					ServerController.instance.displayMsg("Park Status details updated");
+				else
+					ServerController.instance.displayMsg("Park Statust details could not be updated");
+			}
+			
+			break;
+			
+			
+		case CASUALVISITUPDATE: 
+			if(object instanceof casualOrder)
+			{
+				casualOrder order=(casualOrder)object;
+				boolean ans2 = mysqlConnection.updateCasualTable(order);
+				if (ans2)
+					ServerController.instance.displayMsg("New Casual Visit");
+				else
+					ServerController.instance.displayMsg("Casual visit failed");
+			
+			}
+			break;
+			
+			
+		case CheckDiscounts:
+			if(object instanceof ParkStatus) {
+				ParkStatus status= (ParkStatus)object;
+                String t="select * from discountdates WHERE Dates='" + status.getDate() + "' AND numOfPark='" + status.getPark() +  "'AND Approve='True';";
+                arrOfAnswer = mysqlConnection.getDB(t);
+				status.setAmount((String) arrOfAnswer.get(1));
+				if(!arrOfAnswer.isEmpty()) {
+					try {
+						returnData = new DataTransfer(TypeOfMessageReturn.PARK_DISCOUNT, status);
+						client.sendToClient(returnData);
+
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					}
+
+			}
+			break;
+			
+		case RESETPARKSTATUS:
+			if(object instanceof String) {
+				String t=(String)object;
+			String sql="UPDATE parksstatuss SET "+t+"="+1+ ";";
+			boolean ans2 = mysqlConnection.updateDB(sql);
+			if (ans2)
+				ServerController.instance.displayMsg("Park reseted");
+			else
+				ServerController.instance.displayMsg("Park did not resert");
+			}
+			
+			break;
 			
 			
 	

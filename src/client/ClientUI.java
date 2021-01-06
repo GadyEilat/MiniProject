@@ -30,7 +30,7 @@ public class ClientUI extends Application {
 		ClientUI.primaryStage = primaryStage;
 		Parent current;
 		try {
-			ClientUI.fxmlLoader = new FXMLLoader(getClass().getResource("/client/boundaries/main.fxml"));
+			ClientUI.fxmlLoader = new FXMLLoader(getClass().getResource("/client/boundaries/WorkerParkEnternece.fxml"));
 			current = (Parent)fxmlLoader.load();;
 			Scene scene = new Scene(current);
 			ClientUI.primaryStage.setScene(scene); 

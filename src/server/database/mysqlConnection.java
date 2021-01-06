@@ -16,10 +16,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import client.logic.Order;
+import client.logic.ParkStatus;
 import client.logic.TourGuide;
 import client.logic.TourGuideOrder;
 import client.logic.Visitor;
 import client.logic.WaitingList;
+import client.logic.casualOrder;
 import client.logic.maxVis;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -64,7 +66,7 @@ public class mysqlConnection {
 		if (msg instanceof Order) //if its an order for Gady's screens.
 		{
 			Order ord = (Order)msg;
-			Order ordInDB = new Order(null,null,null,null,null,null,null,null);
+			Order ordInDB = new Order(null,null,null,null,null,null,null,null,null,null);
 			if (conn != null) {
 				try {
 					Statement st = conn.createStatement();
@@ -80,6 +82,9 @@ public class mysqlConnection {
 						ordInDB.setEmail(rs.getString(5));
 						ordInDB.setOrderNumber(rs.getString(6));
 						ordInDB.setNameOnOrder(rs.getString(7));
+						ordInDB.setOrderKind(rs.getString(8));
+						ordInDB.setID(rs.getString(9));
+						
 						//8 no need.
 					}
 					//conn.close();
@@ -201,7 +206,8 @@ public class mysqlConnection {
 			String nameOnOrder=updGuide.getNameOnOrder();
 			String upOrderNum= generateRandomChars("123456789", 5);
 			String tourID=updGuide.getID();
-			String waitingTime=updGuide.getTimeOfEnterence();
+			String waitingTime=updGuide.getTimeOfEntrance();
+			String waitingDate=updGuide.getDateOfEntrance();
 			//string upOrderNumber=
 			//String updID=updGuide.getId();
 			if (conn != null) {
@@ -215,14 +221,14 @@ public class mysqlConnection {
 				      preparedStmt.setString (3, upTime);
 				      preparedStmt.setString (4, upNumOfVisitors);
 				      preparedStmt.setString (5, updEmail);
-				      preparedStmt.setString (6, "True");
+				      preparedStmt.setString (6, "TourGroup");
 				      preparedStmt.setString (7, upOrderNum);
 				      preparedStmt.setString (8, nameOnOrder);
 				      preparedStmt.setString (9, tourID);
 				      preparedStmt.setString (10, waitingTime);
 				      preparedStmt.execute();
 				      
-				      conn.close();
+				      //conn.close();
 					return true;
 				} catch (SQLException e) {
 					e.printStackTrace();
@@ -256,12 +262,14 @@ public static boolean updateDBOrders(Object updatedTourOrder) {
 			String nameOnOrder=updGuide.getNameOnOrder();
 			String upOrderNum= generateRandomChars("123456789", 5);
 			String tourID=updGuide.getID();
+			double orderPayment=((Integer.valueOf(updGuide.getNumOfVisitors())-1)*22.5);
+	        String tourPayment=(String.format("%.2f", orderPayment));
 			//string upOrderNumber=
 			//String updID=updGuide.getId();
 			if (conn != null) {
 				try {
 					
-					String query = " insert into orders (Park, Date, Time, NumOfVisitors, Email,TourGroup,orderNumber,NameOnOrder,ID )"+ " values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+					String query = " insert into orders (Park, Date, Time, NumOfVisitors, Email,TourGroup,orderNumber,NameOnOrder,ID,totalPrice )"+ " values (?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
 					        
 					PreparedStatement preparedStmt = conn.prepareStatement(query);
 				      preparedStmt.setString (1, upPark);
@@ -269,13 +277,14 @@ public static boolean updateDBOrders(Object updatedTourOrder) {
 				      preparedStmt.setString (3, upTime);
 				      preparedStmt.setString (4, upNumOfVisitors);
 				      preparedStmt.setString (5, updEmail);
-				      preparedStmt.setString (6, "True");
+				      preparedStmt.setString (6, "TourGuide");
 				      preparedStmt.setString (7, upOrderNum);
 				      preparedStmt.setString (8, nameOnOrder);
 				      preparedStmt.setString (9, tourID);
+				      preparedStmt.setString (10, tourPayment);
 				      preparedStmt.execute();
 				      
-				      conn.close();
+				     // conn.close();
 					return true;
 				} catch (SQLException e) {
 					e.printStackTrace();
@@ -397,7 +406,7 @@ public static boolean updateDBOrders(Object updatedTourOrder) {
 		}
 		
 		}
-		int xd;
+	
 		rs.close();
 		return maxNum;	
 	}
@@ -407,8 +416,105 @@ public static boolean updateDBOrders(Object updatedTourOrder) {
 	}		
 		return null;
 	}
+
+	public static String getPartStatus(ParkStatus status) {
+		try {
+			String t=null;
+			//ResultSet rs= conn.createStatement().executeQuery("select * from parksstatus WHERE Date='" + status.getDate() + "';");
+			ResultSet rs= conn.createStatement().executeQuery("select * from parksstatuss");
+			while(rs.next()) {
+				if(status.getPark().equals("Park1"))
+				 t=(rs.getString(1));
+			
+			    if(status.getPark().equals("Park2"))
+				 t=(rs.getString(2));
+			
+	    	     else 
+			     t=(rs.getString(3));	
+		    }
+			
+			rs.close();
+			return t;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		return null;
+	}
+	
+	public static String getPartStatus2(ParkStatus status) {
+		try {
+			String t=null;
+			ResultSet rs= conn.createStatement().executeQuery("select * from manageparks WHERE numberOfPark='" + status.getPark() + "';");
+
+			while(rs.next()) {
+				 t=(rs.getString(2));	
+		    }
+			
+			rs.close();
+			return t;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		return null;
+	}
 	
 	
-	
+
+	public static boolean setPartStatus(ParkStatus status) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public static boolean updateCasualTable(casualOrder order) {
+		try {
+			
+			String sql = "INSERT INTO casualinvitation (Park, Date, Time, OrderKind, Payment,ExitTime,OrderNumber)" + " values ( ?, ?, ?, ?, ?, ?,?)";
+			PreparedStatement preparedStmt = conn.prepareStatement(sql);
+		      preparedStmt.setString (1, order.getPark());
+		      preparedStmt.setString (2, order.getDate());
+		      preparedStmt.setString (3, order.getTime());
+		      preparedStmt.setString (4, order.getOrderKind());
+		      preparedStmt.setString (5, order.getPayment());
+		      preparedStmt.setString (6, order.getExitTime());
+		      preparedStmt.setString (7, order.getOrderNumber());
+		      preparedStmt.execute();
+			
+			return true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		return false;
+	}
+
+	public static String getDiscountPerDay(ParkStatus status) {
+		try {
+			String t="select * from discountdates WHERE Dates='" + status.getDate() + "' AND numOfPark='" + status.getPark() + "'AND Approve=' True';";
+			ResultSet rs= conn.createStatement().executeQuery("select * from discountdates WHERE Dates='" + status.getDate() + "' AND numOfPark='" + status.getPark() +  "'AND Approve='True';");
+
+			while(rs.next()) {
+				 t=(rs.getString(2));	
+		    }
+			
+			rs.close();
+			return t;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		return null;
+	}
+
+
 
 }

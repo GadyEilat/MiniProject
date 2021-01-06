@@ -19,12 +19,15 @@ import client.controller.TourGuideLoginController;
 import client.controller.TourGuideNewOrderController;
 import client.controller.TravelerNewOrderController;
 import client.controller.WorkerLogin;
+import client.controller.parkEnterenceController;
+import client.controller.parkEnterenceController2;
 import client.logic.TourGuide;
 import client.logic.TourGuideOrder;
 import client.logic.Visitor;
 import client.logic.maxVis;
 import client.logic.Worker;
 import client.logic.Order;
+import client.logic.ParkStatus;
 import client.logic.Subscriber;
 import java.io.*;
 import common.TypeOfMessageReturn;
@@ -161,6 +164,37 @@ public class ChatClient extends AbstractClient {
 				System.out.print(visMax.toString());
 				TourGuideNewOrderController.instance.checkDate2(visMax);
 				//TourGuideNewOrderController.instance.checkDate(null, visMax);
+			}
+			break;
+			
+		case PARK_STATUS:
+			if(object instanceof ParkStatus) {
+				String t=null;
+				ParkStatus status=(ParkStatus)object;
+				t=status.getDiscount();
+				parkEnterenceController.instance.insertData(status.getAmount(), status.getMaxAmount());
+				parkEnterenceController.instance.getDiscountDay(t);
+				parkEnterenceController2.instance.insertData(status.getAmount(), status.getMaxAmount());
+				parkEnterenceController2.instance.getDiscountDay(t);
+			}
+			break;
+			
+		case PARKENTERRETURNORDER:
+			if(object instanceof Order) {
+			Order order=(Order)object;
+			parkEnterenceController2.instance.orderDetails(order);
+				
+			}
+			
+			
+			break;
+		case PARK_DISCOUNT:
+			if(object instanceof String) {
+				String t=null;
+			   t=(String)object;
+				parkEnterenceController.instance.getDiscountDay(t);
+				parkEnterenceController2.instance.getDiscountDay(t);
+			
 			}
 			break;
 			

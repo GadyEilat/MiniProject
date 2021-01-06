@@ -17,7 +17,7 @@
    <bottom>
       <AnchorPane prefHeight="43.0" prefWidth="651.0" BorderPane.alignment="CENTER">
          <children>
-            <Button layoutX="730.0" layoutY="-2.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="48.0" style="-fx-border-radius: 20;" AnchorPane.bottomAnchor="35.0" AnchorPane.leftAnchor="35.0">
+            <Button layoutX="730.0" layoutY="-2.0" mnemonicParsing="false" onAction="#backButton" prefHeight="31.0" prefWidth="48.0" style="-fx-border-radius: 20;" AnchorPane.bottomAnchor="35.0" AnchorPane.leftAnchor="35.0">
                <graphic>
                   <ImageView fx:id="BackButton1" fitHeight="35.0" fitWidth="40.0">
                      <image>

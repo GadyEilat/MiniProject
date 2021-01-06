@@ -77,6 +77,13 @@ public class TourGuideLoginController extends AbstractScenes {
 		}
     	
     }
+    
+    @FXML
+    void backButton(ActionEvent event) {
+    	switchScenes("/client/boundaries/main.fxml", "Main Menu");
+    }
+    
+    
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 		instance = this;
