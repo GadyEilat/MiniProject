@@ -1,6 +1,7 @@
 package client.controller;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.event.ActionEvent;
 
 import java.io.IOException;
@@ -8,6 +9,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import client.ChatClient;
 import client.ClientUI;
@@ -22,6 +25,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
@@ -124,9 +128,20 @@ public class TourChangeDetailsController extends AbstractScenes {
     	tourguide.setLname(updatedLName);
     	tourguide.setEmail(updatedEmail);
 		tourguide.setteln(updatedPhone);
+		boolean emailT=validate(updatedEmail);
+        boolean idC=checkID(updatedPhone);
+		
+         if(emailT==false||idC==false) {
+        	 Alert alert = new Alert(AlertType.INFORMATION);
+         	alert.setHeaderText(null);
+         	alert.setContentText("Wrong email or phone number");
+         	alert.show();
+         }
+         else {
        	DataTransfer data = new DataTransfer(TypeOfMessage.TOURGUIDEDETAILS,tourguide);
 		ClientUI.chat.accept(data);
 		System.out.println("tourguide Updated Successfully");
+         }
     }
 
     
@@ -158,7 +173,26 @@ public class TourChangeDetailsController extends AbstractScenes {
     void changePhoneTourM(ActionEvent event) {
 
     }
-    
+  //Checking if it's a valid Email
+  	public static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$",
+  			Pattern.CASE_INSENSITIVE);
+
+  	public static boolean validate(String emailStr) {
+  		Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr);
+  		return matcher.find();
+  	}
+  	
+  	private void alertMessage(){
+    	Alert alert = new Alert(AlertType.INFORMATION);
+    	alert.setHeaderText(null);
+    	alert.setContentText("Fields missing");
+    	alert.show();	
+    }
+  	 public static boolean checkID(String ID) {
+		   if(ID.length()==10 && ID.matches("[0-9]+"))
+			   return true;
+		   return false;
+	   }
     
   
     

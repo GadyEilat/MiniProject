@@ -16,6 +16,31 @@ public class Order implements Serializable{
 	private String numOfVisitors;
 	private String nameOnOrder;
 	private String ID;
+	private String totalPrice;
+	private String OrderKind;
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	public Order(String parkName, String hour, String date, String email, String orderNumber, String numOfVisitors,
+			String nameOnOrder, String iD, String totalPrice, String orderkind) {
+		this.parkName = parkName;
+		this.hour = hour;
+		this.date = date;
+		this.email = email;
+		this.orderNumber = orderNumber;
+		this.numOfVisitors = numOfVisitors;
+		this.nameOnOrder = nameOnOrder;
+		this.ID = iD;
+		this.totalPrice = totalPrice;
+		this.OrderKind=orderkind;
+	}
 
 	public Order(String parkName, String hour, String date, String email, String orderNumber, String numOfVisitors, String nameOnOrder, String ID) {
 		this.parkName = parkName;
@@ -93,6 +118,27 @@ public class Order implements Serializable{
 	public void setNumOfVisitors(String numOfVisitors) {
 		this.numOfVisitors = numOfVisitors;
 	}
+
+	public String getTotalPrice() {
+		return totalPrice;
+	}
+
+	public String getOrderKind() {
+		return OrderKind;
+	}
+
+	public void setTotalPrice(String totalPrice) {
+		this.totalPrice = totalPrice;
+	}
+
+	public void setOrderKind(String orderKind) {
+		OrderKind = orderKind;
+	}
+	
+	
+	
+	
+	
 
 //	@Override
 //	public String toString() {

@@ -84,7 +84,6 @@
                   <Button fx:id="updateDetalisGuideBtn" mnemonicParsing="false" onAction="#updateDetalisGuideButton" prefHeight="90.0" prefWidth="165.0" text="Update personal details" />
                   <Button fx:id="NewOrderBtn" mnemonicParsing="false" onAction="#NewOrderButton" prefHeight="90.0" prefWidth="165.0" text="New order" />
                   <Button fx:id="myOrdersBtn" mnemonicParsing="false" onAction="#myOrdersButton" opacity="0.62" prefHeight="90.0" prefWidth="165.0" text="My orders" />
-                  <Button fx:id="myOrdersBtn1" mnemonicParsing="false" onAction="#myOrdersButton" prefHeight="90.0" prefWidth="165.0" text="Change order" />
                </children>
             </VBox>
          </children>

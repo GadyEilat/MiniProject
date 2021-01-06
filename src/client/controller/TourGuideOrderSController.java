@@ -87,7 +87,8 @@ public class TourGuideOrderSController extends AbstractScenes {
          this.TourNo.setText(tourguideO.getFname());
          this.guideNameOrderS.setText(tourguideO.getFname());
          this.dateOrderGuide.setText(newOrederG.getDate());
-         this.orderNumberGuide.setText(newOrederG.getOrderNumber());
+         double orderPayment=((Integer.valueOf(newOrederG.getNumOfVisitors())-1)*22.5);
+         this.orderNumberGuide.setText(String.format("%.2f", orderPayment));
     }
 
     @FXML
