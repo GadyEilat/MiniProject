@@ -104,6 +104,34 @@ public class EchoServer extends AbstractServer {
 				}
 			}
 			break;
+			
+			
+			
+		case REQUESTINFO_HISTORY:///////////////////////////////////////////////////////////////////////////////////////
+		
+			if(object instanceof Subscriber){
+				Subscriber subscriber = (Subscriber)object;
+				ObservableList<Object> ans3 = mysqlConnection.getHistorySubOrders(subscriber.getId());
+				//DataTransfer data = new DataTransfer(TypeOfMessage.SUCCSESS, ans3);
+
+				if (ans3 != null) {
+					for (int i = 0; i < ans3.size(); i++) {
+						try {
+							returnData = new DataTransfer(TypeOfMessageReturn.HISTORY_ORDERS,ans3.get(i));
+							client.sendToClient(returnData);
+							//client.sendToClient(ans3);
+						}
+
+						catch (IOException e) {
+							e.printStackTrace();
+						}
+					}
+				}
+			}
+						
+			break;
+			
+			
 		case REQUESTINFO:
 			if (object instanceof Subscriber) {
 				Subscriber subscriber = (Subscriber) object;

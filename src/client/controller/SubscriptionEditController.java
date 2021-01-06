@@ -3,6 +3,8 @@ package client.controller;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import client.ChatClient;
 import client.ClientUI;
@@ -102,13 +104,12 @@ public class SubscriptionEditController extends AbstractScenes {
 	void updateFamilyInfo(ActionEvent event) {
 		String firstName = firstNameField.getText();
 		String lastName = lastNameField.getText();
-		String telEdit = telEditField.getText();
 		String idNumber = idNumberField.getText();
-		String email = emailField.getText();
+		String telEdit = telEditField.getText();
 		String numofmem = familyNumberField.getValue();
-		String credit = credit4Digit1.getText() + "-" + credit4Digit2.getText() + "-" + credit4Digit3.getText() + "-"
-				+ credit4Digit4.getText();
-
+		String email = emailField.getText();
+		String credit = credit4Digit1.getText() + "-" + credit4Digit2.getText() + "-" + credit4Digit3.getText()
+							+ "-" + credit4Digit4.getText();
 		if (firstName.trim().isEmpty() || lastName.trim().isEmpty() || telEdit.trim().isEmpty()
 				|| idNumber.trim().isEmpty() || email.trim().isEmpty() || numofmem.trim().isEmpty()
 				|| credit.trim().isEmpty()) {
@@ -117,12 +118,23 @@ public class SubscriptionEditController extends AbstractScenes {
 			alert.setHeaderText(null);
 			alert.setContentText("One of the fields is missing");
 			alert.show();
-		}
+		} else {
+			boolean emailT = validate(email);
+			if (emailT == false || idNumber.length() != 9 || (telEdit.length() != 9 && telEdit.length() != 10) 
+					|| credit4Digit1.getText().length() != 4 || credit4Digit2.getText().length() != 4 || credit4Digit3.getText().length() != 4
+					|| credit4Digit4.getText().length() != 4) {
+				Alert alert = new Alert(AlertType.INFORMATION);
+				alert.setHeaderText(null);
+				alert.setContentText("One or more of the fileds are incorrect");
+				alert.show();
+			} else {
 
-		else {
-			Subscriber subscriber = new Subscriber(idNumber, firstName, lastName, email, telEdit, numofmem, credit, ChatClient.subscriber.getSubscriberNumber());
-			DataTransfer data = new DataTransfer(TypeOfMessage.UPDATEINFO, subscriber);
-			ClientUI.chat.accept(data);
+						Subscriber subscriber = new Subscriber(idNumber, firstName, lastName, email, telEdit, numofmem, credit,
+						ChatClient.subscriber.getSubscriberNumber());
+				DataTransfer data = new DataTransfer(TypeOfMessage.UPDATEINFO, subscriber);
+				ClientUI.chat.accept(data);
+				familyName.setText("Hello " + lastName + " Family");
+			}
 		}
 	}
 
@@ -168,6 +180,14 @@ public class SubscriptionEditController extends AbstractScenes {
 		familyName.setText("Hello " + ChatClient.subscriber.getLname() + " Family");
 		subNumber.setText("Subscriber Number: " + ChatClient.subscriber.getSubscriberNumber());
 
+	}
+
+	public static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$",
+			Pattern.CASE_INSENSITIVE);
+
+	public static boolean validate(String emailStr) {
+		Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr);
+		return matcher.find();
 	}
 
 }
