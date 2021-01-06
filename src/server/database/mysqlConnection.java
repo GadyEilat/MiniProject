@@ -328,6 +328,48 @@ public class mysqlConnection {
 
 	
 	
+	public static ObservableList<Object> getHistorySubOrders(Object msg) {
+		ObservableList <Object> oblist=FXCollections.observableArrayList();
+        String subID=(String)msg;
+		try {
+				
+			Statement st = conn.createStatement();
+			String sql = ("SELECT * FROM gonature.orders where ID = '" + subID + "';");
+			ResultSet rs = st.executeQuery(sql);
+			
+			while(rs.next()) {
+				Order newS=new Order(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(5), rs.getString(6), rs.getString(4), 
+						rs.getString(7), rs.getString(9));
+				
+//				newT.setParkName(rs.getString(1));
+//				newT.setHour(rs.getString(2));
+//				newT.setDate(rs.getString(3));
+//				newT.setEmail(rs.getString(4));
+//				newT.setOrderNumber(rs.getString(5));
+//				newT.setNumOfVisitors(rs.getString(6));
+//				newT.setNameOnOrder(rs.getString(7));
+//				newT.setID(rs.getString(8));
+				
+				oblist.add(newS);
+				
+				
+			}
+			rs.close();
+			return oblist;
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+	
+        
+		return null;
+	}
+	
+	
+	
 	
 
 	//ObservableList<Object>
@@ -366,7 +408,7 @@ public class mysqlConnection {
 	
         
 		return null;
-}
+	}
 
 	
 	

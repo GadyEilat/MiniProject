@@ -9,6 +9,7 @@ import common.TypeOfMessageReturn;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import client.controller.ExistingOrderController;
+import client.controller.FamilySubscriptionHistoryController;
 import client.controller.ManagerController;
 import client.controller.ManagerDiscountController;
 import client.controller.MyOrdersGuideController;
@@ -184,6 +185,16 @@ public class ChatClient extends AbstractClient {
 					TourGuideLoginController.instance.isFound();
 
 				
+			}
+			break;
+			
+		case HISTORY_ORDERS:
+			if (object instanceof Order) {
+				System.out.println("--> handleMessageFromServer");
+				waitForConnection = false;
+				
+				System.out.print(object.toString());
+				FamilySubscriptionHistoryController.instance.getLine((Order) object);
 			}
 			break;
 
