@@ -18,10 +18,12 @@ public class TourGuideOrder implements Serializable {
 	private String orderNumber;
 	private String nameOnOrder;
 	private String ID;
+	private String prePaid;
+	private String Payment;
 	
 	
 	public TourGuideOrder(String parkName, String time, String date, String numOfVisitors, String email,
-			String orderNumber, String nameOnOrder, String ID) {
+			String orderNumber, String nameOnOrder, String ID, String prepaid, String payment) {
 		this.parkName = parkName;
 		this.time = time;
 		this.date = date;
@@ -30,6 +32,8 @@ public class TourGuideOrder implements Serializable {
 		this.orderNumber = orderNumber;
 		this.nameOnOrder=nameOnOrder;
 		this.ID=ID;
+		this.prePaid=prepaid;
+		this.Payment=payment;
 	}
 	
 	
@@ -93,6 +97,37 @@ public class TourGuideOrder implements Serializable {
 	}
 	public void setNameOnOrder(String nameOnOrder) {
 		this.nameOnOrder = nameOnOrder;
+	}
+
+	
+	
+	
+
+
+
+	public String getPayment() {
+		return Payment;
+	}
+
+
+
+
+	public void setPayment(String payment) {
+		Payment = payment;
+	}
+
+
+
+
+	public String getPrePaid() {
+		return prePaid;
+	}
+
+
+
+
+	public void setPrePaid(String prePaid) {
+		this.prePaid = prePaid;
 	}
 
 

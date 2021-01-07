@@ -42,7 +42,7 @@ public class ChatClient extends AbstractClient {
 	public static Visitor visitor = new Visitor(null, null, null, null, null);
 	public static Order order = new Order(null, null, null, null, null, null, null, null);
 	public static TourGuide tourguide = new TourGuide(null, null, null, null, null);
-	public static TourGuideOrder tourguideorder = new TourGuideOrder(null, null, null, null, null, null, null, null);
+	public static TourGuideOrder tourguideorder = new TourGuideOrder(null, null, null, null, null, null, null, null,null,null);
 	public static Worker worker;
 	public static ParkInfo parkInfo;
 	public static Subscriber subscriber;

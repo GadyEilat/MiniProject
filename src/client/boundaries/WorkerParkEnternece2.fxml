@@ -65,6 +65,11 @@
                   <Image url="/LOGONATURE.png" />
                </image>
             </ImageView>
+            <Text fx:id="txtWorkerName" layoutX="235.0" layoutY="77.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="131.6708984375" AnchorPane.leftAnchor="235.0" AnchorPane.topAnchor="57.0">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Text>
          </children>
       </AnchorPane>
    </top>
@@ -81,7 +86,7 @@
                         <Font size="13.0" />
                      </font>
                   </Button>
-                  <Button cancelButton="true" mnemonicParsing="false" onAction="#exitParkB" prefHeight="90.0" prefWidth="165.0" text="Existence order">
+                  <Button cancelButton="true" mnemonicParsing="false" onAction="#exitParkB" prefHeight="90.0" prefWidth="165.0" text="Exit Park">
                      <font>
                         <Font size="13.0" />
                      </font>

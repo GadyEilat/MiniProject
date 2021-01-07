@@ -13,7 +13,6 @@ public class WaitingList implements Serializable {
 	private String orderNumber;
 	private String nameOnOrder;
 	private String ID;
-
 	private String timeOfEntrance;
 	private String dateOfEntrance;
 
