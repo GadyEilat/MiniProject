@@ -36,10 +36,21 @@ public class TravelersController extends AbstractScenes {
 	  @FXML
 	    private ResourceBundle resources;
 
+	  @FXML
+	    private Button familyBtn;
+
+	    @FXML
+	    private Button newBtn;
+
+	    @FXML
+	    private Button existBtn;
+
+	    @FXML
+	    private Button tourBtn;
+	    
 	    @FXML
 	    private URL location;
-	    @FXML
-	    private ComboBox<String> KindOFTrvlr;
+	 
 	    
 	    @FXML
 	    private Button nextBtn;
@@ -53,56 +64,38 @@ public class TravelersController extends AbstractScenes {
 	    	switchScenes("/client/boundaries/main.fxml", "GoNature");
 
 	    }
-   /* public void notFound() {
-
-		MsgFromController.setText("Visitor ID Not Found");
-	}
-    
-    public void isFound(){
-    	switchScenes("/client/boundaries/TourGuideMainMenu.fxml", "");
-	}*/
+   
     public static TravelersController instance;
     ObservableList<String> list;
-    String kindOfTraveler=null;
+
     
+
     @FXML
-    void nextButton(ActionEvent event) {
-    	kindOfTraveler=KindOFTrvlr.getValue();
-    	if (kindOfTraveler=="New") { //go to aviv screen
-    		switchScenes("/client/boundaries/RegularTraveler.fxml", "Regular Traveler");
-    	}
-    	else if (kindOfTraveler=="Existing Order") { // go to gady screen
-    		switchScenes("/client/boundaries/Existing Order.fxml", "Existing Order");
-		}
-    	else if (kindOfTraveler=="Family Member") { //go to daniela screen
-    		switchScenes("/client/boundaries/FamilySubEnter.fxml", "Family Subscription");
-		}
-    	else if (kindOfTraveler=="Tour Guide") { //go to elad screen
-    		switchScenes("/client/boundaries/TourGuideLogin.fxml", "Tour Guide");
-		}
-    	else { //nothing picked.
-    		//fix --> send a message saying "please pick a kind of traveler" or something.
-    	}
+    void existButton(ActionEvent event) {
+    	switchScenes("/client/boundaries/Existing Order.fxml", "Existing Order");
     }
+
     @FXML
-    void KindOfTraveler(ActionEvent event) {
-    	
+    void familyButton(ActionEvent event) {
+    	switchScenes("/client/boundaries/FamilySubEnter.fxml", "Family Subscription");
     }
-    
-    private void setKindComboBox() {
-    	ArrayList<String> al = new ArrayList<String>();	
-		al.add("New");
-		al.add("Existing Order");
-		al.add("Family Member");
-		al.add("Tour Guide");
-		list = FXCollections.observableArrayList(al);
-		KindOFTrvlr.setItems(list);
+
+    @FXML
+    void newButton(ActionEvent event) {
+    	switchScenes("/client/boundaries/RegularTraveler.fxml", "Regular Traveler");
     }
+
+    @FXML
+    void tourButton(ActionEvent event) {
+    	switchScenes("/client/boundaries/TourGuideLogin.fxml", "Tour Guide");
+    }
+
     
+  
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 		instance = this;
-		setKindComboBox();
+		
 	}
 }
 
