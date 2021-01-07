@@ -248,7 +248,7 @@ public class TravelerNewOrderController extends AbstractScenes {
 
 		DateTimeFormatter dtf1 = DateTimeFormatter.ofPattern("HH:mm:ss");
 		LocalDateTime dateNow = LocalDateTime.now();
-		wait.setDateOfEntrance(dtf1.format(now));
+		wait.setDateOfEntrance(dtf1.format(dateNow));
 		DataTransfer data = new DataTransfer(TypeOfMessage.NEW_ORDERWAITINGLIST, wait);
 		ClientUI.chat.accept(data);
 		switchScenes("/client/boundaries/Travelers.fxml", "New waiting list");
