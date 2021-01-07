@@ -681,7 +681,16 @@ public class EchoServer extends AbstractServer {
 			}
 
 			break;
-
+		case NEW_ORDERWAITINGLIST:
+			if (object instanceof WaitingList) {
+				boolean ans2 = mysqlConnection.updateWaitingListNewOrder(object);
+				if (ans2)
+					ServerController.instance.displayMsg("Waitinglist details updated");
+				else
+					ServerController.instance.displayMsg("Waitinglist details could not be updated");
+			}
+			break;
+			
 		case CHECKMAXVIS:
 			if (object instanceof TourGuideOrder) {
 				Object visMax = new maxVis(null, null, null, 0, 0, null, 0);
@@ -698,6 +707,26 @@ public class EchoServer extends AbstractServer {
 				if (visMax != null) {
 					try {
 						returnData = new DataTransfer(TypeOfMessageReturn.TOUR_MAXVISCHECK, visMax);
+						client.sendToClient(returnData);
+
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+			if (object instanceof Order) {
+				Object visMax= new maxVis(null, null, null, 0, 0, null, 0);
+				maxVis t = new maxVis(null, null, null, 0, 0, null, 0);
+				t.setDate(((Order) object).getDate());
+				t.setPark(((Order) object).getParkName());
+				t.setVisitorsInOrder(((Order) object).getNumOfVisitors());
+				t.setTime(((Order) object).getHour());
+				
+				visMax = mysqlConnection.checkMaxVisitors(t);
+				visMax = (Object) visMax;
+				if(visMax != null) {
+					try {
+						returnData = new DataTransfer(TypeOfMessageReturn.NEW_ORDERMAXVISCHECK, visMax);
 						client.sendToClient(returnData);
 
 					} catch (IOException e) {

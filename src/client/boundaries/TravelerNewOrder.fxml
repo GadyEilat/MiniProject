@@ -35,7 +35,7 @@
                                  </font>
                               </Label>
                               <Label layoutX="141.0" layoutY="216.0" text="Email" />
-                              <Button fx:id="waitingListTourBtn" layoutX="349.0" layoutY="268.0" mnemonicParsing="false" onAction="#waitingListTourButton" style="-fx-background-color: lightblue;" text="Enter waiting list" />
+                              <Button fx:id="waitingListBtn" layoutX="349.0" layoutY="268.0" mnemonicParsing="false" onAction="#waitingListButton" style="-fx-background-color: lightblue;" text="Enter waiting list" />
                               <ComboBox fx:id="numVisitorsBtn" layoutX="192.0" layoutY="179.0" onAction="#numVisitorsButton" prefHeight="25.0" prefWidth="34.0" />
                               <ComboBox fx:id="parkNameBtn" layoutX="192.0" layoutY="110.0" onAction="#parkNameButton" prefHeight="25.0" prefWidth="90.0" />
                               <ComboBox fx:id="chooseTime" layoutX="192.0" layoutY="145.0" prefHeight="25.0" prefWidth="89.0" />

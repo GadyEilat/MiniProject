@@ -41,13 +41,18 @@ import javafx.scene.control.Button;
 public class TravelersOrderSController extends AbstractScenes {
 	
 	public Order OrderSuccess = new Order(null,null,null,null,null,null,null,null);
-
+	Double price=30.00, pricePerPerson;
+	String strPrice=null;
+	
     @FXML
     private ResourceBundle resources;
 
     @FXML
     private URL location;
 
+    @FXML
+    private Text priceText;
+    
     @FXML
     private TextField dateText;
 
@@ -64,6 +69,9 @@ public class TravelersOrderSController extends AbstractScenes {
     private Button LogOutBtn;
 
     public static TravelersOrderSController instance;
+    
+   
+    
     @FXML
     void LogOutButton(ActionEvent event) {
     	switchScenes("/client/boundaries/main.fxml", "GoNature");
@@ -81,6 +89,10 @@ public class TravelersOrderSController extends AbstractScenes {
        	helloText.setText("Hello " + OrderSuccess.getNameOnOrder());
        	OrderNumber.setText(OrderSuccess.getOrderNumber());
        	dateText.setText(OrderSuccess.getDate());
+       	Double dblAmount = Double.valueOf(OrderSuccess.getNumOfVisitors());
+       	pricePerPerson = price*0.85;
+		price=pricePerPerson*dblAmount;
+		priceText.setText(String.format("Price: %.2f", price));
     }
 }
 

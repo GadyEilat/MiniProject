@@ -189,7 +189,13 @@ public class ChatClient extends AbstractClient {
 			}
 			break;
 			
-			
+		case NEW_ORDERMAXVISCHECK:
+			if (object instanceof maxVis) {
+				visMax=(maxVis)object;
+				System.out.print(visMax.toString());
+				TravelerNewOrderController.instance.checkDate2(visMax);
+			}
+			break;
 			
 			
 		case REQUESTINFO_SUCCESS:

@@ -14,9 +14,10 @@ public class WaitingList implements Serializable {
 	private String nameOnOrder;
 	private String ID;
 	private String timeOfEnterence;
+	private String DateOfEntrance;
 	
 	public WaitingList(String parkName, String time, String date, String numOfVisitors, String email,
-			String orderNumber, String nameOnOrder, String iD, String timeofenterence) {
+			String orderNumber, String nameOnOrder, String iD, String timeofenterence, String dateofentrance) {
 		this.parkName = parkName;
 		this.time = time;
 		this.date = date;
@@ -26,6 +27,7 @@ public class WaitingList implements Serializable {
 		this.nameOnOrder = nameOnOrder;
 		ID = iD;
 		this.timeOfEnterence= timeofenterence;
+		this.DateOfEntrance=dateofentrance;
 	}
 
 	public String getParkName() {
@@ -93,7 +95,13 @@ public class WaitingList implements Serializable {
 	}
 	
 	
-
+	public String getDateOfEntrance() {
+		return DateOfEntrance;
+	}
+	
+	public void setDateOfEntrance(String dateOfEntrance) {
+		DateOfEntrance = dateOfEntrance;
+	}
 
 	public String getTimeOfEnterence() {
 		return timeOfEnterence;
