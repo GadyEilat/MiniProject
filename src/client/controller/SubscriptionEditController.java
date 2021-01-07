@@ -1,11 +1,9 @@
 package client.controller;
-
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import client.ChatClient;
 import client.ClientUI;
 import client.logic.Subscriber;
@@ -21,6 +19,17 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
+
+/**
+ * SubscriptionEditController class
+ * 
+ * @author Daniella Amdur 
+ * This controller is responsible for the screen that displays the details of the family subscription in the park.
+ * The controller expands the AbstractScenes class that replaces the scenes within the main stage. 
+ * It is possible to edit the details and save. 
+ * It is possible to log out of the family subscription account. 
+ * It is possible to go to the order history screen for the same subscription and create a new order.
+ */
 
 public class SubscriptionEditController extends AbstractScenes {
 
@@ -77,29 +86,61 @@ public class SubscriptionEditController extends AbstractScenes {
 	@FXML
 	private Button btnNewOrder;
 
+	/**
+	 * logout method
+	 * @param event 
+	 * This method is responsible for disconnecting from the family subscription user
+	 * and transferring to the main screen by creating a new subscription object and replacing the screen.
+	 */
+
 	@FXML
 	void logout(ActionEvent event) {
 		ChatClient.subscriber = new Subscriber();
 		switchScenes("/client/boundaries/FamilySubEnter.fxml", "Family Subscription");
-
 	}
+	
+	/**
+	 * showEditInfo method
+	 * @param event  
+	 * This method is responsible for switching the screen to the subscriber's edit details screen.
+	 */
 
 	@FXML
 	void showEditInfo(ActionEvent event) {
 		switchScenes("/client/boundaries/EditInfoFamily.fxml", "Family Subscription");
-
 	}
+	
+	/**
+	 * showHistroryOfVisit method
+	 * @param event  
+	 * This method is responsible for switching the screen to the subscriber's history orders screen.
+	 */
 
 	@FXML
 	void showHistroryOfVisit(ActionEvent event) {
 		switchScenes("/client/boundaries/HistoryOfFamilyVisits.fxml", "Family Subscription");
 	}
+	
+	/**
+	 * showNewOrder method
+	 * @param event  
+	 * This method is responsible for switching the screen to the screen where you can create a new order.
+	 */
 
 	@FXML
 	void showNewOrder(ActionEvent event) {
 //		switchScenes("/client/boundaries/EditInfoFamily.fxml", "Family Subscription");
 	}
 
+	/**
+	 * updateFamilyInfo method
+	 * @param event  
+	 * This method is responsible for saving the data after editing. 
+	 * The method receives the data from the fields, makes sure they are all present and valid. 
+	 * The method creates a new subscription object with all of the updated data, the data is sent to the EcoServer 
+	 * and then to the server and entered into the database by the subscription number
+	 */
+	
 	@FXML
 	void updateFamilyInfo(ActionEvent event) {
 		String firstName = firstNameField.getText();
@@ -108,8 +149,8 @@ public class SubscriptionEditController extends AbstractScenes {
 		String telEdit = telEditField.getText();
 		String numofmem = familyNumberField.getValue();
 		String email = emailField.getText();
-		String credit = credit4Digit1.getText() + "-" + credit4Digit2.getText() + "-" + credit4Digit3.getText()
-							+ "-" + credit4Digit4.getText();
+		String credit = credit4Digit1.getText() + "-" + credit4Digit2.getText() + "-" + credit4Digit3.getText() + "-"
+				+ credit4Digit4.getText();
 		if (firstName.trim().isEmpty() || lastName.trim().isEmpty() || telEdit.trim().isEmpty()
 				|| idNumber.trim().isEmpty() || email.trim().isEmpty() || numofmem.trim().isEmpty()
 				|| credit.trim().isEmpty()) {
@@ -120,16 +161,16 @@ public class SubscriptionEditController extends AbstractScenes {
 			alert.show();
 		} else {
 			boolean emailT = validate(email);
-			if (emailT == false || idNumber.length() != 9 || (telEdit.length() != 9 && telEdit.length() != 10) 
-					|| credit4Digit1.getText().length() != 4 || credit4Digit2.getText().length() != 4 || credit4Digit3.getText().length() != 4
-					|| credit4Digit4.getText().length() != 4) {
+			if (emailT == false || idNumber.length() != 9 || (telEdit.length() != 9 && telEdit.length() != 10)
+					|| credit4Digit1.getText().length() != 4 || credit4Digit2.getText().length() != 4
+					|| credit4Digit3.getText().length() != 4 || credit4Digit4.getText().length() != 4) {
 				Alert alert = new Alert(AlertType.INFORMATION);
 				alert.setHeaderText(null);
 				alert.setContentText("One or more of the fileds are incorrect");
 				alert.show();
 			} else {
 
-						Subscriber subscriber = new Subscriber(idNumber, firstName, lastName, email, telEdit, numofmem, credit,
+				Subscriber subscriber = new Subscriber(idNumber, firstName, lastName, email, telEdit, numofmem, credit,
 						ChatClient.subscriber.getSubscriberNumber());
 				DataTransfer data = new DataTransfer(TypeOfMessage.UPDATEINFO, subscriber);
 				ClientUI.chat.accept(data);
@@ -137,6 +178,14 @@ public class SubscriptionEditController extends AbstractScenes {
 			}
 		}
 	}
+	
+	/**
+	 * initialize method
+	 * @param location
+	 * @param resources
+	 * This method is responsible for defining variables by communicating with the server, 
+	 * is responsible for screen visibility and on-screen functionality (for example combobox options)
+	 */
 
 	public void initialize(URL location, ResourceBundle resources) {
 		instance = this;
@@ -179,11 +228,21 @@ public class SubscriptionEditController extends AbstractScenes {
 
 		familyName.setText("Hello " + ChatClient.subscriber.getLname() + " Family");
 		subNumber.setText("Subscriber Number: " + ChatClient.subscriber.getSubscriberNumber());
-
 	}
+	
+	/**
+	 * Configuring the email address. Legal characters and desirable structure.
+	 */
 
 	public static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$",
 			Pattern.CASE_INSENSITIVE);
+	
+	/**
+	 * validate method
+	 * @param emailStr
+	 * @return True or False
+	 * The method checks if the email entered is correct.
+	 */
 
 	public static boolean validate(String emailStr) {
 		Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr);
