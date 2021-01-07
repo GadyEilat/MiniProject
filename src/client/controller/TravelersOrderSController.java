@@ -92,10 +92,11 @@ public class TravelersOrderSController extends AbstractScenes {
 		pricePerPerson = price * 0.85;
 		price = pricePerPerson * dblAmount;
 		priceText.setText(String.format("Price: %.2f", price));
-		String toSend = "You Successfully create an order. " + OrderSuccess.getNameOnOrder()
-				+ ".\nThe order details are:\nOrder Number: " + OrderSuccess.getOrderNumber() + "\nPark: "
-				+ OrderSuccess.getParkName() + "\nDate: " + OrderSuccess.getDate() + "\nTime: "
-				+ OrderSuccess.getHour() + "\nAmount of visitors: " + OrderSuccess.getNumOfVisitors();
+		
+		String toSend = "You successfully created an order. " + OrderSuccess.getNameOnOrder()
+				+ ".<br>The order details are:<br>Order Number: " + OrderSuccess.getOrderNumber() + "<br>Park: "
+				+ OrderSuccess.getParkName() + "<br>Date: " + OrderSuccess.getDate() + "<br>Time: "
+				+ OrderSuccess.getHour() + "<br>Amount of visitors: " + OrderSuccess.getNumOfVisitors();
 		EmailDetails details = new EmailDetails(OrderSuccess.getEmail(), "GoNature New Order", toSend);
 		DataTransfer maildata = new DataTransfer(TypeOfMessage.SENDMAIL, details);
 		ClientUI.chat.accept(maildata);
