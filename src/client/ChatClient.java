@@ -8,11 +8,14 @@ import common.DataTransfer;
 import common.TypeOfMessageReturn;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import client.controller.ExistingOrderController;
 import client.controller.ManagerController;
 import client.controller.ManagerDiscountController;
 import client.controller.MyOrdersGuideController;
 import client.controller.OrderManagementController;
+import client.controller.ServiceRepresentativeController;
 import client.controller.ChangeOrderDetailsController;
 import client.controller.SubscriptionEntryController;
 import client.controller.ClientGUIController;
@@ -46,6 +49,7 @@ public class ChatClient extends AbstractClient {
     public static maxVis visMax= new maxVis(null, null, null, 0, 0, null, 0);
 	public static String datesToShow[][];
 	public static String datesToApprveShow[][];
+	public static boolean connected = false;
 	ChatIF clientUI;
 	public boolean waitForConnection = false;
 
@@ -71,9 +75,15 @@ public class ChatClient extends AbstractClient {
 				
 			
 			break;
+		case LOGIN_FAILED_CONNECTED:
+			if (object instanceof Worker) {
+				WorkerLogin.instance.alreadyConnected();
+			}
+			break;
 		case LOGIN_SUCCESSFUL:
 			if(object instanceof Worker) {
 				worker = (Worker)object;
+				connected = true;
 				WorkerLogin.instance.checkLogInAnswer(worker);
 			}
 			if (object instanceof Subscriber) {
@@ -98,6 +108,24 @@ public class ChatClient extends AbstractClient {
 		case UPDATE_SUCCESS:
 			if (object instanceof Order) {
 			ChangeOrderDetailsController.instance.updated();
+			}
+			if(object instanceof Subscriber) {
+				subscriber = (Subscriber)object;
+				try {
+					ServiceRepresentativeController.instance.showNumOfSubPopOut();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			}
+			if(object instanceof TourGuide) {
+				try {
+					ServiceRepresentativeController.instance.showNumOfSubPopOut();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 			break;
 			
@@ -197,6 +225,7 @@ public class ChatClient extends AbstractClient {
 					ManagerDiscountController.instance.notFond();
 				}
 			}
+			
 		default:
 			break;
 		}
@@ -209,7 +238,11 @@ public class ChatClient extends AbstractClient {
 			waitForConnection = true;
 			sendToServer(msg);
 		} catch (IOException e) {
-			e.printStackTrace();
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Connection Failed");
+			alert.setHeaderText("Cannot connect to server");
+			alert.setContentText("");
+			alert.showAndWait();
 			quit();
 		}
 	}

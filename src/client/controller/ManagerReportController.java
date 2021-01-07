@@ -5,7 +5,10 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import client.ChatClient;
+import client.ClientUI;
 import client.logic.Worker;
+import common.DataTransfer;
+import common.TypeOfMessage;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -44,6 +47,9 @@ public class ManagerReportController extends AbstractScenes{
 	@FXML
 	void logout(ActionEvent event) {
 //    	exitConnection
+		DataTransfer data = new DataTransfer(TypeOfMessage.LOGOUT, ChatClient.worker);
+		ClientUI.chat.accept(data);
+		ChatClient.connected = false;
 		ChatClient.worker = new Worker(null, null, null, null, null, null);
 		switchScenes("/client/boundaries/workerLogin.fxml", "Worker Login");
 	}

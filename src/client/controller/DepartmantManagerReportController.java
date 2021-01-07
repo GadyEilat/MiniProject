@@ -4,6 +4,11 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import client.ChatClient;
+import client.ClientUI;
+import client.logic.ParkInfo;
+import client.logic.Worker;
+import common.DataTransfer;
+import common.TypeOfMessage;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -47,6 +52,11 @@ public class DepartmantManagerReportController extends AbstractScenes{
     @FXML
     void logout(ActionEvent event) {
     	//exit Logout
+		DataTransfer data = new DataTransfer(TypeOfMessage.LOGOUT, ChatClient.worker);
+		ClientUI.chat.accept(data);
+		ChatClient.parkInfo = new ParkInfo(null, null, null, null, null);
+		ChatClient.worker = new Worker(null, null, null, null, null, null);
+		ChatClient.connected = false;
 		switchScenes("/client/boundaries/workerLogin.fxml", "Worker Login");
     }
 

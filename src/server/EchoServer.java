@@ -69,7 +69,7 @@ public class EchoServer extends AbstractServer {
 		ServerController.instance.displayMsg("Message received : " + msg + "\nfrom : " + client);
 		DataTransfer data = (DataTransfer) msg;
 		Object object = data.getObject();
-		DataTransfer returnData;
+		DataTransfer returnData = null;
 		switch (data.getTypeOfMessage()) {
 		case NEW_ORDER:
 			if (object instanceof Order) {
@@ -275,7 +275,7 @@ public class EchoServer extends AbstractServer {
 
 				}
 			}
-			
+
 			if (object instanceof String) {
 				String strToBeDeleted = (String) object;
 				String DeleteQuery = "DELETE FROM gonature.orders WHERE (OrderNumber = " + strToBeDeleted + ");";
@@ -283,8 +283,7 @@ public class EchoServer extends AbstractServer {
 				if (ans) {
 					ServerController.instance.displayMsg("Order was deleted");
 					returnData = new DataTransfer(TypeOfMessageReturn.DELETE_ORDER_SUCCESS, null);
-				}
-				else {
+				} else {
 					ServerController.instance.displayMsg("Order could not be deleted");
 					returnData = new DataTransfer(TypeOfMessageReturn.DELETE_ORDER_FAILED, null);
 				}
@@ -412,60 +411,124 @@ public class EchoServer extends AbstractServer {
 				}
 
 			}
+			break;
+		case INSERTINFO:
+			if(object instanceof Subscriber) {
+				Subscriber newSubscriber = (Subscriber)object;
+				
+				arrOfAnswer = mysqlConnection.getDB("SELECT COUNT(*)+11111 FROM `gonature`.`subscriber`");
+				String subscriberNumber = "S"+arrOfAnswer.get(0).toString();
+				boolean subAdded = mysqlConnection.updateDB("INSERT INTO `gonature`.`subscriber` (`ID`, `FirstName`, `LastName`, `Email`, `Telephone`, `AmountOfFamilyMembers`, `CreditCard`, `subscriberNumber`) "
+						+ "VALUES ('"+newSubscriber.getId()+"', '"+newSubscriber.getFname()+"', '"+newSubscriber.getLname()+"',"
+								+ " '"+newSubscriber.getEmail()+"', '"+newSubscriber.getTeln()+"', '"+newSubscriber.getAmountOfFamilyMember()+"',"
+										+ " '"+newSubscriber.getCreditCard()+"', '"+subscriberNumber+"');");
+				if(subAdded) {
+					new SendEmail(newSubscriber.getEmail(), "Welcome "+newSubscriber.getFname() +" "+ newSubscriber.getLname()
+						, "Your subscription number: " + subscriberNumber+"\n"
+								+ "Your ID : "+newSubscriber.getId()+"\n"
+								+ "Amount of family members: "+newSubscriber.getAmountOfFamilyMember()+"\n"
+										+ "The subscription is free, you can now enter and place an order.\n"
+										+ "Enjoy the discounts :)");
+					newSubscriber.setSubscriberNumber(subscriberNumber);
+					returnData = new DataTransfer(TypeOfMessageReturn.UPDATE_SUCCESS, newSubscriber);
+					try {
+						client.sendToClient(returnData);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
 
+			}
+			if(object instanceof TourGuide) {
+				TourGuide newTourGuide = (TourGuide)object;
+				boolean tourAdded = mysqlConnection.updateDB("INSERT INTO `gonature`.`tourguides` (`Name`, `LastName`, `ID`, `Email`, `PhoneNumber`) "
+						+ "VALUES ('"+newTourGuide.getFname()+"', '"+newTourGuide.getLname()+"', '"+newTourGuide.getId()+"',"
+								+ " '"+newTourGuide.getEmail()+"', '"+newTourGuide.getTeln()+"');");
+				if(tourAdded) {
+					new SendEmail(newTourGuide.getEmail(), "Welcome "+newTourGuide.getFname() +" "+ newTourGuide.getLname()
+						, "You are now part of GoNature Family!\n"
+								+ "Your ID : "+newTourGuide.getId()+"\n"
+								+ "You can now enter and place an order.\n"
+								+ "Enjoy the discounts :)");
+					returnData = new DataTransfer(TypeOfMessageReturn.UPDATE_SUCCESS, newTourGuide);
+					try {
+						client.sendToClient(returnData);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
 			break;
 		case LOGIN_REQUEST:
 			if (object instanceof Worker) {
 				Worker worker = (Worker) object;
+//				boolean alreadyConnect = false;
 				Worker RoleAndPark = null;
 				ParkInfo parkInfo;
-				String checkUserAndPassword = "SELECT Role, Park, name FROM gonature.worker WHERE UserName = '"
+				String checkUserAndPassword = "SELECT Role, Park, name, LogIn FROM gonature.worker WHERE UserName = '"
 						+ worker.getUserName() + "' AND Password = '" + worker.getPassword() + "';";
 				arrOfAnswer = mysqlConnection.getDB(checkUserAndPassword);
 				if (!arrOfAnswer.isEmpty()) {
-					String scene;
-					String role = (String) arrOfAnswer.get(0);
-					String park = (String) arrOfAnswer.get(1);
-					String workerName = (String) arrOfAnswer.get(2);
-					arrOfAnswer = mysqlConnection.getDB("SELECT COUNT(*) FROM gonature.subscriber;");
-					String countSub = arrOfAnswer.get(0).toString();
-					String updateCountSub = "UPDATE gonature.manageparks SET numberOfSub = '" + countSub
-							+ "' WHERE numberOfPark = '" + park + "';";
-					boolean Answer = mysqlConnection.updateDB(updateCountSub);
-					if (Answer) {
-						ServerController.instance.displayMsg("manageparks numOfSub UPDATEINFO details updated");
-
+					if (arrOfAnswer.get(3).toString().equals("True")) {
+						returnData = new DataTransfer(TypeOfMessageReturn.LOGIN_FAILED_CONNECTED, new Worker());
+//						alreadyConnect = true;
 					} else {
-						ServerController.instance.displayMsg("manageparks numOfSub UPDATEINFO details failed");
+						String scene;
+						String role = (String) arrOfAnswer.get(0);
+						String park = (String) arrOfAnswer.get(1);
+						String workerName = (String) arrOfAnswer.get(2);
+						boolean connect = mysqlConnection
+								.updateDB("UPDATE gonature.worker SET LogIn = 'True' WHERE UserName = '"
+										+ worker.getUserName() + "' AND Park = '" + park + "';");
+						if (connect) {
+							ServerController.instance.displayMsg(worker.getUserName() + " Connected [UPDATEINFO]");
+							arrOfAnswer = mysqlConnection.getDB("SELECT COUNT(*) FROM gonature.subscriber;");
+							String countSub = arrOfAnswer.get(0).toString();
+							String updateCountSub = "UPDATE gonature.manageparks SET numberOfSub = '" + countSub
+									+ "' WHERE numberOfPark = '" + park + "';";
+							boolean Answer = mysqlConnection.updateDB(updateCountSub);
+							if (Answer) {
+								ServerController.instance.displayMsg("manageparks numOfSub UPDATEINFO details updated");
+
+							} else {
+								ServerController.instance.displayMsg("manageparks numOfSub UPDATEINFO details failed");
+							}
+							arrOfAnswer = mysqlConnection
+									.getDB("SELECT * FROM gonature.manageparks WHERE numberOfPark = '" + park + "'");
+							if (role.equals("Manager")) {
+								scene = "/client/boundaries/manager.fxml";
+								role = "Manager";
+								parkInfo = new ParkInfo((String) arrOfAnswer.get(0), (String) arrOfAnswer.get(1),
+										(String) arrOfAnswer.get(2), (String) arrOfAnswer.get(3),
+										(String) arrOfAnswer.get(4));
+								RoleAndPark = new Worker(worker.getUserName(), null, role, parkInfo, workerName, scene);
+
+							} else if (role.equals("Department Manager")) {
+								scene = "/client/boundaries/mainDepartmantManager.fxml";
+								role = "Department Manager";
+								parkInfo = new ParkInfo((String) arrOfAnswer.get(0), (String) arrOfAnswer.get(1),
+										(String) arrOfAnswer.get(2), (String) arrOfAnswer.get(3), null);
+								RoleAndPark = new Worker(worker.getUserName(), null, role, parkInfo, workerName, scene);
+
+							} else if (role.equals("Service")) {
+								scene = "/client/boundaries/FamilySubscriptionRegistration.fxml";
+								role = "Service Representative";
+								parkInfo = new ParkInfo((String) arrOfAnswer.get(0), null, null, null, null);
+								RoleAndPark = new Worker(worker.getUserName(), null, role, parkInfo, workerName, scene);
+
+							} else
+								System.out.println("Error");
+							returnData = new DataTransfer(TypeOfMessageReturn.LOGIN_SUCCESSFUL, RoleAndPark);
+						} else {
+							ServerController.instance.displayMsg(worker.getUserName() + " UPDATEINFO details failed");
+							returnData = new DataTransfer(TypeOfMessageReturn.LOGIN_FAILED, new Worker());
+						}
 					}
-					arrOfAnswer = mysqlConnection
-							.getDB("SELECT * FROM gonature.manageparks WHERE numberOfPark = '" + park + "'");
-					if (role.equals("Manager")) {
-						scene = "/client/boundaries/manager.fxml";
-						role = "Manager";
-						parkInfo = new ParkInfo((String) arrOfAnswer.get(0), (String) arrOfAnswer.get(1),
-								(String) arrOfAnswer.get(2), (String) arrOfAnswer.get(3), (String) arrOfAnswer.get(4));
-						RoleAndPark = new Worker(null, null, role, parkInfo, workerName, scene);
-
-					} else if (role.equals("Department Manager")) {
-						scene = "/client/boundaries/mainDepartmantManager.fxml";
-						role = "Department Manager";
-						parkInfo = new ParkInfo((String) arrOfAnswer.get(0), (String) arrOfAnswer.get(1),
-								(String) arrOfAnswer.get(2), (String) arrOfAnswer.get(3), null);
-						RoleAndPark = new Worker(null, null, role, parkInfo, workerName, scene);
-
-					} else if (role.equals("Service")) {
-						scene = "/client/boundaries/FamilySubscriptionRegistration.fxml";
-						role = "Service Representative";
-						parkInfo = new ParkInfo((String) arrOfAnswer.get(0), null, null, null, null);
-						RoleAndPark = new Worker(null, null, role, parkInfo, workerName, scene);
-
-					} else
-						System.out.println("Error");
-
-					returnData = new DataTransfer(TypeOfMessageReturn.LOGIN_SUCCESSFUL, RoleAndPark);
-				} else
+				} else  {//if (!alreadyConnect)
 					returnData = new DataTransfer(TypeOfMessageReturn.LOGIN_FAILED, new Worker());
+				}
 				try {
 					client.sendToClient(returnData);
 
@@ -502,7 +565,19 @@ public class EchoServer extends AbstractServer {
 			}
 			break;
 		case LOGOUT:
+			if (object instanceof Worker) {
+				Worker worker = (Worker) object;
+				boolean connect = mysqlConnection
+						.updateDB("UPDATE gonature.worker SET LogIn = 'False' WHERE UserName = '" + worker.getUserName()
+								+ "' AND Park = '" + worker.getPark().getNumberOfPark() + "';");
 
+				if (connect) {
+					ServerController.instance.displayMsg(worker.getUserName() + " Logged Out [UPDATEINFO]");
+
+				} else {
+					ServerController.instance.displayMsg(worker.getUserName() + "UPDATEINFO details failed");
+				}
+			}
 			break;
 		case UPDATEINFO_REQUEST:
 			if (object instanceof ParkInfo) {
@@ -695,7 +770,6 @@ public class EchoServer extends AbstractServer {
 			break;
 		}
 
-		if (flag == 0) { // in the first connection, display ip, host and status.
 			ServerController.instance.displayMsg("Client IP: " + client.getInetAddress().getHostAddress());
 			ServerController.instance.displayMsg("Hostname: " + client.getInetAddress().getHostName());
 			if (client.isAlive()) {
@@ -703,8 +777,7 @@ public class EchoServer extends AbstractServer {
 			} else {
 				ServerController.instance.displayMsg("Client Status: Disconnected");
 			}
-			flag = 1;
-		}
+		
 
 	}
 

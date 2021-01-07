@@ -48,9 +48,9 @@
                               <Button fx:id="btnSave" layoutX="487.0" layoutY="376.0" mnemonicParsing="false" onAction="#saveSubAndGetSubNumber" prefHeight="33.0" prefWidth="65.0" text="Save" />
                               <RadioButton fx:id="btnRadioGroup" layoutX="165.0" layoutY="14.0" mnemonicParsing="false" text="Group">
                                  <toggleGroup>
-                                    <ToggleGroup fx:id="RadioButton" />
+                                    <ToggleGroup fx:id="RadioGroup" />
                                  </toggleGroup></RadioButton>
-                              <RadioButton fx:id="btnRadioFamily" layoutX="247.0" layoutY="14.0" mnemonicParsing="false" text="Family" toggleGroup="$RadioButton" />
+                              <RadioButton fx:id="btnRadioFamily" layoutX="247.0" layoutY="14.0" mnemonicParsing="false" text="Family" toggleGroup="$RadioGroup" />
                            </children>
                         </AnchorPane>
                      </children>
@@ -63,7 +63,7 @@
    <top>
       <AnchorPane style="-fx-background-color: #c9c4c4;" BorderPane.alignment="CENTER">
          <children>
-            <Text layoutX="206.0" layoutY="63.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hello Daniella" wrappingWidth="229.33984375" AnchorPane.leftAnchor="205.0" AnchorPane.topAnchor="42.0">
+            <Text fx:id="serviceName" layoutX="206.0" layoutY="63.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hello Daniella" wrappingWidth="229.33984375" AnchorPane.leftAnchor="205.0" AnchorPane.topAnchor="42.0">
                <font>
                   <Font size="20.0" />
                </font>
@@ -74,6 +74,7 @@
                   <Image url="/LOGONATURE.png" />
                </image>
             </ImageView>
+            <Text layoutX="205.0" layoutY="82.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Service Representative" wrappingWidth="229.33984375" />
          </children>
       </AnchorPane>
    </top>

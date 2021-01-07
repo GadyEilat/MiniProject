@@ -25,9 +25,11 @@
                            <children>
                               <TableView fx:id="tableOfHistory" onSort="#showTableOfHistory" prefHeight="438.0" prefWidth="561.0">
                                  <columns>
-                                    <TableColumn fx:id="col_orderNum" prefWidth="62.0" text="#" />
-                                    <TableColumn fx:id="col_Date" prefWidth="200.0" text="Date" />
-                                    <TableColumn fx:id="col_EntryHour" prefWidth="153.0" text="Entry Hour" />
+                                    <TableColumn fx:id="col_orderNum" prefWidth="97.0" resizable="false" text="Order Number" />
+                                    <TableColumn fx:id="col_Date" maxWidth="500.0" prefWidth="138.0" resizable="false" text="Date" />
+                                    <TableColumn fx:id="col_EntryHour" maxWidth="122.0" prefWidth="82.0" resizable="false" text="Entry Hour" />
+                                    <TableColumn fx:id="col_parkName" maxWidth="127.0" prefWidth="116.0" resizable="false" text="Park" />
+                                    <TableColumn fx:id="col_numOfVisitors" maxWidth="155.0" prefWidth="127.0" resizable="false" text="visitor amount" />
                                  </columns>
                               </TableView>
                            </children>
@@ -42,7 +44,7 @@
    <top>
       <AnchorPane style="-fx-background-color: #c9c4c4;" BorderPane.alignment="CENTER">
          <children>
-            <Text fx:id="familyName" layoutX="206.0" layoutY="63.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hello Amdur Family" wrappingWidth="229.33984375" AnchorPane.leftAnchor="205.0" AnchorPane.topAnchor="42.0">
+            <Text fx:id="familyName" layoutX="206.0" layoutY="63.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hello Amdur Family" wrappingWidth="241.33984375" AnchorPane.leftAnchor="205.0" AnchorPane.topAnchor="42.0">
                <font>
                   <Font size="20.0" />
                </font>
@@ -53,6 +55,7 @@
                   <Image url="/LOGONATURE.png" />
                </image>
             </ImageView>
+            <Text fx:id="subNumber" layoutX="205.0" layoutY="85.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Subscriber Number: " wrappingWidth="229.33984375" AnchorPane.leftAnchor="205.0" AnchorPane.topAnchor="72.0" />
          </children>
       </AnchorPane>
    </top>
