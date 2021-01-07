@@ -31,6 +31,7 @@
                                  </font>
                               </Label>
                               <TextField fx:id="OrderNumber" editable="false" layoutX="187.0" layoutY="57.0" />
+                              <Text fx:id="priceText" fill="GREEN" layoutX="186.0" layoutY="165.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="151.13671875" />
                            </children>
                         </AnchorPane>
                      </children>

@@ -279,6 +279,47 @@ public class mysqlConnection {
 		return false;
 	}
 	
+	public static boolean updateWaitingListNewOrder(Object updatedWaitingList) {
+		if (updatedWaitingList instanceof WaitingList) {
+			WaitingList updOrder= (WaitingList)updatedWaitingList;
+			String updEmail=updOrder.getEmail();
+			String upPark=updOrder.getParkName();
+			String upDate= updOrder.getDate();
+			String upTime=updOrder.getTime();
+			String upNumOfVisitors=updOrder.getNumOfVisitors();
+			String nameOnOrder=updOrder.getNameOnOrder();
+			String upOrderNum= generateRandomChars("123456789", 5);
+			String travID=updOrder.getID();
+			String waitingTime=updOrder.getTimeOfEnterence();
+			if (conn != null) {
+				try {
+					
+					String query = " insert into waitinglist (Park, Date, Time, NumOfVisitors, Email,TourGroup,orderNumber,NameOnOrder,ID,TimeOfEnterence )"+ " values (?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
+					        
+					PreparedStatement preparedStmt = conn.prepareStatement(query);
+				      preparedStmt.setString (1, upPark);
+				      preparedStmt.setString (2, upDate);
+				      preparedStmt.setString (3, upTime);
+				      preparedStmt.setString (4, upNumOfVisitors);
+				      preparedStmt.setString (5, updEmail);
+				      preparedStmt.setString (6, "RegularOrder");
+				      preparedStmt.setString (7, upOrderNum);
+				      preparedStmt.setString (8, nameOnOrder);
+				      preparedStmt.setString (9, travID);
+				      preparedStmt.setString (10, waitingTime);
+				      preparedStmt.execute();
+				      
+				     // conn.close();
+					return true;
+				} catch (SQLException e) {
+					e.printStackTrace();
+					return false;
+				}
+			}
+		}
+		return false;
+	}
+	
 	public static boolean CheckKind(String msg) {
 		if (conn != null) {
 			try {
