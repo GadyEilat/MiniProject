@@ -1,5 +1,4 @@
 package client.controller;
-
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
@@ -10,7 +9,6 @@ import java.util.ResourceBundle;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import client.ChatClient;
 import client.ClientUI;
 import client.logic.EmailDetails;
@@ -41,7 +39,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -100,6 +97,7 @@ public class TravelerNewOrderController extends AbstractScenes {
 
 	public void isFound() {
 		switchScenes("/client/boundaries/TravelerOrderSuccess.fxml", "Order Success");
+		System.out.println("Order Updated Successfully");
 	}
 
 	private void setTimeComboBox() {
@@ -161,11 +159,6 @@ public class TravelerNewOrderController extends AbstractScenes {
 	}
 
 	@FXML
-	void chooseDayButton(ActionEvent event) {
-
-	}
-
-	@FXML
 	void continueToPayButton(ActionEvent event) {
 		String orderPark = parkNameBtn.getSelectionModel().getSelectedItem().toString();
 		LocalDate orderDate = chooseDayBtn.getValue();
@@ -203,8 +196,7 @@ public class TravelerNewOrderController extends AbstractScenes {
 
 				if (thereIsSpot) {
 					ClientUI.chat.accept(data);
-					switchScenes("/client/boundaries/TravelerOrderSuccess.fxml", "GoNature Enter");
-					System.out.println("Order Updated Successfully");
+
 				} else {
 					Alert alert = new Alert(AlertType.INFORMATION);
 					alert.setHeaderText(null);
@@ -214,16 +206,6 @@ public class TravelerNewOrderController extends AbstractScenes {
 
 			}
 		}
-
-	}
-
-	@FXML
-	void numVisitorsButton(ActionEvent event) {
-
-	}
-
-	@FXML
-	void parkNameButton(ActionEvent event) {
 
 	}
 

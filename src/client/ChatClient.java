@@ -27,6 +27,7 @@ import client.controller.TravelerNewOrderController;
 import client.controller.WorkerLogin;
 import client.controller.parkEnterenceController;
 import client.controller.parkEnterenceController2;
+import client.controller.subscriberNewOrderController;
 import client.logic.TourGuide;
 import client.logic.TourGuideOrder;
 import client.logic.Visitor;
@@ -45,18 +46,18 @@ public class ChatClient extends AbstractClient {
 	public static Visitor visitor = new Visitor(null, null, null, null, null);
 	public static Order order = new Order(null, null, null, null, null, null, null, null);
 	public static TourGuide tourguide = new TourGuide(null, null, null, null, null);
-	public static TourGuideOrder tourguideorder = new TourGuideOrder(null, null, null, null, null, null, null, null,null,null);
+	public static TourGuideOrder tourguideorder = new TourGuideOrder(null, null, null, null, null, null, null, null,
+			null, null);
 	public static Worker worker;
 	public static ParkInfo parkInfo;
 	public static Subscriber subscriber;
 	public static ObservableList<TourGuideOrder> oblist = FXCollections.observableArrayList();
-    public static maxVis visMax= new maxVis(null, null, null, 0, 0, null, 0);
+	public static maxVis visMax = new maxVis(null, null, null, 0, 0, null, 0);
 	public static String datesToShow[][];
 	public static String datesToApprveShow[][];
 	public static boolean connected = false;
 	ChatIF clientUI;
 	public boolean waitForConnection = false;
-
 
 	public ChatClient(String host, int port, ChatIF clientUI) throws IOException {
 		super(host, port); // Call the superclass constructor
@@ -68,17 +69,16 @@ public class ChatClient extends AbstractClient {
 		Object object = returnData.getObject();
 		switch (returnData.getTypeOfMessageReturn()) {
 		case LOGIN_FAILED:
-			if(object instanceof Worker) {
+			if (object instanceof Worker) {
 				WorkerLogin.instance.logInAnswerFailed();
 			}
 			if (object instanceof Subscriber) {
 				SubscriptionEntryController.instance.subscriberNotFound();
 			}
-			if(object instanceof TourGuide) {
+			if (object instanceof TourGuide) {
 				TourGuideLoginController.instance.notFound();
 			}
-				
-			
+
 			break;
 		case LOGIN_FAILED_CONNECTED:
 			if (object instanceof Worker) {
@@ -86,28 +86,30 @@ public class ChatClient extends AbstractClient {
 			}
 			break;
 		case LOGIN_SUCCESSFUL:
-			if(object instanceof Worker) {
-				worker = (Worker)object;
+			if (object instanceof Worker) {
+				worker = (Worker) object;
 				connected = true;
 				WorkerLogin.instance.checkLogInAnswer(worker);
 			}
 			if (object instanceof Subscriber) {
-				subscriber = (Subscriber)object;
+				subscriber = (Subscriber) object;
 				SubscriptionEntryController.instance.subscriberFound();
-			}		
-			
+			}
+
 			break;
+
 		case UPDATE_FAILED:
 			if (object instanceof Order) {
 				ChangeOrderDetailsController.instance.notUpdated();
 			}
 			break;
+
 		case UPDATE_SUCCESS:
 			if (object instanceof Order) {
-			ChangeOrderDetailsController.instance.updated();
+				ChangeOrderDetailsController.instance.updated();
 			}
-			if(object instanceof Subscriber) {
-				subscriber = (Subscriber)object;
+			if (object instanceof Subscriber) {
+				subscriber = (Subscriber) object;
 				try {
 					ServiceRepresentativeController.instance.showNumOfSubPopOut();
 				} catch (IOException e) {
@@ -116,7 +118,7 @@ public class ChatClient extends AbstractClient {
 				}
 
 			}
-			if(object instanceof TourGuide) {
+			if (object instanceof TourGuide) {
 				try {
 					ServiceRepresentativeController.instance.showNumOfSubPopOut();
 				} catch (IOException e) {
@@ -125,7 +127,7 @@ public class ChatClient extends AbstractClient {
 				}
 			}
 			break;
-			
+
 		case RETURN_ORDER_FAILED:
 			System.out.println("Couldn't recieve details from DB");
 			break;
@@ -137,8 +139,9 @@ public class ChatClient extends AbstractClient {
 					Order recievedOrd = (Order) object;
 					String check = ExistingOrderController.instance.order.getOrderNumber();
 					if (check.equals(recievedOrd.getOrderNumber())) {
-						ExistingOrderController.instance.order = recievedOrd; // update the instance of the order in "existing"
-																		// to be not null...
+						ExistingOrderController.instance.order = recievedOrd; // update the instance of the order in
+																				// "existing"
+						// to be not null...
 						ExistingOrderController.instance.isFound();
 					} else {
 						ExistingOrderController.instance.notFound();
@@ -146,20 +149,20 @@ public class ChatClient extends AbstractClient {
 				}
 			}
 			break;
-			
+
 		case IS_SUBSCRIBER:
-			if (object instanceof Boolean) { //came from OrderManagementController
+			if (object instanceof Boolean) { // came from OrderManagementController
 				Boolean isIt = (Boolean) object;
 				if (isIt == true) {
 					OrderManagementController.instance.isSubscriber(true);
 				}
 			}
-			if (object instanceof Integer) { //came from ChangeOrderDetails
+			if (object instanceof Integer) { // came from ChangeOrderDetails
 				ChangeOrderDetailsController.instance.isOther();
 			}
-				
+
 			break;
-			
+
 		case IS_GUIDE:
 			if (object instanceof Boolean) {
 				Boolean isIt = (Boolean) object;
@@ -167,11 +170,11 @@ public class ChatClient extends AbstractClient {
 					OrderManagementController.instance.isGuide(true);
 				}
 			}
-			if (object instanceof Integer) { //came from ChangeOrderDetails
+			if (object instanceof Integer) { // came from ChangeOrderDetails
 				ChangeOrderDetailsController.instance.isGuide();
 			}
 			break;
-			
+
 		case IS_REGULAR:
 			if (object instanceof Boolean) {
 				Boolean isIt = (Boolean) object;
@@ -179,11 +182,11 @@ public class ChatClient extends AbstractClient {
 					OrderManagementController.instance.isRegular(true);
 				}
 			}
-			if (object instanceof Integer) { //came from ChangeOrderDetails
+			if (object instanceof Integer) { // came from ChangeOrderDetails
 				ChangeOrderDetailsController.instance.isOther();
 			}
 			break;
-			
+
 		case NEWORDER_SUCCESS:
 			if (object instanceof Order) {
 				if (object != null) {
@@ -192,31 +195,31 @@ public class ChatClient extends AbstractClient {
 					order = (Order) object;
 					TravelerNewOrderController.instance.TravelerOrder = order;
 					TravelerNewOrderController.instance.isFound();
-				} 
-				else {
+				} else {
 					TravelerNewOrderController.instance.notFound();
 				}
 			}
 			break;
+
 		case NEWORDER_FAILED:
 			break;
+
 		case TOUR_DETAILS:
 			if (object instanceof TourGuide) {
 				System.out.println("--> handleMessageFromServer");
 				// System.out.println("--> HELLLLOOOOO");
-				//waitForConnection = false;
-				this.tourguide=(TourGuide)object;
-					TourGuideLoginController.instance.isFound();
+				// waitForConnection = false;
+				this.tourguide = (TourGuide) object;
+				TourGuideLoginController.instance.isFound();
 
-				
 			}
 			break;
-			
+
 		case HISTORY_ORDERS:
 			if (object instanceof Order) {
 				System.out.println("--> handleMessageFromServer");
 				waitForConnection = false;
-				
+
 				System.out.print(object.toString());
 				FamilySubscriptionHistoryController.instance.getLine((Order) object);
 			}
@@ -235,56 +238,60 @@ public class ChatClient extends AbstractClient {
 			break;
 		case TOUR_MAXVISCHECK:
 			if (object instanceof maxVis) {
-				visMax=(maxVis)object;
+				visMax = (maxVis) object;
 				System.out.print(visMax.toString());
 				TourGuideNewOrderController.instance.checkDate2(visMax);
-				//TourGuideNewOrderController.instance.checkDate(null, visMax);
+				// TourGuideNewOrderController.instance.checkDate(null, visMax);
 			}
 			break;
-			
+
 		case NEW_ORDERMAXVISCHECK:
 			if (object instanceof maxVis) {
-				visMax=(maxVis)object;
+				visMax = (maxVis) object;
 				System.out.print(visMax.toString());
 				TravelerNewOrderController.instance.checkDate2(visMax);
 			}
 			break;
-			
-			
+		case SUB_NEW_ORDER_SUCCESS:
+			if (object instanceof Order) {
+				order = (Order) object;
+//				subscriberNewOrderController.instance.TravelerOrder = order;
+				subscriberNewOrderController.instance.isFound();
+			}
+			break;
+		case SUB_NEW_ORDER_FAILED:
+			//cannot make new order output to user
+			break;
 		case PARK_STATUS:
-			if(object instanceof ParkStatus) {
-				String t=null;
-				ParkStatus status=(ParkStatus)object;
-				t=status.getDiscount();
+			if (object instanceof ParkStatus) {
+				String t = null;
+				ParkStatus status = (ParkStatus) object;
+				t = status.getDiscount();
 				parkEnterenceController.instance.insertData(status.getAmount(), status.getMaxAmount());
 				parkEnterenceController.instance.getDiscountDay(t);
 				parkEnterenceController2.instance.insertData(status.getAmount(), status.getMaxAmount());
 				parkEnterenceController2.instance.getDiscountDay(t);
 			}
 			break;
-			
+
 		case PARKENTERRETURNORDER:
-			if(object instanceof Order) {
-			Order order=(Order)object;
-			parkEnterenceController2.instance.orderDetails(order);
-				
+			if (object instanceof Order) {
+				Order order = (Order) object;
+				parkEnterenceController2.instance.orderDetails(order);
+
 			}
-			
-			
+
 			break;
 		case PARK_DISCOUNT:
-			if(object instanceof String) {
-				String t=null;
-			   t=(String)object;
+			if (object instanceof String) {
+				String t = null;
+				t = (String) object;
 				parkEnterenceController.instance.getDiscountDay(t);
 				parkEnterenceController2.instance.getDiscountDay(t);
-			
+
 			}
 			break;
-			
-			
-			
-			
+
 		case REQUESTINFO_SUCCESS:
 			if (object instanceof Subscriber) {
 				subscriber = (Subscriber) object;
@@ -301,16 +308,15 @@ public class ChatClient extends AbstractClient {
 			}
 			break;
 		case REQUESTINFO_FAILED:
-			if(object instanceof ParkInfo) {
-				parkInfo = (ParkInfo)object;
+			if (object instanceof ParkInfo) {
+				parkInfo = (ParkInfo) object;
 				if (parkInfo.getRole().equals("Manager")) {
 					DepartmantManagerApproveController.instance.notFond();
-				}
-				else if (parkInfo.getRole().equals("Department Manager")) {
+				} else if (parkInfo.getRole().equals("Department Manager")) {
 					ManagerDiscountController.instance.notFond();
 				}
 			}
-			
+
 		default:
 			break;
 		}

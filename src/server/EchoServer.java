@@ -97,7 +97,6 @@ public class EchoServer extends AbstractServer {
 				}
 			}
 			break;
-
 		case GET_INFO:
 			if (object instanceof Order) {
 				order = mysqlConnection.getDBOrder(object);
@@ -115,20 +114,20 @@ public class EchoServer extends AbstractServer {
 				}
 			}
 			break;
-			
+
 		case REQUESTINFO_HISTORY:///////////////////////////////////////////////////////////////////////////////////////
-			
-			if(object instanceof Subscriber){
-				Subscriber subscriber = (Subscriber)object;
+
+			if (object instanceof Subscriber) {
+				Subscriber subscriber = (Subscriber) object;
 				ObservableList<Object> ans3 = mysqlConnection.getHistorySubOrders(subscriber.getId());
-				//DataTransfer data = new DataTransfer(TypeOfMessage.SUCCSESS, ans3);
+				// DataTransfer data = new DataTransfer(TypeOfMessage.SUCCSESS, ans3);
 
 				if (ans3 != null) {
 					for (int i = 0; i < ans3.size(); i++) {
 						try {
-							returnData = new DataTransfer(TypeOfMessageReturn.HISTORY_ORDERS,ans3.get(i));
+							returnData = new DataTransfer(TypeOfMessageReturn.HISTORY_ORDERS, ans3.get(i));
 							client.sendToClient(returnData);
-							//client.sendToClient(ans3);
+							// client.sendToClient(ans3);
 						}
 
 						catch (IOException e) {
@@ -137,10 +136,9 @@ public class EchoServer extends AbstractServer {
 					}
 				}
 			}
-						
+
 			break;
-			
-			
+
 		case CHECK_KIND:
 			if (object instanceof Order) {
 				Order ord = (Order) object;
@@ -166,13 +164,17 @@ public class EchoServer extends AbstractServer {
 					e.printStackTrace();
 				}
 			}
-			if (object instanceof String) { //if it came from ChangeOrderDetails pretty much.
+			if (object instanceof String) { // if it came from ChangeOrderDetails pretty much.
 				String id = (String) object;
 				String CheckQuery = "SELECT ID FROM gonature.subscriber WHERE ID ='" + id + "';";
 				boolean ans = mysqlConnection.CheckKind(CheckQuery); // if ans == true, ID exist in sub. else
 				if (ans) {
 					ServerController.instance.displayMsg("ID belongs to a Subscriber");
-					returnData = new DataTransfer(TypeOfMessageReturn.IS_SUBSCRIBER, new Integer(1)); //just to seperate it from the instanceof order.
+					returnData = new DataTransfer(TypeOfMessageReturn.IS_SUBSCRIBER, new Integer(1)); // just to
+																										// seperate it
+																										// from the
+																										// instanceof
+																										// order.
 				} else {
 					CheckQuery = "SELECT ID FROM gonature.tourguides WHERE ID ='" + id + "';";
 					ans = mysqlConnection.CheckKind(CheckQuery); // if ans == true, ID exist in tourguide.
@@ -191,7 +193,7 @@ public class EchoServer extends AbstractServer {
 				}
 			}
 			break;
-			
+
 		case REQUESTINFO:
 			if (object instanceof Subscriber) {
 				Subscriber subscriber = (Subscriber) object;
@@ -359,14 +361,17 @@ public class EchoServer extends AbstractServer {
 					}
 				}
 			}
-			
-			if (object instanceof Order) { //delete an order from Orders, check if there's an order in waitinglist good to advance to
-				//orders, move it to orders, delete the order that was moved from waitinglist table.
+
+			if (object instanceof Order) { // delete an order from Orders, check if there's an order in waitinglist good
+											// to advance to
+				// orders, move it to orders, delete the order that was moved from waitinglist
+				// table.
 				Order ordToBeDeleted = (Order) object;
-				Order orderFromWaitingList = new Order(null, null, null, null, null, null, null, null, null, null,null);
+				Order orderFromWaitingList = new Order(null, null, null, null, null, null, null, null, null, null,
+						null);
 				String saveDate = ordToBeDeleted.getDate();
 				String saveTime = ordToBeDeleted.getHour();
-				
+
 				String DeleteQuery = "DELETE FROM gonature.orders WHERE (OrderNumber = "
 						+ ordToBeDeleted.getOrderNumber() + ");";
 				boolean ans = mysqlConnection.updateDB(DeleteQuery);
@@ -382,15 +387,15 @@ public class EchoServer extends AbstractServer {
 							"SELECT MIN(MinDATE.TimeOfEntrance), MinDATE.OrderNumber FROM ( SELECT TimeOfEntrance,OrderNumber FROM gonature.waitinglist WHERE (Date = '"
 									+ saveDate + "' AND Time = '" + saveTime + "' AND DateOfEntrance = '"
 									+ arrOfAnswer.get(0).toString() + "' ))  AS MinDATE;");
-					
-					//Object visMax = new maxVis(null, null, null, 0, 0, null, 0);
+
+					// Object visMax = new maxVis(null, null, null, 0, 0, null, 0);
 //					maxVis t = new maxVis(null, null, null, 0, 0, null, 0);
 //					t.setDate(saveDate);
 //					t.setPark(ordToBeDeleted.getParkName());
 //					t.setVisitorsInOrder(ordToBeDeleted.getNumOfVisitors());
 //					t.setTime(saveTime);
 //					mysqlConnection.checkMaxVisitorsForWaitingList(t);
-					
+
 					// fix here. +/- 3 hours.
 					if (arrOfAnswer.get(0) != null) {
 						arrOfAnswer = mysqlConnection.getDB("SELECT * FROM gonature.waitinglist WHERE OrderNumber = '"
@@ -403,23 +408,24 @@ public class EchoServer extends AbstractServer {
 							orderFromWaitingList.setEmail((String) arrOfAnswer.get(4));
 							orderFromWaitingList.setOrderNumber((String) arrOfAnswer.get(5));
 							orderFromWaitingList.setNameOnOrder((String) arrOfAnswer.get(6));
-							orderFromWaitingList.setOrderKind((String)arrOfAnswer.get(7));
+							orderFromWaitingList.setOrderKind((String) arrOfAnswer.get(7));
 							orderFromWaitingList.setID((String) arrOfAnswer.get(8));
-							
+
 							ans = mysqlConnection.newDBOrderFromWaitingList(orderFromWaitingList);
 							if (ans) {
 								ServerController.instance.displayMsg("Order from waiting list was added");
-							}
-							else {
+							} else {
 								ServerController.instance.displayMsg("Order from waiting list couldn't be added");
-							} //Query to delete the order from waitinglist table that was moved to the orders table
-							String DeleteQuery2 = "DELETE FROM gonature.waitinglist WHERE (OrderNumber = '" + orderFromWaitingList.getOrderNumber() + "');";
-							 ans = mysqlConnection.updateDB(DeleteQuery2);
-							 if (ans) {
-									ServerController.instance.displayMsg("Order was deleted from waiting list");
-								} else {
-									ServerController.instance.displayMsg("Order could not be deleted from waiting list");
-								}
+							} // Query to delete the order from waitinglist table that was moved to the orders
+								// table
+							String DeleteQuery2 = "DELETE FROM gonature.waitinglist WHERE (OrderNumber = '"
+									+ orderFromWaitingList.getOrderNumber() + "');";
+							ans = mysqlConnection.updateDB(DeleteQuery2);
+							if (ans) {
+								ServerController.instance.displayMsg("Order was deleted from waiting list");
+							} else {
+								ServerController.instance.displayMsg("Order could not be deleted from waiting list");
+							}
 						}
 					}
 				}
@@ -544,22 +550,25 @@ public class EchoServer extends AbstractServer {
 			}
 			break;
 		case INSERTINFO:
-			if(object instanceof Subscriber) {
-				Subscriber newSubscriber = (Subscriber)object;
-				
+			if (object instanceof Subscriber) {
+				Subscriber newSubscriber = (Subscriber) object;
+
 				arrOfAnswer = mysqlConnection.getDB("SELECT COUNT(*)+11111 FROM `gonature`.`subscriber`");
-				String subscriberNumber = "S"+arrOfAnswer.get(0).toString();
-				boolean subAdded = mysqlConnection.updateDB("INSERT INTO `gonature`.`subscriber` (`ID`, `FirstName`, `LastName`, `Email`, `Telephone`, `AmountOfFamilyMembers`, `CreditCard`, `subscriberNumber`) "
-						+ "VALUES ('"+newSubscriber.getId()+"', '"+newSubscriber.getFname()+"', '"+newSubscriber.getLname()+"',"
-								+ " '"+newSubscriber.getEmail()+"', '"+newSubscriber.getTeln()+"', '"+newSubscriber.getAmountOfFamilyMember()+"',"
-										+ " '"+newSubscriber.getCreditCard()+"', '"+subscriberNumber+"');");
-				if(subAdded) {
-					new SendEmail(newSubscriber.getEmail(), "Welcome "+newSubscriber.getFname() +" "+ newSubscriber.getLname()
-						, "Your subscription number: " + subscriberNumber+"\n"
-								+ "Your ID : "+newSubscriber.getId()+"\n"
-								+ "Amount of family members: "+newSubscriber.getAmountOfFamilyMember()+"\n"
-										+ "The subscription is free, you can now enter and place an order.\n"
-										+ "Enjoy the discounts :)");
+				String subscriberNumber = "S" + arrOfAnswer.get(0).toString();
+				boolean subAdded = mysqlConnection.updateDB(
+						"INSERT INTO `gonature`.`subscriber` (`ID`, `FirstName`, `LastName`, `Email`, `Telephone`, `AmountOfFamilyMembers`, `CreditCard`, `subscriberNumber`) "
+								+ "VALUES ('" + newSubscriber.getId() + "', '" + newSubscriber.getFname() + "', '"
+								+ newSubscriber.getLname() + "'," + " '" + newSubscriber.getEmail() + "', '"
+								+ newSubscriber.getTeln() + "', '" + newSubscriber.getAmountOfFamilyMember() + "',"
+								+ " '" + newSubscriber.getCreditCard() + "', '" + subscriberNumber + "');");
+				if (subAdded) {
+					new SendEmail(newSubscriber.getEmail(),
+							"Welcome " + newSubscriber.getFname() + " " + newSubscriber.getLname(),
+							"Your subscription number: " + subscriberNumber + "\n" + "Your ID : "
+									+ newSubscriber.getId() + "\n" + "Amount of family members: "
+									+ newSubscriber.getAmountOfFamilyMember() + "\n"
+									+ "The subscription is free, you can now enter and place an order.\n"
+									+ "Enjoy the discounts :)");
 					newSubscriber.setSubscriberNumber(subscriberNumber);
 					returnData = new DataTransfer(TypeOfMessageReturn.UPDATE_SUCCESS, newSubscriber);
 					try {
@@ -571,17 +580,18 @@ public class EchoServer extends AbstractServer {
 				}
 
 			}
-			if(object instanceof TourGuide) {
-				TourGuide newTourGuide = (TourGuide)object;
-				boolean tourAdded = mysqlConnection.updateDB("INSERT INTO `gonature`.`tourguides` (`Name`, `LastName`, `ID`, `Email`, `PhoneNumber`) "
-						+ "VALUES ('"+newTourGuide.getFname()+"', '"+newTourGuide.getLname()+"', '"+newTourGuide.getId()+"',"
-								+ " '"+newTourGuide.getEmail()+"', '"+newTourGuide.getTeln()+"');");
-				if(tourAdded) {
-					new SendEmail(newTourGuide.getEmail(), "Welcome "+newTourGuide.getFname() +" "+ newTourGuide.getLname()
-						, "You are now part of GoNature Family!\n"
-								+ "Your ID : "+newTourGuide.getId()+"\n"
-								+ "You can now enter and place an order.\n"
-								+ "Enjoy the discounts :)");
+			if (object instanceof TourGuide) {
+				TourGuide newTourGuide = (TourGuide) object;
+				boolean tourAdded = mysqlConnection.updateDB(
+						"INSERT INTO `gonature`.`tourguides` (`Name`, `LastName`, `ID`, `Email`, `PhoneNumber`) "
+								+ "VALUES ('" + newTourGuide.getFname() + "', '" + newTourGuide.getLname() + "', '"
+								+ newTourGuide.getId() + "'," + " '" + newTourGuide.getEmail() + "', '"
+								+ newTourGuide.getTeln() + "');");
+				if (tourAdded) {
+					new SendEmail(newTourGuide.getEmail(),
+							"Welcome " + newTourGuide.getFname() + " " + newTourGuide.getLname(),
+							"You are now part of GoNature Family!\n" + "Your ID : " + newTourGuide.getId() + "\n"
+									+ "You can now enter and place an order.\n" + "Enjoy the discounts :)");
 					returnData = new DataTransfer(TypeOfMessageReturn.UPDATE_SUCCESS, newTourGuide);
 					try {
 						client.sendToClient(returnData);
@@ -649,29 +659,29 @@ public class EchoServer extends AbstractServer {
 								parkInfo = new ParkInfo((String) arrOfAnswer.get(0), null, null, null, null);
 								RoleAndPark = new Worker(worker.getUserName(), null, role, parkInfo, workerName, scene);
 
-					} else if (role.equals("ParkReception")) {
-						scene = "/client/boundaries/WorkerParkEnternece.fxml";
-						role="Park Reception";
-						parkInfo = new ParkInfo((String) arrOfAnswer.get(0), null, null, null, null);
-						RoleAndPark = new Worker(null, null, role, parkInfo, workerName, scene);
-					} else
-						System.out.println("Error");
-					returnData = new DataTransfer(TypeOfMessageReturn.LOGIN_SUCCESSFUL, RoleAndPark);
-				} else {
-					ServerController.instance.displayMsg(worker.getUserName() + " UPDATEINFO details failed");
+							} else if (role.equals("ParkReception")) {
+								scene = "/client/boundaries/WorkerParkEnternece.fxml";
+								role = "Park Reception";
+								parkInfo = new ParkInfo((String) arrOfAnswer.get(0), null, null, null, null);
+								RoleAndPark = new Worker(null, null, role, parkInfo, workerName, scene);
+							} else
+								System.out.println("Error");
+							returnData = new DataTransfer(TypeOfMessageReturn.LOGIN_SUCCESSFUL, RoleAndPark);
+						} else {
+							ServerController.instance.displayMsg(worker.getUserName() + " UPDATEINFO details failed");
+							returnData = new DataTransfer(TypeOfMessageReturn.LOGIN_FAILED, new Worker());
+						}
+					}
+				} else {// if (!alreadyConnect)
 					returnData = new DataTransfer(TypeOfMessageReturn.LOGIN_FAILED, new Worker());
 				}
-			}
-		} else  {//if (!alreadyConnect)
-			returnData = new DataTransfer(TypeOfMessageReturn.LOGIN_FAILED, new Worker());
-		}
-		try {
-			client.sendToClient(returnData);
+				try {
+					client.sendToClient(returnData);
 
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
 
 			if (object instanceof Subscriber) {
 				Subscriber subscriber = (Subscriber) object;
@@ -873,7 +883,7 @@ public class EchoServer extends AbstractServer {
 			break;
 		case TOURGUIDEWAITINGLIST:
 			if (object instanceof WaitingList) {
-				WaitingList wait=(WaitingList)object;
+				WaitingList wait = (WaitingList) object;
 				boolean ans2 = mysqlConnection.updateWaitingListTour(wait);
 				if (ans2)
 					ServerController.instance.displayMsg("Waitinglist details updated");
@@ -891,7 +901,7 @@ public class EchoServer extends AbstractServer {
 					ServerController.instance.displayMsg("Waitinglist details could not be updated");
 			}
 			break;
-			
+
 		case CHECKMAXVIS:
 			if (object instanceof TourGuideOrder) {
 				Object visMax = new maxVis(null, null, null, 0, 0, null, 0);
@@ -915,17 +925,18 @@ public class EchoServer extends AbstractServer {
 					}
 				}
 			}
+
 			if (object instanceof Order) {
-				Object visMax= new maxVis(null, null, null, 0, 0, null, 0);
+				Object visMax = new maxVis(null, null, null, 0, 0, null, 0);
 				maxVis t = new maxVis(null, null, null, 0, 0, null, 0);
 				t.setDate(((Order) object).getDate());
 				t.setPark(((Order) object).getParkName());
 				t.setVisitorsInOrder(((Order) object).getNumOfVisitors());
 				t.setTime(((Order) object).getHour());
-				
+
 				visMax = mysqlConnection.checkMaxVisitors(t);
 				visMax = (Object) visMax;
-				if(visMax != null) {
+				if (visMax != null) {
 					try {
 						returnData = new DataTransfer(TypeOfMessageReturn.NEW_ORDERMAXVISCHECK, visMax);
 						client.sendToClient(returnData);
@@ -937,9 +948,45 @@ public class EchoServer extends AbstractServer {
 			}
 
 			break;
-			
-case GETINFOPARKENTER:
-			
+
+		case SUBSCRIBER_NEWORDER:
+			if (object instanceof Order) {
+				Order order = (Order) object;
+				maxVis visMax = new maxVis(null, null, null, 0, 0, null, 0);
+				maxVis t = new maxVis(null, null, null, 0, 0, null, 0);
+				t.setDate(order.getDate());
+				t.setPark(order.getParkName());
+				t.setVisitorsInOrder(order.getNumOfVisitors());
+				t.setTime(order.getHour());
+
+				visMax = mysqlConnection.checkMaxVisitors(t);
+				if (visMax != null) {
+					if (Integer.valueOf(visMax.getVisitorsInOrder() + visMax.getAllowed2()) < visMax.getAllowed1()) {
+						order = mysqlConnection.newDBOrder(object);
+						if (order != null) {
+							ServerController.instance.displayMsg("New Order created");
+							returnData = new DataTransfer(TypeOfMessageReturn.SUB_NEW_ORDER_SUCCESS, order);
+						} else {
+							ServerController.instance.displayMsg("New Order could not be created");
+							returnData = new DataTransfer(TypeOfMessageReturn.SUB_NEW_ORDER_FAILED, null);
+						}
+						try {
+							client.sendToClient(returnData);
+
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+					} else {
+						// not answer on our check
+					}
+				} else {
+					// send fail - visMax empty
+				}
+			}
+			break;
+
+		case GETINFOPARKENTER:
+
 			if (object instanceof Order) {
 				order = mysqlConnection.getDBOrder(object);
 				if (order != null) {
@@ -951,78 +998,75 @@ case GETINFOPARKENTER:
 				}
 				try {
 					client.sendToClient(returnData);
-				} catch (IOException e) { 
-					e.printStackTrace();
-				}
-			
-			}
-			break;
-			
-		case PARTKENTERGETSTATUS:
-			if(object instanceof ParkStatus)
-			{
-				ParkStatus status= (ParkStatus)object;
-				String set=mysqlConnection.getPartStatus(status);
-				String get=mysqlConnection.getPartStatus2(status);
-				 String t="select Discount from gonature.discountdates WHERE Dates='" + status.getDate() + "' AND numOfPark='" + status.getPark() +  "'AND Approve='True';";
-	                arrOfAnswer = mysqlConnection.getDB(t);
-				status.setAmount(set);
-				status.setMaxAmount(get);
-				if(!arrOfAnswer.isEmpty())
-				status.setDiscount((String) arrOfAnswer.get(0));
-				if(status.getAmount()!=null) {
-				try {
-					returnData = new DataTransfer(TypeOfMessageReturn.PARK_STATUS, status);
-					client.sendToClient(returnData);
-
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-				}
-				
-				
+
 			}
 			break;
-		
+
+		case PARTKENTERGETSTATUS:
+			if (object instanceof ParkStatus) {
+				ParkStatus status = (ParkStatus) object;
+				String set = mysqlConnection.getPartStatus(status);
+				String get = mysqlConnection.getPartStatus2(status);
+				String t = "select Discount from gonature.discountdates WHERE Dates='" + status.getDate()
+						+ "' AND numOfPark='" + status.getPark() + "'AND Approve='True';";
+				arrOfAnswer = mysqlConnection.getDB(t);
+				status.setAmount(set);
+				status.setMaxAmount(get);
+				if (!arrOfAnswer.isEmpty())
+					status.setDiscount((String) arrOfAnswer.get(0));
+				if (status.getAmount() != null) {
+					try {
+						returnData = new DataTransfer(TypeOfMessageReturn.PARK_STATUS, status);
+						client.sendToClient(returnData);
+
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+
+			}
+			break;
+
 		case PARKENTERSENDSTATUS:
-			if(object instanceof ParkStatus)
-			{
-				ParkStatus status= (ParkStatus)object;
-				String t= status.getPark();
-				int x=Integer.valueOf(status.getAmount());
-				//String query ="UPDATE parksstatus SET "+t+"="+t+"+ "+x+" WHERE DATE='"+status.getDate()+"';";
-				String query ="UPDATE parksstatuss SET "+t+"="+t+"+ "+x+ ";";
+			if (object instanceof ParkStatus) {
+				ParkStatus status = (ParkStatus) object;
+				String t = status.getPark();
+				int x = Integer.valueOf(status.getAmount());
+				// String query ="UPDATE parksstatus SET "+t+"="+t+"+ "+x+" WHERE
+				// DATE='"+status.getDate()+"';";
+				String query = "UPDATE parksstatuss SET " + t + "=" + t + "+ " + x + ";";
 				boolean ans2 = mysqlConnection.updateDB(query);
 				if (ans2)
 					ServerController.instance.displayMsg("Park Status details updated");
 				else
 					ServerController.instance.displayMsg("Park Statust details could not be updated");
 			}
-			
+
 			break;
-			
-			
-		case CASUALVISITUPDATE: 
-			if(object instanceof casualOrder)
-			{
-				casualOrder order=(casualOrder)object;
+
+		case CASUALVISITUPDATE:
+			if (object instanceof casualOrder) {
+				casualOrder order = (casualOrder) object;
 				boolean ans2 = mysqlConnection.updateCasualTable(order);
 				if (ans2)
 					ServerController.instance.displayMsg("New Casual Visit");
 				else
 					ServerController.instance.displayMsg("Casual visit failed");
-			
+
 			}
 			break;
-			
-			
+
 		case CheckDiscounts:
-			if(object instanceof ParkStatus) {
-				ParkStatus status= (ParkStatus)object;
-                String t="select * from discountdates WHERE Dates='" + status.getDate() + "' AND numOfPark='" + status.getPark() +  "'AND Approve='True';";
-                arrOfAnswer = mysqlConnection.getDB(t);
+			if (object instanceof ParkStatus) {
+				ParkStatus status = (ParkStatus) object;
+				String t = "select * from discountdates WHERE Dates='" + status.getDate() + "' AND numOfPark='"
+						+ status.getPark() + "'AND Approve='True';";
+				arrOfAnswer = mysqlConnection.getDB(t);
 				status.setAmount((String) arrOfAnswer.get(1));
-				if(!arrOfAnswer.isEmpty()) {
+				if (!arrOfAnswer.isEmpty()) {
 					try {
 						returnData = new DataTransfer(TypeOfMessageReturn.PARK_DISCOUNT, status);
 						client.sendToClient(returnData);
@@ -1030,26 +1074,24 @@ case GETINFOPARKENTER:
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
-					}
+				}
 
 			}
 			break;
-			
+
 		case RESETPARKSTATUS:
-			if(object instanceof String) {
-				String t=(String)object;
-			String sql="UPDATE parksstatuss SET "+t+"="+1+ ";";
-			boolean ans2 = mysqlConnection.updateDB(sql);
-			if (ans2)
-				ServerController.instance.displayMsg("Park reseted");
-			else
-				ServerController.instance.displayMsg("Park did not resert");
+			if (object instanceof String) {
+				String t = (String) object;
+				String sql = "UPDATE parksstatuss SET " + t + "=" + 1 + ";";
+				boolean ans2 = mysqlConnection.updateDB(sql);
+				if (ans2)
+					ServerController.instance.displayMsg("Park reseted");
+				else
+					ServerController.instance.displayMsg("Park did not resert");
 			}
-			
-			break;
-			
 
-			
+			break;
+
 		case SENDMAIL:
 			if (object instanceof EmailDetails) {
 				EmailDetails emailDetails = (EmailDetails) object;

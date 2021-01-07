@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane prefHeight="600.0" prefWidth="800.0" stylesheets="@DepartmentManagerStyle.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.subscriberNewOrderController">
+   <center>
+      <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0">
+         <children>
+            <VBox alignment="CENTER" layoutX="22.0" layoutY="39.0" prefHeight="354.0" prefWidth="497.0" AnchorPane.bottomAnchor="94.0" AnchorPane.leftAnchor="22.0" AnchorPane.rightAnchor="81.0" AnchorPane.topAnchor="39.0">
+               <children>
+                  <HBox alignment="CENTER" prefHeight="309.0" prefWidth="667.0">
+                     <children>
+                        <AnchorPane prefHeight="299.0" prefWidth="467.0">
+                           <children>
+                              <Label layoutX="144.0" layoutY="114.0" text="Park" />
+                              <Label layoutX="92.0" layoutY="149.0" text="Date and time" />
+                              <Label layoutX="72.0" layoutY="183.0" text="Number of visitors" />
+                              <TextField fx:id="enterEmail" layoutX="192.0" layoutY="212.0" />
+                              <Button fx:id="continueToPayBtn" layoutX="207.0" layoutY="267.0" mnemonicParsing="false" onAction="#continueToPayButton" text="Continue" />
+                              <Label layoutX="208.0" layoutY="29.0" text="New Order">
+                                 <font>
+                                    <Font name="System Bold Italic" size="20.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="141.0" layoutY="216.0" text="Email" />
+                              <Button fx:id="waitingListBtn" layoutX="349.0" layoutY="268.0" mnemonicParsing="false" onAction="#waitingListButton" style="-fx-background-color: lightblue;" text="Enter waiting list" />
+                              <ComboBox fx:id="numVisitorsBtn" layoutX="192.0" layoutY="179.0" prefHeight="25.0" prefWidth="76.0" promptText="select" />
+                              <ComboBox fx:id="parkNameBtn" layoutX="192.0" layoutY="110.0" prefHeight="25.0" prefWidth="90.0" promptText="select" />
+                              <ComboBox fx:id="chooseTime" layoutX="192.0" layoutY="145.0" prefHeight="25.0" prefWidth="89.0" promptText="select" />
+                              <DatePicker fx:id="chooseDayBtn" layoutX="298.0" layoutY="145.0" prefHeight="25.0" prefWidth="119.0" promptText="dd/mm/yyyy" />
+                              <Text fx:id="errorEmail" fill="#eb0707" layoutX="179.0" layoutY="256.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="174.13671875" />
+                              <Label layoutX="112.0" layoutY="77.0" prefHeight="17.0" prefWidth="64.0" text="First Name" />
+                              <TextField fx:id="firstName" layoutX="191.0" layoutY="73.0" prefHeight="25.0" prefWidth="118.0" />
+                           </children>
+                        </AnchorPane>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </children>
+      </AnchorPane>
+   </center>
+   <top>
+      <AnchorPane style="-fx-background-color: #c9c4c4;" BorderPane.alignment="CENTER">
+         <children>
+            <Text fx:id="familyName" layoutX="206.0" layoutY="63.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hello Amdur Family" wrappingWidth="241.33984375" AnchorPane.leftAnchor="205.0" AnchorPane.topAnchor="42.0">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Text>
+            <Button fx:id="btnLogout" layoutX="707.0" layoutY="42.0" mnemonicParsing="false" onAction="#logout" text="Log Out" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="40.0" />
+            <ImageView fitHeight="106.0" fitWidth="155.0" layoutY="-5.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="6.0" AnchorPane.topAnchor="7.0">
+               <image>
+                  <Image url="/LOGONATURE.png" />
+               </image>
+            </ImageView>
+            <Text fx:id="subNumber" layoutX="205.0" layoutY="85.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Subscriber Number: " wrappingWidth="229.33984375" AnchorPane.leftAnchor="205.0" AnchorPane.topAnchor="72.0" />
+         </children>
+      </AnchorPane>
+   </top>
+   <left>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <VBox layoutX="60.0" layoutY="95.0" spacing="25.0" style="-fx-background-color: #c9c4c4;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <Button fx:id="btnEditInfo" mnemonicParsing="false" onAction="#showEditInfo" prefHeight="90.0" prefWidth="165.0" text="Edit info" />
+                  <Button fx:id="btnHistoryOfVisit" mnemonicParsing="false" onAction="#showHistroryOfVisit" prefHeight="90.0" prefWidth="165.0" text="History of Visit" />
+                  <Button fx:id="btnNewOrder" disable="true" mnemonicParsing="false" onAction="#showNewOrder" prefHeight="90.0" prefWidth="165.0" text="New Order" />
+               </children>
+               <padding>
+                  <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+               </padding>
+            </VBox>
+         </children>
+      </AnchorPane>
+   </left>
+</BorderPane>

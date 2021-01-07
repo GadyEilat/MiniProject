@@ -119,8 +119,7 @@ public class FamilySubscriptionHistoryController extends AbstractScenes {
 
 	@FXML
 	void showNewOrder(ActionEvent event) {
-		// switchScenes("/client/boundaries/EditInfoFamily.fxml", "Family
-		// Subscription");
+		switchScenes("/client/boundaries/FamilyNewOrder.fxml", "Family Subscription");
 
 	}
 
