@@ -290,7 +290,7 @@ public class mysqlConnection {
 			String nameOnOrder=updOrder.getNameOnOrder();
 			String upOrderNum= generateRandomChars("123456789", 5);
 			String travID=updOrder.getID();
-			String waitingTime=updOrder.getTimeOfEnterence();
+			String waitingTime=updOrder.getTimeOfEntrance();
 			if (conn != null) {
 				try {
 					
