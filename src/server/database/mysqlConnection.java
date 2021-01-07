@@ -44,8 +44,8 @@ public class mysqlConnection {
 
 //			conn = DriverManager.getConnection("jdbc:mysql://localhost/gonature?serverTimezone=IST", "root","ha89kha89k");
 //			conn = DriverManager.getConnection("jdbc:mysql://localhost/gonature?serverTimezone=IST", "root","Liran159357!");
-//			conn = DriverManager.getConnection("jdbc:mysql://localhost/gonature?serverTimezone=IST", "root","Aa123456");
-			conn = DriverManager.getConnection("jdbc:mysql://localhost/gonature?serverTimezone=IST", "root","DA123456");
+			conn = DriverManager.getConnection("jdbc:mysql://localhost/gonature?serverTimezone=IST", "root","Aa123456");
+		//	conn = DriverManager.getConnection("jdbc:mysql://localhost/gonature?serverTimezone=IST", "root","DA123456");
 
 			ServerController.instance.displayMsg("SQL connection succeed");
 		} catch (SQLException ex) {/* handle any errors */
@@ -291,10 +291,11 @@ public class mysqlConnection {
 			String upOrderNum= generateRandomChars("123456789", 5);
 			String travID=updOrder.getID();
 			String waitingTime=updOrder.getTimeOfEntrance();
+			String hourWait=updOrder.getDateOfEntrance();
 			if (conn != null) {
 				try {
 					
-					String query = " insert into waitinglist (Park, Date, Time, NumOfVisitors, Email,TourGroup,orderNumber,NameOnOrder,ID,TimeOfEnterence )"+ " values (?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
+					String query = " insert into waitinglist (Park, Date, Time, NumOfVisitors, Email,OrderKind,orderNumber,NameOnOrder,ID,TimeOfEntrance, DateOfEntrance )"+ " values (?, ?, ?, ?, ?, ?, ?, ?, ?,?,?)";
 					        
 					PreparedStatement preparedStmt = conn.prepareStatement(query);
 				      preparedStmt.setString (1, upPark);
@@ -306,7 +307,8 @@ public class mysqlConnection {
 				      preparedStmt.setString (7, upOrderNum);
 				      preparedStmt.setString (8, nameOnOrder);
 				      preparedStmt.setString (9, travID);
-				      preparedStmt.setString (10, waitingTime);
+				      preparedStmt.setString (10, hourWait);
+				      preparedStmt.setString (11, waitingTime);
 				      preparedStmt.execute();
 				      
 				     // conn.close();
