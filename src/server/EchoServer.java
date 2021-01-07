@@ -13,6 +13,8 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Vector;
 
+import com.mysql.cj.x.protobuf.MysqlxCrud.Delete;
+
 import client.logic.WaitingList;
 import client.ClientUI;
 import client.logic.EmailDetails;
