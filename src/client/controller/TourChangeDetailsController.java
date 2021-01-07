@@ -39,6 +39,16 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 public class TourChangeDetailsController extends AbstractScenes {
+	
+	/** Description of TourChangeDetailsController 
+	• *
+	• * @author Elad Kobi
+	• * 
+	• * 
+	• */
+	
+	
+	
 	TourGuide tourguide;
 	
 	   @FXML
@@ -86,7 +96,10 @@ public class TourChangeDetailsController extends AbstractScenes {
          this.tourNameM.setText(tourguideM.getFname());
     }
     
-    
+    /** Description of loadGuideMenuChange 
+    • *@param tourguide this function gets an entity on a TourGuide
+    • *  and prints his details to the screen.
+    • */
     
     public void loadGuideMenuChange(TourGuide tourguide) {
 		this.tourguide = tourguide;
@@ -116,6 +129,12 @@ public class TourChangeDetailsController extends AbstractScenes {
     	switchScenes("/client/boundaries/TourGuideMyOrders.fxml", "My Orders");
     }
 
+    /** Description of updateDetailsTourButton 
+    • *@param event button thats gets the new details  
+    • *  and updates the tourguide details on db
+    • */
+    
+    
     @FXML
     void updateDetailsTourButton(ActionEvent event) {
     	String updatedName = (ChangeName.getText());
@@ -173,7 +192,13 @@ public class TourChangeDetailsController extends AbstractScenes {
     void changePhoneTourM(ActionEvent event) {
 
     }
-  //Checking if it's a valid Email
+    
+    
+    /** Description of validate 
+    • *@param emailrStr gets an email and  
+    • * checking if it's a valid Email 
+    • */
+  
   	public static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$",
   			Pattern.CASE_INSENSITIVE);
 
@@ -181,20 +206,30 @@ public class TourChangeDetailsController extends AbstractScenes {
   		Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr);
   		return matcher.find();
   	}
-  	
+    /** Description of alertMessage 
+    • * prints an alert. 
+    • */
   	private void alertMessage(){
     	Alert alert = new Alert(AlertType.INFORMATION);
     	alert.setHeaderText(null);
     	alert.setContentText("Fields missing");
     	alert.show();	
     }
+  	
+  	 /** Description of checkID 
+    • *@param ID gets an ID and  
+    • * checking if it's a valid ID 
+    • */
+  	
   	 public static boolean checkID(String ID) {
 		   if(ID.length()==10 && ID.matches("[0-9]+"))
 			   return true;
 		   return false;
 	   }
     
-  
+  	  /** Description of initialize 
+	    • *@see https://docs.oracle.com/javase/8/javafx/api/javafx/fxml/Initializable.html
+	    • */
     
     @Override
    	public void initialize(URL location, ResourceBundle resources) {
@@ -202,15 +237,7 @@ public class TourChangeDetailsController extends AbstractScenes {
        	loadGuideMenuChange(ChatClient.tourguide);
 
    	}
-//    @FXML
-//    void initialize() {
-//        assert updateDetailsTourBtn != null : "fx:id=\"updateDetailsTourBtn\" was not injected: check your FXML file 'TourGuideChangeDetails.fxml'.";
-//        assert LogOutBtn != null : "fx:id=\"LogOutBtn\" was not injected: check your FXML file 'TourGuideChangeDetails.fxml'.";
-//        assert updateDetalisGuideBtn != null : "fx:id=\"updateDetalisGuideBtn\" was not injected: check your FXML file 'TourGuideChangeDetails.fxml'.";
-//        assert NewOrderBtn != null : "fx:id=\"NewOrderBtn\" was not injected: check your FXML file 'TourGuideChangeDetails.fxml'.";
-//        assert myOrdersBtn != null : "fx:id=\"myOrdersBtn\" was not injected: check your FXML file 'TourGuideChangeDetails.fxml'.";
-//
-//    }
+
 }
 
 

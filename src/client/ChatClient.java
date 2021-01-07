@@ -38,11 +38,13 @@ public class ChatClient extends AbstractClient {
 	public static Visitor visitor = new Visitor(null, null, null, null, null);
 	public static Order order = new Order(null, null, null, null, null, null, null, null);
 	public static TourGuide tourguide = new TourGuide(null, null, null, null, null);
-	public static TourGuideOrder tourguideorder = new TourGuideOrder(null, null, null, null, null, null, null, null);
+	public static TourGuideOrder tourguideorder = new TourGuideOrder(null, null, null, null, null, null, null, null,null,null);
     public static Worker worker;
     public static Subscriber subscriber;
 	public static ObservableList<TourGuideOrder> oblist = FXCollections.observableArrayList();
     public static maxVis visMax= new maxVis(null, null, null, 0, 0, null, 0);
+    public static boolean connected = false;
+
 
 	ChatIF clientUI;
 	public boolean waitForConnection = false;
@@ -69,7 +71,7 @@ public class ChatClient extends AbstractClient {
 				
 			
 			break;
-		case LOGIN_SUCCESSFUL:
+		case LOGIN_SUCCESSFUL://נתונים למסך המניאק נמצאים פה
 			if(object instanceof Worker) {
 				worker = (Worker)object;
 				WorkerLogin.instance.checkLogInAnswer(worker);

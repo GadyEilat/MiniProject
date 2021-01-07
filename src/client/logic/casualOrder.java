@@ -1,7 +1,12 @@
 package client.logic;
 
 import java.io.Serializable;
-
+/** Description of casualOrder 
+• *
+• * @author Elad Kobi
+• * 
+• * 
+• */
 public class casualOrder implements Serializable {
 	/**
 	 * 
@@ -15,7 +20,9 @@ public class casualOrder implements Serializable {
 	private String ExitTime;
 	private String orderNumber;
 	
-
+	/** Description of casualOrder 
+	• * A constructor, a casualOrder visit in the park.
+	• */
 	
 	public casualOrder(String park, String date, String time, String orderKind, String payment, String exittime, String ordernumber) {
 		super();

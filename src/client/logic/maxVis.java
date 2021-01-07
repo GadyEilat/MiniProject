@@ -1,7 +1,12 @@
 package client.logic;
 
 import java.io.Serializable;
-
+/** Description of casualOrder 
+• *
+• * @author Elad Kobi
+• * 
+• * 
+• */
 public class maxVis implements Serializable {
 
 	/**
@@ -24,11 +29,17 @@ public class maxVis implements Serializable {
 	
 	
 	
-	
+	/** Description of toString 
+	• * toString for the entity
+	• */
 	@Override
 	public String toString() {
 		return "maxVis [Date=" + Date + ", visitorsInOrder=" + visitorsInOrder + ", MaxVisitors=" + Park + "]";
 	}
+	
+	/** Description of casualOrder 
+	• * A constructor, a maxVis entity uses for cheking if a date is avilable to visit the park.
+	• */
 	public maxVis(String date, String visitorsInOrder, String park, int allowed1, int allowed2, String time, int maxtime) {
 		//super();
 		this.Date = date;

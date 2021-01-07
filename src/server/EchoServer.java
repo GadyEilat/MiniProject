@@ -178,7 +178,7 @@ public class EchoServer extends AbstractServer {
 				Worker worker = (Worker) object;
 				Worker RoleAndPark = null;
 				ParkInfo parkInfo;
-				String checkUserAndPassword = "SELECT Role, Park, name FROM gonature.worker WHERE UserName = '" + worker.getUserName()
+				String checkUserAndPassword = "SELECT Role, Park, name,LogIn FROM gonature.worker WHERE UserName = '" + worker.getUserName()
 						+ "' AND Password = '" + worker.getPassword() + "';";
 				arrOfAnswer = mysqlConnection.getDB(checkUserAndPassword);
 				if (!arrOfAnswer.isEmpty()) {
@@ -208,6 +208,11 @@ public class EchoServer extends AbstractServer {
 						parkInfo = new ParkInfo((String) arrOfAnswer.get(0), null, null, null, null);
 						RoleAndPark = new Worker(null, null, role, parkInfo, workerName, scene);
 
+					} else if (role.equals("ParkReception")) {
+						scene = "/client/boundaries/WorkerParkEnternece.fxml";
+						role="Park Reception";
+						parkInfo = new ParkInfo((String) arrOfAnswer.get(0), null, null, null, null);
+						RoleAndPark = new Worker(null, null, role, parkInfo, workerName, scene);
 					} else
 						System.out.println("Error");
 
@@ -371,7 +376,8 @@ public class EchoServer extends AbstractServer {
 			break;
 		case TOURGUIDEWAITINGLIST:
 			if (object instanceof WaitingList) {
-				boolean ans2 = mysqlConnection.updateWaitingListTour(object);
+				WaitingList wait=(WaitingList)object;
+				boolean ans2 = mysqlConnection.updateWaitingListTour(wait);
 				if (ans2)
 					ServerController.instance.displayMsg("Waitinglist details updated");
 				else
@@ -435,11 +441,12 @@ public class EchoServer extends AbstractServer {
 				ParkStatus status= (ParkStatus)object;
 				String set=mysqlConnection.getPartStatus(status);
 				String get=mysqlConnection.getPartStatus2(status);
-				 String t="select * from discountdates WHERE Dates='" + status.getDate() + "' AND numOfPark='" + status.getPark() +  "'AND Approve='True';";
+				 String t="select Discount from gonature.discountdates WHERE Dates='" + status.getDate() + "' AND numOfPark='" + status.getPark() +  "'AND Approve='True';";
 	                arrOfAnswer = mysqlConnection.getDB(t);
 				status.setAmount(set);
 				status.setMaxAmount(get);
-				status.setDiscount((String) arrOfAnswer.get(1));
+				if(!arrOfAnswer.isEmpty())
+				status.setDiscount((String) arrOfAnswer.get(0));
 				if(status.getAmount()!=null) {
 				try {
 					returnData = new DataTransfer(TypeOfMessageReturn.PARK_STATUS, status);

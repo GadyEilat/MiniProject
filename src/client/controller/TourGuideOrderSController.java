@@ -34,6 +34,15 @@ import javafx.scene.control.Button;
 
 public class TourGuideOrderSController extends AbstractScenes {
 	
+	/** Description of TourGuideOrderSController 
+	• *
+	• * @author Elad Kobi
+	• * 
+	• * 
+	• */
+	
+	
+	
 	TourGuide tourguide;
 	TourGuideOrder tourguideorder;
 	//TourGuideNewOrderController orderup= new TourGuideNewOrderController();
@@ -79,7 +88,12 @@ public class TourGuideOrderSController extends AbstractScenes {
 //        this.dateOrderGuide.setText(orderup.tourguideorderr.getDate());
 //        this.orderNumberGuide.setText(orderup.tourguideorderr.getOrderNumber());
 //    }
-    
+    /** Description of parkEnterenceController2 
+    • *
+    • * @param  tourguideO the tourguide who made the order.
+    • * @param newOrderG the order that has been made.
+    • * 
+    • */
     
     public void loadGuide(TourGuide tourguideO, TourGuideOrder newOrederG) {
     	this.tourguide = tourguideO;
@@ -87,8 +101,19 @@ public class TourGuideOrderSController extends AbstractScenes {
          this.TourNo.setText(tourguideO.getFname());
          this.guideNameOrderS.setText(tourguideO.getFname());
          this.dateOrderGuide.setText(newOrederG.getDate());
-         double orderPayment=((Integer.valueOf(newOrederG.getNumOfVisitors())-1)*22.5);
-         this.orderNumberGuide.setText(String.format("%.2f", orderPayment));
+         
+         
+     	if(newOrederG.getPrePaid()=="No") {
+			double orderPayment=((Double.valueOf(newOrederG.getNumOfVisitors())-1)*22.5);
+			String tourPayment=(String.format("%.2f", orderPayment));
+			 this.orderNumberGuide.setText(tourPayment);
+			}
+			else {
+			double orderPayment=(((Double.valueOf(newOrederG.getNumOfVisitors())-1)*22.5)*0.88);
+			String tourPayment=(String.format("%.2f", orderPayment));
+			 this.orderNumberGuide.setText(tourPayment);
+			}
+   
     }
 
     @FXML
@@ -125,27 +150,17 @@ public class TourGuideOrderSController extends AbstractScenes {
     void changeOrder(ActionEvent event) {
     	switchScenes("/client/boundaries/Existing Order.fxml", "New Order");
     }
-    
+	  /** Description of initialize 
+    • *@see https://docs.oracle.com/javase/8/javafx/api/javafx/fxml/Initializable.html
+    • */
     
     @Override
   		public void initialize(URL location, ResourceBundle resources) {
   	    	loadGuide(ChatClient.tourguide, TourGuideNewOrderController.tourguideorderr);
-  	    	//recieve();
+  	    	
     }
     
     
     
-    
-    
-
-//    @FXML
-//    void initialize() {
-//        assert viewOrderTourBtn != null : "fx:id=\"viewOrderTourBtn\" was not injected: check your FXML file 'TourGuideOrderSuccssed.fxml'.";
-//        assert returnToMenuTourBTN != null : "fx:id=\"returnToMenuTourBTN\" was not injected: check your FXML file 'TourGuideOrderSuccssed.fxml'.";
-//        assert LogOutBtn != null : "fx:id=\"LogOutBtn\" was not injected: check your FXML file 'TourGuideOrderSuccssed.fxml'.";
-//        assert updateDetalisGuideBtn != null : "fx:id=\"updateDetalisGuideBtn\" was not injected: check your FXML file 'TourGuideOrderSuccssed.fxml'.";
-//        assert NewOrderBtn != null : "fx:id=\"NewOrderBtn\" was not injected: check your FXML file 'TourGuideOrderSuccssed.fxml'.";
-//        assert myOrdersBtn != null : "fx:id=\"myOrdersBtn\" was not injected: check your FXML file 'TourGuideOrderSuccssed.fxml'.";
-//
-//    }
+ 
 }

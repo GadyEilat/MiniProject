@@ -38,6 +38,14 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 
 public class MyOrdersGuideController extends AbstractScenes {
+	
+	/** Description of MyOrdersGuideController 
+	• *
+	• * @author Elad Kobi
+	• */
+	
+	
+	
 	TourGuide tourguide;
     @FXML
     private ResourceBundle resources;
@@ -79,6 +87,10 @@ public class MyOrdersGuideController extends AbstractScenes {
     
 ObservableList <TourGuideOrder> oblist=FXCollections.observableArrayList();
     
+/** Description of MyOrdersGuideController 
+• *
+• * @param tourguideM this function gets an entity of tourguide and prints his details on the screen.
+• */
     
     public void loadGuide(TourGuide tourguideM) {
     	this.tourguide = tourguideM;
@@ -118,7 +130,10 @@ ObservableList <TourGuideOrder> oblist=FXCollections.observableArrayList();
     	switchScenes("/client/boundaries/TourGuideMainMenu.fxml", "GoNature Enter");
     }
     
-    
+    /** Description of initialize 
+    • *@see https://docs.oracle.com/javase/8/javafx/api/javafx/fxml/Initializable.html
+    • * prints the table.
+    • */
     
     @Override
    	public void initialize(URL location, ResourceBundle resources) {
@@ -137,11 +152,14 @@ ObservableList <TourGuideOrder> oblist=FXCollections.observableArrayList();
        	ClientUI.chat.accept(data);
        	TableOrders.setItems(oblist);
    	}
-
+    /** Description of initialize 
+    • *@param TourGuideOrder adds an order to the Observeable list for printing 
+    • * prints the table.
+    • */
 
     public void getLine(TourGuideOrder t) {
     	
-    	oblist.add(new TourGuideOrder(t.getParkName(), t.getTime(), t.getDate(), t.getNumOfVisitors(), t.getEmail(), t.getOrderNumber(), t.getNameOnOrder(), null));
+    	oblist.add(new TourGuideOrder(t.getParkName(), t.getTime(), t.getDate(), t.getNumOfVisitors(), t.getEmail(), t.getOrderNumber(), t.getNameOnOrder(), null, null,null));
     }
     
     
@@ -149,8 +167,6 @@ ObservableList <TourGuideOrder> oblist=FXCollections.observableArrayList();
     
 	private ObservableList<TourGuideOrder> getOrder() {
 		ObservableList <TourGuideOrder> oblist=FXCollections.observableArrayList();
-		//oblist.add(new TourGuideOrder("Elad1", "Elad2", "Elad3", "Elad4", "Elad5", "Elad6", "Elad7"));
-		//oblist.add(new TourGuideOrder("Elad1", "Elad2", "Elad3", "Elad4", "Elad5", "Elad6", "Elad7"));
           return oblist;
 	}
     
@@ -159,13 +175,6 @@ ObservableList <TourGuideOrder> oblist=FXCollections.observableArrayList();
     
     
     
-//    @FXML
-//    void initialize() {
-//        assert LogOutBtn != null : "fx:id=\"LogOutBtn\" was not injected: check your FXML file 'TourGuideMyOrders.fxml'.";
-//        assert updateDetalisGuideBtn != null : "fx:id=\"updateDetalisGuideBtn\" was not injected: check your FXML file 'TourGuideMyOrders.fxml'.";
-//        assert NewOrderBtn != null : "fx:id=\"NewOrderBtn\" was not injected: check your FXML file 'TourGuideMyOrders.fxml'.";
-//        assert myOrdersBtn != null : "fx:id=\"myOrdersBtn\" was not injected: check your FXML file 'TourGuideMyOrders.fxml'.";
-//
-//    }
+
 }
 
