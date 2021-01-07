@@ -69,8 +69,6 @@ public class MyOrdersGuideController extends AbstractScenes {
     @FXML
     private Button backButton;
     
-    
-    
     @FXML
     private TableView<TourGuideOrder> TableOrders;
 

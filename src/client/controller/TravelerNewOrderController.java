@@ -100,7 +100,6 @@ public class TravelerNewOrderController extends AbstractScenes {
 
 	public void isFound() {
 		switchScenes("/client/boundaries/TravelerOrderSuccess.fxml", "Order Success");
-
 	}
 
 	private void setTimeComboBox() {
