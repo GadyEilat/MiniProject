@@ -15,6 +15,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 
+/**
+ * the window Existing Order relates to an order that was already made, and someone wants to make changes on it.
+ * @author Gady
+ *
+ */
 public class ExistingOrderController extends AbstractScenes{
 
 	public Order order = new Order(null,null,null,null,null,null, null, null,null,null);
@@ -41,16 +46,17 @@ public class ExistingOrderController extends AbstractScenes{
     @FXML
     private ImageView backBtnImage;
 
+    /**
+     * goes back to the Travelers screen
+     * @param event when you click on the button "Back"
+     */
     @FXML
     void GoBack(ActionEvent event) {
     	switchScenes("/client/boundaries/Travelers.fxml", "Travelers");
     }
 
-    public void wasCanceled() {
-    	switchScenes("/client/boundaries/Travelers.fxml", "Travelers");
-    }
+    
     public void notFound() {
-
 		msgFromController.setText("Order Number Not Found");
 	}
 	

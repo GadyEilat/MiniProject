@@ -128,8 +128,8 @@ public class ChangeOrderDetailsController extends AbstractScenes{
     	priceTxt.setText(String.format("Price: %.2f", price));
     	
     	//sending a mail
-    	String toSend = "You Successfully updated your order details " + ord.getNameOnOrder() + ".\nThe new order details are:\nOrder Number: " +
-    	ord.getOrderNumber() + "\nPark: " + ord.getParkName() + "\nDate: " + ord.getDate()+ "\nTime: " + ord.getHour() + "\nAmount of visitors: " +
+    	String toSend = "You Successfully updated your order details " + ord.getNameOnOrder() + ". <br>The new order details are:<br>Order Number: " +
+    	ord.getOrderNumber() + "<br>Park: " + ord.getParkName() + "<br>Date: " + ord.getDate()+ "<br>Time: " + ord.getHour() + "<br>Amount of visitors: " +
     	ord.getNumOfVisitors();
     	EmailDetails details= new EmailDetails(ord.getEmail(),"GoNature Updated Order",toSend);
     	DataTransfer maildata = new DataTransfer(TypeOfMessage.SENDMAIL, details);

@@ -17,14 +17,6 @@ public class maxVis implements Serializable {
 	private String Time;
 	private int maxTime;
 	
-	
-	
-	
-	
-	
-	
-	
-	
 	@Override
 	public String toString() {
 		return "maxVis [Date=" + Date + ", visitorsInOrder=" + visitorsInOrder + ", MaxVisitors=" + Park + "]";

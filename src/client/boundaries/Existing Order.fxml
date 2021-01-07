@@ -24,7 +24,7 @@
                            <children>
                               <Button fx:id="BackBtn" layoutX="39.0" layoutY="444.0" mnemonicParsing="false" onAction="#GoBack" prefHeight="31.0" prefWidth="42.0" AnchorPane.bottomAnchor="35.0" AnchorPane.leftAnchor="35.0">
                                  <graphic>
-                                    <ImageView fx:id="backBtnImage" fitHeight="32.0" fitWidth="31.0">
+                                    <ImageView fx:id="backBtnImage" fitHeight="35.0" fitWidth="40.0">
                                        <image>
                                           <Image url="@../../../res/return-button-icon.png" />
                                        </image>
@@ -39,7 +39,7 @@
                                     <Font name="System Bold Italic" size="24.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="44.0" layoutY="402.0" text="Menu">
+                              <Label layoutX="47.0" layoutY="398.0" text="Menu">
                                  <font>
                                     <Font size="11.0" />
                                  </font>

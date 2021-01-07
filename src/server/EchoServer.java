@@ -6,6 +6,8 @@ package server;
 import java.io.*;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -358,7 +360,8 @@ public class EchoServer extends AbstractServer {
 				}
 			}
 			
-			if (object instanceof Order) {
+			if (object instanceof Order) { //delete an order from Orders, check if there's an order in waitinglist good to advance to
+				//orders, move it to orders, delete the order that was moved from waitinglist table.
 				Order ordToBeDeleted = (Order) object;
 				Order orderFromWaitingList = new Order(null, null, null, null, null, null, null, null, null, null);
 				String saveDate = ordToBeDeleted.getDate();
@@ -379,7 +382,16 @@ public class EchoServer extends AbstractServer {
 							"SELECT MIN(MinDATE.TimeOfEntrance), MinDATE.OrderNumber FROM ( SELECT TimeOfEntrance,OrderNumber FROM gonature.waitinglist WHERE (Date = '"
 									+ saveDate + "' AND Time = '" + saveTime + "' AND DateOfEntrance = '"
 									+ arrOfAnswer.get(0).toString() + "' ))  AS MinDATE;");
-					// fix here.
+					
+					//Object visMax = new maxVis(null, null, null, 0, 0, null, 0);
+//					maxVis t = new maxVis(null, null, null, 0, 0, null, 0);
+//					t.setDate(saveDate);
+//					t.setPark(ordToBeDeleted.getParkName());
+//					t.setVisitorsInOrder(ordToBeDeleted.getNumOfVisitors());
+//					t.setTime(saveTime);
+//					mysqlConnection.checkMaxVisitorsForWaitingList(t);
+					
+					// fix here. +/- 3 hours.
 					if (arrOfAnswer.get(0) != null) {
 						arrOfAnswer = mysqlConnection.getDB("SELECT * FROM gonature.waitinglist WHERE OrderNumber = '"
 								+ arrOfAnswer.get(1).toString() + "';");
