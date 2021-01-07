@@ -360,7 +360,7 @@ public class EchoServer extends AbstractServer {
 			
 			if (object instanceof Order) {
 				Order ordToBeDeleted = (Order) object;
-				Order orderFromWaitingList = new Order(null, null, null, null, null, null, null, null, null, null);
+				Order orderFromWaitingList = new Order(null, null, null, null, null, null, null, null, null, null,null);
 				String saveDate = ordToBeDeleted.getDate();
 				String saveTime = ordToBeDeleted.getHour();
 				

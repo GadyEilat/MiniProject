@@ -52,6 +52,8 @@ public class ChatClient extends AbstractClient {
 	public static String datesToApprveShow[][];
 	ChatIF clientUI;
 	public boolean waitForConnection = false;
+	public static boolean connected = false;
+
 
 	public ChatClient(String host, int port, ChatIF clientUI) throws IOException {
 		super(host, port); // Call the superclass constructor
