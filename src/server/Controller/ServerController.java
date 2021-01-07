@@ -39,7 +39,8 @@ public class ServerController implements Initializable {
 	@FXML
 	public TextArea msgArea;
 	
-
+	boolean isRunning = false;
+	
 	public void Run(ActionEvent event) throws Exception {
 		int port;
 		if(portxt.getText().isEmpty()) {
@@ -55,8 +56,12 @@ public class ServerController implements Initializable {
 				displayMsg("The entered port is invalid");
 			}
 		}
+//		new SendEmail("liam69516@gmail.com", "TEST", "tmuna or kishalon");
 	}
-
+	public void disableRunBtn() {
+		portxt.setDisable(true);
+		btnRun.setDisable(true);
+	}
 	public void start(Stage primaryStage) throws Exception {	
 		Parent root = FXMLLoader.load(getClass().getResource("/server/boundaries/serverGUI.fxml"));			
 		Scene scene = new Scene(root);
@@ -67,6 +72,7 @@ public class ServerController implements Initializable {
 	
 	public void getExitBtn(ActionEvent event) throws Exception {
 		displayMsg("exit GoNature Server!");
+		ServerUI.stopListen();
 		System.exit(0);
 	}
 	public void displayMsg(String msg) {

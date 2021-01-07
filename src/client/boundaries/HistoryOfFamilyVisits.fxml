@@ -55,7 +55,7 @@
                   <Image url="/LOGONATURE.png" />
                </image>
             </ImageView>
-            <Text fx:id="subNumber" layoutX="205.0" layoutY="82.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Subscriber Number: " wrappingWidth="229.33984375" AnchorPane.leftAnchor="205.0" AnchorPane.topAnchor="72.0" />
+            <Text fx:id="subNumber" layoutX="205.0" layoutY="85.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Subscriber Number: " wrappingWidth="229.33984375" AnchorPane.leftAnchor="205.0" AnchorPane.topAnchor="72.0" />
          </children>
       </AnchorPane>
    </top>
