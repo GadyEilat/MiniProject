@@ -13,6 +13,11 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
+/**
+ * pop up window for canceling an order.
+ * @author Gady
+ *
+ */
 public class CancelConfirmationController extends AbstractScenes{
 	public String orderNumberToBeDeleted=null;
 	public Order orderToBeDeleted=null;
@@ -29,6 +34,10 @@ public class CancelConfirmationController extends AbstractScenes{
     @FXML
     private Button dontCancelBtn;
 
+    /**
+     * click cancel to cancel your order and delete it from database, afterwards a check of waitinglist is also being applied.
+     * @param event if cancel button was clicked
+     */
     @FXML
     void Cancel(ActionEvent event) {
     	orderToBeDeleted=OrderManagementController.instance.ord;
@@ -40,6 +49,10 @@ public class CancelConfirmationController extends AbstractScenes{
         stage.close();
     }
 
+    /**
+     * if you decided not to cancel, the pop up window will close and you'll get back to the previous one. 
+     * @param event if that button was clicked.
+     */
     @FXML
     void DontCancel(ActionEvent event) { //go back to previous window
     	Stage stage = (Stage) dontCancelBtn.getScene().getWindow();

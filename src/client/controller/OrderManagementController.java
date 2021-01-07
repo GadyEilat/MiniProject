@@ -155,21 +155,25 @@ public class OrderManagementController extends AbstractScenes {
     	switchScenes("/client/boundaries/Change Order Details.fxml", "Change Order Details");
     }
     /**
-     * function for handeling with prints.
+     * function for handling with prints.
      * @param myWindow the current displayed window
      */
     public static void printCurrWindow(Window myWindow) {
     	print(myWindow, myWindow.getScene().getRoot().snapshot(null,null));
     }
     /**
-     * 
-     * @param event
+     * goes to the function above for printing the window. and happens when you click on print button
+     * @param event if you click on print button
      */
     @FXML
     void PrintDetails(ActionEvent event) {
     	printCurrWindow(printDetailsbtn.getScene().getWindow());
     }
-    
+    /**
+     * function for printing our current window, called from above.
+     * @param myWindow the current window
+     * @param screenshot
+     */
     private static void print(Window myWindow, WritableImage screenshot) { 
     	PrinterJob job = PrinterJob.createPrinterJob();
     	if (job!=null) {
@@ -188,12 +192,18 @@ public class OrderManagementController extends AbstractScenes {
     	}
     }
 
+    /**
+     * button exit, for going back to Existing order window.
+     * @param event if the button was clicked
+     */
     @FXML
     void Exit(ActionEvent event) {
     	ChatClient.order = new Order();
     	switchScenes("/client/boundaries/Existing Order.fxml", "Existing Order");
     }
-    
+    /**
+     * initialize the window
+     */
     public void initialize(URL location, ResourceBundle resources) {
     	instance=this;
     	ord=ExistingOrderController.instance.order;

@@ -172,16 +172,16 @@ public class EchoServer extends AbstractServer {
 				boolean ans = mysqlConnection.CheckKind(CheckQuery); // if ans == true, ID exist in sub. else
 				if (ans) {
 					ServerController.instance.displayMsg("ID belongs to a Subscriber");
-					returnData = new DataTransfer(TypeOfMessageReturn.IS_SUBSCRIBER, new Integer(1)); //just to seperate it from the instanceof order.
+					returnData = new DataTransfer(TypeOfMessageReturn.IS_SUBSCRIBER, new Integer(2)); //just to seperate it from the instanceof order.
 				} else {
 					CheckQuery = "SELECT ID FROM gonature.tourguides WHERE ID ='" + id + "';";
 					ans = mysqlConnection.CheckKind(CheckQuery); // if ans == true, ID exist in tourguide.
 					if (ans) {
 						ServerController.instance.displayMsg("ID belong to a Tour Guide");
-						returnData = new DataTransfer(TypeOfMessageReturn.IS_GUIDE, new Integer(1));
+						returnData = new DataTransfer(TypeOfMessageReturn.IS_GUIDE, new Integer(2));
 					} else {
 						ServerController.instance.displayMsg("ID belong to a Regular Traveler");
-						returnData = new DataTransfer(TypeOfMessageReturn.IS_REGULAR, new Integer(1));
+						returnData = new DataTransfer(TypeOfMessageReturn.IS_REGULAR, new Integer(2));
 					}
 				}
 				try {
