@@ -56,7 +56,6 @@ public class ChatClient extends AbstractClient {
 	public static boolean connected = false;
 	ChatIF clientUI;
 	public boolean waitForConnection = false;
-	public static boolean connected = false;
 
 
 	public ChatClient(String host, int port, ChatIF clientUI) throws IOException {
