@@ -100,7 +100,7 @@ public class TravelerNewOrderController extends AbstractScenes {
 
 	public void isFound() {
 		switchScenes("/client/boundaries/TravelerOrderSuccess.fxml", "Order Success");
-
+		System.out.println("Order Updated Successfully");
 	}
 
 	private void setTimeComboBox() {
@@ -204,8 +204,8 @@ public class TravelerNewOrderController extends AbstractScenes {
 
 				if (thereIsSpot) {
 					ClientUI.chat.accept(data);
-					switchScenes("/client/boundaries/TravelerOrderSuccess.fxml", "GoNature Enter");
-					System.out.println("Order Updated Successfully");
+				//	switchScenes("/client/boundaries/TravelerOrderSuccess.fxml", "GoNature Enter");
+					//System.out.println("Order Updated Successfully");
 				} else {
 					Alert alert = new Alert(AlertType.INFORMATION);
 					alert.setHeaderText(null);

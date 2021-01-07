@@ -224,6 +224,52 @@ public class mysqlConnection {
 		return null;
 
 	}
+	//for serverController CheckButton
+	public static ArrayList<Order> getDBArrayOrder(Object msg) {
+		String str = null;
+		String sql;
+		Order ordInDB = new Order(null,null,null,null,null,null,null,null,null,null,null);
+			ArrayList<Order> answer = new ArrayList<Order>();
+			if (msg instanceof String) {
+				str = (String) msg;
+				sql = (str);
+			}
+			else
+				sql = (" ");
+
+			if (conn != null) {
+				try {
+					Statement st = conn.createStatement();
+					ResultSet rs = st.executeQuery(sql);
+					ResultSetMetaData metadata = rs.getMetaData();
+				    int columnCount = metadata.getColumnCount();
+				   // int rowsCount = metadata.
+					while (rs.next()) {
+						
+						ordInDB.setParkName(rs.getString(1));
+						ordInDB.setHour(rs.getString(2));
+						ordInDB.setDate(rs.getString(3));
+						ordInDB.setNumOfVisitors(rs.getString(4));
+						ordInDB.setEmail(rs.getString(5));
+						ordInDB.setOrderNumber(rs.getString(6));
+						ordInDB.setNameOnOrder(rs.getString(7));
+						ordInDB.setOrderKind(rs.getString(8));
+						ordInDB.setID(rs.getString(9));
+						ordInDB.setTotalPrice(rs.getString(10));
+						ordInDB.setPrePaid(rs.getString(11));
+						answer.add(ordInDB);
+					}
+					//conn.close();
+					rs.close();
+					return answer;
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+
+			return null;
+
+		}
 	
 	public static boolean updateDB(String msg) {
 			if (conn != null) {
