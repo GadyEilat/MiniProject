@@ -26,7 +26,11 @@ import javafx.scene.transform.Scale;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-
+/**
+ * Order Management window tells you the details of your existing order.
+ * @author Gady
+ *
+ */
 public class OrderManagementController extends AbstractScenes {
 	public Order ord = new Order(null,null,null,null,null,null,null,null,null,null,null);
 	public int wasCanceled = 0;
@@ -82,7 +86,10 @@ public class OrderManagementController extends AbstractScenes {
     private Button cancelOrderBtn;
 
     public static OrderManagementController instance;
-    
+    /**
+     * tells us if the order belongs to a subscriber (comes back from chat client)
+     * @param ans the answer (should be true)
+     */
     public void isSubscriber(Boolean ans) {
     	dblAmount = Double.valueOf(ord.getNumOfVisitors());
     	if (ans) {
@@ -92,6 +99,10 @@ public class OrderManagementController extends AbstractScenes {
     	priceTxt.setText(String.format("Price: %.2f", price));
     		
     }
+    /**
+     * tells us if the order belongs to a guide (comes back from chat client)
+     * @param ans should be true
+     */
     public void isGuide(Boolean ans) { //not including "Tashlum Merosh", not sure how to handle that.
     	dblAmount = Double.valueOf(ord.getNumOfVisitors());
     	if (ans) {
@@ -101,6 +112,10 @@ public class OrderManagementController extends AbstractScenes {
     	priceTxt.setText(String.format("Price: %.2f", price));
     		
     }
+    /**
+     * tells us if the order belongs to a regular traveler (comes back from chat client)
+     * @param ans should be true
+     */
     public void isRegular(Boolean ans) {
     	dblAmount = Double.valueOf(ord.getNumOfVisitors());
     	if (ans) {
@@ -111,6 +126,11 @@ public class OrderManagementController extends AbstractScenes {
     		
     }
     
+    /**
+     * happens when you click on cancel button - pops up a new small cancel order window
+     * @param event when cancel button clicked
+     * @throws IOException 
+     */
 	@FXML
 	void CancelOrder(ActionEvent event) throws IOException {
 		Stage helpWindow = new Stage();
@@ -126,16 +146,25 @@ public class OrderManagementController extends AbstractScenes {
 		helpWindow.setScene(scene);
 		helpWindow.showAndWait();
 	}
-
+/**
+ * move to change order details window where the traveler can change he's order details
+ * @param event if the change order details button was clicked
+ */
     @FXML
     void ChangeOrderDetails(ActionEvent event) {
     	switchScenes("/client/boundaries/Change Order Details.fxml", "Change Order Details");
     }
-    
+    /**
+     * function for handeling with prints.
+     * @param myWindow the current displayed window
+     */
     public static void printCurrWindow(Window myWindow) {
     	print(myWindow, myWindow.getScene().getRoot().snapshot(null,null));
     }
-    
+    /**
+     * 
+     * @param event
+     */
     @FXML
     void PrintDetails(ActionEvent event) {
     	printCurrWindow(printDetailsbtn.getScene().getWindow());

@@ -55,18 +55,26 @@ public class ExistingOrderController extends AbstractScenes{
     	switchScenes("/client/boundaries/Travelers.fxml", "Travelers");
     }
 
-    
+    /**
+     * get here from chat client if no such order number was found
+     */
     public void notFound() {
 		msgFromController.setText("Order Number Not Found");
 	}
 	
-	
+	/**
+	 * get here from chat client if we found an order number in DB as was written. then move to Order Management window.
+	 */
 	public void isFound() {
 		switchScenes("/client/boundaries/Order Management.fxml", "Order Management");
 	}
 	
 	public static ExistingOrderController instance;
     
+	/**
+	 * go to the next window, but before check if the order number that was entered exist in DB
+	 * @param event if next button was clicked.
+	 */
     @FXML
     void NextButton(ActionEvent event) {
     	String OrderNum = OrderNumberTxt.getText();
@@ -79,7 +87,9 @@ public class ExistingOrderController extends AbstractScenes{
 			ClientUI.chat.accept(data);
 		}
     }
-
+/**
+ * initialize the window
+ */
     public void initialize(URL location, ResourceBundle resources) {
     	instance=this;
     }
