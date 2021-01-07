@@ -29,7 +29,12 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-
+/** Description of TourChangeDetailsController 
+• *
+• * @author Elad Kobi
+• * 
+• * 
+• */
 public class TourGuideMenuController extends AbstractScenes  {
 	TourGuide tourguide;
     @FXML
@@ -55,7 +60,10 @@ public class TourGuideMenuController extends AbstractScenes  {
     private Button changeOrdersGuide;
     
     
-    
+    /** Description of loadGuideMenuChange 
+    • *@param tourguide this function gets an entity on a TourGuide
+    • *  and prints his details to the screen.
+    • */
     public void loadGuide(TourGuide tourguidee) {
     	this.tourguide = tourguidee;
          this.tourName.setText(tourguidee.getFname());
@@ -83,9 +91,10 @@ public class TourGuideMenuController extends AbstractScenes  {
          
     }    
 
+    /** Description of initialize 
+    • *@see https://docs.oracle.com/javase/8/javafx/api/javafx/fxml/Initializable.html
+    • */
 
-    
-    
     @Override
 	public void initialize(URL location, ResourceBundle resources) {
     	loadGuide(ChatClient.tourguide);
@@ -94,13 +103,6 @@ public class TourGuideMenuController extends AbstractScenes  {
     
     
     
-//    @FXML
-//    void initialize() {
-//        assert LogOutBtn != null : "fx:id=\"LogOutBtn\" was not injected: check your FXML file 'TourGuideMainMenu.fxml'.";
-//        assert updateDetalisGuideBtn != null : "fx:id=\"updateDetalisGuideBtn\" was not injected: check your FXML file 'TourGuideMainMenu.fxml'.";
-//        assert NewOrderBtn != null : "fx:id=\"NewOrderBtn\" was not injected: check your FXML file 'TourGuideMainMenu.fxml'.";
-//        assert myOrdersBtn != null : "fx:id=\"myOrdersBtn\" was not injected: check your FXML file 'TourGuideMainMenu.fxml'.";
-//
-//    }
+
 }
 

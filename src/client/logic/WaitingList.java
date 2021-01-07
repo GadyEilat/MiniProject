@@ -15,17 +15,21 @@ public class WaitingList implements Serializable {
 	private String ID;
 	private String timeOfEntrance;
 	private String dateOfEntrance;
+
+
+	
+
 	
 	public WaitingList(String parkName, String time, String date, String numOfVisitors, String email,
 			String orderNumber, String nameOnOrder, String iD, String timeofenterence, String dateofentrance) {
 		this.parkName = parkName;
 		this.time = time;
 		this.date = date;
-		NumOfVisitors = numOfVisitors;
+		this.NumOfVisitors = numOfVisitors;
 		this.email = email;
 		this.orderNumber = orderNumber;
 		this.nameOnOrder = nameOnOrder;
-		ID = iD;
+		this.ID = iD;
 		this.timeOfEntrance= timeofenterence;
 		this.dateOfEntrance=dateofentrance;
 	}
@@ -95,15 +99,14 @@ public class WaitingList implements Serializable {
 	}
 	
 	
-
-
 	public String getDateOfEntrance() {
 		return dateOfEntrance;
 	}
-
+	
 	public void setDateOfEntrance(String dateOfEntrance) {
-		dateOfEntrance = dateOfEntrance;
+		this.dateOfEntrance = dateOfEntrance;
 	}
+
 
 	public String getTimeOfEntrance() {
 		return timeOfEntrance;

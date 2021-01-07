@@ -68,8 +68,8 @@ public class mysqlConnection {
 	public static Order getDBOrder(Object msg) {
 		if (msg instanceof Order) // if its an order for Gady's screens.
 		{
-			Order ord = (Order) msg;
-			Order ordInDB = new Order(null, null, null, null, null, null, null, null, null, null);
+			Order ord = (Order)msg;
+			Order ordInDB = new Order(null,null,null,null,null,null,null,null,null,null,null);
 			if (conn != null) {
 				try {
 					Statement st = conn.createStatement();
@@ -87,6 +87,7 @@ public class mysqlConnection {
 						ordInDB.setNameOnOrder(rs.getString(7));
 						ordInDB.setOrderKind(rs.getString(8));
 						ordInDB.setID(rs.getString(9));
+						ordInDB.setPrePaid(rs.getString(11));
 
 					}
 					// conn.close();
@@ -104,22 +105,22 @@ public class mysqlConnection {
 	public static Order newDBOrder(Object msg) {
 		if (msg instanceof Order) // if its an order for Aviv's screens.
 		{
-			Order order = (Order) msg;
-			String updEmail = order.getEmail();
-			String upPark = order.getParkName();
-			String upDate = order.getDate();
-			String upTime = order.getHour();
-			String upNumOfVisitors = order.getNumOfVisitors();
-			String nameOnOrder = order.getNameOnOrder();
-			String upOrderNum = generateRandomChars("123456789", 5);
-			String upTourGroupString = "False";
-			String insID = order.getID();
+			Order order = (Order)msg;
+			String updEmail=order.getEmail();
+			String upPark=order.getParkName();
+			String upDate= order.getDate();
+			String upTime=order.getHour();
+			String upNumOfVisitors=order.getNumOfVisitors();
+			String nameOnOrder=order.getNameOnOrder();
+			String upOrderNum= generateRandomChars("123456789", 5);
+			String upTourGroupString= "RegularOrder";
+			String insID=order.getID();
 			order.setOrderNumber(upOrderNum);
 
 			if (conn != null) {
 				try {
 
-					String sql = "INSERT INTO orders (Park, Time, Date, NumOfVisitors, Email,orderNumber,NameOnOrder, TourGroup, ID )"
+					String sql = "INSERT INTO orders (Park, Time, Date, NumOfVisitors, Email,orderNumber,NameOnOrder, OrderKind, ID )"
 							+ " values ( ?, ?, ?, ?, ?, ?, ?, ?,?)";
 					PreparedStatement preparedStmt = conn.prepareStatement(sql);
 					preparedStmt.setString(1, upPark);
@@ -133,7 +134,6 @@ public class mysqlConnection {
 					preparedStmt.setString(9, insID);
 					preparedStmt.execute();
 
-					// conn.close();
 					return order;
 				}
 
@@ -206,7 +206,6 @@ public class mysqlConnection {
 					for (int i = 1; i <= columnCount; i++)
 						answer.add(rs.getString(i));
 				}
-				// conn.close();
 				rs.close();
 				return answer;
 			} catch (SQLException e) {
@@ -251,8 +250,8 @@ public class mysqlConnection {
 			if (conn != null) {
 				try {
 
-					String query = " insert into waitinglist (Park, Date, Time, NumOfVisitors, Email,TourGroup,orderNumber,NameOnOrder,ID,TimeOfEnterence )"
-							+ " values (?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
+					String query = " insert into waitinglist (Park, Date, Time, NumOfVisitors, Email,OrderKind,orderNumber,NameOnOrder,ID,TimeOfEntrance,DateOfEntrance )"
+							+ " values (?, ?, ?, ?, ?, ?, ?, ?, ?,?,?)";
 
 					PreparedStatement preparedStmt = conn.prepareStatement(query);
 					preparedStmt.setString(1, upPark);
@@ -264,7 +263,8 @@ public class mysqlConnection {
 					preparedStmt.setString(7, upOrderNum);
 					preparedStmt.setString(8, nameOnOrder);
 					preparedStmt.setString(9, tourID);
-					preparedStmt.setString(10, waitingTime);
+					preparedStmt.setString (10, waitingTime);
+				    preparedStmt.setString (11, waitingDate);
 					preparedStmt.execute();
 
 					return true;
@@ -277,6 +277,49 @@ public class mysqlConnection {
 		return false;
 	}
 
+	public static boolean updateWaitingListNewOrder(Object updatedWaitingList) {
+		if (updatedWaitingList instanceof WaitingList) {
+			WaitingList updOrder= (WaitingList)updatedWaitingList;
+			String updEmail=updOrder.getEmail();
+			String upPark=updOrder.getParkName();
+			String upDate= updOrder.getDate();
+			String upTime=updOrder.getTime();
+			String upNumOfVisitors=updOrder.getNumOfVisitors();
+			String nameOnOrder=updOrder.getNameOnOrder();
+			String upOrderNum= generateRandomChars("123456789", 5);
+			String travID=updOrder.getID();
+			String waitingTime=updOrder.getTimeOfEntrance();
+			String hourWait=updOrder.getDateOfEntrance();
+			if (conn != null) {
+				try {
+					
+					String query = " insert into waitinglist (Park, Date, Time, NumOfVisitors, Email,OrderKind,orderNumber,NameOnOrder,ID,TimeOfEntrance, DateOfEntrance )"+ " values (?, ?, ?, ?, ?, ?, ?, ?, ?,?,?)";
+					        
+					PreparedStatement preparedStmt = conn.prepareStatement(query);
+				      preparedStmt.setString (1, upPark);
+				      preparedStmt.setString (2, upDate);
+				      preparedStmt.setString (3, upTime);
+				      preparedStmt.setString (4, upNumOfVisitors);
+				      preparedStmt.setString (5, updEmail);
+				      preparedStmt.setString (6, "RegularOrder");
+				      preparedStmt.setString (7, upOrderNum);
+				      preparedStmt.setString (8, nameOnOrder);
+				      preparedStmt.setString (9, travID);
+				      preparedStmt.setString (10, hourWait);
+				      preparedStmt.setString (11, waitingTime);
+				      preparedStmt.execute();
+				      
+				     // conn.close();
+					return true;
+				} catch (SQLException e) {
+					e.printStackTrace();
+					return false;
+				}
+			}
+		}
+		return false;
+	}
+	
 	public static boolean CheckKind(String msg) {
 		if (conn != null) {
 			try {
@@ -301,23 +344,23 @@ public class mysqlConnection {
 
 	public static boolean updateDBOrders(Object updatedTourOrder) {
 		if (updatedTourOrder instanceof TourGuideOrder) {
-			TourGuideOrder updGuide = (TourGuideOrder) updatedTourOrder;
-			String updEmail = updGuide.getEmail();
-			String upPark = updGuide.getParkName();
-			String upDate = updGuide.getDate();
-			String upTime = updGuide.getTime();
-			String upNumOfVisitors = updGuide.getNumOfVisitors();
-			String nameOnOrder = updGuide.getNameOnOrder();
-			String upOrderNum = generateRandomChars("123456789", 5);
-			String tourID = updGuide.getID();
-			double orderPayment = ((Integer.valueOf(updGuide.getNumOfVisitors()) - 1) * 22.5);
-			String tourPayment = (String.format("%.2f", orderPayment));
-
+			TourGuideOrder updGuide= (TourGuideOrder)updatedTourOrder;
+			String updEmail=updGuide.getEmail();
+			String upPark=updGuide.getParkName();
+			String upDate= updGuide.getDate();
+			String upTime=updGuide.getTime();
+			String upNumOfVisitors=updGuide.getNumOfVisitors();
+			String nameOnOrder=updGuide.getNameOnOrder();
+			String upOrderNum= generateRandomChars("123456789", 5);
+			String tourID=updGuide.getID();
+			String isPrepaid=updGuide.getPrePaid();
+			String tourPayment=updGuide.getPayment();
+			
 			if (conn != null) {
 				try {
 
-					String query = " insert into orders (Park, Date, Time, NumOfVisitors, Email,TourGroup,orderNumber,NameOnOrder,ID,totalPrice )"
-							+ " values (?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
+					String query = " insert into orders (Park, Date, Time, NumOfVisitors, Email,OrderKind,orderNumber,NameOnOrder,ID,totalPrice, prePaid )"
+							+ " values (?, ?, ?, ?, ?, ?, ?, ?, ?,?,?)";
 
 					PreparedStatement preparedStmt = conn.prepareStatement(query);
 					preparedStmt.setString(1, upPark);
@@ -330,6 +373,7 @@ public class mysqlConnection {
 					preparedStmt.setString(8, nameOnOrder);
 					preparedStmt.setString(9, tourID);
 					preparedStmt.setString(10, tourPayment);
+					preparedStmt.setString (11, isPrepaid);
 					preparedStmt.execute();
 
 					// conn.close();
@@ -416,7 +460,7 @@ public class mysqlConnection {
 			ResultSet rs = st.executeQuery(sql);
 
 			while (rs.next()) {
-				TourGuideOrder newT = new TourGuideOrder(null, null, null, null, null, null, null, null);
+				TourGuideOrder newT = new TourGuideOrder(null, null, null, null, null, null, null, null, null, null);
 				newT.setParkName(rs.getString(1));
 				newT.setTime(rs.getString(2));
 				newT.setDate(rs.getString(3));

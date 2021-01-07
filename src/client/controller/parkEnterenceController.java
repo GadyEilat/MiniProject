@@ -1,9 +1,11 @@
 package client.controller;
 
 
+import client.ChatClient;
 import client.ClientUI;
 import client.logic.Order;
 import client.logic.ParkStatus;
+import client.logic.Worker;
 import client.logic.casualOrder;
 import common.DataTransfer;
 import common.TypeOfMessage;
@@ -26,7 +28,12 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.text.Text;
 import javafx.scene.control.TextField;
 
-
+/** Description of parkEnterenceController 
+• *
+• * @author Elad Kobi
+• * 
+• * 
+• */
 
 
 
@@ -37,7 +44,7 @@ public class parkEnterenceController extends AbstractScenes {
 	    public String discountDay=null;
 	    double casualPrice= 30;
 
-	ParkStatus status = new ParkStatus(dtf.format(now), "Park2", null, null, null);
+	    ParkStatus status;
 	    @FXML
 	    private ResourceBundle resources;
 
@@ -58,6 +65,9 @@ public class parkEnterenceController extends AbstractScenes {
 	    
 	    @FXML
 	    private ComboBox<String> selectT;
+	    
+	    @FXML
+	    private Text txtWorkerName;
 	   
 	    ObservableList<String> list;
 	  
@@ -65,6 +75,15 @@ public class parkEnterenceController extends AbstractScenes {
 	    void parkExitB(ActionEvent event) {
 
 	    }
+	    
+	    
+	    
+	    /** Description of resetStatus 
+	    • *
+	    • * @param event Button that resets the park vistors number
+	    • * 
+	    • * 
+	    • */
 	    
 	    @FXML
 	    void resetStatus(ActionEvent event) {
@@ -86,11 +105,18 @@ public class parkEnterenceController extends AbstractScenes {
 
 	    @FXML
 	    void LogOutButton(ActionEvent event) {
+	    	DataTransfer data = new DataTransfer(TypeOfMessage.LOGOUT, ChatClient.worker);
+			ClientUI.chat.accept(data);
+			ChatClient.worker = new Worker(null, null, null, null, null, null);
+			ChatClient.connected = false;
 	    	switchScenes("/client/boundaries/main.fxml", "Enternece");
-	    	
-  		   // wait.setTimeOfEnterence(dtf.format(now));
 	    }
-
+	    /** Description of completeOrder 
+	    • *
+	    • * @param event Button complete the casual visit at the park
+	    • * 
+	    • * 
+	    • */
 	    @FXML
 	    void completeOrder(ActionEvent event) {
 	    	DateTimeFormatter drf = DateTimeFormatter.ofPattern("HH:mm:ss");
@@ -115,7 +141,7 @@ public class parkEnterenceController extends AbstractScenes {
 	    	
 	    	Alert alert = new Alert(AlertType.INFORMATION);
         	alert.setHeaderText(null);
-        	alert.setContentText("New visit created succsesfully");
+        	alert.setContentText("New visit created succsesfully. Price ="+price);
         	alert.show();
 	  
 	    }
@@ -138,17 +164,34 @@ public class parkEnterenceController extends AbstractScenes {
         	alert.setContentText("Fields missing");
         	alert.show();	
 	    }
-	    
+	    /** Description of insertData 
+	    • *
+	    • * @param t Gets the number of visitors in park from data base.
+	    • * @param b gets the total number of visitors that allowed in park.
+	    • * 
+	    • */
 	    public void insertData(String t, String b) {
 	    	getNumPpl.setText(t+"/"+b);
 	    	//parkEnterenceController2.instance.insertData(t);
 	    	
 	    }
 	    
+	    /** Description of insertData 
+	    • *
+	    • * @param t Gets the discount of the park for the day.
+	    • * 
+	    • * 
+	    • */
 	    public void getDiscountDay(String t) {
 	    	discountDay=t;	
 	    }
 	    
+	    /** Description of insertData 
+	    • *
+	    • * @param candidateChars Chars for the order number.
+	    • * @param length Length of the order number.
+	    • * @return Returns an order number
+	    • */
 		public static String generateRandomChars(String candidateChars, int length) {
 		    StringBuilder sb = new StringBuilder();
 		    Random random = new Random();
@@ -160,7 +203,12 @@ public class parkEnterenceController extends AbstractScenes {
 		    return sb.toString();
 		}
 		
-		
+		  /** Description of insertData 
+	    • *@param numofppl number of people in the order.
+	    • * @param type Type of visitor.
+	    • * @param dis Daily discount if there is one.
+	    • * @return Returns an order number
+	    • */
 		public double checkFinalPrice(String type, String dis, String numofppl)
 		{
 			if(type=="Regular") {
@@ -196,13 +244,20 @@ public class parkEnterenceController extends AbstractScenes {
 			return 0;
 		}
 	    
-	    
+		  /** Description of initialize 
+	    • *@see https://docs.oracle.com/javase/8/javafx/api/javafx/fxml/Initializable.html
+	    • * 
+	    • * 
+	    • * 
+	    • */
 	    @Override
 	    public void initialize(URL location, ResourceBundle resources) {
 	    	instance = this;
+	    	status = new ParkStatus(dtf.format(now), ChatClient.worker.getPark().getNumberOfPark(), null, null, null);
 	    	DataTransfer data = new DataTransfer(TypeOfMessage.PARTKENTERGETSTATUS,status);
 	    	ClientUI.chat.accept(data);
 	    	typeOfT();
+	    	txtWorkerName.setText("Hello"+" "+ChatClient.worker.getWorkerName());
 	    	//DataTransfer data5 = new DataTransfer(TypeOfMessage.CheckDiscounts,status);
 	    	//ClientUI.chat.accept(data5);
 		}

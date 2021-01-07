@@ -50,8 +50,16 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 public class TourGuideNewOrderController extends AbstractScenes {
+	/** Description of TourChangeDetailsController 
+	• *
+	• * @author Elad Kobi
+	• * 
+	• * 
+	• */
+	
+	
 	TourGuide tourguide;
-	static TourGuideOrder tourguideorderr = new TourGuideOrder(null,null,null,null,null,null,null,null);
+	static TourGuideOrder tourguideorderr = new TourGuideOrder(null,null,null,null,null,null,null,null,null,null);
 	private TourGuideOrderSController targetObj=null;
 	public static TourGuideNewOrderController instance;
 	static boolean thereIsSpot=false;
@@ -94,6 +102,9 @@ public class TourGuideNewOrderController extends AbstractScenes {
 	    
 	    @FXML
 	    private TextField getIDTourOrder;
+	    
+	    @FXML
+	    private ComboBox<String> predPaidC;
 
 	    @FXML
 	    private Button updateDetalisGuideBtn;
@@ -121,8 +132,22 @@ public class TourGuideNewOrderController extends AbstractScenes {
 //	     }
 	    
 	    
-	    ObservableList<String> list,list2,list3;
-	    
+	    ObservableList<String> list,list2,list3,list4;
+		/** Description of prePaidCombo 
+		• * A combo list of pre pay visit
+		• */
+	   
+	    private void prePaidCombo() {
+	    	ArrayList<String> a4 = new ArrayList<String>();	
+			a4.add("Yes");
+			a4.add("No");
+			list4 = FXCollections.observableArrayList(a4);
+			predPaidC.setItems(list4);
+
+	    }
+		/** Description of setTimeComboBox 
+		• * A combo list of visit hours
+		• */
 	    private void setTimeComboBox() {
 			ArrayList<String> al = new ArrayList<String>();	
 			al.add("8:00");
@@ -137,6 +162,10 @@ public class TourGuideNewOrderController extends AbstractScenes {
 			list = FXCollections.observableArrayList(al);
 			ChooseAnotherName.setItems(list);
 		}
+	    
+	    /** Description of setParkComboBox 
+		• * A combo list of parks
+		• */
 	    private void setParkComboBox() {
 			ArrayList<String> a2 = new ArrayList<String>();	
 			a2.add("Park1");
@@ -145,7 +174,9 @@ public class TourGuideNewOrderController extends AbstractScenes {
 			list2 = FXCollections.observableArrayList(a2);
 			parkNamBtn.setItems(list2);
 		}
-	    
+	    /** Description of setNumOfVisitorsComboBox 
+		• * A combo list of number of visitors
+		• */
 	    private void setNumOfVisitorsComboBox() {
 			ArrayList<String> a3 = new ArrayList<String>();	
 			a3.add("1");
@@ -167,7 +198,9 @@ public class TourGuideNewOrderController extends AbstractScenes {
 			chooseNumVisitorsBtn.setItems(list3);
 		}
 	    
-	    
+	    /** Description of loadGuide 
+		• *@param tourguideO Prints the tourguide details
+		• */
 	     
 	    public void loadGuide(TourGuide tourguideO) {
 	    	this.tourguide = tourguideO;
@@ -206,7 +239,10 @@ public class TourGuideNewOrderController extends AbstractScenes {
 	    void chooseTimeButton(ActionEvent event) {
 
 	    }
-	    
+	    /** Description of continueToPayButton 
+		• *@param event This is a button function that gets the order details checks few things, and if
+		• * All the checks are ok it sends a new order.
+		• */
 	    @FXML
 	    void continueToPayButton(ActionEvent event) {
 	    	String orderPark =parkNamBtn.getValue();
@@ -216,7 +252,7 @@ public class TourGuideNewOrderController extends AbstractScenes {
 //						JOptionPane.INFORMATION_MESSAGE);
 //			else {
 			
-	    	
+	    	String isPrePaid=predPaidC.getValue();
 	    	String orderTime=ChooseAnotherName.getValue();
 	    	String orderNumOfVisitors=chooseNumVisitorsBtn.getValue(); 
 	    	String orderEmail = (newOrderGetEmail.getText());
@@ -235,7 +271,16 @@ public class TourGuideNewOrderController extends AbstractScenes {
             	
             	//Check max num at that day
             	
-            	
+            	if(isPrePaid=="No") {
+        			double orderPayment=((Double.valueOf(orderNumOfVisitors)-1)*22.5);
+        			String tourPayment=(String.format("%.2f", orderPayment));
+        			tourguideorderr.setPayment(tourPayment);
+        			}
+        			else {
+        			double orderPayment=(((Double.valueOf(orderNumOfVisitors)-1)*22.5)*0.88);
+        			String tourPayment=(String.format("%.2f", orderPayment));
+        			tourguideorderr.setPayment(tourPayment);
+        			}
             	String orderDate2=orderDate.toString();	
 	    	tourguideorderr.setParkName(orderPark);
 	    	tourguideorderr.setDate(orderDate2);
@@ -244,6 +289,8 @@ public class TourGuideNewOrderController extends AbstractScenes {
 	    	tourguideorderr.setEmail(orderEmail);
 	    	tourguideorderr.setNameOnOrder(nameOnOrder);
 	    	tourguideorderr.setID(orderID);
+	    	tourguideorderr.setPrePaid(isPrePaid);
+	    	
 	    	checkDate(tourguideorderr, null);
            	DataTransfer data = new DataTransfer(TypeOfMessage.TOURGUIDENEWORDER,tourguideorderr);
            	try {
@@ -254,7 +301,7 @@ public class TourGuideNewOrderController extends AbstractScenes {
 			}
            	if(thereIsSpot) {
            	//System.out.print(thereIsSpot);
-	    	//ClientUI.chat.accept(data);
+	    	ClientUI.chat.accept(data);
 	    	switchScenes("/client/boundaries/TourGuideOrderSuccssed.fxml", "GoNature Enter");
 			System.out.println("Order Updated Successfully");
            	}
@@ -302,7 +349,10 @@ public class TourGuideNewOrderController extends AbstractScenes {
 	    void changeOrder(ActionEvent event) {
 	    	switchScenes("/client/boundaries/Existing Order.fxml", "New Order");
 	    }
-
+	    /** Description of waitingListTourButton 
+	  		• *@param event This is a button function that gets the order details checks few things.
+	  		• * if the user decided to enter the waiting list he can using this button.
+	  		• */
 	    @FXML
 	    void waitingListTourButton(ActionEvent event) {
 	    	Alert alert = new Alert(AlertType.INFORMATION);
@@ -330,7 +380,9 @@ public class TourGuideNewOrderController extends AbstractScenes {
            	ClientUI.chat.accept(data);
            	switchScenes("/client/boundaries/TourGuideMainMenu.fxml", "New waiting list"); 	
 	    }
-
+	    /** Description of initialize 
+	    • *@see https://docs.oracle.com/javase/8/javafx/api/javafx/fxml/Initializable.html
+	    • */
 	    @Override
 		public void initialize(URL location, ResourceBundle resources) {
 	    	instance = this;
@@ -338,6 +390,7 @@ public class TourGuideNewOrderController extends AbstractScenes {
 	    	setTimeComboBox();
 	    	setParkComboBox();
 	    	setNumOfVisitorsComboBox();
+	    	prePaidCombo();
 	    	NameOnOrder.setText(ChatClient.tourguide.getFname());
 	    	//getIDTourOrder.setText(ChatClient.tourguide.getId());
 	    	
@@ -351,7 +404,12 @@ public class TourGuideNewOrderController extends AbstractScenes {
         	alert.show();	
 	    }
 	    
-	    
+	    /** Description of checkDate 
+		• *
+		• * @param s an entity of the order that been checked under this function
+		• * @param t an entity that is been use for the waitinglist checks.
+		• * @return this function returns an entity that holds few parmaters of the waiting list check.
+		• */
 	    
 	    public maxVis checkDate(TourGuideOrder s, maxVis t) {
 	    	 maxVis visMax= new maxVis(null, null, null, 0, 0, null, 0);
@@ -359,7 +417,11 @@ public class TourGuideNewOrderController extends AbstractScenes {
 		    	ClientUI.chat.accept(data2);
 	    	return visMax;
 	    }
-	    
+	    /** Description of checkDate2 
+		• *
+		• * @param t an entity that is been use for the waitinglist checks.
+		• * @return this function changes a boolean value that checks if the dates are avilable.
+		• */
 	    public void checkDate2(maxVis t) {
 	    	 maxVis visMax= new maxVis(null, null, null, 0, 0, null, 0);
 		    	visMax.setDate(t.getDate());
@@ -372,7 +434,10 @@ public class TourGuideNewOrderController extends AbstractScenes {
 	    } 
 	    
 	    
-	    
+	    /** Description of validate 
+	    • *@param emailrStr gets an email and  
+	    • * checking if it's a valid Email 
+	    • */
 	    public static final Pattern VALID_EMAIL_ADDRESS_REGEX = 
 	    	    Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
 
@@ -380,6 +445,11 @@ public class TourGuideNewOrderController extends AbstractScenes {
 	    	        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr);
 	    	        return matcher.find();
 	    	}
+	    	
+	    	 /** Description of checkID 
+	        • *@param ID gets an ID and  
+	        • * checking if it's a valid ID 
+	        • */
 	   public static boolean checkID(String ID) {
 		   if(ID.length()==9 && ID.matches("[0-9]+"))
 			   return true;

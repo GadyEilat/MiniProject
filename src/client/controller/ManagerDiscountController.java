@@ -68,7 +68,10 @@ public class ManagerDiscountController extends AbstractScenes {
 	@FXML
 	void logout(ActionEvent event) {
 //    	exitConnection
+		DataTransfer data = new DataTransfer(TypeOfMessage.LOGOUT, ChatClient.worker);
+		ClientUI.chat.accept(data);
 		ChatClient.worker = new Worker(null, null, null, null, null, null);
+		ChatClient.connected = false;
 		switchScenes("/client/boundaries/workerLogin.fxml", "Worker Login");
 	}
 
@@ -76,12 +79,18 @@ public class ManagerDiscountController extends AbstractScenes {
 	void saveDiscountAndDate(ActionEvent event) {
 		String discount = discountField.getText();
 		LocalDate discountDate = datePicker.getValue();
+		
 		if (discount.trim().isEmpty() || discountDate == null) {
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setHeaderText(null);
 			alert.setContentText("One of the fields is missing");
 			alert.show();
-		} else {
+		} else if(!discount.matches("\\d*") || Integer.parseInt(discount) > 100 || Integer.parseInt(discount) < 0){
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setHeaderText(null);
+			alert.setContentText("Enter reasonable discount %");
+			alert.show();
+		}else {
 			String date = discountDate.toString();
 			ArrayList<String> dateAndDiscount = new ArrayList<String>();
 			dateAndDiscount.add(discount);
@@ -125,10 +134,10 @@ public class ManagerDiscountController extends AbstractScenes {
 		public DateCell call(final DatePicker datePicker) {
 			return new DateCell() {
 				@Override
-				public void updateItem(LocalDate item, boolean empty) {
-					super.updateItem(item, empty);
+				public void updateItem(LocalDate date, boolean empty) {
+					super.updateItem(date, empty);
 					for (int i = 0; i < discountDates.size(); i++) {
-						if (LocalDate.from(item).equals(discountDates.get(i))) {
+						if (LocalDate.from(date).equals(discountDates.get(i))) {
 							discount = datesToShow[i][1];
 							setTooltip(new Tooltip("Discount : " + discount + "%"));
 							if (datesToShow[i][2].equals("toCheck")) {
@@ -139,6 +148,9 @@ public class ManagerDiscountController extends AbstractScenes {
 							setStyle("-fx-background-color: " + color);
 						}
 					}
+					LocalDate today = LocalDate.now();
+
+		            setDisable(empty || date.compareTo(today) < 0 );
 				}
 			};
 		}
