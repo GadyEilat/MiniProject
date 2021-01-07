@@ -23,7 +23,7 @@
                      <children>
                         <AnchorPane prefHeight="158.0" prefWidth="467.0">
                            <children>
-                              <Label layoutX="89.0" layoutY="62.0" text="Order number" />
+                              <Label layoutX="3.0" layoutY="62.0" text="Total price(can be changed)" />
                               <Label layoutX="146.0" layoutY="103.0" text="Date" />
                               <Label layoutX="137.0" layoutY="148.0" text="Name" />
                               <TextField fx:id="dateOrderGuide" editable="false" layoutX="187.0" layoutY="98.0" />
@@ -85,9 +85,8 @@
                </padding>
                <children>
                   <Button fx:id="updateDetalisGuideBtn" mnemonicParsing="false" onAction="#updateDetalisGuideButton" prefHeight="90.0" prefWidth="165.0" text="Update personal details" />
-                  <Button fx:id="NewOrderBtn" mnemonicParsing="false" onAction="#NewOrderButton" opacity="0.64" prefHeight="90.0" prefWidth="165.0" stylesheets="@../../../../../../סמסטר%20א%202021/ממשקי%20אדם/מדריך/ManagerStyle.css" text="New order" />
+                  <Button fx:id="NewOrderBtn" mnemonicParsing="false" onAction="#NewOrderButton" opacity="0.64" prefHeight="90.0" prefWidth="165.0" text="New order" />
                   <Button fx:id="myOrdersBtn" mnemonicParsing="false" onAction="#myOrdersButton" prefHeight="90.0" prefWidth="165.0" text="My orders" />
-                  <Button fx:id="myOrdersBtn1" mnemonicParsing="false" onAction="#changeOrder" prefHeight="90.0" prefWidth="165.0" text="Change order" />
                </children>
             </VBox>
          </children>

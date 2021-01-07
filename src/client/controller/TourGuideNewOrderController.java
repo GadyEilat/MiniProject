@@ -255,7 +255,7 @@ public class TourGuideNewOrderController extends AbstractScenes {
            	if(thereIsSpot) {
            	//System.out.print(thereIsSpot);
 	    	//ClientUI.chat.accept(data);
-	    	switchScenes("/client/boundaries/TourGuidePayment.fxml", "GoNature Enter");
+	    	switchScenes("/client/boundaries/TourGuideOrderSuccssed.fxml", "GoNature Enter");
 			System.out.println("Order Updated Successfully");
            	}
            	else {
@@ -309,7 +309,7 @@ public class TourGuideNewOrderController extends AbstractScenes {
         	alert.setHeaderText(null);
         	alert.setContentText("Enterd waiting list sucssesfully.");
         	alert.show();
-        	WaitingList wait= new WaitingList(null, null, null ,null ,null ,null, null, null, null);
+        	WaitingList wait= new WaitingList(null, null, null ,null ,null ,null, null, null, null,null);
         	wait.setDate(tourguideorderr.getDate());
         	wait.setEmail(tourguideorderr.getEmail());
         	wait.setID(tourguideorderr.getID());
@@ -317,9 +317,15 @@ public class TourGuideNewOrderController extends AbstractScenes {
         	wait.setNumOfVisitors(tourguideorderr.getNumOfVisitors());
             wait.setParkName(tourguideorderr.getParkName());
             wait.setTime(tourguideorderr.getTime());
-        	DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        	DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss");
   		    LocalDateTime now = LocalDateTime.now();
-  		    wait.setTimeOfEnterence(dtf.format(now));
+  		    wait.setTimeOfEntrance(dtf.format(now));
+  		  
+  		    DateTimeFormatter ddt = DateTimeFormatter.ofPattern("yyyy-MM-dd ");
+		    LocalDateTime datenow = LocalDateTime.now();
+  		    wait.setDateOfEntrance(ddt.format(datenow));
+  		    
+  		   // wait.setTimeOfEntrance(dtf.format(now));
            	DataTransfer data = new DataTransfer(TypeOfMessage.TOURGUIDEWAITINGLIST,wait);
            	ClientUI.chat.accept(data);
            	switchScenes("/client/boundaries/TourGuideMainMenu.fxml", "New waiting list"); 	

@@ -4,6 +4,10 @@
 package server;
 
 import java.io.*;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Vector;
 
@@ -12,11 +16,13 @@ import client.ClientUI;
 import client.logic.EmailDetails;
 import client.logic.Order;
 import client.logic.ParkInfo;
+import client.logic.ParkStatus;
 import client.logic.Subscriber;
 import client.logic.TourGuide;
 import client.logic.TourGuideOrder;
 import client.logic.Visitor;
 import client.logic.Worker;
+import client.logic.casualOrder;
 import client.logic.maxVis;
 import common.DataTransfer;
 import common.TypeOfMessage;
@@ -108,18 +114,73 @@ public class EchoServer extends AbstractServer {
 			}
 			break;
 			
-		case CHECK_IF_SUBSCRIBER:
+		case REQUESTINFO_HISTORY:///////////////////////////////////////////////////////////////////////////////////////
+			
+			if(object instanceof Subscriber){
+				Subscriber subscriber = (Subscriber)object;
+				ObservableList<Object> ans3 = mysqlConnection.getHistorySubOrders(subscriber.getId());
+				//DataTransfer data = new DataTransfer(TypeOfMessage.SUCCSESS, ans3);
+
+				if (ans3 != null) {
+					for (int i = 0; i < ans3.size(); i++) {
+						try {
+							returnData = new DataTransfer(TypeOfMessageReturn.HISTORY_ORDERS,ans3.get(i));
+							client.sendToClient(returnData);
+							//client.sendToClient(ans3);
+						}
+
+						catch (IOException e) {
+							e.printStackTrace();
+						}
+					}
+				}
+			}
+						
+			break;
+			
+			
+		case CHECK_KIND:
 			if (object instanceof Order) {
 				Order ord = (Order) object;
-				String CheckQuery = "SELECT ID FROM gonature.subscriber WHERE ID ='"+ord.getID()+"';";
-				boolean ans = mysqlConnection.CheckSub(CheckQuery); //if ans == true, ID exist in sub. else, id doesn't exist in sub
+				String CheckQuery = "SELECT ID FROM gonature.subscriber WHERE ID ='" + ord.getID() + "';";
+				boolean ans = mysqlConnection.CheckKind(CheckQuery); // if ans == true, ID exist in sub. else
 				if (ans) {
 					ServerController.instance.displayMsg("ID belongs to a Subscriber");
 					returnData = new DataTransfer(TypeOfMessageReturn.IS_SUBSCRIBER, true);
+				} else {
+					CheckQuery = "SELECT ID FROM gonature.tourguides WHERE ID ='" + ord.getID() + "';";
+					ans = mysqlConnection.CheckKind(CheckQuery); // if ans == true, ID exist in tourguide.
+					if (ans) {
+						ServerController.instance.displayMsg("ID belong to a Tour Guide");
+						returnData = new DataTransfer(TypeOfMessageReturn.IS_GUIDE, true);
+					} else {
+						ServerController.instance.displayMsg("ID belong to a Regular Traveler");
+						returnData = new DataTransfer(TypeOfMessageReturn.IS_REGULAR, true);
+					}
 				}
-				else {
-					ServerController.instance.displayMsg("ID doesn't belong to a Subscriber");
-					returnData = new DataTransfer(TypeOfMessageReturn.ISNT_SUBSCRIBER, false);
+				try {
+					client.sendToClient(returnData);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			if (object instanceof String) { //if it came from ChangeOrderDetails pretty much.
+				String id = (String) object;
+				String CheckQuery = "SELECT ID FROM gonature.subscriber WHERE ID ='" + id + "';";
+				boolean ans = mysqlConnection.CheckKind(CheckQuery); // if ans == true, ID exist in sub. else
+				if (ans) {
+					ServerController.instance.displayMsg("ID belongs to a Subscriber");
+					returnData = new DataTransfer(TypeOfMessageReturn.IS_SUBSCRIBER, new Integer(1)); //just to seperate it from the instanceof order.
+				} else {
+					CheckQuery = "SELECT ID FROM gonature.tourguides WHERE ID ='" + id + "';";
+					ans = mysqlConnection.CheckKind(CheckQuery); // if ans == true, ID exist in tourguide.
+					if (ans) {
+						ServerController.instance.displayMsg("ID belong to a Tour Guide");
+						returnData = new DataTransfer(TypeOfMessageReturn.IS_GUIDE, new Integer(1));
+					} else {
+						ServerController.instance.displayMsg("ID belong to a Regular Traveler");
+						returnData = new DataTransfer(TypeOfMessageReturn.IS_REGULAR, new Integer(1));
+					}
 				}
 				try {
 					client.sendToClient(returnData);
@@ -294,26 +355,61 @@ public class EchoServer extends AbstractServer {
 									"Date '" + deletDates[i][0] + "' for discount DELETEINFO details failed");
 						}
 					}
-
 				}
 			}
 			
-			if (object instanceof String) {
-				String strToBeDeleted = (String) object;
-				String DeleteQuery = "DELETE FROM gonature.orders WHERE (OrderNumber = " + strToBeDeleted + ");";
+			if (object instanceof Order) {
+				Order ordToBeDeleted = (Order) object;
+				Order orderFromWaitingList = new Order(null, null, null, null, null, null, null, null, null, null);
+				String saveDate = ordToBeDeleted.getDate();
+				String saveTime = ordToBeDeleted.getHour();
+				
+				String DeleteQuery = "DELETE FROM gonature.orders WHERE (OrderNumber = "
+						+ ordToBeDeleted.getOrderNumber() + ");";
 				boolean ans = mysqlConnection.updateDB(DeleteQuery);
 				if (ans) {
 					ServerController.instance.displayMsg("Order was deleted");
-					returnData = new DataTransfer(TypeOfMessageReturn.DELETE_ORDER_SUCCESS, null);
-				}
-				else {
+				} else {
 					ServerController.instance.displayMsg("Order could not be deleted");
-					returnData = new DataTransfer(TypeOfMessageReturn.DELETE_ORDER_FAILED, null);
 				}
-				try {
-					client.sendToClient(returnData);
-				} catch (IOException e) {
-					e.printStackTrace();
+				// getting the first in line from the waiting list which fits the time and date.
+				arrOfAnswer = mysqlConnection.getDB("SELECT MIN(DateOfEntrance)  FROM gonature.waitinglist;");
+				if (!arrOfAnswer.isEmpty()) {
+					arrOfAnswer = mysqlConnection.getDB(
+							"SELECT MIN(MinDATE.TimeOfEntrance), MinDATE.OrderNumber FROM ( SELECT TimeOfEntrance,OrderNumber FROM gonature.waitinglist WHERE (Date = '"
+									+ saveDate + "' AND Time = '" + saveTime + "' AND DateOfEntrance = '"
+									+ arrOfAnswer.get(0).toString() + "' ))  AS MinDATE;");
+					// fix here.
+					if (arrOfAnswer.get(0) != null) {
+						arrOfAnswer = mysqlConnection.getDB("SELECT * FROM gonature.waitinglist WHERE OrderNumber = '"
+								+ arrOfAnswer.get(1).toString() + "';");
+						if (!arrOfAnswer.isEmpty()) {
+							orderFromWaitingList.setParkName((String) arrOfAnswer.get(0));
+							orderFromWaitingList.setHour((String) arrOfAnswer.get(1));
+							orderFromWaitingList.setDate((String) arrOfAnswer.get(2));
+							orderFromWaitingList.setNumOfVisitors((String) arrOfAnswer.get(3));
+							orderFromWaitingList.setEmail((String) arrOfAnswer.get(4));
+							orderFromWaitingList.setOrderNumber((String) arrOfAnswer.get(5));
+							orderFromWaitingList.setNameOnOrder((String) arrOfAnswer.get(6));
+							orderFromWaitingList.setOrderKind((String)arrOfAnswer.get(7));
+							orderFromWaitingList.setID((String) arrOfAnswer.get(8));
+							
+							ans = mysqlConnection.newDBOrderFromWaitingList(orderFromWaitingList);
+							if (ans) {
+								ServerController.instance.displayMsg("Order from waiting list was added");
+							}
+							else {
+								ServerController.instance.displayMsg("Order from waiting list couldn't be added");
+							} //Query to delete the order from waitinglist table that was moved to the orders table
+							String DeleteQuery2 = "DELETE FROM gonature.waitinglist WHERE (OrderNumber = '" + orderFromWaitingList.getOrderNumber() + "');";
+							 ans = mysqlConnection.updateDB(DeleteQuery2);
+							 if (ans) {
+									ServerController.instance.displayMsg("Order was deleted from waiting list");
+								} else {
+									ServerController.instance.displayMsg("Order could not be deleted from waiting list");
+								}
+						}
+					}
 				}
 			}
 			break;
@@ -588,6 +684,17 @@ public class EchoServer extends AbstractServer {
 					ServerController.instance.displayMsg("Discount UPDATEINFO_REQUEST details could not be updated");
 
 			}
+			if (object instanceof Order) {
+				Order ord = (Order) object;
+				String UpdateQuery = "UPDATE gonature.orders SET totalPrice = '" + ord.getTotalPrice()
+						+ "' WHERE OrderNumber = '" + ord.getOrderNumber() + "';";
+				boolean ans = mysqlConnection.updateDB(UpdateQuery);
+				if (ans) {
+					ServerController.instance.displayMsg("Order price was updated");
+				} else {
+					ServerController.instance.displayMsg("Order price couldn't be updated");
+				}
+			}
 			break;
 
 		case TOURGUIDELOGIN:
@@ -707,6 +814,118 @@ public class EchoServer extends AbstractServer {
 			}
 
 			break;
+			
+case GETINFOPARKENTER:
+			
+			if (object instanceof Order) {
+				order = mysqlConnection.getDBOrder(object);
+				if (order != null) {
+					ServerController.instance.displayMsg("Got order details");
+					returnData = new DataTransfer(TypeOfMessageReturn.PARKENTERRETURNORDER, order);
+				} else {
+					ServerController.instance.displayMsg("Couldn't recieve existing order details");
+					returnData = new DataTransfer(TypeOfMessageReturn.RETURN_ORDER_FAILED, null);
+				}
+				try {
+					client.sendToClient(returnData);
+				} catch (IOException e) { 
+					e.printStackTrace();
+				}
+			
+			}
+			break;
+			
+		case PARTKENTERGETSTATUS:
+			if(object instanceof ParkStatus)
+			{
+				ParkStatus status= (ParkStatus)object;
+				String set=mysqlConnection.getPartStatus(status);
+				String get=mysqlConnection.getPartStatus2(status);
+				 String t="select * from discountdates WHERE Dates='" + status.getDate() + "' AND numOfPark='" + status.getPark() +  "'AND Approve='True';";
+	                arrOfAnswer = mysqlConnection.getDB(t);
+				status.setAmount(set);
+				status.setMaxAmount(get);
+				status.setDiscount((String) arrOfAnswer.get(1));
+				if(status.getAmount()!=null) {
+				try {
+					returnData = new DataTransfer(TypeOfMessageReturn.PARK_STATUS, status);
+					client.sendToClient(returnData);
+
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				}
+				
+				
+			}
+			break;
+		
+		case PARKENTERSENDSTATUS:
+			if(object instanceof ParkStatus)
+			{
+				ParkStatus status= (ParkStatus)object;
+				String t= status.getPark();
+				int x=Integer.valueOf(status.getAmount());
+				//String query ="UPDATE parksstatus SET "+t+"="+t+"+ "+x+" WHERE DATE='"+status.getDate()+"';";
+				String query ="UPDATE parksstatuss SET "+t+"="+t+"+ "+x+ ";";
+				boolean ans2 = mysqlConnection.updateDB(query);
+				if (ans2)
+					ServerController.instance.displayMsg("Park Status details updated");
+				else
+					ServerController.instance.displayMsg("Park Statust details could not be updated");
+			}
+			
+			break;
+			
+			
+		case CASUALVISITUPDATE: 
+			if(object instanceof casualOrder)
+			{
+				casualOrder order=(casualOrder)object;
+				boolean ans2 = mysqlConnection.updateCasualTable(order);
+				if (ans2)
+					ServerController.instance.displayMsg("New Casual Visit");
+				else
+					ServerController.instance.displayMsg("Casual visit failed");
+			
+			}
+			break;
+			
+			
+		case CheckDiscounts:
+			if(object instanceof ParkStatus) {
+				ParkStatus status= (ParkStatus)object;
+                String t="select * from discountdates WHERE Dates='" + status.getDate() + "' AND numOfPark='" + status.getPark() +  "'AND Approve='True';";
+                arrOfAnswer = mysqlConnection.getDB(t);
+				status.setAmount((String) arrOfAnswer.get(1));
+				if(!arrOfAnswer.isEmpty()) {
+					try {
+						returnData = new DataTransfer(TypeOfMessageReturn.PARK_DISCOUNT, status);
+						client.sendToClient(returnData);
+
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					}
+
+			}
+			break;
+			
+		case RESETPARKSTATUS:
+			if(object instanceof String) {
+				String t=(String)object;
+			String sql="UPDATE parksstatuss SET "+t+"="+1+ ";";
+			boolean ans2 = mysqlConnection.updateDB(sql);
+			if (ans2)
+				ServerController.instance.displayMsg("Park reseted");
+			else
+				ServerController.instance.displayMsg("Park did not resert");
+			}
+			
+			break;
+			
+
+			
 		case SENDMAIL:
 			if (object instanceof EmailDetails) {
 				EmailDetails emailDetails = (EmailDetails) object;

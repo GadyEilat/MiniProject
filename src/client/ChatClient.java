@@ -9,6 +9,7 @@ import common.TypeOfMessageReturn;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import client.controller.ExistingOrderController;
+import client.controller.FamilySubscriptionHistoryController;
 import client.controller.ManagerController;
 import client.controller.ManagerDiscountController;
 import client.controller.MyOrdersGuideController;
@@ -21,6 +22,8 @@ import client.controller.TourGuideLoginController;
 import client.controller.TourGuideNewOrderController;
 import client.controller.TravelerNewOrderController;
 import client.controller.WorkerLogin;
+import client.controller.parkEnterenceController;
+import client.controller.parkEnterenceController2;
 import client.logic.TourGuide;
 import client.logic.TourGuideOrder;
 import client.logic.Visitor;
@@ -28,6 +31,7 @@ import client.logic.maxVis;
 import client.logic.Worker;
 import client.logic.Order;
 import client.logic.ParkInfo;
+import client.logic.ParkStatus;
 import client.logic.Subscriber;
 import java.io.*;
 import common.TypeOfMessageReturn;
@@ -82,14 +86,6 @@ public class ChatClient extends AbstractClient {
 			}		
 			
 			break;
-		
-		case DELETE_ORDER_FAILED:
-			//not suppose to happen.
-			break;
-		case DELETE_ORDER_SUCCESS:
-			
-			break;
-			
 		case UPDATE_FAILED:
 			if (object instanceof Order) {
 				ChangeOrderDetailsController.instance.notUpdated();
@@ -123,21 +119,39 @@ public class ChatClient extends AbstractClient {
 			break;
 			
 		case IS_SUBSCRIBER:
-			if (object instanceof Boolean) {
+			if (object instanceof Boolean) { //came from OrderManagementController
 				Boolean isIt = (Boolean) object;
 				if (isIt == true) {
 					OrderManagementController.instance.isSubscriber(true);
 				}
 			}
+			if (object instanceof Integer) { //came from ChangeOrderDetails
+				ChangeOrderDetailsController.instance.isOther();
+			}
 				
 			break;
 			
-		case ISNT_SUBSCRIBER:
+		case IS_GUIDE:
 			if (object instanceof Boolean) {
 				Boolean isIt = (Boolean) object;
-				if (isIt == false) {
-					OrderManagementController.instance.isSubscriber(false);
+				if (isIt == true) {
+					OrderManagementController.instance.isGuide(true);
 				}
+			}
+			if (object instanceof Integer) { //came from ChangeOrderDetails
+				ChangeOrderDetailsController.instance.isGuide();
+			}
+			break;
+			
+		case IS_REGULAR:
+			if (object instanceof Boolean) {
+				Boolean isIt = (Boolean) object;
+				if (isIt == true) {
+					OrderManagementController.instance.isRegular(true);
+				}
+			}
+			if (object instanceof Integer) { //came from ChangeOrderDetails
+				ChangeOrderDetailsController.instance.isOther();
 			}
 			break;
 			
@@ -168,6 +182,16 @@ public class ChatClient extends AbstractClient {
 				
 			}
 			break;
+			
+		case HISTORY_ORDERS:
+			if (object instanceof Order) {
+				System.out.println("--> handleMessageFromServer");
+				waitForConnection = false;
+				
+				System.out.print(object.toString());
+				FamilySubscriptionHistoryController.instance.getLine((Order) object);
+			}
+			break;
 
 		case TOUR_MYORDERS:
 			if (object instanceof TourGuideOrder) {
@@ -186,6 +210,37 @@ public class ChatClient extends AbstractClient {
 				System.out.print(visMax.toString());
 				TourGuideNewOrderController.instance.checkDate2(visMax);
 				//TourGuideNewOrderController.instance.checkDate(null, visMax);
+			}
+			break;
+			
+		case PARK_STATUS:
+			if(object instanceof ParkStatus) {
+				String t=null;
+				ParkStatus status=(ParkStatus)object;
+				t=status.getDiscount();
+				parkEnterenceController.instance.insertData(status.getAmount(), status.getMaxAmount());
+				parkEnterenceController.instance.getDiscountDay(t);
+				parkEnterenceController2.instance.insertData(status.getAmount(), status.getMaxAmount());
+				parkEnterenceController2.instance.getDiscountDay(t);
+			}
+			break;
+			
+		case PARKENTERRETURNORDER:
+			if(object instanceof Order) {
+			Order order=(Order)object;
+			parkEnterenceController2.instance.orderDetails(order);
+				
+			}
+			
+			
+			break;
+		case PARK_DISCOUNT:
+			if(object instanceof String) {
+				String t=null;
+			   t=(String)object;
+				parkEnterenceController.instance.getDiscountDay(t);
+				parkEnterenceController2.instance.getDiscountDay(t);
+			
 			}
 			break;
 			

@@ -15,6 +15,7 @@ import javafx.stage.Stage;
 
 public class CancelConfirmationController extends AbstractScenes{
 	public String orderNumberToBeDeleted=null;
+	public Order orderToBeDeleted=null;
 	
     @FXML
     private ResourceBundle resources;
@@ -30,8 +31,8 @@ public class CancelConfirmationController extends AbstractScenes{
 
     @FXML
     void Cancel(ActionEvent event) {
-    	orderNumberToBeDeleted=OrderManagementController.instance.ord.getOrderNumber();
-    	DataTransfer data = new DataTransfer(TypeOfMessage.DELETEINFO,orderNumberToBeDeleted);
+    	orderToBeDeleted=OrderManagementController.instance.ord;
+    	DataTransfer data = new DataTransfer(TypeOfMessage.DELETEINFO,orderToBeDeleted);
 		ClientUI.chat.accept(data);
 		switchScenes("/client/boundaries/Existing Order.fxml", "Existing Order");
     	Stage stage = (Stage) cancelBtn.getScene().getWindow();

@@ -10,6 +10,7 @@ import java.util.ResourceBundle;
 
 import client.ChatClient;
 import client.ClientUI;
+import client.logic.EmailDetails;
 import client.logic.Order;
 import common.DataTransfer;
 import common.TypeOfMessage;
@@ -18,6 +19,9 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.print.PageLayout;
+import javafx.print.PageRange;
+import javafx.print.PrinterJob;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -25,18 +29,19 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.scene.transform.Scale;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 
 public class ChangeOrderDetailsController extends AbstractScenes{
-	public Order ord = new Order(null,null,null,null,null,null,null,null);
+	public Order ord = new Order(null,null,null,null,null,null,null,null,null,null);
 	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 	public int wasCanceled = 0; //a flag for telling if you canceled the order.
 	Double price;
-	private final static Double absolutePrice = 30.00;
 	
     @FXML
     private ResourceBundle resources;
@@ -93,15 +98,42 @@ public class ChangeOrderDetailsController extends AbstractScenes{
     ObservableList<String> list;
     ObservableList<String> list2;
     ObservableList<String> list3;
-  
+    
+    public void isGuide() {
+    	Double dblAmount = Double.valueOf(amountOfVisitorsComboBox.getSelectionModel().getSelectedItem());
+    	Double pricePerPerson = OrderManagementController.instance.pricePerPerson;
+    	price= pricePerPerson*(dblAmount-1); //the only difference from the next method...
+    	priceTxt.setText(String.format("Price: %.2f", price));
+    	ord.setTotalPrice(String.valueOf(price));
+    	DataTransfer data = new DataTransfer(TypeOfMessage.UPDATEINFO, ord);
+		ClientUI.chat.accept(data);
+    }
+    public void isOther() {
+    	Double dblAmount = Double.valueOf(amountOfVisitorsComboBox.getSelectionModel().getSelectedItem());
+    	Double pricePerPerson = OrderManagementController.instance.pricePerPerson;
+    	price=pricePerPerson*dblAmount;
+    	priceTxt.setText(String.format("Price: %.2f", price));
+    	ord.setTotalPrice(String.valueOf(price));
+    	DataTransfer data = new DataTransfer(TypeOfMessage.UPDATEINFO_REQUEST, ord);
+		ClientUI.chat.accept(data);
+    }
+    
+    
     public void updated()
     {
     	msgFromController.setFill(Color.GREEN);
 		msgFromController.setText("Updated Successfully");
-    	Double dblAmount = Double.valueOf(amountOfVisitorsComboBox.getSelectionModel().getSelectedItem());
-    	Double pricePerPerson = OrderManagementController.instance.pricePerPerson;
-    	price=pricePerPerson * dblAmount;
+    	DataTransfer data = new DataTransfer(TypeOfMessage.CHECK_KIND, ord.getID());
+		ClientUI.chat.accept(data);
     	priceTxt.setText(String.format("Price: %.2f", price));
+    	
+    	//sending a mail
+    	String toSend = "You Successfully updated your order details " + ord.getNameOnOrder() + ".\nThe new order details are:\nOrder Number: " +
+    	ord.getOrderNumber() + "\nPark: " + ord.getParkName() + "\nDate: " + ord.getDate()+ "\nTime: " + ord.getHour() + "\nAmount of visitors: " +
+    	ord.getNumOfVisitors();
+    	EmailDetails details= new EmailDetails(ord.getEmail(),"GoNature Updated Order",toSend);
+    	DataTransfer maildata = new DataTransfer(TypeOfMessage.SENDMAIL, details);
+		ClientUI.chat.accept(maildata);
     }
     
     public void notUpdated()
@@ -150,9 +182,31 @@ public class ChangeOrderDetailsController extends AbstractScenes{
     	switchScenes("/client/boundaries/Order Management.fxml", "Order Management");
     }
 
+    public static void printCurrWindow(Window myWindow) {
+    	print(myWindow, myWindow.getScene().getRoot().snapshot(null,null));
+    }
+    
     @FXML
     void PrintDetails(ActionEvent event) {
-    	//fix -- Printing.
+    	printCurrWindow(printDetailsBtn.getScene().getWindow());
+    }
+    
+    private static void print(Window myWindow, WritableImage screenshot) { 
+    	PrinterJob job = PrinterJob.createPrinterJob();
+    	if (job!=null) {
+    		job.getJobSettings().setPageRanges(new PageRange(1,1));
+    		if (!job.showPageSetupDialog(myWindow)|| !job.showPrintDialog(myWindow)) {
+    			return;
+    		}
+    		final PageLayout pageLayout = job.getJobSettings().getPageLayout();
+    		final double sizeX = pageLayout.getPrintableWidth() / screenshot.getWidth();
+    		final double sizeY = pageLayout.getPrintableHeight() / screenshot.getHeight();
+    		final double size = Math.min(sizeX, sizeY);
+    		final ImageView print_node = new ImageView(screenshot);
+    		print_node.getTransforms().add(new Scale(size,size));
+    		job.printPage(print_node);
+    		job.endJob();
+    	}
     }
     
     @FXML
@@ -197,6 +251,11 @@ public class ChangeOrderDetailsController extends AbstractScenes{
     	al3.add("8");
     	al3.add("9");
     	al3.add("10");
+    	al3.add("11");
+    	al3.add("12");
+    	al3.add("13");
+    	al3.add("14");
+    	al3.add("15");
     	list3=FXCollections.observableArrayList(al3);
     	amountOfVisitorsComboBox.setItems(list3);
     }
@@ -219,6 +278,7 @@ public class ChangeOrderDetailsController extends AbstractScenes{
     	setTimeComboBox(); // call func above.
     	timeComboBox.getSelectionModel().select(ord.getHour());
     	priceTxt.setText(String.format("Price: %.2f", OrderManagementController.instance.price));
+    	ord.setTotalPrice(priceTxt.getText());
     	try {
             datePicker.setValue(LOCAL_DATE(ord.getDate()));
         } catch (NullPointerException e) {}
