@@ -931,7 +931,7 @@ public class EchoServer extends AbstractServer {
 				t.setVisitorsInOrder(((TourGuideOrder) object).getNumOfVisitors());
 				t.setTime(((TourGuideOrder) object).getTime());
 
-				visMax = mysqlConnection.checkMaxVisitors(t);
+				visMax = mysqlConnection.checkMaxVisitors(t); 
 
 				visMax = (Object) visMax;
 
