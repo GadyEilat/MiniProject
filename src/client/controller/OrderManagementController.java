@@ -1,6 +1,11 @@
 package client.controller;
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.Formatter;
 import java.util.ResourceBundle;
 
@@ -17,10 +22,13 @@ import javafx.print.PageRange;
 import javafx.print.PrinterJob;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.transform.Scale;
 import javafx.stage.Modality;
@@ -59,6 +67,9 @@ public class OrderManagementController extends AbstractScenes {
     private Button changeBtn;
 
     @FXML
+    private Text approveText;
+    
+    @FXML
     private Button btnLogout;
 
     @FXML
@@ -69,7 +80,7 @@ public class OrderManagementController extends AbstractScenes {
 
     @FXML
     private TextField parkTxt;
-
+    
     @FXML
     private ImageView existingOrderBackBtn;
 
@@ -80,12 +91,57 @@ public class OrderManagementController extends AbstractScenes {
     private Button changeOrderDetailsBtn;
 
     @FXML
+    private Button approveBtn;
+    
+    @FXML
     private Button printDetailsbtn;
 
     @FXML
     private Button cancelOrderBtn;
 
     public static OrderManagementController instance;
+    
+    @FXML
+    void Approve(ActionEvent event) {
+    	LocalDate today = LocalDate.now();
+    	LocalDate ordDate = LOCAL_DATE(dateTxt.getText());
+		LocalDate tomorrow = today.plus(1, ChronoUnit.DAYS);
+		LocalTime timeNow = LocalTime.now();
+		LocalTime time8 = LocalTime.MIDNIGHT.plusHours(8);
+		LocalTime time10 = LocalTime.MIDNIGHT.plusHours(10);
+		//LocalTime time23 = LocalTime.MIDNIGHT.plusHours(23);
+		if (!ordDate.isEqual(tomorrow)) {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setHeaderText(null);
+			alert.setContentText("You can't approve your order today!\nPlease wait untill a day before the arrival time.");
+			alert.show();
+		}
+		else if (timeNow.isBefore(time8) || timeNow.isAfter(time10))
+		{
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setHeaderText(null);
+			alert.setContentText("You can only approve your order between 8:00 and 10:00");
+			alert.show();
+		}
+		else {
+			DataTransfer data = new DataTransfer(TypeOfMessage.APPROVED, orderNumberTxt.getText());
+			ClientUI.chat.accept(data);
+		}
+		
+    	
+    }
+    
+    public void approvedReturn() {
+    	approveText.setFill(Color.DARKGREEN);
+		approveText.setText("Order was approved,\nsee you tomorrow!");
+    }
+    
+    public static final LocalDate LOCAL_DATE (String dateString){ //method for dealing with dates.
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate localDate = LocalDate.parse(dateString, formatter);
+        return localDate;
+    }
+    
     /**
      * tells us if the order belongs to a subscriber (comes back from chat client)
      * @param ans the answer (should be true)
