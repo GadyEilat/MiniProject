@@ -236,7 +236,7 @@ public class EchoServer extends AbstractServer {
 								getData++;
 							}
 
-						}
+						} 
 						parkInfo.setDatesDiscount(datesDiscount);
 						returnData = new DataTransfer(TypeOfMessageReturn.REQUESTINFO_SUCCESS, parkInfo);
 					} else {
