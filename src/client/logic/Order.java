@@ -38,6 +38,7 @@ public class Order implements Serializable{
 		this.approved=approved;
 	}
 
+
 	public Order(String parkName, String hour, String date, String email, String orderNumber, String numOfVisitors, String nameOnOrder, String ID) {
 		this.parkName = parkName;
 		this.hour = hour;
@@ -47,6 +48,13 @@ public class Order implements Serializable{
 		this.numOfVisitors=numOfVisitors;
 		this.nameOnOrder=nameOnOrder;
 		this.ID=ID;
+	}
+	public String getApproved() {
+		return approved;
+	}
+	
+	public void setApproved(String approved) {
+		this.approved = approved;
 	}
 	
 	public Order() {
@@ -139,13 +147,6 @@ public class Order implements Serializable{
 		this.prePaid = prePaid;
 	}
 
-	public String getApproved() {
-		return approved;
-	}
-
-	public void setApproved(String approved) {
-		this.approved = approved;
-	}
 	
 	
 	
