@@ -104,9 +104,6 @@ public class TravelerNewOrderController extends AbstractScenes {
 	public static TravelerNewOrderController instance;
 	ObservableList<String> list, list2, list3;
 
-	/**
-	 * 
-	 */
 	public void notFound() {
 		errorEmail.setText("Error! cannot create Order");
 	}
@@ -117,19 +114,7 @@ public class TravelerNewOrderController extends AbstractScenes {
 
 	}
 
-	  @FXML
-	    void numVisitorsButton(ActionEvent event) {
 
-	    }
-	  @FXML
-	    void parkNameButton(ActionEvent event) {
-
-	    }
-
-	    @FXML
-	    void chooseDayButton(ActionEvent event) {
-
-	    }
 	  /**
 	   * setTimeComboBox method
 	   * This method adding times to the Time combo box in the screen and display it.

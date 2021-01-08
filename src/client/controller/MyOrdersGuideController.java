@@ -40,7 +40,9 @@ import javafx.scene.control.Button;
 public class MyOrdersGuideController extends AbstractScenes {
 	
 	/** Description of MyOrdersGuideController 
-	• *
+	• * This controller responsible of showing the tour guide a small table.
+	• * Showing him a brief history of his orders.
+	• * The user can return to the main menu or switch to other bars. 
 	• * @author Elad Kobi
 	• */
 	
@@ -85,7 +87,7 @@ public class MyOrdersGuideController extends AbstractScenes {
     
 ObservableList <TourGuideOrder> oblist=FXCollections.observableArrayList();
     
-/** Description of MyOrdersGuideController 
+/** Description of loadGuide 
 • *
 • * @param tourguideM this function gets an entity of tourguide and prints his details on the screen.
 • */
@@ -150,7 +152,7 @@ ObservableList <TourGuideOrder> oblist=FXCollections.observableArrayList();
        	ClientUI.chat.accept(data);
        	TableOrders.setItems(oblist);
    	}
-    /** Description of initialize 
+    /** Description of getLine 
     • *@param TourGuideOrder adds an order to the Observeable list for printing 
     • * prints the table.
     • */

@@ -13,7 +13,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane prefHeight="600.0" prefWidth="800.0" stylesheets="@../../../res/mainEnter.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.parkEnterenceController2">
+<BorderPane prefHeight="600.0" prefWidth="800.0" stylesheets="@ManagerStyle.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.parkEnterenceController3">
    <center>
       <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0">
          <children>
@@ -23,39 +23,21 @@
                      <children>
                         <AnchorPane prefHeight="158.0" prefWidth="467.0">
                            <children>
-                              <Label layoutX="202.0" layoutY="14.0" text="New Visit">
+                              <Label layoutX="155.0" layoutY="50.0" text="Exit Park(Simulator)">
                                  <font>
                                     <Font name="System Bold" size="19.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="30.0" layoutY="64.0" text="Park Status" />
-<<<<<<< HEAD
-                              <Label layoutX="60.0" layoutY="136.0" text="Order number" />
-=======
-                              <Label layoutX="23.0" layoutY="137.0" text="Order numbe/ID" />
->>>>>>> branch 'main' of https://github.com/liranami/MiniProject
-                              <Text fx:id="getNumPpl2" layoutX="111.0" layoutY="80.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="76.6708984375" />
-                              <Label layoutX="61.0" layoutY="182.0" text="Date and time" />
-                              <Label layoutX="40.0" layoutY="218.0" text="Number of visitors" />
+                              <Label layoutX="27.0" layoutY="137.0" text="Order number/ID" />
                               <TextField fx:id="txtOrderNumber" layoutX="151.0" layoutY="132.0" />
-                              <TextField fx:id="txtDateOrder" editable="false" layoutX="155.0" layoutY="175.0" prefHeight="31.0" prefWidth="94.0" />
-                              <TextField fx:id="txtOrderNumV" editable="false" layoutX="156.0" layoutY="213.0" prefHeight="31.0" prefWidth="53.0" />
-                              <Text layoutX="324.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0" text="(Fill)" />
-                              <TextField fx:id="timeTxt" editable="false" layoutX="266.0" layoutY="175.0" prefHeight="31.0" prefWidth="82.0" />
-                              <Label layoutX="243.0" layoutY="218.0" text="Member type" />
-                              <TextField fx:id="memType" editable="false" layoutX="324.0" layoutY="213.0" prefHeight="31.0" prefWidth="119.0" />
-                              <Label layoutX="279.0" layoutY="63.0" text="Price" />
-                              <TextField fx:id="priceTxt" editable="false" layoutX="322.0" layoutY="59.0" prefHeight="31.0" prefWidth="78.0" />
-                              <Label layoutX="111.0" layoutY="100.0" text="Park*" />
-                              <TextField fx:id="parkTxt" editable="false" layoutX="153.0" layoutY="95.0" prefHeight="31.0" prefWidth="79.0" />
+                              <Text layoutX="347.0" layoutY="153.0" strokeType="OUTSIDE" strokeWidth="0.0" text="(Fill)" />
+                              <Button layoutX="188.0" layoutY="192.0" mnemonicParsing="false" onAction="#completeOrder2" text="Complete" />
                            </children>
                         </AnchorPane>
                      </children>
                   </HBox>
                </children>
             </VBox>
-            <Button layoutX="340.0" layoutY="323.0" mnemonicParsing="false" onAction="#completeOrder2" text="Complete" />
-            <Button layoutX="178.0" layoutY="323.0" mnemonicParsing="false" onAction="#checkDetails" style="-fx-background-color: lightblue;" text="Check Details" />
             <Text fx:id="errormsg" layoutX="75.0" layoutY="413.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="103.6708984375" />
          </children>
       </AnchorPane>
@@ -63,13 +45,8 @@
    <top>
       <AnchorPane style="-fx-background-color: #c9c4c4;" BorderPane.alignment="CENTER">
          <children>
-<<<<<<< HEAD
-            <Button fx:id="btnLogout" layoutX="707.0" layoutY="42.0" mnemonicParsing="false" onAction="#LogOutButton" text="Log Out" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="40.0" />
-            <ImageView fitHeight="106.0" fitWidth="155.0" layoutX="14.0" layoutY="14.0" AnchorPane.leftAnchor="6.0" AnchorPane.topAnchor="7.0">
-=======
             <Button fx:id="LogOutBtn" layoutX="707.0" layoutY="42.0" mnemonicParsing="false" onAction="#LogOutButton" style="-fx-background-color: red;" text="Log Out" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="40.0" />
             <ImageView fitHeight="106.0" fitWidth="155.0" layoutX="14.0" layoutY="14.0">
->>>>>>> branch 'main' of https://github.com/liranami/MiniProject
                <image>
                   <Image url="/LOGONATURE.png" />
                </image>
@@ -90,17 +67,17 @@
                   <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                </padding>
                <children>
-                  <Button cancelButton="true" mnemonicParsing="false" onAction="#ExistenceOrder" opacity="0.39" prefHeight="90.0" prefWidth="165.0" text="Existence order">
+                  <Button cancelButton="true" mnemonicParsing="false" onAction="#ExistenceOrder" prefHeight="90.0" prefWidth="165.0" text="Existence order">
                      <font>
                         <Font size="13.0" />
                      </font>
                   </Button>
-                  <Button cancelButton="true" mnemonicParsing="false" onAction="#exitParkB" prefHeight="90.0" prefWidth="165.0" text="Exit Park">
+                  <Button cancelButton="true" disable="true" mnemonicParsing="false" opacity="0.5" prefHeight="90.0" prefWidth="165.0" text="Exit Park">
                      <font>
                         <Font size="13.0" />
                      </font>
                   </Button>
-                  <Button cancelButton="true" mnemonicParsing="false" onAction="#newOrderBtn" prefHeight="90.0" prefWidth="165.0" text="New Order">
+                  <Button cancelButton="true" mnemonicParsing="false" onAction="#NewOrder" prefHeight="90.0" prefWidth="165.0" text="New Order">
                      <font>
                         <Font size="13.0" />
                      </font>

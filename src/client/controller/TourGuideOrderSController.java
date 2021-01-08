@@ -8,9 +8,12 @@ import java.util.concurrent.TimeUnit;
 
 import client.ChatClient;
 import client.ClientUI;
+import client.logic.EmailDetails;
 import client.logic.TourGuide;
 import client.logic.TourGuideOrder;
 import client.logic.Visitor;
+import common.DataTransfer;
+import common.TypeOfMessage;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -35,10 +38,9 @@ import javafx.scene.control.Button;
 public class TourGuideOrderSController extends AbstractScenes {
 	
 	/** Description of TourGuideOrderSController 
-	• *
+	• * This controller responsible to show the user his new order details.
+	• * After that he can either move to main menu or see his orders.
 	• * @author Elad Kobi
-	• * 
-	• * 
 	• */
 	
 	
@@ -83,13 +85,17 @@ public class TourGuideOrderSController extends AbstractScenes {
     @FXML
     private TextField guideNameOrderS;
     
+
+    @FXML
+    private TextField txtOrderNum;
+    
 //    public void recieve(){
 //       // System.out.println("I recieved "+data);
 //        this.dateOrderGuide.setText(orderup.tourguideorderr.getDate());
 //        this.orderNumberGuide.setText(orderup.tourguideorderr.getOrderNumber());
 //    }
-    /** Description of parkEnterenceController2 
-    • *
+    /** Description of loadGuide 
+    • * This function shows the order details and sends a mail to the user about it.
     • * @param  tourguideO the tourguide who made the order.
     • * @param newOrderG the order that has been made.
     • * 
@@ -101,6 +107,7 @@ public class TourGuideOrderSController extends AbstractScenes {
          this.TourNo.setText(tourguideO.getFname());
          this.guideNameOrderS.setText(tourguideO.getFname());
          this.dateOrderGuide.setText(newOrederG.getDate());
+         this.txtOrderNum.setText(newOrederG.getOrderNumber());
          
          
      	if(newOrederG.getPrePaid()=="No") {
@@ -113,7 +120,15 @@ public class TourGuideOrderSController extends AbstractScenes {
 			String tourPayment=(String.format("%.2f", orderPayment));
 			 this.orderNumberGuide.setText(tourPayment);
 			}
-   
+     	   
+           String toSend = "You successfully created an order. " + newOrederG.getNameOnOrder()
+			+ ".<br>The order details are:<br>Order Number: " + newOrederG.getOrderNumber() + "<br>Park: "
+			+ newOrederG.getParkName() + "<br>Date: " + newOrederG.getDate() + "<br>Time: "
+			+ newOrederG.getTime() + "<br>Amount of visitors: " + newOrederG.getNumOfVisitors();
+	        EmailDetails details = new EmailDetails(newOrederG.getEmail(), "GoNature New Order", toSend);
+	        DataTransfer maildata = new DataTransfer(TypeOfMessage.SENDMAIL, details);
+	        ClientUI.chat.accept(maildata);
+
     }
 
     @FXML

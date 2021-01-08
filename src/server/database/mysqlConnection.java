@@ -42,11 +42,14 @@ public class mysqlConnection {
 
 		try {
 
+
 //			conn = DriverManager.getConnection("jdbc:mysql://localhost/gonature?serverTimezone=IST", "root","ha89kha89k");
 //			conn = DriverManager.getConnection("jdbc:mysql://localhost/gonature?serverTimezone=IST", "root","Liran159357!");
-			conn = DriverManager.getConnection("jdbc:mysql://localhost/gonature?serverTimezone=IST", "root",
-					"Aa123456");
+			conn = DriverManager.getConnection("jdbc:mysql://localhost/gonature?serverTimezone=IST", "root","Aa123456");
 //			conn = DriverManager.getConnection("jdbc:mysql://localhost/gonature?serverTimezone=IST", "root","DA123456");
+
+
+
 
 			ServerController.instance.displayMsg("SQL connection succeed");
 		} catch (SQLException ex) {/* handle any errors */
@@ -69,7 +72,7 @@ public class mysqlConnection {
 		if (msg instanceof Order) // if its an order for Gady's screens.
 		{
 			Order ord = (Order)msg;
-			Order ordInDB = new Order(null,null,null,null,null,null,null,null,null,null,null);
+			Order ordInDB = new Order(null,null,null,null,null,null,null,null,null,null,null,null);
 			if (conn != null) {
 				try {
 					Statement st = conn.createStatement();
@@ -88,6 +91,7 @@ public class mysqlConnection {
 						ordInDB.setOrderKind(rs.getString(8));
 						ordInDB.setID(rs.getString(9));
 						ordInDB.setPrePaid(rs.getString(11));
+						ordInDB.setApproved(rs.getString(12));
 
 					}
 					// conn.close();
@@ -165,11 +169,14 @@ public class mysqlConnection {
 			String upOrderNum = order.getOrderNumber();
 			String upOrderKind = order.getOrderKind();
 			String insID = order.getID();
+			String upTotalPrice = order.getTotalPrice();
+			String upPrePaid = order.getPrePaid();
+			String upApproved = order.getApproved();
 
 			if (conn != null) {
 				try {
-					String sql = "INSERT INTO orders (Park, Time, Date, NumOfVisitors, Email,orderNumber,NameOnOrder, OrderKind, ID )"
-							+ " values ( ?, ?, ?, ?, ?, ?, ?, ?,?)";
+					String sql = "INSERT INTO orders (Park, Time, Date, NumOfVisitors, Email,orderNumber,NameOnOrder, OrderKind, ID, totalPrice, prePaid, Approved)"
+							+ " values ( ?, ?, ?, ?, ?, ?, ?, ?,?,?, ?, ?)";
 					PreparedStatement preparedStmt = conn.prepareStatement(sql);
 					preparedStmt.setString(1, upPark);
 					preparedStmt.setString(2, upTime);
@@ -180,6 +187,9 @@ public class mysqlConnection {
 					preparedStmt.setString(7, nameOnOrder);
 					preparedStmt.setString(8, upOrderKind);
 					preparedStmt.setString(9, insID);
+					preparedStmt.setString(10, upTotalPrice);
+					preparedStmt.setString(11, upPrePaid);
+					preparedStmt.setString(12, upApproved);
 					preparedStmt.execute();
 					return true;
 				} catch (SQLException e) {
@@ -190,6 +200,12 @@ public class mysqlConnection {
 		return false;
 	}
 
+	 /** Description of getDB 
+     * This function gets a line from the data base.
+     * @param  msg the sql query that will be used in the function.
+     * 
+     * 
+     */
 	public static ArrayList<Object> getDB(Object msg) {
 		String str = null;
 		String sql;
@@ -224,7 +240,7 @@ public class mysqlConnection {
 	public static ArrayList<Order> getDBArrayOrder(Object msg) {
 		String str = null;
 		String sql;
-		Order ordInDB = new Order(null,null,null,null,null,null,null,null,null,null,null);
+		Order ordInDB = new Order(null,null,null,null,null,null,null,null,null,null,null,null);
 			ArrayList<Order> answer = new ArrayList<Order>();
 			if (msg instanceof String) {
 				str = (String) msg;
@@ -266,7 +282,12 @@ public class mysqlConnection {
 			return null;
 
 		}
-
+	 /** Description of updateDB 
+     * This function updates the data base, according the the query that it gets.
+     * @param  msg the sql query that will be used in the function.
+     * 
+     * 
+     */
 	public static boolean updateDB(String msg) {
 		if (conn != null) {
 			try {
@@ -280,6 +301,48 @@ public class mysqlConnection {
 		}
 		return false;
 
+	}
+	
+	public static boolean insertIntoDeletedOrders(Object msg) {
+		if (msg instanceof Order) {
+			Order order = (Order) msg;
+			String updEmail = order.getEmail();
+			String upPark = order.getParkName();
+			String upDate = order.getDate();
+			String upTime = order.getHour();
+			String upNumOfVisitors = order.getNumOfVisitors();
+			String nameOnOrder = order.getNameOnOrder();
+			String upOrderNum = order.getOrderNumber();
+			String ID = order.getID();
+			String upTotalPrice = order.getTotalPrice();
+			String upOrderKind = order.getOrderKind();
+			if (conn != null) {
+				try {
+
+					String query = " insert into deletedorders (Park, Time, Date, NumOfVisitors, Email,orderNumber,NameOnOrder,OrderKind,ID,totalPrice)"
+							+ " values (?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
+
+					PreparedStatement preparedStmt = conn.prepareStatement(query);
+					preparedStmt.setString(1, upPark);
+					preparedStmt.setString(2, upTime);
+					preparedStmt.setString(3, upDate);
+					preparedStmt.setString(4, upNumOfVisitors);
+					preparedStmt.setString(5, updEmail);
+					preparedStmt.setString(6, upOrderNum);
+					preparedStmt.setString(7, nameOnOrder);
+					preparedStmt.setString(8, upOrderKind);
+					preparedStmt.setString(9, ID);
+					preparedStmt.setString(10, upTotalPrice);
+					preparedStmt.execute();
+
+					return true;
+				} catch (SQLException e) {
+					e.printStackTrace();
+					return false;
+				}
+			}
+		}
+		return false;
 	}
 
 	public static boolean updateWaitingListTour(Object updatedWaitingList) {
@@ -391,7 +454,12 @@ public class mysqlConnection {
 		}
 		return false;
 	}
-
+	 /** Description of updateDBOrders 
+     * This function updates the data base with a new order.
+     * @param  updatedTourOrder is the entity of an order
+     * that will be inserted into the data base.
+     * 
+     */
 	public static boolean updateDBOrders(Object updatedTourOrder) {
 		if (updatedTourOrder instanceof TourGuideOrder) {
 			TourGuideOrder updGuide= (TourGuideOrder)updatedTourOrder;
@@ -450,7 +518,11 @@ public class mysqlConnection {
 		}
 		return false;
 	}
-
+	 /** Description of generateRandomChars 
+     * @param candidateChars gets the candidate chars to generate a random chars.  
+     * @param length- chooses the size of the random chars.
+     * @return A string is returned with the random chars.
+     */
 	public static String generateRandomChars(String candidateChars, int length) {
 		StringBuilder sb = new StringBuilder();
 		Random random = new Random();
@@ -496,7 +568,11 @@ public class mysqlConnection {
 
 		return null;
 	}
-
+	 /** Description of getTourGuideOrders
+		 * This function returns all the orders of the ID that it got.  
+	     * @param msg gets the id of the TourGuide.  
+	     * @return ObservableList of the orders details.
+	     */
 	// ObservableList<Object>
 	public static ObservableList<Object> getTourGuideOrders(Object msg) {
 		ObservableList<Object> oblist = FXCollections.observableArrayList();
@@ -577,7 +653,13 @@ public class mysqlConnection {
 //		}
 //		return null;
 //	}
-
+	/** Description of checkMaxVisitors
+	 * This function checks if there is a spot to place the order.
+	 * The function checks according to the max visit time the hours before and after
+	 * The requsted hour of the new order.
+     * @param msg gets the id of the TourGuide.  
+     * @return maxVis entity that holds few details about the open spot.
+     */
 	public static maxVis checkMaxVisitors(Object msg) {
 		maxVis orderC = (maxVis) msg;
 		maxVis maxNum = new maxVis(null, null, null, 0, 0, null, 0);
@@ -627,34 +709,44 @@ public class mysqlConnection {
 		}
 		return null;
 	}
-
+	 /** Description of getPartStatus
+		 * This function checks the amount of visitors in the park
+		 * according to which has been checked.
+	     * @param status is an entity that holds 
+	     * @return maxVis entity that holds few details about the open spot.
+	     */
 	public static String getPartStatus(ParkStatus status) {
 		try {
-			String t = null;
-			// ResultSet rs= conn.createStatement().executeQuery("select * from parksstatus
-			// WHERE Date='" + status.getDate() + "';");
-			ResultSet rs = conn.createStatement().executeQuery("select * from parksstatuss");
-			while (rs.next()) {
-				if (status.getPark().equals("Park1"))
-					t = (rs.getString(1));
-
-				if (status.getPark().equals("Park2"))
-					t = (rs.getString(2));
-
-				else
-					t = (rs.getString(3));
-			}
-
+			String t=null;
+			//ResultSet rs= conn.createStatement().executeQuery("select * from parksstatus WHERE Date='" + status.getDate() + "';");
+			ResultSet rs= conn.createStatement().executeQuery("select * from parksstatuss");
+			while(rs.next()) {
+				if(status.getPark().equals("Park1"))
+				 t=(rs.getString(1));
+			
+			    if(status.getPark().equals("Park2"))
+				 t=(rs.getString(2));
+			
+			    if(status.getPark().equals("Park3")) 
+			     t=(rs.getString(3));	
+		    }
+			
 			rs.close();
 			return t;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+		
+		
 		return null;
 	}
-
+	 /** Description of getPartStatus2
+	 * This function checks the amount of visitors in the park
+	 * according to which has been checked.
+     * @param status is an entity that holds 
+     * @return maxVis entity that holds few details about the open spot.
+     */
 	public static String getPartStatus2(ParkStatus status) {
 		try {
 			String t = null;
@@ -679,49 +771,58 @@ public class mysqlConnection {
 		// TODO Auto-generated method stub
 		return false;
 	}
-
+	/** Description of updateCasualTable
+	 * This function updates an acsual order thats in the park.
+     * @param order is an entity that holds all the order details. 
+     * @return boolean if succsseded or not.
+     */
 	public static boolean updateCasualTable(casualOrder order) {
 		try {
-
-			String sql = "INSERT INTO casualinvitation (Park, Date, Time, OrderKind, Payment,ExitTime,OrderNumber)"
-					+ " values ( ?, ?, ?, ?, ?, ?,?)";
+			
+			String sql = "INSERT INTO casualinvitation (Park, Date, Time, OrderKind, Payment,ExitTime,OrderNumber,numOfVis)" + " values ( ?, ?, ?, ?, ?, ?,?,?)";
 			PreparedStatement preparedStmt = conn.prepareStatement(sql);
-			preparedStmt.setString(1, order.getPark());
-			preparedStmt.setString(2, order.getDate());
-			preparedStmt.setString(3, order.getTime());
-			preparedStmt.setString(4, order.getOrderKind());
-			preparedStmt.setString(5, order.getPayment());
-			preparedStmt.setString(6, order.getExitTime());
-			preparedStmt.setString(7, order.getOrderNumber());
-			preparedStmt.execute();
-
+		      preparedStmt.setString (1, order.getPark());
+		      preparedStmt.setString (2, order.getDate());
+		      preparedStmt.setString (3, order.getTime());
+		      preparedStmt.setString (4, order.getOrderKind());
+		      preparedStmt.setString (5, order.getPayment());
+		      preparedStmt.setString (6, order.getExitTime());
+		      preparedStmt.setString (7, order.getOrderNumber());
+		      preparedStmt.setString (8, order.getNumOfVis());
+		      preparedStmt.execute();
+			
 			return true;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+		
+		
 		return false;
 	}
-
+	/** Description of getDiscountPerDay
+	 * This function checks if in the data base there is
+	 * a discount to the same day.
+     * @param status entity that holds the details needed for the check. 
+     * @return String returns the discount, if there is one.
+     */
 	public static String getDiscountPerDay(ParkStatus status) {
 		try {
-			String t = "select * from discountdates WHERE Dates='" + status.getDate() + "' AND numOfPark='"
-					+ status.getPark() + "'AND Approve=' True';";
-			ResultSet rs = conn.createStatement().executeQuery("select * from discountdates WHERE Dates='"
-					+ status.getDate() + "' AND numOfPark='" + status.getPark() + "'AND Approve='True';");
+			String t="select * from discountdates WHERE Dates='" + status.getDate() + "' AND numOfPark='" + status.getPark() + "'AND Approve=' True';";
+			ResultSet rs= conn.createStatement().executeQuery("select * from discountdates WHERE Dates='" + status.getDate() + "' AND numOfPark='" + status.getPark() +  "'AND Approve='True';");
 
-			while (rs.next()) {
-				t = (rs.getString(2));
-			}
-
+			while(rs.next()) {
+				 t=(rs.getString(2));	
+		    }
+			
 			rs.close();
 			return t;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+		
+		
 		return null;
 	}
 
