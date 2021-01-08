@@ -36,7 +36,11 @@ import javafx.scene.transform.Scale;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-
+/**
+ * Window in which you can change your existing order details.
+ * @author Gady
+ *
+ */
 public class ChangeOrderDetailsController extends AbstractScenes{
 	public Order ord = new Order(null,null,null,null,null,null,null,null,null,null,null);
 	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
@@ -93,21 +97,26 @@ public class ChangeOrderDetailsController extends AbstractScenes{
 
     @FXML
     private Button cancelOrderBtn;
-
+    
     public static ChangeOrderDetailsController instance;
     ObservableList<String> list;
     ObservableList<String> list2;
     ObservableList<String> list3;
-    
+    /**
+     * after asking DB, the chat client tells us if the order belongs to a guide.
+     */
     public void isGuide() {
     	Double dblAmount = Double.valueOf(amountOfVisitorsComboBox.getSelectionModel().getSelectedItem());
     	Double pricePerPerson = OrderManagementController.instance.pricePerPerson;
     	price= pricePerPerson*(dblAmount-1); //the only difference from the next method...
     	priceTxt.setText(String.format("Price: %.2f", price));
     	ord.setTotalPrice(String.valueOf(price));
-    	DataTransfer data = new DataTransfer(TypeOfMessage.UPDATEINFO, ord);
+    	DataTransfer data = new DataTransfer(TypeOfMessage.UPDATEINFO_REQUEST, ord);
 		ClientUI.chat.accept(data);
     }
+    /**
+     * after asking DB, the chat client tells us if the order belongs to a sub/traveler.
+     */
     public void isOther() {
     	Double dblAmount = Double.valueOf(amountOfVisitorsComboBox.getSelectionModel().getSelectedItem());
     	Double pricePerPerson = OrderManagementController.instance.pricePerPerson;
@@ -118,7 +127,9 @@ public class ChangeOrderDetailsController extends AbstractScenes{
 		ClientUI.chat.accept(data);
     }
     
-    
+    /**
+     * after the order had been updated.
+     */
     public void updated()
     {
     	msgFromController.setFill(Color.GREEN);
@@ -128,20 +139,26 @@ public class ChangeOrderDetailsController extends AbstractScenes{
     	priceTxt.setText(String.format("Price: %.2f", price));
     	
     	//sending a mail
-    	String toSend = "You Successfully updated your order details " + ord.getNameOnOrder() + ".\nThe new order details are:\nOrder Number: " +
-    	ord.getOrderNumber() + "\nPark: " + ord.getParkName() + "\nDate: " + ord.getDate()+ "\nTime: " + ord.getHour() + "\nAmount of visitors: " +
+    	String toSend = "You Successfully updated your order details " + ord.getNameOnOrder() + ". <br>The new order details are:<br>Order Number: " +
+    	ord.getOrderNumber() + "<br>Park: " + ord.getParkName() + "<br>Date: " + ord.getDate()+ "<br>Time: " + ord.getHour() + "<br>Amount of visitors: " +
     	ord.getNumOfVisitors();
     	EmailDetails details= new EmailDetails(ord.getEmail(),"GoNature Updated Order",toSend);
     	DataTransfer maildata = new DataTransfer(TypeOfMessage.SENDMAIL, details);
 		ClientUI.chat.accept(maildata);
     }
-    
+    /**
+     * if there was an error, and we couldn't update the order.
+     */
     public void notUpdated()
     {
     	msgFromController.setFill(Color.RED);
 		msgFromController.setText("Couldn't update");
     }
     
+    /**
+     * Apply the changes you made to the order.
+     * @param event if apply button was clicked
+     */
     @FXML
     void Apply(ActionEvent event) {
     	ord.setNumOfVisitors(amountOfVisitorsComboBox.getSelectionModel().getSelectedItem());
@@ -161,6 +178,11 @@ public class ChangeOrderDetailsController extends AbstractScenes{
 		}
 	}
 
+    /**
+     * Cancel your order - move to a window which handles that
+     * @param event if cancel button was clicked
+     * @throws IOException
+     */
     @FXML
     void CancelOrder(ActionEvent event) throws IOException{
 		Stage helpWindow = new Stage();
@@ -177,20 +199,36 @@ public class ChangeOrderDetailsController extends AbstractScenes{
 		helpWindow.showAndWait();
     }
 
+    /**
+     * go to order management window
+     * @param event if that button was clicked
+     */
     @FXML
     void OrderManagement(ActionEvent event) { //same as last button, but in different position
     	switchScenes("/client/boundaries/Order Management.fxml", "Order Management");
     }
 
+    /**
+     * handle the print of the window
+     * @param myWindow
+     */
     public static void printCurrWindow(Window myWindow) {
     	print(myWindow, myWindow.getScene().getRoot().snapshot(null,null));
     }
     
+    /**
+     * button for printing the window
+     * @param event if the button was clicked
+     */
     @FXML
     void PrintDetails(ActionEvent event) {
     	printCurrWindow(printDetailsBtn.getScene().getWindow());
     }
-    
+    /**
+     * function for printing the window.
+     * @param myWindow current window
+     * @param screenshot
+     */
     private static void print(Window myWindow, WritableImage screenshot) { 
     	PrinterJob job = PrinterJob.createPrinterJob();
     	if (job!=null) {
@@ -209,12 +247,19 @@ public class ChangeOrderDetailsController extends AbstractScenes{
     	}
     }
     
+    /**
+     * exit the current screen and go back to existing order screen
+     * @param event if exit was clicked
+     */
     @FXML
     void Exit(ActionEvent event) {
     	ChatClient.order = new Order();
     	switchScenes("/client/boundaries/Existing Order.fxml", "Existing Order");
     }
     
+    /**
+     * setting the combobox of park, called from initialize.
+     */
     private void setParkComboBox() {
     	ArrayList<String> al = new ArrayList<String>();	
 		al.add("Park1");
@@ -224,6 +269,9 @@ public class ChangeOrderDetailsController extends AbstractScenes{
 		parkComboBox.setItems(list);
     }
     
+    /**
+     * setting the combobox of time, called from initialize.
+     */
     private void setTimeComboBox() {
     	ArrayList<String> al2 = new ArrayList<String>();
     	al2.add("8:00");
@@ -239,6 +287,9 @@ public class ChangeOrderDetailsController extends AbstractScenes{
     	
     }
     
+    /**
+     * setting the combobox of amount of visitors, called from initialize.
+     */
     private void setAmountOfVisitorsComboBox() {
     	ArrayList<String> al3 = new ArrayList<String>();
     	al3.add("1");
@@ -260,12 +311,20 @@ public class ChangeOrderDetailsController extends AbstractScenes{
     	amountOfVisitorsComboBox.setItems(list3);
     }
     
+    /**
+     * translate string to a localDate type
+     * @param dateString the string we want to change
+     * @return the LocalDate we changed to.
+     */
     public static final LocalDate LOCAL_DATE (String dateString){ //method for dealing with dates.
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate localDate = LocalDate.parse(dateString, formatter);
         return localDate;
     }
 
+    /**
+     * init the window
+     */
     public void initialize(URL location, ResourceBundle resources) {
     	instance=this;
     	ord= OrderManagementController.instance.ord;

@@ -7,7 +7,10 @@ import java.util.ResourceBundle;
 import com.gluonhq.charm.glisten.control.ProgressBar;
 
 import client.ChatClient;
+import client.ClientUI;
 import client.logic.Worker;
+import common.DataTransfer;
+import common.TypeOfMessage;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -53,7 +56,10 @@ public class ManagerController extends AbstractScenes {
 	@FXML
 	void logout(ActionEvent event) {
 //    	exitConnection
+		DataTransfer data = new DataTransfer(TypeOfMessage.LOGOUT, ChatClient.worker);
+		ClientUI.chat.accept(data);
 		ChatClient.worker = new Worker(null, null, null, null, null, null);
+		ChatClient.connected = false;
 		switchScenes("/client/boundaries/workerLogin.fxml", "Worker Login");
 	}
 

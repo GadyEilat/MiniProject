@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="330.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Text layoutX="374.0" layoutY="225.0" strokeType="OUTSIDE" strokeWidth="0.0" text="support Tel." wrappingWidth="79.3984375" />
+      <Text layoutX="454.0" layoutY="225.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0524592401" />
+      <Text layoutX="420.0" layoutY="292.0" strokeType="OUTSIDE" strokeWidth="0.0" text="i-Recreation Inc." wrappingWidth="99.3984375" AnchorPane.bottomAnchor="34.0" AnchorPane.rightAnchor="80.6015625" />
+      <Text layoutX="374.0" layoutY="257.0" strokeType="OUTSIDE" strokeWidth="0.0" text="support Email" wrappingWidth="79.3984375" />
+      <Text layoutX="454.0" layoutY="257.0" strokeType="OUTSIDE" strokeWidth="0.0" text="G5GoNature@Gmail.co.il" underline="true" />
+      <ImageView fitHeight="106.0" fitWidth="155.0" layoutX="230.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="/LOGONATURE.png" />
+         </image>
+      </ImageView>
+      <Text layoutX="68.0" layoutY="256.0" strokeType="OUTSIDE" strokeWidth="0.0" text="gap for visitors: minimum 10">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <Text layoutX="68.0" layoutY="224.0" strokeType="OUTSIDE" strokeWidth="0.0" text="visitors: minimum 50">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <Text layoutX="68.0" layoutY="291.0" strokeType="OUTSIDE" strokeWidth="0.0" text="time for visitors: between 1 to 8 hour ">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <Text fill="#ee3e3e" layoutX="68.0" layoutY="199.0" strokeType="OUTSIDE" strokeWidth="0.0" text="instructions:" textAlignment="CENTER">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+   </children>
+</AnchorPane>

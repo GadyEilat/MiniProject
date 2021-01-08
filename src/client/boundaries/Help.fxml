@@ -7,11 +7,11 @@
 
 <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="330.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Text layoutX="186.0" layoutY="178.0" strokeType="OUTSIDE" strokeWidth="0.0" text="support Tel." wrappingWidth="79.3984375" />
-      <Text layoutX="279.0" layoutY="178.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0524592401" />
-      <Text layoutX="471.0" layoutY="292.0" strokeType="OUTSIDE" strokeWidth="0.0" text="i-Recreation Inc." wrappingWidth="99.3984375" AnchorPane.bottomAnchor="34.0" AnchorPane.rightAnchor="30.0" />
-      <Text layoutX="186.0" layoutY="210.0" strokeType="OUTSIDE" strokeWidth="0.0" text="support Email" wrappingWidth="79.3984375" />
-      <Text layoutX="279.0" layoutY="210.0" strokeType="OUTSIDE" strokeWidth="0.0" text="support@iRecreation.co.il" underline="true" />
+      <Text layoutX="200.0" layoutY="187.0" strokeType="OUTSIDE" strokeWidth="0.0" text="support Tel." wrappingWidth="79.3984375" />
+      <Text layoutX="300.0" layoutY="187.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0524592401" />
+      <Text layoutX="465.0" layoutY="295.0" strokeType="OUTSIDE" strokeWidth="0.0" text="i-Recreation Inc." wrappingWidth="99.3984375" AnchorPane.bottomAnchor="31.0" AnchorPane.rightAnchor="35.6015625" />
+      <Text layoutX="200.0" layoutY="219.0" strokeType="OUTSIDE" strokeWidth="0.0" text="support Email:" wrappingWidth="79.3984375" />
+      <Text layoutX="300.0" layoutY="219.0" strokeType="OUTSIDE" strokeWidth="0.0" text="G5GoNature@Gmail.co.il" underline="true" />
       <ImageView fitHeight="106.0" fitWidth="155.0" layoutX="230.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="/LOGONATURE.png" />

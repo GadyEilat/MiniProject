@@ -6,6 +6,11 @@ import java.util.ResourceBundle;
 import com.gluonhq.charm.glisten.control.ProgressBar;
 
 import client.ChatClient;
+import client.ClientUI;
+import client.logic.ParkInfo;
+import client.logic.Worker;
+import common.DataTransfer;
+import common.TypeOfMessage;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -14,7 +19,6 @@ import javafx.scene.text.Text;
 
 public class DepartmantManagerController extends AbstractScenes{
 	public static DepartmantManagerController instance;
-
 
     @FXML
     private Text currentNumOfVisitors;
@@ -43,6 +47,11 @@ public class DepartmantManagerController extends AbstractScenes{
     @FXML
     void logout(ActionEvent event) {
     	//exit Logout
+		DataTransfer data = new DataTransfer(TypeOfMessage.LOGOUT, ChatClient.worker);
+		ClientUI.chat.accept(data);
+		ChatClient.worker = new Worker(null, null, null, null, null, null);
+		ChatClient.parkInfo = new ParkInfo(null, null, null, null, null);
+		ChatClient.connected = false;
 		switchScenes("/client/boundaries/workerLogin.fxml", "Worker Login");
     }
 

@@ -22,6 +22,7 @@ public class maxVis implements Serializable {
 	private String Time;
 	private int maxTime;
 	
+
 	
 	
 	

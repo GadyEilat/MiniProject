@@ -6,10 +6,14 @@ package server;
 import java.io.*;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Vector;
+
+import com.mysql.cj.x.protobuf.MysqlxCrud.Delete;
 
 import client.logic.WaitingList;
 import client.ClientUI;
@@ -75,7 +79,7 @@ public class EchoServer extends AbstractServer {
 		ServerController.instance.displayMsg("Message received : " + msg + "\nfrom : " + client);
 		DataTransfer data = (DataTransfer) msg;
 		Object object = data.getObject();
-		DataTransfer returnData;
+		DataTransfer returnData = null;
 		switch (data.getTypeOfMessage()) {
 		case NEW_ORDER:
 			if (object instanceof Order) {
@@ -170,16 +174,16 @@ public class EchoServer extends AbstractServer {
 				boolean ans = mysqlConnection.CheckKind(CheckQuery); // if ans == true, ID exist in sub. else
 				if (ans) {
 					ServerController.instance.displayMsg("ID belongs to a Subscriber");
-					returnData = new DataTransfer(TypeOfMessageReturn.IS_SUBSCRIBER, new Integer(1)); //just to seperate it from the instanceof order.
+					returnData = new DataTransfer(TypeOfMessageReturn.IS_SUBSCRIBER, new Integer(2)); //just to seperate it from the instanceof order.
 				} else {
 					CheckQuery = "SELECT ID FROM gonature.tourguides WHERE ID ='" + id + "';";
 					ans = mysqlConnection.CheckKind(CheckQuery); // if ans == true, ID exist in tourguide.
 					if (ans) {
 						ServerController.instance.displayMsg("ID belong to a Tour Guide");
-						returnData = new DataTransfer(TypeOfMessageReturn.IS_GUIDE, new Integer(1));
+						returnData = new DataTransfer(TypeOfMessageReturn.IS_GUIDE, new Integer(2));
 					} else {
 						ServerController.instance.displayMsg("ID belong to a Regular Traveler");
-						returnData = new DataTransfer(TypeOfMessageReturn.IS_REGULAR, new Integer(1));
+						returnData = new DataTransfer(TypeOfMessageReturn.IS_REGULAR, new Integer(2));
 					}
 				}
 				try {
@@ -358,7 +362,8 @@ public class EchoServer extends AbstractServer {
 				}
 			}
 			
-			if (object instanceof Order) {
+			if (object instanceof Order) { //delete an order from Orders, check if there's an order in waitinglist good to advance to
+				//orders, move it to orders, delete the order that was moved from waitinglist table.
 				Order ordToBeDeleted = (Order) object;
 				Order orderFromWaitingList = new Order(null, null, null, null, null, null, null, null, null, null,null);
 				String saveDate = ordToBeDeleted.getDate();
@@ -379,7 +384,16 @@ public class EchoServer extends AbstractServer {
 							"SELECT MIN(MinDATE.TimeOfEntrance), MinDATE.OrderNumber FROM ( SELECT TimeOfEntrance,OrderNumber FROM gonature.waitinglist WHERE (Date = '"
 									+ saveDate + "' AND Time = '" + saveTime + "' AND DateOfEntrance = '"
 									+ arrOfAnswer.get(0).toString() + "' ))  AS MinDATE;");
-					// fix here.
+					
+					//Object visMax = new maxVis(null, null, null, 0, 0, null, 0);
+//					maxVis t = new maxVis(null, null, null, 0, 0, null, 0);
+//					t.setDate(saveDate);
+//					t.setPark(ordToBeDeleted.getParkName());
+//					t.setVisitorsInOrder(ordToBeDeleted.getNumOfVisitors());
+//					t.setTime(saveTime);
+//					mysqlConnection.checkMaxVisitorsForWaitingList(t);
+					
+					// fix here. +/- 3 hours.
 					if (arrOfAnswer.get(0) != null) {
 						arrOfAnswer = mysqlConnection.getDB("SELECT * FROM gonature.waitinglist WHERE OrderNumber = '"
 								+ arrOfAnswer.get(1).toString() + "';");
@@ -530,53 +544,112 @@ public class EchoServer extends AbstractServer {
 				}
 
 			}
+			break;
+		case INSERTINFO:
+			if(object instanceof Subscriber) {
+				Subscriber newSubscriber = (Subscriber)object;
+				
+				arrOfAnswer = mysqlConnection.getDB("SELECT COUNT(*)+11111 FROM `gonature`.`subscriber`");
+				String subscriberNumber = "S"+arrOfAnswer.get(0).toString();
+				boolean subAdded = mysqlConnection.updateDB("INSERT INTO `gonature`.`subscriber` (`ID`, `FirstName`, `LastName`, `Email`, `Telephone`, `AmountOfFamilyMembers`, `CreditCard`, `subscriberNumber`) "
+						+ "VALUES ('"+newSubscriber.getId()+"', '"+newSubscriber.getFname()+"', '"+newSubscriber.getLname()+"',"
+								+ " '"+newSubscriber.getEmail()+"', '"+newSubscriber.getTeln()+"', '"+newSubscriber.getAmountOfFamilyMember()+"',"
+										+ " '"+newSubscriber.getCreditCard()+"', '"+subscriberNumber+"');");
+				if(subAdded) {
+					new SendEmail(newSubscriber.getEmail(), "Welcome "+newSubscriber.getFname() +" "+ newSubscriber.getLname()
+						, "Your subscription number: " + subscriberNumber+"\n"
+								+ "Your ID : "+newSubscriber.getId()+"\n"
+								+ "Amount of family members: "+newSubscriber.getAmountOfFamilyMember()+"\n"
+										+ "The subscription is free, you can now enter and place an order.\n"
+										+ "Enjoy the discounts :)");
+					newSubscriber.setSubscriberNumber(subscriberNumber);
+					returnData = new DataTransfer(TypeOfMessageReturn.UPDATE_SUCCESS, newSubscriber);
+					try {
+						client.sendToClient(returnData);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
 
+			}
+			if(object instanceof TourGuide) {
+				TourGuide newTourGuide = (TourGuide)object;
+				boolean tourAdded = mysqlConnection.updateDB("INSERT INTO `gonature`.`tourguides` (`Name`, `LastName`, `ID`, `Email`, `PhoneNumber`) "
+						+ "VALUES ('"+newTourGuide.getFname()+"', '"+newTourGuide.getLname()+"', '"+newTourGuide.getId()+"',"
+								+ " '"+newTourGuide.getEmail()+"', '"+newTourGuide.getTeln()+"');");
+				if(tourAdded) {
+					new SendEmail(newTourGuide.getEmail(), "Welcome "+newTourGuide.getFname() +" "+ newTourGuide.getLname()
+						, "You are now part of GoNature Family!\n"
+								+ "Your ID : "+newTourGuide.getId()+"\n"
+								+ "You can now enter and place an order.\n"
+								+ "Enjoy the discounts :)");
+					returnData = new DataTransfer(TypeOfMessageReturn.UPDATE_SUCCESS, newTourGuide);
+					try {
+						client.sendToClient(returnData);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
 			break;
 		case LOGIN_REQUEST:
 			if (object instanceof Worker) {
 				Worker worker = (Worker) object;
+//				boolean alreadyConnect = false;
 				Worker RoleAndPark = null;
 				ParkInfo parkInfo;
-				String checkUserAndPassword = "SELECT Role, Park, name,LogIn FROM gonature.worker WHERE UserName = '" + worker.getUserName()
-						+ "' AND Password = '" + worker.getPassword() + "';";
+				String checkUserAndPassword = "SELECT Role, Park, name, LogIn FROM gonature.worker WHERE UserName = '"
+						+ worker.getUserName() + "' AND Password = '" + worker.getPassword() + "';";
 				arrOfAnswer = mysqlConnection.getDB(checkUserAndPassword);
 				if (!arrOfAnswer.isEmpty()) {
-					String scene;
-					String role = (String) arrOfAnswer.get(0);
-					String park = (String) arrOfAnswer.get(1);
-					String workerName = (String) arrOfAnswer.get(2);
-					arrOfAnswer = mysqlConnection.getDB("SELECT COUNT(*) FROM gonature.subscriber;");
-					String countSub = arrOfAnswer.get(0).toString();
-					String updateCountSub = "UPDATE gonature.manageparks SET numberOfSub = '" + countSub
-							+ "' WHERE numberOfPark = '" + park + "';";
-					boolean Answer = mysqlConnection.updateDB(updateCountSub);
-					if (Answer) {
-						ServerController.instance.displayMsg("manageparks numOfSub UPDATEINFO details updated");
-
+					if (arrOfAnswer.get(3).toString().equals("True")) {
+						returnData = new DataTransfer(TypeOfMessageReturn.LOGIN_FAILED_CONNECTED, new Worker());
+//						alreadyConnect = true;
 					} else {
-						ServerController.instance.displayMsg("manageparks numOfSub UPDATEINFO details failed");
-					}
-					arrOfAnswer = mysqlConnection
-							.getDB("SELECT * FROM gonature.manageparks WHERE numberOfPark = '" + park + "'");
-					if (role.equals("Manager")) {
-						scene = "/client/boundaries/manager.fxml";
-						role = "Manager";
-						parkInfo = new ParkInfo((String) arrOfAnswer.get(0), (String) arrOfAnswer.get(1),
-								(String) arrOfAnswer.get(2), (String) arrOfAnswer.get(3), (String) arrOfAnswer.get(4));
-						RoleAndPark = new Worker(null, null, role, parkInfo, workerName, scene);
+						String scene;
+						String role = (String) arrOfAnswer.get(0);
+						String park = (String) arrOfAnswer.get(1);
+						String workerName = (String) arrOfAnswer.get(2);
+						boolean connect = mysqlConnection
+								.updateDB("UPDATE gonature.worker SET LogIn = 'True' WHERE UserName = '"
+										+ worker.getUserName() + "' AND Park = '" + park + "';");
+						if (connect) {
+							ServerController.instance.displayMsg(worker.getUserName() + " Connected [UPDATEINFO]");
+							arrOfAnswer = mysqlConnection.getDB("SELECT COUNT(*) FROM gonature.subscriber;");
+							String countSub = arrOfAnswer.get(0).toString();
+							String updateCountSub = "UPDATE gonature.manageparks SET numberOfSub = '" + countSub
+									+ "' WHERE numberOfPark = '" + park + "';";
+							boolean Answer = mysqlConnection.updateDB(updateCountSub);
+							if (Answer) {
+								ServerController.instance.displayMsg("manageparks numOfSub UPDATEINFO details updated");
 
-					} else if (role.equals("Department Manager")) {
-						scene = "/client/boundaries/mainDepartmantManager.fxml";
-						role = "Department Manager";
-						parkInfo = new ParkInfo((String) arrOfAnswer.get(0), (String) arrOfAnswer.get(1),
-								(String) arrOfAnswer.get(2), (String) arrOfAnswer.get(3), null);
-						RoleAndPark = new Worker(null, null, role, parkInfo, workerName, scene);
+							} else {
+								ServerController.instance.displayMsg("manageparks numOfSub UPDATEINFO details failed");
+							}
+							arrOfAnswer = mysqlConnection
+									.getDB("SELECT * FROM gonature.manageparks WHERE numberOfPark = '" + park + "'");
+							if (role.equals("Manager")) {
+								scene = "/client/boundaries/manager.fxml";
+								role = "Manager";
+								parkInfo = new ParkInfo((String) arrOfAnswer.get(0), (String) arrOfAnswer.get(1),
+										(String) arrOfAnswer.get(2), (String) arrOfAnswer.get(3),
+										(String) arrOfAnswer.get(4));
+								RoleAndPark = new Worker(worker.getUserName(), null, role, parkInfo, workerName, scene);
 
-					} else if (role.equals("Service")) {
-						scene = "/client/boundaries/FamilySubscriptionRegistration.fxml";
-						role = "Service Representative";
-						parkInfo = new ParkInfo((String) arrOfAnswer.get(0), null, null, null, null);
-						RoleAndPark = new Worker(null, null, role, parkInfo, workerName, scene);
+							} else if (role.equals("Department Manager")) {
+								scene = "/client/boundaries/mainDepartmantManager.fxml";
+								role = "Department Manager";
+								parkInfo = new ParkInfo((String) arrOfAnswer.get(0), (String) arrOfAnswer.get(1),
+										(String) arrOfAnswer.get(2), (String) arrOfAnswer.get(3), null);
+								RoleAndPark = new Worker(worker.getUserName(), null, role, parkInfo, workerName, scene);
+
+							} else if (role.equals("Service")) {
+								scene = "/client/boundaries/FamilySubscriptionRegistration.fxml";
+								role = "Service Representative";
+								parkInfo = new ParkInfo((String) arrOfAnswer.get(0), null, null, null, null);
+								RoleAndPark = new Worker(worker.getUserName(), null, role, parkInfo, workerName, scene);
 
 					} else if (role.equals("ParkReception")) {
 						scene = "/client/boundaries/WorkerParkEnternece.fxml";
@@ -585,17 +658,22 @@ public class EchoServer extends AbstractServer {
 						RoleAndPark = new Worker(null, null, role, parkInfo, workerName, scene);
 					} else
 						System.out.println("Error");
-
 					returnData = new DataTransfer(TypeOfMessageReturn.LOGIN_SUCCESSFUL, RoleAndPark);
-				} else
+				} else {
+					ServerController.instance.displayMsg(worker.getUserName() + " UPDATEINFO details failed");
 					returnData = new DataTransfer(TypeOfMessageReturn.LOGIN_FAILED, new Worker());
-				try {
-					client.sendToClient(returnData);
-
-				} catch (IOException e) {
-					e.printStackTrace();
 				}
 			}
+		} else  {//if (!alreadyConnect)
+			returnData = new DataTransfer(TypeOfMessageReturn.LOGIN_FAILED, new Worker());
+		}
+		try {
+			client.sendToClient(returnData);
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
 			if (object instanceof Subscriber) {
 				Subscriber subscriber = (Subscriber) object;
@@ -625,7 +703,19 @@ public class EchoServer extends AbstractServer {
 			}
 			break;
 		case LOGOUT:
+			if (object instanceof Worker) {
+				Worker worker = (Worker) object;
+				boolean connect = mysqlConnection
+						.updateDB("UPDATE gonature.worker SET LogIn = 'False' WHERE UserName = '" + worker.getUserName()
+								+ "' AND Park = '" + worker.getPark().getNumberOfPark() + "';");
 
+				if (connect) {
+					ServerController.instance.displayMsg(worker.getUserName() + " Logged Out [UPDATEINFO]");
+
+				} else {
+					ServerController.instance.displayMsg(worker.getUserName() + "UPDATEINFO details failed");
+				}
+			}
 			break;
 		case UPDATEINFO_REQUEST:
 			if (object instanceof ParkInfo) {
