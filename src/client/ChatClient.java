@@ -97,6 +97,9 @@ public class ChatClient extends AbstractClient {
 			}		
 			
 			break;
+		case APPROVED_RETURN: //display in orderManagement that the order was approved.
+			OrderManagementController.instance.approvedReturn();
+			break;
 		case UPDATE_FAILED:
 			if (object instanceof Order) {
 				ChangeOrderDetailsController.instance.notUpdated();

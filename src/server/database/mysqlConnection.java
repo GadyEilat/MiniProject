@@ -69,7 +69,7 @@ public class mysqlConnection {
 		if (msg instanceof Order) // if its an order for Gady's screens.
 		{
 			Order ord = (Order)msg;
-			Order ordInDB = new Order(null,null,null,null,null,null,null,null,null,null,null);
+			Order ordInDB = new Order(null,null,null,null,null,null,null,null,null,null,null,null);
 			if (conn != null) {
 				try {
 					Statement st = conn.createStatement();
@@ -88,6 +88,7 @@ public class mysqlConnection {
 						ordInDB.setOrderKind(rs.getString(8));
 						ordInDB.setID(rs.getString(9));
 						ordInDB.setPrePaid(rs.getString(11));
+						ordInDB.setApproved(rs.getString(12));
 
 					}
 					// conn.close();
@@ -161,11 +162,14 @@ public class mysqlConnection {
 			String upOrderNum = order.getOrderNumber();
 			String upOrderKind = order.getOrderKind();
 			String insID = order.getID();
+			String upTotalPrice = order.getTotalPrice();
+			String upPrePaid = order.getPrePaid();
+			String upApproved = order.getApproved();
 
 			if (conn != null) {
 				try {
-					String sql = "INSERT INTO orders (Park, Time, Date, NumOfVisitors, Email,orderNumber,NameOnOrder, OrderKind, ID )"
-							+ " values ( ?, ?, ?, ?, ?, ?, ?, ?,?)";
+					String sql = "INSERT INTO orders (Park, Time, Date, NumOfVisitors, Email,orderNumber,NameOnOrder, OrderKind, ID, totalPrice, prePaid, Approved)"
+							+ " values ( ?, ?, ?, ?, ?, ?, ?, ?,?,?, ?, ?)";
 					PreparedStatement preparedStmt = conn.prepareStatement(sql);
 					preparedStmt.setString(1, upPark);
 					preparedStmt.setString(2, upTime);
@@ -176,6 +180,9 @@ public class mysqlConnection {
 					preparedStmt.setString(7, nameOnOrder);
 					preparedStmt.setString(8, upOrderKind);
 					preparedStmt.setString(9, insID);
+					preparedStmt.setString(10, upTotalPrice);
+					preparedStmt.setString(11, upPrePaid);
+					preparedStmt.setString(12, upApproved);
 					preparedStmt.execute();
 					return true;
 				} catch (SQLException e) {
@@ -220,7 +227,7 @@ public class mysqlConnection {
 	public static ArrayList<Order> getDBArrayOrder(Object msg) {
 		String str = null;
 		String sql;
-		Order ordInDB = new Order(null,null,null,null,null,null,null,null,null,null,null);
+		Order ordInDB = new Order(null,null,null,null,null,null,null,null,null,null,null,null);
 			ArrayList<Order> answer = new ArrayList<Order>();
 			if (msg instanceof String) {
 				str = (String) msg;
@@ -276,6 +283,48 @@ public class mysqlConnection {
 		}
 		return false;
 
+	}
+	
+	public static boolean insertIntoDeletedOrders(Object msg) {
+		if (msg instanceof Order) {
+			Order order = (Order) msg;
+			String updEmail = order.getEmail();
+			String upPark = order.getParkName();
+			String upDate = order.getDate();
+			String upTime = order.getHour();
+			String upNumOfVisitors = order.getNumOfVisitors();
+			String nameOnOrder = order.getNameOnOrder();
+			String upOrderNum = order.getOrderNumber();
+			String ID = order.getID();
+			String upTotalPrice = order.getTotalPrice();
+			String upOrderKind = order.getOrderKind();
+			if (conn != null) {
+				try {
+
+					String query = " insert into deletedorders (Park, Time, Date, NumOfVisitors, Email,orderNumber,NameOnOrder,OrderKind,ID,totalPrice)"
+							+ " values (?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
+
+					PreparedStatement preparedStmt = conn.prepareStatement(query);
+					preparedStmt.setString(1, upPark);
+					preparedStmt.setString(2, upTime);
+					preparedStmt.setString(3, upDate);
+					preparedStmt.setString(4, upNumOfVisitors);
+					preparedStmt.setString(5, updEmail);
+					preparedStmt.setString(6, upOrderNum);
+					preparedStmt.setString(7, nameOnOrder);
+					preparedStmt.setString(8, upOrderKind);
+					preparedStmt.setString(9, ID);
+					preparedStmt.setString(10, upTotalPrice);
+					preparedStmt.execute();
+
+					return true;
+				} catch (SQLException e) {
+					e.printStackTrace();
+					return false;
+				}
+			}
+		}
+		return false;
 	}
 
 	public static boolean updateWaitingListTour(Object updatedWaitingList) {
