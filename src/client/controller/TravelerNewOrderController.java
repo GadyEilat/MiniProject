@@ -161,11 +161,6 @@ public class TravelerNewOrderController extends AbstractScenes {
 	}
 
 	@FXML
-	void chooseDayButton(ActionEvent event) {
-
-	}
-
-	@FXML
 	void continueToPayButton(ActionEvent event) {
 		String orderPark = parkNameBtn.getSelectionModel().getSelectedItem().toString();
 		LocalDate orderDate = chooseDayBtn.getValue();
@@ -221,16 +216,6 @@ public class TravelerNewOrderController extends AbstractScenes {
 			} 
 			}
 		
-
-	}
-
-	@FXML
-	void numVisitorsButton(ActionEvent event) {
-
-	}
-
-	@FXML
-	void parkNameButton(ActionEvent event) {
 
 	}
 
@@ -297,7 +282,7 @@ public class TravelerNewOrderController extends AbstractScenes {
 	    	visMax.setVisitorsInOrder(t.getVisitorsInOrder());
 	    	visMax.setAllowed1(t.getAllowed1());
 	    	visMax.setAllowed2(t.getAllowed2());
-	    	if(Integer.valueOf(visMax.getVisitorsInOrder()+visMax.getAllowed2())< visMax.getAllowed1())
+	    	if(Integer.valueOf(visMax.getVisitorsInOrder()+visMax.getAllowed2()) < visMax.getAllowed1())
 	    		thereIsSpot=true;
    } 
 }

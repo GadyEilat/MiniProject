@@ -101,6 +101,14 @@ public class ChatClient extends AbstractClient {
 			if (object instanceof Order) {
 				ChangeOrderDetailsController.instance.notUpdated();
 			}
+			if (object instanceof ArrayList<?>) {
+				try {
+					ManagerDiscountController.instance.showAlreadyApprovePopOut();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}////////////// already approved date of discount can not change
+			}
 			break;
 		case UPDATE_SUCCESS:
 			if (object instanceof Order) {
@@ -115,6 +123,15 @@ public class ChatClient extends AbstractClient {
 					e.printStackTrace();
 				}
 
+			}
+			
+			if (object instanceof ArrayList<?>) {
+				try {
+					ManagerDiscountController.instance.showWaitTOApprovePopOut();;
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}////////////// already approved date of discount can not change
 			}
 			if(object instanceof TourGuide) {
 				try {
