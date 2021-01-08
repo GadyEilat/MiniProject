@@ -28,7 +28,7 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 
 public class OrderManagementController extends AbstractScenes {
-	public Order ord = new Order(null,null,null,null,null,null,null,null,null,null,null);
+	public Order ord = new Order(null,null,null,null,null,null,null,null,null,null,null,null);
 	public int wasCanceled = 0;
 	Double price=30.00, pricePerPerson, dblAmount;
 	String strPrice=null;

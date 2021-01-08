@@ -16,6 +16,7 @@ public class casualOrder implements Serializable {
 	private String Date;
 	private String Time;
 	private String OrderKind;
+	private String numOfVis;
 	private String Payment;
 	private String ExitTime;
 	private String orderNumber;
@@ -24,7 +25,7 @@ public class casualOrder implements Serializable {
 	• * A constructor, a casualOrder visit in the park.
 	• */
 	
-	public casualOrder(String park, String date, String time, String orderKind, String payment, String exittime, String ordernumber) {
+	public casualOrder(String park, String date, String time, String orderKind, String payment, String exittime, String ordernumber, String numofvis) {
 		super();
 		Park = park;
 		Date = date;
@@ -33,6 +34,7 @@ public class casualOrder implements Serializable {
 		Payment = payment;
 		ExitTime=exittime;
 		orderNumber=ordernumber;
+		this.orderNumber=ordernumber;
 	}
 	public String getPark() {
 		return Park;
@@ -75,6 +77,12 @@ public class casualOrder implements Serializable {
 	}
 	public void setOrderNumber(String orderNumber) {
 		this.orderNumber = orderNumber;
+	}
+	public String getNumOfVis() {
+		return numOfVis;
+	}
+	public void setNumOfVis(String numOfVis) {
+		this.numOfVis = numOfVis;
 	}
 	
 	

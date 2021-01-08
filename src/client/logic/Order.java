@@ -19,10 +19,11 @@ public class Order implements Serializable{
 	private String totalPrice;
 	private String OrderKind;
 	private String prePaid;
+	private String approved;
 	
 
 	public Order(String parkName, String hour, String date, String email, String orderNumber, String numOfVisitors,
-			String nameOnOrder, String iD, String totalPrice, String orderkind, String prepaid) {
+			String nameOnOrder, String iD, String totalPrice, String orderkind, String prepaid, String approved) {
 		this.parkName = parkName;
 		this.hour = hour;
 		this.date = date;
@@ -34,6 +35,7 @@ public class Order implements Serializable{
 		this.totalPrice = totalPrice;
 		this.OrderKind=orderkind;
 		this.prePaid=prepaid;
+		this.approved=approved;
 	}
 
 	public Order(String parkName, String hour, String date, String email, String orderNumber, String numOfVisitors, String nameOnOrder, String ID) {
@@ -135,6 +137,14 @@ public class Order implements Serializable{
 
 	public void setPrePaid(String prePaid) {
 		this.prePaid = prePaid;
+	}
+
+	public String getApproved() {
+		return approved;
+	}
+
+	public void setApproved(String approved) {
+		this.approved = approved;
 	}
 	
 	

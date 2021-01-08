@@ -30,10 +30,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 /** Description of TourChangeDetailsController 
-• *
+• * This controller is the main menu of the TourGuide.
+• * The user have few options here:
+• * Change his details, view his order or make a new order.
 • * @author Elad Kobi
-• * 
-• * 
 • */
 public class TourGuideMenuController extends AbstractScenes  {
 	TourGuide tourguide;
