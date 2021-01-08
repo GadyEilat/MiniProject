@@ -15,7 +15,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane prefHeight="600.0" prefWidth="800.0" stylesheets="@ManagerStyle.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.TourGuideNewOrderController">
+<BorderPane prefHeight="600.0" prefWidth="800.0" stylesheets="@../../../res/mainEnter.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.TourGuideNewOrderController">
    <center>
       <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0">
          <children>
@@ -25,9 +25,9 @@
                      <children>
                         <AnchorPane prefHeight="158.0" prefWidth="467.0">
                            <children>
-                              <Label layoutX="141.0" layoutY="62.0" text="Park" />
-                              <Label layoutX="89.0" layoutY="103.0" text="Date and time" />
-                              <Label layoutX="58.0" layoutY="148.0" text="Number of visitors" />
+                              <Label layoutX="147.0" layoutY="64.0" text="Park" />
+                              <Label layoutX="99.0" layoutY="105.0" text="Date and time" />
+                              <Label layoutX="78.0" layoutY="149.0" text="Number of visitors" />
                               <TextField fx:id="newOrderGetEmail" layoutX="187.0" layoutY="187.0" />
                               <Button fx:id="continueToPayBtn" layoutX="114.0" layoutY="261.0" mnemonicParsing="false" onAction="#continueToPayButton" text="Continue" />
                               <Label layoutX="208.0" text="New Order">
@@ -37,15 +37,15 @@
                               </Label>
                               <Label layoutX="136.0" layoutY="192.0" text="Email" />
                               <Button fx:id="waitingListTourBtn" layoutX="299.0" layoutY="261.0" mnemonicParsing="false" onAction="#waitingListTourButton" style="-fx-background-color: lightblue;" text="Enter waiting list" />
-                              <DatePicker fx:id="chooseDayBtn" layoutX="288.0" layoutY="98.0" onAction="#chooseDayButton" prefHeight="31.0" prefWidth="130.0" />
-                              <ComboBox fx:id="ChooseAnotherName" layoutX="188.0" layoutY="98.0" prefHeight="31.0" prefWidth="91.0" />
-                              <ComboBox fx:id="parkNamBtn" layoutX="185.0" layoutY="57.0" onAction="#parkNamButton" prefHeight="31.0" prefWidth="94.0" />
-                              <ComboBox fx:id="chooseNumVisitorsBtn" layoutX="183.0" layoutY="142.0" onAction="#chooseNumVisitorsButton" prefHeight="31.0" prefWidth="50.0" />
+                              <DatePicker fx:id="chooseDayBtn" layoutX="299.0" layoutY="97.0" onAction="#chooseDayButton" prefHeight="31.0" prefWidth="130.0" />
+                              <ComboBox fx:id="ChooseAnotherName" layoutX="187.0" layoutY="98.0" prefHeight="29.0" prefWidth="96.0" />
+                              <ComboBox fx:id="parkNamBtn" layoutX="187.0" layoutY="57.0" onAction="#parkNamButton" prefHeight="31.0" prefWidth="94.0" />
+                              <ComboBox fx:id="chooseNumVisitorsBtn" layoutX="188.0" layoutY="142.0" onAction="#chooseNumVisitorsButton" prefHeight="31.0" prefWidth="50.0" />
                               <Label layoutX="139.0" layoutY="25.0" text="Name" />
                               <TextField fx:id="NameOnOrder" editable="false" layoutX="186.0" layoutY="20.0" />
                               <Label layoutX="152.0" layoutY="226.0" text="ID" />
-                              <TextField fx:id="getIDTourOrder" layoutX="186.0" layoutY="221.0" />
-                              <Label layoutX="247.0" layoutY="148.0" text="Pay in advance?" />
+                              <TextField fx:id="getIDTourOrder" layoutX="186.0" layoutY="222.0" />
+                              <Label layoutX="262.0" layoutY="149.0" text="Pay in advance?" />
                               <ComboBox fx:id="predPaidC" layoutX="364.0" layoutY="142.0" prefHeight="31.0" prefWidth="69.0" />
                                     
                            </children>
@@ -54,14 +54,9 @@
                   </HBox>
                </children>
             </VBox>
-            <Label layoutX="44.0" layoutY="409.0" text="Menu">
-               <font>
-                  <Font size="11.0" />
-               </font>
-            </Label>
-            <Button fx:id="backButton" layoutX="15.0" layoutY="464.0" mnemonicParsing="false" onAction="#backButton" prefHeight="36.0" prefWidth="10.0" style="-fx-border-radius: 20;" AnchorPane.bottomAnchor="35.0" AnchorPane.leftAnchor="35.0">
+            <Button fx:id="backButton" layoutX="14.0" layoutY="438.0" mnemonicParsing="false" onAction="#backButton" prefHeight="43.0" prefWidth="56.0" style="-fx-border-radius: 20;" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0">
                <graphic>
-                  <ImageView fitHeight="29.0" fitWidth="30.0" onMouseClicked="#backButton">
+                  <ImageView fitHeight="35.0" fitWidth="40.0" onMouseClicked="#backButton">
                      <image>
                         <Image url="@../../../res/return-button-icon.png" />
                      </image>
@@ -69,7 +64,7 @@
                </graphic>
             </Button>
             <Text fx:id="txtErrorOrder" layoutX="56.0" layoutY="393.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="245.6708984375" />
-            <Button layoutX="29.0" layoutY="25.0" mnemonicParsing="false" onAction="#CheckPrices" text="Prices" />
+            <Button layoutX="29.0" layoutY="25.0" mnemonicParsing="false" onAction="#CheckPrices" prefHeight="25.0" prefWidth="62.0" text="Prices" />
          </children>
       </AnchorPane>
    </center>

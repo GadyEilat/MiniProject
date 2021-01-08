@@ -15,7 +15,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane prefHeight="600.0" prefWidth="800.0" stylesheets="@DepartmentManagerStyle.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.ServiceRepresentativeController">
+<BorderPane prefHeight="600.0" prefWidth="800.0" stylesheets="@../../../res/mainEnter.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.ServiceRepresentativeController">
    <center>
       <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0">
          <children>
@@ -45,7 +45,7 @@
                               <Text layoutX="218.0" layoutY="349.0" strokeType="OUTSIDE" strokeWidth="0.0" text="-" />
                               <Text layoutX="280.0" layoutY="350.0" strokeType="OUTSIDE" strokeWidth="0.0" text="-" />
                               <Text layoutX="341.0" layoutY="349.0" strokeType="OUTSIDE" strokeWidth="0.0" text="-" wrappingWidth="10.798828125" />
-                              <Button fx:id="btnSave" layoutX="487.0" layoutY="376.0" mnemonicParsing="false" onAction="#saveSubAndGetSubNumber" prefHeight="33.0" prefWidth="65.0" text="Save" />
+                              <Button fx:id="btnSave" layoutX="487.0" layoutY="376.0" mnemonicParsing="false" onAction="#saveSubAndGetSubNumber" prefHeight="25.0" prefWidth="62.0" text="Save" />
                               <RadioButton fx:id="btnRadioGroup" layoutX="165.0" layoutY="14.0" mnemonicParsing="false" text="Group">
                                  <toggleGroup>
                                     <ToggleGroup fx:id="RadioGroup" />

@@ -130,7 +130,7 @@ public class FamilySubscriptionHistoryController extends AbstractScenes {
 	 * @param resources
 	 * This method is responsible for defining variables by communicating with the server, 
 	 * is responsible for screen visibility (caption and titles) and on-screen functionality.
-	 * The method creates a new subscription object with the ID number, the data is sent to the EcoServer 
+	 * The method creates a new subscription object with the ID number, the data is sent to the EchoServer 
 	 * and then to the server and request information of history data by the ID number
 	 */
 

@@ -39,6 +39,14 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 
+	/**
+	 * TravelersOrderSController class
+	 * @author Aviv Kamary
+	 * This controller is responsible for displaying the details of a confirmation order and display it to the user.
+	 * The controller expands the AbstractScenes class that replaces the scenes within the main stage.
+	 * In this method you can return to the GoNature main screen after displaying the details to the user.
+	 * This method also send a confirmation email to the user. 
+	 */
 public class TravelersOrderSController extends AbstractScenes {
 
 	public Order OrderSuccess = new Order(null, null, null, null, null, null, null, null);
@@ -64,23 +72,29 @@ public class TravelersOrderSController extends AbstractScenes {
 	private Text helloText;
 
 	@FXML
-	private Button returnToMenuTourBTN;
-
-	@FXML
 	private Button LogOutBtn;
 
 	public static TravelersOrderSController instance;
 
+	/**
+	 * LogOutButton method
+	 * @param event
+	 * In this method the user can return to the GoNature main screen.
+	 */
 	@FXML
 	void LogOutButton(ActionEvent event) {
 		switchScenes("/client/boundaries/main.fxml", "GoNature");
 	}
 
-	@FXML
-	void returnToMenuTourButton(ActionEvent event) {
-
-	}
-
+	/**
+	 * initialize method
+	 * @param location
+	 * @param resources
+	 * This method is responsible for defining variables by communicating with the server, 
+	 * is responsible for screen visibility (caption and titles) and on-screen functionality.
+	 * This method uses the Traveler's Order details the user entered in the last screen and display what it needs to the screen.
+	 * Also, this method sending an email of confirmation order to the user.
+	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		instance = this;

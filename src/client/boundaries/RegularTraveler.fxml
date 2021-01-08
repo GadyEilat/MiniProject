@@ -12,7 +12,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane prefHeight="600.0" prefWidth="800.0" styleClass="background" stylesheets="@mainEnter.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.RegularTravelerController">
+<BorderPane prefHeight="600.0" prefWidth="800.0" styleClass="background" stylesheets="@../../../res/mainEnter.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.RegularTravelerController">
    <top>
       <AnchorPane BorderPane.alignment="CENTER">
          <children>
@@ -35,7 +35,7 @@
                            <children>
                               <Label layoutX="127.0" layoutY="71.0" prefHeight="17.0" prefWidth="47.0" text="Enter ID:" />
                               <TextField fx:id="TravelerID" layoutX="203.0" layoutY="67.0" />
-                              <Button fx:id="NextTravelerID" layoutX="248.0" layoutY="146.0" mnemonicParsing="false" onAction="#NextTravelerID" text="Next" />
+                              <Button fx:id="NextTravelerID" layoutX="247.0" layoutY="143.0" mnemonicParsing="false" onAction="#NextTravelerID" prefHeight="25.0" prefWidth="62.0" text="Next" />
                               <Text fx:id="errorLogin" fill="#ee0606" layoutX="179.0" layoutY="126.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="178.13671875" />
                               <Label layoutX="174.0" layoutY="-9.0" prefHeight="46.0" prefWidth="188.0" text="Regular Traveler" AnchorPane.leftAnchor="174.0" AnchorPane.topAnchor="-9.0">
                                  <font>
@@ -48,9 +48,9 @@
                   </HBox>
                </children>
             </VBox>
-            <Button fx:id="backBtn" layoutX="145.0" layoutY="431.0" mnemonicParsing="false" onAction="#backButton" AnchorPane.bottomAnchor="35.0" AnchorPane.leftAnchor="35.0">
+            <Button fx:id="backBtn" layoutX="37.0" layoutY="13.0" mnemonicParsing="false" onAction="#backButton" prefHeight="43.0" prefWidth="56.0" AnchorPane.bottomAnchor="35.0" AnchorPane.leftAnchor="35.0">
                <graphic>
-                  <ImageView fx:id="backBtn1" fitHeight="29.0" fitWidth="30.0">
+                  <ImageView fx:id="backBtn1" fitHeight="35.0" fitWidth="40.0">
                      <image>
                         <Image url="/return-button-icon.png" />
                      </image>

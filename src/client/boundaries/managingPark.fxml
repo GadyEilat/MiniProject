@@ -12,7 +12,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane prefHeight="600.0" prefWidth="800.0" stylesheets="@ManagerStyle.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.ManagerManageParkController">
+<BorderPane prefHeight="600.0" prefWidth="800.0" stylesheets="@../../../res/mainEnter.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.ManagerManageParkController">
    <center>
       <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0">
          <children>
@@ -22,7 +22,7 @@
                      <children>
                         <AnchorPane prefHeight="414.0" prefWidth="482.0">
                            <children>
-                              <Button fx:id="btnChange" layoutX="174.0" layoutY="204.0" mnemonicParsing="false" onAction="#changeTheSetting" text="Change" />
+                              <Button fx:id="btnChange" layoutX="174.0" layoutY="204.0" mnemonicParsing="false" onAction="#changeTheSetting" prefHeight="25.0" prefWidth="62.0" text="Change" />
                               <Text disable="true" layoutX="19.0" layoutY="108.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Max Visitors" />
                               <TextField fx:id="maxVisitorField" layoutX="128.0" layoutY="91.0" />
                               <Text fx:id="maxVisitorCurrent" layoutX="306.0" layoutY="108.0" strokeType="OUTSIDE" strokeWidth="0.0" text="700" />
@@ -41,9 +41,9 @@
                   </HBox>
                </children>
             </VBox>
-            <Button fx:id="helpButton" layoutX="522.0" layoutY="422.0" mnemonicParsing="false" onAction="#helpWindowPopOut" prefHeight="33.0" prefWidth="43.0" AnchorPane.bottomAnchor="35.0" AnchorPane.rightAnchor="35.0">
+            <Button fx:id="helpButton" layoutX="650.0" layoutY="41.0" mnemonicParsing="false" onAction="#helpWindowPopOut" prefHeight="43.0" prefWidth="56.0" AnchorPane.bottomAnchor="35.0" AnchorPane.rightAnchor="35.0">
                <graphic>
-                  <ImageView fitHeight="27.0" fitWidth="28.0">
+                  <ImageView fitHeight="35.0" fitWidth="40.0">
                      <image>
                         <Image url="/help-sign-icon.png" />
                      </image>

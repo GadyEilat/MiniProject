@@ -186,19 +186,17 @@ public class ChatClient extends AbstractClient {
 			
 		case NEWORDER_SUCCESS:
 			if (object instanceof Order) {
-				if (object != null) {
+				
 					System.out.println("--> handleMessageFromServer");
 					waitForConnection = false;
 					order = (Order) object;
 					TravelerNewOrderController.instance.TravelerOrder = order;
 					TravelerNewOrderController.instance.isFound();
-				} 
-				else {
-					TravelerNewOrderController.instance.notFound();
-				}
+
 			}
 			break;
 		case NEWORDER_FAILED:
+			TravelerNewOrderController.instance.notFound();
 			break;
 		case TOUR_DETAILS:
 			if (object instanceof TourGuide) {

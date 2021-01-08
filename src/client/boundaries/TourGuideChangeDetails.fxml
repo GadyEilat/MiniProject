@@ -29,7 +29,7 @@
                               <TextField fx:id="ChangeName" layoutX="187.0" layoutY="57.0" onAction="#changeNameTourG" />
                               <TextField fx:id="changeLNameTour" layoutX="187.0" layoutY="101.0" onAction="#changeLNameTourM" />
                               <TextField fx:id="changeEmailTour" layoutX="187.0" layoutY="143.0" onAction="#changeEmailTourM" />
-                              <Button fx:id="updateDetailsTourBtn" layoutX="221.0" layoutY="233.0" mnemonicParsing="false" onAction="#updateDetailsTourButton" text="Update" />
+                              <Button fx:id="updateDetailsTourBtn" layoutX="221.0" layoutY="233.0" mnemonicParsing="false" onAction="#updateDetailsTourButton" prefHeight="25.0" prefWidth="62.0" text="Update" />
                               <Label layoutX="187.0" layoutY="14.0" text="Update personal details">
                                  <font>
                                     <Font name="System Bold" size="15.0" />
@@ -43,9 +43,9 @@
                   </HBox>
                </children>
             </VBox>
-            <Button fx:id="backButtonUpdateDetails" layoutX="14.0" layoutY="468.0" mnemonicParsing="false" onAction="#backButton" prefHeight="31.0" prefWidth="48.0" style="-fx-border-radius: 20;" AnchorPane.bottomAnchor="35.0" AnchorPane.leftAnchor="35.0">
+            <Button fx:id="backButtonUpdateDetails" layoutX="14.0" layoutY="468.0" mnemonicParsing="false" onAction="#backButton" prefHeight="43.0" prefWidth="56.0" style="-fx-border-radius: 20;" AnchorPane.bottomAnchor="35.0" AnchorPane.leftAnchor="35.0">
                <graphic>
-                  <ImageView fitHeight="22.0" fitWidth="31.0" onMouseClicked="#backButton">
+                  <ImageView fitHeight="35.0" fitWidth="40.0" onMouseClicked="#backButton">
                      <image>
                         <Image url="@../../../res/return-button-icon.png" />
                      </image>
@@ -58,12 +58,12 @@
       <AnchorPane style="-fx-background-color: #c9c4c4;" BorderPane.alignment="CENTER">
          <children>
             <Button fx:id="LogOutBtn" layoutX="707.0" layoutY="42.0" mnemonicParsing="false" onAction="#LogOutButton" style="-fx-background-color: red;" text="Log Out" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="40.0" />
-            <ImageView fitHeight="106.0" fitWidth="155.0">
+            <ImageView fitHeight="106.0" fitWidth="155.0" AnchorPane.leftAnchor="6.0" AnchorPane.topAnchor="7.0">
                <image>
                   <Image url="@../../../res/LOGONATURE.png" />
                </image>
             </ImageView>
-            <Text fx:id="tourNameM" layoutX="205.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="122.6708984375" AnchorPane.leftAnchor="205.0" AnchorPane.topAnchor="42.0">
+            <Text fx:id="tourNameM" layoutX="205.0" layoutY="63.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="122.6708984375" AnchorPane.leftAnchor="205.0" AnchorPane.topAnchor="42.0">
                <font>
                   <Font size="18.0" />
                </font></Text>
