@@ -49,11 +49,6 @@ public class mysqlConnection {
 //			conn = DriverManager.getConnection("jdbc:mysql://localhost/gonature?serverTimezone=IST", "root","DA123456");
 
 
-//			conn = DriverManager.getConnection("jdbc:mysql://localhost/gonature?serverTimezone=IST", "root","ha89kha89k");
-//			conn = DriverManager.getConnection("jdbc:mysql://localhost/gonature?serverTimezone=IST", "root","Liran159357!");
-			conn = DriverManager.getConnection("jdbc:mysql://localhost/gonature?serverTimezone=IST", "root",
-					"Aa123456");
-//			conn = DriverManager.getConnection("jdbc:mysql://localhost/gonature?serverTimezone=IST", "root","DA123456");
 
 
 			ServerController.instance.displayMsg("SQL connection succeed");
@@ -669,28 +664,28 @@ public class mysqlConnection {
 	     */
 	public static String getPartStatus(ParkStatus status) {
 		try {
-			String t = null;
-			// ResultSet rs= conn.createStatement().executeQuery("select * from parksstatus
-			// WHERE Date='" + status.getDate() + "';");
-			ResultSet rs = conn.createStatement().executeQuery("select * from parksstatuss");
-			while (rs.next()) {
-				if (status.getPark().equals("Park1"))
-					t = (rs.getString(1));
-
-				if (status.getPark().equals("Park2"))
-					t = (rs.getString(2));
-
-				else
-					t = (rs.getString(3));
-			}
-
+			String t=null;
+			//ResultSet rs= conn.createStatement().executeQuery("select * from parksstatus WHERE Date='" + status.getDate() + "';");
+			ResultSet rs= conn.createStatement().executeQuery("select * from parksstatuss");
+			while(rs.next()) {
+				if(status.getPark().equals("Park1"))
+				 t=(rs.getString(1));
+			
+			    if(status.getPark().equals("Park2"))
+				 t=(rs.getString(2));
+			
+			    if(status.getPark().equals("Park3")) 
+			     t=(rs.getString(3));	
+		    }
+			
 			rs.close();
 			return t;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+		
+		
 		return null;
 	}
 	 /** Description of getPartStatus2
@@ -730,25 +725,26 @@ public class mysqlConnection {
      */
 	public static boolean updateCasualTable(casualOrder order) {
 		try {
-
-			String sql = "INSERT INTO casualinvitation (Park, Date, Time, OrderKind, Payment,ExitTime,OrderNumber)"
-					+ " values ( ?, ?, ?, ?, ?, ?,?)";
+			
+			String sql = "INSERT INTO casualinvitation (Park, Date, Time, OrderKind, Payment,ExitTime,OrderNumber,numOfVis)" + " values ( ?, ?, ?, ?, ?, ?,?,?)";
 			PreparedStatement preparedStmt = conn.prepareStatement(sql);
-			preparedStmt.setString(1, order.getPark());
-			preparedStmt.setString(2, order.getDate());
-			preparedStmt.setString(3, order.getTime());
-			preparedStmt.setString(4, order.getOrderKind());
-			preparedStmt.setString(5, order.getPayment());
-			preparedStmt.setString(6, order.getExitTime());
-			preparedStmt.setString(7, order.getOrderNumber());
-			preparedStmt.execute();
-
+		      preparedStmt.setString (1, order.getPark());
+		      preparedStmt.setString (2, order.getDate());
+		      preparedStmt.setString (3, order.getTime());
+		      preparedStmt.setString (4, order.getOrderKind());
+		      preparedStmt.setString (5, order.getPayment());
+		      preparedStmt.setString (6, order.getExitTime());
+		      preparedStmt.setString (7, order.getOrderNumber());
+		      preparedStmt.setString (8, order.getNumOfVis());
+		      preparedStmt.execute();
+			
 			return true;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+		
+		
 		return false;
 	}
 	/** Description of getDiscountPerDay
@@ -759,22 +755,21 @@ public class mysqlConnection {
      */
 	public static String getDiscountPerDay(ParkStatus status) {
 		try {
-			String t = "select * from discountdates WHERE Dates='" + status.getDate() + "' AND numOfPark='"
-					+ status.getPark() + "'AND Approve=' True';";
-			ResultSet rs = conn.createStatement().executeQuery("select * from discountdates WHERE Dates='"
-					+ status.getDate() + "' AND numOfPark='" + status.getPark() + "'AND Approve='True';");
+			String t="select * from discountdates WHERE Dates='" + status.getDate() + "' AND numOfPark='" + status.getPark() + "'AND Approve=' True';";
+			ResultSet rs= conn.createStatement().executeQuery("select * from discountdates WHERE Dates='" + status.getDate() + "' AND numOfPark='" + status.getPark() +  "'AND Approve='True';");
 
-			while (rs.next()) {
-				t = (rs.getString(2));
-			}
-
+			while(rs.next()) {
+				 t=(rs.getString(2));	
+		    }
+			
 			rs.close();
 			return t;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+		
+		
 		return null;
 	}
 

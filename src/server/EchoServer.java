@@ -998,8 +998,11 @@ public class EchoServer extends AbstractServer {
 				if(checkNum==9) {
 					
 					Order orderBack= new Order(null,null,null,null,null,null,null,null);
-					String sql = "SELECT * FROM gonature.orders WHERE ID ='"
-							+ OrderR.getOrderNumber() +"'; ";
+					DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+				    LocalDateTime now = LocalDateTime.now();
+				    String todaysDate=dtf.format(now);
+					String sql = "SELECT * FROM gonature.orders WHERE ID ='"+ OrderR.getOrderNumber() +"' " + "AND Date='"+todaysDate+ "';";
+	
 					arrOfAnswer = mysqlConnection.getDB(sql);
 
 					if (!arrOfAnswer.isEmpty()) {
