@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.ResourceBundle;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
@@ -50,8 +51,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 public class TourGuideNewOrderController extends AbstractScenes {
-	/** Description of TourChangeDetailsController 
-	• *
+	/** Description of TourGuideNewOrderController 
+	• * This controller responsible for the new order screen for the tour guide.
+	• * It is possibole to create a new order or enter a waiting list if chose so.
 	• * @author Elad Kobi
 	• * 
 	• * 
@@ -290,27 +292,27 @@ public class TourGuideNewOrderController extends AbstractScenes {
 	    	tourguideorderr.setNameOnOrder(nameOnOrder);
 	    	tourguideorderr.setID(orderID);
 	    	tourguideorderr.setPrePaid(isPrePaid);
-	    	
+	    	tourguideorderr.setOrderNumber(generateRandomChars("123456789", 5));
 	    	checkDate(tourguideorderr, null);
-           	DataTransfer data = new DataTransfer(TypeOfMessage.TOURGUIDENEWORDER,tourguideorderr);
-           	try {
-				Thread.sleep(50);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-           	if(thereIsSpot) {
-           	//System.out.print(thereIsSpot);
-	    	ClientUI.chat.accept(data);
-	    	switchScenes("/client/boundaries/TourGuideOrderSuccssed.fxml", "GoNature Enter");
-			System.out.println("Order Updated Successfully");
-           	}
-           	else {
-           		Alert alert = new Alert(AlertType.INFORMATION);
-            	alert.setHeaderText(null);
-            	alert.setContentText("There is not spot. Please change date or enter waiting list.");
-            	alert.show();	
-           	}
+//           	DataTransfer data = new DataTransfer(TypeOfMessage.TOURGUIDENEWORDER,tourguideorderr);
+//           	try {
+//				Thread.sleep(50);
+//			} catch (InterruptedException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//           	if(thereIsSpot) {
+//           	//System.out.print(thereIsSpot);
+//	    	ClientUI.chat.accept(data);
+//	    	switchScenes("/client/boundaries/TourGuideOrderSuccssed.fxml", "GoNature Enter");
+//			System.out.println("Order Updated Successfully");
+//           	}
+//           	else {
+//           		Alert alert = new Alert(AlertType.INFORMATION);
+//            	alert.setHeaderText(null);
+//            	alert.setContentText("There is not spot. Please change date or enter waiting list.");
+//            	alert.show();	
+//           	}
             }
 			//}	
 	    }
@@ -431,13 +433,57 @@ public class TourGuideNewOrderController extends AbstractScenes {
 		    	visMax.setAllowed2(t.getAllowed2());
 		    	if(Integer.valueOf(visMax.getVisitorsInOrder()+visMax.getAllowed2())< visMax.getAllowed1())
 		    	thereIsSpot=true;
+		    	finishOrder();
+		    	
 	    } 
+	    
+	    public void finishOrder() {
+	    	DataTransfer data = new DataTransfer(TypeOfMessage.TOURGUIDENEWORDER,tourguideorderr);
+           	if(thereIsSpot) {
+           	//System.out.print(thereIsSpot);
+	    	ClientUI.chat.accept(data);
+	    	switchScenes("/client/boundaries/TourGuideOrderSuccssed.fxml", "GoNature Enter");
+			System.out.println("Order Updated Successfully");
+           	}
+           	else {
+           	
+           		txtErrorOrder.setText("There is not spot. Please change date or enter waiting list.");
+            		
+           	}	
+	    	
+	    	
+	    	
+	    }
+	    
+	    
+	    /** Description of generateRandomChars 
+	     * @param candidateChars gets the candidate chars to generate a random chars.  
+	     * @param length- chooses the size of the random chars.
+	     * @return A string is returned with the random chars.
+	     */
+		public static String generateRandomChars(String candidateChars, int length) {
+		    StringBuilder sb = new StringBuilder();
+		    Random random = new Random();
+		    for (int i = 0; i < length; i++) {
+		        sb.append(candidateChars.charAt(random.nextInt(candidateChars
+		                .length())));
+		    }
+
+		    return sb.toString();
+		}
+	    
+	    
+	    
+	    
+	    
+	    
+	    
 	    
 	    
 	    /** Description of validate 
-	    • *@param emailrStr gets an email and  
-	    • * checking if it's a valid Email 
-	    • */
+	     *@param emailrStr gets an email and  
+	     * checking if it's a valid Email 
+	     */
 	    public static final Pattern VALID_EMAIL_ADDRESS_REGEX = 
 	    	    Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
 
@@ -447,9 +493,9 @@ public class TourGuideNewOrderController extends AbstractScenes {
 	    	}
 	    	
 	    	 /** Description of checkID 
-	        • *@param ID gets an ID and  
-	        • * checking if it's a valid ID 
-	        • */
+	         *@param ID gets an ID and  
+	         * checking if it's a valid ID 
+	         */
 	   public static boolean checkID(String ID) {
 		   if(ID.length()==9 && ID.matches("[0-9]+"))
 			   return true;

@@ -73,7 +73,7 @@ public class parkEnterenceController extends AbstractScenes {
 	  
 	    @FXML
 	    void parkExitB(ActionEvent event) {
-
+	    	switchScenes("/client/boundaries/WorkerParkEnternece3.fxml", "Enternece");
 	    }
 	    
 	    
@@ -125,11 +125,12 @@ public class parkEnterenceController extends AbstractScenes {
 	    	status1.setPark(status.getPark());
 	    	status1.setAmount((txtNumOfVis.getText()));
 	    	status1.setDate(status.getDate());
-	    	casualOrder order=new casualOrder(null,null,null,null,null,null, null);
+	    	casualOrder order=new casualOrder(null,null,null,null,null,null, null,null);
 	    	order.setPark(status.getPark());
 	    	order.setDate(status.getDate());
 	    	order.setTime(drf.format(noww));
 	    	order.setOrderKind(selectT.getValue());
+	    	order.setNumOfVis(txtNumOfVis.getText());
 	    	double price=checkFinalPrice(order.getOrderKind(), discountDay, status1.getAmount());
 	    	order.setPayment(String.valueOf(String.format("%.2f", price)));
 	    	order.setOrderNumber(generateRandomChars("123456789", 5));

@@ -27,11 +27,13 @@ import client.controller.TravelerNewOrderController;
 import client.controller.WorkerLogin;
 import client.controller.parkEnterenceController;
 import client.controller.parkEnterenceController2;
+import client.controller.parkEnterenceController3;
 import client.logic.TourGuide;
 import client.logic.TourGuideOrder;
 import client.logic.Visitor;
 import client.logic.maxVis;
 import client.logic.Worker;
+import client.logic.casualOrder;
 import client.logic.Order;
 import client.logic.ParkInfo;
 import client.logic.ParkStatus;
@@ -96,6 +98,9 @@ public class ChatClient extends AbstractClient {
 				SubscriptionEntryController.instance.subscriberFound();
 			}		
 			
+			break;
+		case APPROVED_RETURN: //display in orderManagement that the order was approved.
+			OrderManagementController.instance.approvedReturn();
 			break;
 		case UPDATE_FAILED:
 			if (object instanceof Order) {
@@ -233,6 +238,10 @@ public class ChatClient extends AbstractClient {
 			}
 
 			break;
+			 /** Description of TOUR_MAXVISCHECK 
+			  * This case sends the returned checks of 
+			  * an open spot in park to the controller.
+		     */
 		case TOUR_MAXVISCHECK:
 			if (object instanceof maxVis) {
 				visMax=(maxVis)object;
@@ -249,7 +258,10 @@ public class ChatClient extends AbstractClient {
 				TravelerNewOrderController.instance.checkDate2(visMax);
 			}
 			break;
-			
+			 /** Description of PARK_STATUS 
+			  * This case sends the returned checks of 
+			  * an the park status to the controllers.
+		     */
 			
 		case PARK_STATUS:
 			if(object instanceof ParkStatus) {
@@ -262,7 +274,10 @@ public class ChatClient extends AbstractClient {
 				parkEnterenceController2.instance.getDiscountDay(t);
 			}
 			break;
-			
+			 /** Description of PARKENTERRETURNORDER 
+			  * This case sends the returned order details 
+			  *  to the controllers.
+		     */
 		case PARKENTERRETURNORDER:
 			if(object instanceof Order) {
 			Order order=(Order)object;
@@ -270,7 +285,10 @@ public class ChatClient extends AbstractClient {
 				
 			}
 			
-			
+			 /** Description of PARK_DISCOUNT 
+			  * This case sends the returned discount details 
+			  *  to the controllers.
+		     */
 			break;
 		case PARK_DISCOUNT:
 			if(object instanceof String) {
@@ -279,6 +297,20 @@ public class ChatClient extends AbstractClient {
 				parkEnterenceController.instance.getDiscountDay(t);
 				parkEnterenceController2.instance.getDiscountDay(t);
 			
+			}
+			break;
+			/** Description of PARK_EXITSTATUS 
+			  * This case sends the returned status of an exit
+			  * park action (if sucssed or not) to the controller.
+		     */
+		case PARK_EXITSTATUS:
+			if(object instanceof casualOrder) {
+				casualOrder order=(casualOrder)object;
+				if(order.getNumOfVis()=="0")
+					parkEnterenceController3.instance.errorOrder();	
+				else
+				parkEnterenceController3.instance.finishExitPark(order);
+				
 			}
 			break;
 			

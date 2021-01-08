@@ -99,10 +99,15 @@ public class TravelerNewOrderController extends AbstractScenes {
 	}
 
 	public void isFound() {
+<<<<<<< HEAD
 		switchScenes("/client/boundaries/TravelerOrderSuccess.fxml", "Order Success");
 
 		System.out.println("Order Updated Successfully");
 
+=======
+		switchScenes("/client/boundaries/TravelerOrderSuccess.fxml", "Order Success");
+		System.out.println("Order Updated Successfully");
+>>>>>>> branch 'main' of https://github.com/liranami/MiniProject
 	}
 
 	private void setTimeComboBox() {
