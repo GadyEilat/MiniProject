@@ -36,7 +36,7 @@ public class parkEnterenceController2 extends AbstractScenes {
 	DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     LocalDateTime now = LocalDateTime.now();
 	ParkStatus status;
-	double casualPrice= 30;
+	double casualPrice= 30; 
 	public casualOrder order= new casualOrder(null,null,null,null,null,null,null,null);
 	 @FXML
 	    private ResourceBundle resources;
