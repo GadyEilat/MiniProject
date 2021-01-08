@@ -32,10 +32,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 /** Description of TourGuideLoginController 
-• *
-• * @author Elad Kobi
-• * 
-• * 
+• * This controller responsible of getting the id from the user
+• * And if the id matches the id that is written in the data base
+• * The user can carry on to the main menu.
+• * @author Elad Kobi 
 • */
 public class TourGuideLoginController extends AbstractScenes {
       TourGuide tourguide;

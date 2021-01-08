@@ -42,7 +42,7 @@ import javafx.stage.Window;
  *
  */
 public class ChangeOrderDetailsController extends AbstractScenes{
-	public Order ord = new Order(null,null,null,null,null,null,null,null,null,null,null);
+	public Order ord = new Order(null,null,null,null,null,null,null,null,null,null,null,null);
 	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 	public int wasCanceled = 0; //a flag for telling if you canceled the order.
 	Double price;

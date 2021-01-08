@@ -41,7 +41,8 @@ import javafx.scene.control.Button;
 public class TourChangeDetailsController extends AbstractScenes {
 	
 	/** Description of TourChangeDetailsController 
-	• *
+	• * This controller responsible Of change details screen.
+	• * The user can change few details and send them to the data base.
 	• * @author Elad Kobi
 	• * 
 	• * 

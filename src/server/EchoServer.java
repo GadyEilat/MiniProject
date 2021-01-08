@@ -10,6 +10,8 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Vector;
 
@@ -365,7 +367,7 @@ public class EchoServer extends AbstractServer {
 			if (object instanceof Order) { //delete an order from Orders, check if there's an order in waitinglist good to advance to
 				//orders, move it to orders, delete the order that was moved from waitinglist table.
 				Order ordToBeDeleted = (Order) object;
-				Order orderFromWaitingList = new Order(null, null, null, null, null, null, null, null, null, null,null);
+				Order orderFromWaitingList = new Order(null, null, null, null, null, null, null, null, null, null,null,null);
 				String saveDate = ordToBeDeleted.getDate();
 				String saveTime = ordToBeDeleted.getHour();
 				
@@ -791,7 +793,11 @@ public class EchoServer extends AbstractServer {
 				}
 			}
 			break;
-
+			/** Description of TOURGUIDELOGIN
+			 * Case of Tour guide login request.
+			 * In this case the ID is been checked in the data base
+			 * and if it founds it returns his details.
+		     */
 		case TOURGUIDELOGIN:
 			if (object instanceof TourGuide) {
 				TourGuide tourguide = (TourGuide) object;
@@ -823,7 +829,11 @@ public class EchoServer extends AbstractServer {
 				}
 			}
 			break;
-
+			/** Description of TOURGUIDELOGIN
+			 * Case of Tour guide login get orders request.
+			 * In this case the case calls the data base to get
+			 * all the orders according to the ID.
+		     */
 		case TOURGETORDERS:
 			if (object instanceof Integer) {
 				ObservableList<Object> ans3 = mysqlConnection.getTourGuideOrders(TourID);
@@ -844,7 +854,11 @@ public class EchoServer extends AbstractServer {
 				}
 			}
 			break;
-
+			/** Description of TOURGUIDEDETAILS
+			 * This case gets all the new details that the user
+			 * inserted and sends it to mysql to change the details
+			 * in the data base.
+		     */
 		case TOURGUIDEDETAILS:
 			if (object instanceof TourGuide) {
 				TourGuide updGuide = (TourGuide) object;
@@ -863,7 +877,11 @@ public class EchoServer extends AbstractServer {
 					ServerController.instance.displayMsg("TourGuide details could not be updated");
 			}
 			break;
-
+			/** Description of TOURGUIDENEWORDER
+			 * This case gets all the order details that the user
+			 * inserted and sends it to mysql to add the details
+			 * in the data base.
+		     */
 		case TOURGUIDENEWORDER:
 			if (object instanceof TourGuideOrder) {
 				boolean ans2 = mysqlConnection.updateDBOrders(object);
@@ -873,6 +891,11 @@ public class EchoServer extends AbstractServer {
 					ServerController.instance.displayMsg("TourGuide details could not be updated");
 			}
 			break;
+			/** Description of TOURGUIDENEWORDER
+			 * This case gets all the order details that the user
+			 * inserted and sends it to mysql to add the details
+			 * in the data base.
+		     */
 		case TOURGUIDEWAITINGLIST:
 			if (object instanceof WaitingList) {
 				WaitingList wait=(WaitingList)object;
@@ -893,7 +916,12 @@ public class EchoServer extends AbstractServer {
 					ServerController.instance.displayMsg("Waitinglist details could not be updated");
 			}
 			break;
-			
+			/** Description of CHECKMAXVIS
+			 * This case checks the data base to see if
+			 * the new order can be added to the system.
+			 * The case runs on the data base to see if there is a spot to order
+			 * in the park.
+		     */
 		case CHECKMAXVIS:
 			if (object instanceof TourGuideOrder) {
 				Object visMax = new maxVis(null, null, null, 0, 0, null, 0);
@@ -939,10 +967,19 @@ public class EchoServer extends AbstractServer {
 			}
 
 			break;
-			
-case GETINFOPARKENTER:
+			/** Description of GETINFOPARKENTER
+			 * This case sends an order to the sql
+			 * to check if there is an order at the given date
+			 * So at the enterance the user can enter.
+			 * The user can either insert an order number or an ID.
+		     */
+          case GETINFOPARKENTER:
 			
 			if (object instanceof Order) {
+				Order OrderR=(Order)object;
+				String checkID=OrderR.getOrderNumber();
+				int checkNum=checkID.length();
+				if(checkNum==5) {
 				order = mysqlConnection.getDBOrder(object);
 				if (order != null) {
 					ServerController.instance.displayMsg("Got order details");
@@ -956,10 +993,46 @@ case GETINFOPARKENTER:
 				} catch (IOException e) { 
 					e.printStackTrace();
 				}
+				}
+				
+				if(checkNum==9) {
+					
+					Order orderBack= new Order(null,null,null,null,null,null,null,null);
+					String sql = "SELECT * FROM gonature.orders WHERE ID ='"
+							+ OrderR.getOrderNumber() +"'; ";
+					arrOfAnswer = mysqlConnection.getDB(sql);
+
+					if (!arrOfAnswer.isEmpty()) {
+						orderBack.setParkName((String) arrOfAnswer.get(0));
+						orderBack.setHour((String) arrOfAnswer.get(1));
+						orderBack.setDate((String) arrOfAnswer.get(2));
+						orderBack.setNumOfVisitors((String) arrOfAnswer.get(3));
+						orderBack.setEmail((String) arrOfAnswer.get(4));
+						orderBack.setOrderNumber((String) arrOfAnswer.get(5));
+						orderBack.setNameOnOrder((String) arrOfAnswer.get(6));
+						orderBack.setOrderKind((String) arrOfAnswer.get(7));
+						orderBack.setID((String) arrOfAnswer.get(8));
+						orderBack.setTotalPrice((String) arrOfAnswer.get(9));
+						orderBack.setPrePaid((String) arrOfAnswer.get(10));
+			}
+					 try {
+							returnData = new DataTransfer(TypeOfMessageReturn.PARKENTERRETURNORDER, orderBack);
+							client.sendToClient(returnData);
+
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+				
+			
 			
 			}
+			}
 			break;
-			
+			/** Description of PARTKENTERGETSTATUS
+			 * This case gets the park status from the data base
+			 * it shows the number of visitors inside the park, and the maximum
+			 * visitors allowed.
+		     */
 		case PARTKENTERGETSTATUS:
 			if(object instanceof ParkStatus)
 			{
@@ -985,7 +1058,11 @@ case GETINFOPARKENTER:
 				
 			}
 			break;
-		
+			/** Description of PARTKENTERGETSTATUS
+			 * This case gets updates the park status.
+			 * it updates the number of visitors inside the park
+			 * according to the details it got from the client.
+		     */
 		case PARKENTERSENDSTATUS:
 			if(object instanceof ParkStatus)
 			{
@@ -1002,7 +1079,34 @@ case GETINFOPARKENTER:
 			}
 			
 			break;
+			/** Description of PARTKENTERGETSTATUS
+			 * This case gets updates the park status.
+			 * it updates the number of visitors inside the park
+			 * according to the details it got from the client.
+			 * for exit case.
+		     */
+		case PARKEXITSTATUS:
+			if(object instanceof casualOrder)
+			{
+				casualOrder status= (casualOrder)object;
+				String t= status.getPark();
+				int x=Integer.valueOf(status.getNumOfVis());
+				String query ="UPDATE parksstatuss SET "+t+"="+t+"- "+x+ ";";
+				boolean ans2 = mysqlConnection.updateDB(query);
+				if (ans2)
+					ServerController.instance.displayMsg("Park Status details updated");
+				else
+					ServerController.instance.displayMsg("Park Statust details could not be updated");
+			}
 			
+			
+			break;
+			
+			/** Description of CASUALVISITUPDATE
+			 * This case gets a new order at the park.
+			 * it updates the the order inside the data base.
+			 * 
+		     */
 			
 		case CASUALVISITUPDATE: 
 			if(object instanceof casualOrder)
@@ -1017,11 +1121,65 @@ case GETINFOPARKENTER:
 			}
 			break;
 			
+			/** Description of GETCASUALORDER
+			 * This case gets an order that is in the park.
+			 * it sends the details back to the client.
+		     */
+		case GETCASUALORDER:
+			if(object instanceof ParkStatus) {
+				ParkStatus status= (ParkStatus)object;
+				 String sql="select * from gonature.casualinvitation WHERE Date='" + status.getDate() + "' AND OrderNumber='" + status.getAmount() + "'; ";
+				 arrOfAnswer=mysqlConnection.getDB(sql);
+				 if(!arrOfAnswer.isEmpty()) {
+					casualOrder order=new casualOrder(null,null,null,null,null,null,null,null);
+					 order.setPark((String) arrOfAnswer.get(0));
+					 order.setDate((String) arrOfAnswer.get(1));
+					 order.setTime((String) arrOfAnswer.get(2));
+					 order.setOrderKind((String) arrOfAnswer.get(3));
+					 order.setNumOfVis((String) arrOfAnswer.get(4));
+					 order.setPayment((String) arrOfAnswer.get(5));
+					 DateTimeFormatter drf = DateTimeFormatter.ofPattern("HH:mm:ss");
+			  		 LocalDateTime noww = LocalDateTime.now();
+					 order.setExitTime(drf.format(noww));
+					 order.setOrderNumber((String) arrOfAnswer.get(7));
+					 String sql2="UPDATE gonature.casualinvitation set ExitTime='" + order.getExitTime() + "' WHERE OrderNumber = '" + order.getOrderNumber() + "';";
+					 boolean ans2 = mysqlConnection.updateDB(sql2);
+					 try {
+							returnData = new DataTransfer(TypeOfMessageReturn.PARK_EXITSTATUS, order);
+							client.sendToClient(returnData);
+
+						} catch (IOException e) {
+							e.printStackTrace();
+						}	  
+				 }
+				 if(arrOfAnswer.isEmpty()) {
+						casualOrder order=new casualOrder(null,null,null,null,null,null,null,null);
+					 order.setNumOfVis("0");
+					 try {
+							returnData = new DataTransfer(TypeOfMessageReturn.PARK_EXITSTATUS, order);
+							client.sendToClient(returnData);
+
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+				 }
+				 
+				 
+				 
+			}
+			
+			
+			
+			break;
+			/** Description of CheckDiscounts
+			 * This case checks the data base at current date
+			 * to see if there is an additonal discount.
+		     */
 			
 		case CheckDiscounts:
 			if(object instanceof ParkStatus) {
 				ParkStatus status= (ParkStatus)object;
-                String t="select * from discountdates WHERE Dates='" + status.getDate() + "' AND numOfPark='" + status.getPark() +  "'AND Approve='True';";
+                String t="select * from gonature.discountdates WHERE Dates='" + status.getDate() + "' AND numOfPark='" + status.getPark() +  "'AND Approve='True';";
                 arrOfAnswer = mysqlConnection.getDB(t);
 				status.setAmount((String) arrOfAnswer.get(1));
 				if(!arrOfAnswer.isEmpty()) {
@@ -1036,7 +1194,10 @@ case GETINFOPARKENTER:
 
 			}
 			break;
-			
+			/** Description of RESETPARKSTATUS
+			 * This case resets the amount of visitors
+			 * that is saved in the data base.
+		     */
 		case RESETPARKSTATUS:
 			if(object instanceof String) {
 				String t=(String)object;

@@ -77,7 +77,7 @@ public class mysqlConnection {
 		if (msg instanceof Order) // if its an order for Gady's screens.
 		{
 			Order ord = (Order)msg;
-			Order ordInDB = new Order(null,null,null,null,null,null,null,null,null,null,null);
+			Order ordInDB = new Order(null,null,null,null,null,null,null,null,null,null,null,null);
 			if (conn != null) {
 				try {
 					Statement st = conn.createStatement();
@@ -194,6 +194,12 @@ public class mysqlConnection {
 		return false;
 	}
 
+	 /** Description of getDB 
+     * This function gets a line from the data base.
+     * @param  msg the sql query that will be used in the function.
+     * 
+     * 
+     */
 	public static ArrayList<Object> getDB(Object msg) {
 		String str = null;
 		String sql;
@@ -228,7 +234,7 @@ public class mysqlConnection {
 	public static ArrayList<Order> getDBArrayOrder(Object msg) {
 		String str = null;
 		String sql;
-		Order ordInDB = new Order(null,null,null,null,null,null,null,null,null,null,null);
+		Order ordInDB = new Order(null,null,null,null,null,null,null,null,null,null,null,null);
 			ArrayList<Order> answer = new ArrayList<Order>();
 			if (msg instanceof String) {
 				str = (String) msg;
@@ -270,7 +276,12 @@ public class mysqlConnection {
 			return null;
 
 		}
-
+	 /** Description of updateDB 
+     * This function updates the data base, according the the query that it gets.
+     * @param  msg the sql query that will be used in the function.
+     * 
+     * 
+     */
 	public static boolean updateDB(String msg) {
 		if (conn != null) {
 			try {
@@ -395,7 +406,12 @@ public class mysqlConnection {
 		}
 		return false;
 	}
-
+	 /** Description of updateDBOrders 
+     * This function updates the data base with a new order.
+     * @param  updatedTourOrder is the entity of an order
+     * that will be inserted into the data base.
+     * 
+     */
 	public static boolean updateDBOrders(Object updatedTourOrder) {
 		if (updatedTourOrder instanceof TourGuideOrder) {
 			TourGuideOrder updGuide= (TourGuideOrder)updatedTourOrder;
@@ -454,7 +470,11 @@ public class mysqlConnection {
 		}
 		return false;
 	}
-
+	 /** Description of generateRandomChars 
+     * @param candidateChars gets the candidate chars to generate a random chars.  
+     * @param length- chooses the size of the random chars.
+     * @return A string is returned with the random chars.
+     */
 	public static String generateRandomChars(String candidateChars, int length) {
 		StringBuilder sb = new StringBuilder();
 		Random random = new Random();
@@ -500,7 +520,11 @@ public class mysqlConnection {
 
 		return null;
 	}
-
+	 /** Description of getTourGuideOrders
+		 * This function returns all the orders of the ID that it got.  
+	     * @param msg gets the id of the TourGuide.  
+	     * @return ObservableList of the orders details.
+	     */
 	// ObservableList<Object>
 	public static ObservableList<Object> getTourGuideOrders(Object msg) {
 		ObservableList<Object> oblist = FXCollections.observableArrayList();
@@ -581,7 +605,13 @@ public class mysqlConnection {
 //		}
 //		return null;
 //	}
-
+	/** Description of checkMaxVisitors
+	 * This function checks if there is a spot to place the order.
+	 * The function checks according to the max visit time the hours before and after
+	 * The requsted hour of the new order.
+     * @param msg gets the id of the TourGuide.  
+     * @return maxVis entity that holds few details about the open spot.
+     */
 	public static maxVis checkMaxVisitors(Object msg) {
 		maxVis orderC = (maxVis) msg;
 		maxVis maxNum = new maxVis(null, null, null, 0, 0, null, 0);
@@ -631,7 +661,12 @@ public class mysqlConnection {
 		}
 		return null;
 	}
-
+	 /** Description of getPartStatus
+		 * This function checks the amount of visitors in the park
+		 * according to which has been checked.
+	     * @param status is an entity that holds 
+	     * @return maxVis entity that holds few details about the open spot.
+	     */
 	public static String getPartStatus(ParkStatus status) {
 		try {
 			String t = null;
@@ -658,7 +693,12 @@ public class mysqlConnection {
 
 		return null;
 	}
-
+	 /** Description of getPartStatus2
+	 * This function checks the amount of visitors in the park
+	 * according to which has been checked.
+     * @param status is an entity that holds 
+     * @return maxVis entity that holds few details about the open spot.
+     */
 	public static String getPartStatus2(ParkStatus status) {
 		try {
 			String t = null;
@@ -683,7 +723,11 @@ public class mysqlConnection {
 		// TODO Auto-generated method stub
 		return false;
 	}
-
+	/** Description of updateCasualTable
+	 * This function updates an acsual order thats in the park.
+     * @param order is an entity that holds all the order details. 
+     * @return boolean if succsseded or not.
+     */
 	public static boolean updateCasualTable(casualOrder order) {
 		try {
 
@@ -707,7 +751,12 @@ public class mysqlConnection {
 
 		return false;
 	}
-
+	/** Description of getDiscountPerDay
+	 * This function checks if in the data base there is
+	 * a discount to the same day.
+     * @param status entity that holds the details needed for the check. 
+     * @return String returns the discount, if there is one.
+     */
 	public static String getDiscountPerDay(ParkStatus status) {
 		try {
 			String t = "select * from discountdates WHERE Dates='" + status.getDate() + "' AND numOfPark='"

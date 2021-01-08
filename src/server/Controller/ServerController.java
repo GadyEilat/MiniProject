@@ -125,7 +125,7 @@ public class ServerController implements Initializable {
 		if (!arrOfAnswer.isEmpty()) {
 
 			for (int i = 0; i < arrOfAnswer.size(); i += 9) {
-				ordInDB = new Order(null, null, null, null, null, null, null, null, null, null, null);
+				ordInDB = new Order(null, null, null, null, null, null, null, null, null, null, null,null);
 				ordInDB.setParkName(arrOfAnswer.get(i + 0).toString());
 				ordInDB.setHour(arrOfAnswer.get(i + 1).toString());
 				ordInDB.setDate(arrOfAnswer.get(i + 2).toString());

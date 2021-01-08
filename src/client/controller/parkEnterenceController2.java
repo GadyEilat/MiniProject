@@ -37,7 +37,7 @@ public class parkEnterenceController2 extends AbstractScenes {
     LocalDateTime now = LocalDateTime.now();
 	ParkStatus status;
 	double casualPrice= 30;
-	public casualOrder order= new casualOrder(null,null,null,null,null,null,null);
+	public casualOrder order= new casualOrder(null,null,null,null,null,null,null,null);
 	 @FXML
 	    private ResourceBundle resources;
 
@@ -83,12 +83,18 @@ public class parkEnterenceController2 extends AbstractScenes {
 	    
 	    @FXML
 	    void exitParkB(ActionEvent event) {
-
+	    	switchScenes("/client/boundaries/WorkerParkEnternece3.fxml", "Enternece");
 	    }
 	    
 	    @FXML
 	    void ExistenceOrder(ActionEvent event) {
 
+	    }
+	    
+	    
+	    @FXML
+	    void newOrderBtn(ActionEvent event) {
+	    	switchScenes("/client/boundaries/WorkerParkEnternece.fxml", "Enternece");
 	    }
 
 	    @FXML
@@ -136,7 +142,7 @@ public class parkEnterenceController2 extends AbstractScenes {
 	    	DataTransfer data = new DataTransfer(TypeOfMessage.PARKENTERSENDSTATUS,status1);
 	    	ClientUI.chat.accept(data);
 	    	
-	    	errormsg.setText("New order visit succseed");
+	    	
 	    	finishOrder();
 	    }
 	    /** Description of insertData 
@@ -168,7 +174,8 @@ public class parkEnterenceController2 extends AbstractScenes {
 	             priceTxt.setText(String.valueOf(price));
 	             }
 	             if(t.getPrePaid().compareTo("Yes")==0) {
-	             	priceTxt.clear();
+	             	priceTxt.setText("Paid");
+	             	order.setPayment(t.getTotalPrice());
 	             }
 	    	continueOrder(t);
 	    	
@@ -176,11 +183,18 @@ public class parkEnterenceController2 extends AbstractScenes {
 	    
 	    
 	    public void finishOrder() {
+	    	String today=dtf.format(now);
+	    	if(!today.equals(order.getDate())) {
+	    		errormsg.setText("Wrong date!");	
+	    	}
+	    	if(today.equals(order.getDate())) {
 	    	DataTransfer data2 = new DataTransfer(TypeOfMessage.CASUALVISITUPDATE,order);
 	    	ClientUI.chat.accept(data2);
-	    	order=new casualOrder(null,null,null,null,null,null,null);
+	    	order=new casualOrder(null,null,null,null,null,null,null,null);
+	    	errormsg.setText("New order visit succseed");
+	    	}
 	    }
-	    /** Description of insertData 
+	    /** Description of continueOrder 
 	    • *
 	    • * @param t an order entity that prints all the details
 	    • * 
@@ -195,6 +209,8 @@ public class parkEnterenceController2 extends AbstractScenes {
             //order.setOrderKind(t.getKindOfVisitor);//fix
             order.setOrderNumber(t.getOrderNumber());
             order.setOrderKind(t.getOrderKind());
+            order.setNumOfVis(t.getNumOfVisitors());
+            
            
             //DataTransfer data2 = new DataTransfer(TypeOfMessage.CASUALVISITUPDATE,order);
 	    	//ClientUI.chat.accept(data2);
