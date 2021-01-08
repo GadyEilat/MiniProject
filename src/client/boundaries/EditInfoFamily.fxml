@@ -13,7 +13,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane prefHeight="600.0" prefWidth="800.0" stylesheets="@DepartmentManagerStyle.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.SubscriptionEditController">
+<BorderPane prefHeight="600.0" prefWidth="800.0" stylesheets="@../../../res/mainEnter.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.SubscriptionEditController">
    <center>
       <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0">
          <children>
@@ -43,7 +43,7 @@
                               <Text layoutX="186.0" layoutY="304.0" strokeType="OUTSIDE" strokeWidth="0.0" text="-" />
                               <Text layoutX="248.0" layoutY="305.0" strokeType="OUTSIDE" strokeWidth="0.0" text="-" />
                               <Text layoutX="309.0" layoutY="304.0" strokeType="OUTSIDE" strokeWidth="0.0" text="-" wrappingWidth="10.798828125" />
-                              <Button fx:id="btnSave" layoutX="420.0" layoutY="385.0" mnemonicParsing="false" onAction="#updateFamilyInfo" prefHeight="33.0" prefWidth="65.0" text="Save" />
+                              <Button fx:id="btnSave" layoutX="420.0" layoutY="385.0" mnemonicParsing="false" onAction="#updateFamilyInfo" prefHeight="25.0" prefWidth="65.0" text="Save" />
                            </children>
                         </AnchorPane>
                      </children>

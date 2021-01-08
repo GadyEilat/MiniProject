@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" styleClass="background" stylesheets="@mainEnter.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.EntranceController">
+<BorderPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" styleClass="background" stylesheets="@../../../res/mainEnter.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.EntranceController">
    <center>
       <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="362.0" prefWidth="765.0" BorderPane.alignment="CENTER">
          <children>
@@ -20,12 +20,12 @@
                      <children>
                         <AnchorPane>
                            <children>
-                              <ImageView fitHeight="160.0" fitWidth="229.0" layoutX="9.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="160.0" fitWidth="229.0" layoutX="21.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="/LOGONATURE.png" />
                                  </image>
                               </ImageView>
-                              <Button fx:id="travelerEnter" layoutX="18.0" layoutY="200.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#travelerEnter" prefHeight="37.0" prefWidth="175.0" text="Travelers Entrance" textAlignment="CENTER">
+                              <Button fx:id="travelerEnter" layoutX="14.0" layoutY="215.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#travelerEnter" prefHeight="37.0" prefWidth="175.0" text="Travelers Entrance" textAlignment="CENTER">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
@@ -45,7 +45,7 @@
    <top>
       <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="workerEnter" layoutX="694.0" layoutY="61.0" mnemonicParsing="false" onAction="#btnWorker" text="Worker" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="50.0" />
+            <Button fx:id="workerEnter" layoutX="694.0" layoutY="61.0" mnemonicParsing="false" onAction="#btnWorker" prefHeight="25.0" prefWidth="59.0" text="Worker" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="50.0" />
          </children>
       </AnchorPane>
    </top>

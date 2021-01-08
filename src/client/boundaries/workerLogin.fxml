@@ -13,7 +13,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane prefHeight="600.0" prefWidth="800.0" styleClass="background" stylesheets="@mainEnter.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.WorkerLogin">
+<BorderPane prefHeight="600.0" prefWidth="800.0" styleClass="background" stylesheets="@../../../res/mainEnter.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.WorkerLogin">
    <center>
       <AnchorPane prefHeight="379.0" prefWidth="800.0" BorderPane.alignment="CENTER">
          <children>
@@ -31,7 +31,7 @@
                               <TextField fx:id="userNameField" layoutX="133.0" layoutY="127.0" promptText="User Name" />
                               <Text disable="true" layoutX="48.0" layoutY="144.0" strokeType="OUTSIDE" strokeWidth="0.0" text="User Name" />
                               <Text disable="true" layoutX="53.0" layoutY="199.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Password" />
-                              <Button fx:id="LogInButton" layoutX="183.0" layoutY="252.0" mnemonicParsing="false" onAction="#checkLogIn" text="Log in" />
+                              <Button fx:id="LogInButton" layoutX="183.0" layoutY="252.0" mnemonicParsing="false" onAction="#checkLogIn" prefHeight="25.0" prefWidth="59.0" text="Log in" />
                               <PasswordField fx:id="passwordField" layoutX="133.0" layoutY="182.0" promptText="Password" />
                               <Text fx:id="msgText" fill="RED" layoutX="115.0" layoutY="229.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="185.13671875" />
                            </children>

@@ -15,7 +15,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane prefHeight="600.0" prefWidth="800.0" stylesheets="@../../../../חומר%20למבחן%20מסדים/ManagerStyle.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.TourGuidePaymentController">
+<BorderPane prefHeight="600.0" prefWidth="800.0" stylesheets="@../../../res/mainEnter.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.TourGuidePaymentController">
    <center>
       <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0">
          <children>
@@ -26,7 +26,7 @@
                         <AnchorPane prefHeight="158.0" prefWidth="467.0">
                            <children>
                               <Label layoutX="116.0" layoutY="62.0" text="Card type" />
-                              <Label layoutX="89.0" layoutY="103.0" text="Card number" />
+                              <Label layoutX="96.0" layoutY="102.0" text="Card number" />
                               <Label layoutX="120.0" layoutY="148.0" text="Exp date" />
                               <TextField layoutX="187.0" layoutY="187.0" />
                               <Button fx:id="completeTourOrderBtn" layoutX="224.0" layoutY="264.0" mnemonicParsing="false" onAction="#completeTourOrderButton" style="-fx-background-color: lightgreen;" text="Complete" />
@@ -55,9 +55,9 @@
                                     <MenuItem mnemonicParsing="false" text="Action 2" />
                                  </items>
                               </SplitMenuButton>
-                              <Label layoutX="162.0" layoutY="229.0" text="ID" />
+                              <Label layoutX="155.0" layoutY="228.0" text="ID" />
                               <TextField layoutX="187.0" layoutY="224.0" />
-                              <Label layoutX="282.0" layoutY="35.0" text="Total amount" />
+                              <Label layoutX="291.0" layoutY="37.0" text="Total amount" />
                               <TextField layoutX="380.0" layoutY="30.0" prefHeight="31.0" prefWidth="73.0" />
                            </children>
                         </AnchorPane>
@@ -81,13 +81,13 @@
    <top>
       <AnchorPane style="-fx-background-color: #c9c4c4;" BorderPane.alignment="CENTER">
          <children>
-            <Text layoutX="206.0" layoutY="63.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hello Elad" wrappingWidth="106.33984375" AnchorPane.leftAnchor="205.0" AnchorPane.topAnchor="42.0">
+            <Text layoutX="206.0" layoutY="63.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hello Elad" wrappingWidth="223.33984375" AnchorPane.leftAnchor="205.0" AnchorPane.topAnchor="42.0">
                <font>
                   <Font size="18.0" />
                </font>
             </Text>
             <Button fx:id="LogOutBtn" layoutX="707.0" layoutY="42.0" mnemonicParsing="false" onAction="#LogOutButton" stylesheets="@../../../../../../סמסטר%20א%202021/ממשקי%20אדם/מדריך/ManagerStyle.css" text="Log Out" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="40.0" />
-            <ImageView fitHeight="82.0" fitWidth="104.0">
+            <ImageView fitHeight="82.0" fitWidth="104.0" AnchorPane.leftAnchor="6.0" AnchorPane.topAnchor="7.0">
                <image>
                   <Image url="@../../../../../../חומר%20למבחן%20בדיסקרטית/New%20folder/LOGONATURE.png" />
                </image>
