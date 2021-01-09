@@ -14,7 +14,11 @@ import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
 /**
- * pop up window for canceling an order.
+ * Pop up window for canceling an order.
+ * The window is oepened after you decide to cancel an existing order.
+ * You got 2 options, either Cancel it, or not cancel it.
+ * If you cancel the order, it will be removed from DB and you will no longer have access to it.
+ * If you don't cancel it, you'll just go to the previous window.
  * @author Gady
  *
  */
@@ -58,7 +62,9 @@ public class CancelConfirmationController extends AbstractScenes{
     	Stage stage = (Stage) dontCancelBtn.getScene().getWindow();
         stage.close();	
     }
-
+/**
+ * Initializing the window.
+ */
     public void initialize() {
     }
 }

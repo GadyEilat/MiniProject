@@ -15,7 +15,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane prefHeight="600.0" prefWidth="800.0" stylesheets="@DepartmentManagerStyle.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.subscriberNewOrderController">
+<BorderPane prefHeight="600.0" prefWidth="800.0" stylesheets="@mainStyle.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.subscriberNewOrderController">
    <center>
       <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0">
          <children>
@@ -28,7 +28,7 @@
                               <Label layoutX="144.0" layoutY="114.0" text="Park" />
                               <Label layoutX="92.0" layoutY="149.0" text="Date and time" />
                               <Label layoutX="72.0" layoutY="183.0" text="Number of visitors" />
-                              <TextField fx:id="enterEmail" layoutX="192.0" layoutY="212.0" />
+                              <TextField fx:id="enterEmail" layoutX="192.0" layoutY="212.0" prefHeight="25.0" prefWidth="248.0" />
                               <Button fx:id="continueToPayBtn" layoutX="207.0" layoutY="267.0" mnemonicParsing="false" onAction="#continueToPayButton" text="Continue" />
                               <Label layoutX="208.0" layoutY="29.0" text="New Order">
                                  <font>
@@ -36,14 +36,14 @@
                                  </font>
                               </Label>
                               <Label layoutX="141.0" layoutY="216.0" text="Email" />
-                              <Button fx:id="waitingListBtn" layoutX="349.0" layoutY="268.0" mnemonicParsing="false" onAction="#waitingListButton" style="-fx-background-color: lightblue;" text="Enter waiting list" />
-                              <ComboBox fx:id="numVisitorsBtn" layoutX="192.0" layoutY="179.0" prefHeight="25.0" prefWidth="76.0" promptText="select" />
-                              <ComboBox fx:id="parkNameBtn" layoutX="192.0" layoutY="110.0" prefHeight="25.0" prefWidth="90.0" promptText="select" />
-                              <ComboBox fx:id="chooseTime" layoutX="192.0" layoutY="145.0" prefHeight="25.0" prefWidth="89.0" promptText="select" />
-                              <DatePicker fx:id="chooseDayBtn" layoutX="298.0" layoutY="145.0" prefHeight="25.0" prefWidth="119.0" promptText="dd/mm/yyyy" />
+                              <Button fx:id="waitingListBtn" layoutX="349.0" layoutY="268.0" mnemonicParsing="false" onAction="#waitingListButton" text="Enter waiting list" />
+                              <ComboBox fx:id="numVisitorsBtn" layoutX="192.0" layoutY="179.0" prefHeight="25.0" prefWidth="108.0" promptText="select" />
+                              <ComboBox fx:id="parkNameBtn" layoutX="192.0" layoutY="110.0" prefHeight="25.0" prefWidth="107.0" promptText="select" />
+                              <ComboBox fx:id="chooseTime" layoutX="192.0" layoutY="145.0" prefHeight="25.0" prefWidth="107.0" promptText="select" />
+                              <DatePicker fx:id="chooseDayBtn" layoutX="317.0" layoutY="145.0" prefHeight="25.0" prefWidth="119.0" promptText="dd/mm/yyyy" />
                               <Text fx:id="errorEmail" fill="#eb0707" layoutX="179.0" layoutY="256.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="174.13671875" />
                               <Label layoutX="112.0" layoutY="77.0" prefHeight="17.0" prefWidth="64.0" text="First Name" />
-                              <TextField fx:id="firstName" layoutX="191.0" layoutY="73.0" prefHeight="25.0" prefWidth="118.0" />
+                              <TextField fx:id="firstName" layoutX="191.0" layoutY="73.0" prefHeight="25.0" prefWidth="108.0" />
                            </children>
                         </AnchorPane>
                      </children>

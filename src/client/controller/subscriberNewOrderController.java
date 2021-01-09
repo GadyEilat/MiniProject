@@ -141,10 +141,12 @@ public class subscriberNewOrderController extends AbstractScenes {
 				SubscriptionOrder.setID(ChatClient.subscriber.getId());
 				pricePerPerson = price * 0.85 * 0.80;
 				price = pricePerPerson * Double.valueOf(orderNumOfVisitors);
+				pricePerPerson = 0.0;
 				SubscriptionOrder.setTotalPrice(String.format("Price: %.2f", price));
+				price = 30.0;
 				SubscriptionOrder.setOrderKind("Subscriber");
 				SubscriptionOrder.setPrePaid("No");
-//				SubscriptionOrder.setApproved("false");
+				SubscriptionOrder.setApproved("false");
 				DataTransfer data2 = new DataTransfer(TypeOfMessage.SUBSCRIBER_NEWORDER, SubscriptionOrder);
 				ClientUI.chat.accept(data2);
 			}
@@ -167,12 +169,11 @@ public class subscriberNewOrderController extends AbstractScenes {
 			public void run() {
 				Stage helpWindow = new Stage();
 				FXMLLoader fxmlLoad = new FXMLLoader(
-						getClass().getResource("/client/boundaries/HelpForManagingPark.fxml"));
+						getClass().getResource("/client/boundaries/subNewOrderComplete.fxml"));
 				Parent current = null;
 				try {
 					current = fxmlLoad.load();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				helpWindow.initModality(Modality.APPLICATION_MODAL);
@@ -195,6 +196,7 @@ public class subscriberNewOrderController extends AbstractScenes {
 	 */
 
 	public void thereIsNoPlaceForVisitors() {
+		waitingListBtn.setDisable(false);
 		Platform.runLater(new Runnable() {
 
 			@Override
@@ -276,13 +278,15 @@ public class subscriberNewOrderController extends AbstractScenes {
 		alert.setContentText("Entered waiting list sucssesfully");
 		alert.show();
 		WaitingList wait = new WaitingList(null, null, null, null, null, null, null, null, null, null);
+		wait.setParkName(SubscriptionOrder.getParkName());
+		wait.setTime(SubscriptionOrder.getHour());
 		wait.setDate(SubscriptionOrder.getDate());
+		wait.setNumOfVisitors(SubscriptionOrder.getNumOfVisitors());
 		wait.setEmail(SubscriptionOrder.getEmail());
 		wait.setID(SubscriptionOrder.getID());
 		wait.setNameOnOrder(SubscriptionOrder.getNameOnOrder());
-		wait.setNumOfVisitors(SubscriptionOrder.getNumOfVisitors());
-		wait.setParkName(SubscriptionOrder.getParkName());
-		wait.setTime(SubscriptionOrder.getHour());
+		wait.setOrderNumber(SubscriptionOrder.getOrderNumber());
+		wait.setOrderKind("Subscriber");
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		LocalDateTime now = LocalDateTime.now();
 		wait.setTimeOfEntrance(dtf.format(now));
@@ -401,6 +405,9 @@ public class subscriberNewOrderController extends AbstractScenes {
 		familyName.setText("Hello " + ChatClient.subscriber.getLname() + " Family");
 
 		instance = this;
+		waitingListBtn.setDisable(true);
+		enterEmail.setText(ChatClient.subscriber.getEmail());
+		firstName.setText(ChatClient.subscriber.getFname());
 //		newTravelerID = RegularTravelerController.instance.ID;
 		setTimeComboBox();
 		setParkComboBox();

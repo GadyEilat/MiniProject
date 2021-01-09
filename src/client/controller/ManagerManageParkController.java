@@ -70,6 +70,7 @@ public class ManagerManageParkController extends AbstractScenes {
 
 	@FXML
 	private Button btnDiscount;
+	boolean thereIsDataToSend = false;
 
     @FXML
     void helpWindowPopOut(ActionEvent event) {
@@ -103,6 +104,7 @@ public class ManagerManageParkController extends AbstractScenes {
 		String MaxTime = MaxTimeField.getText();
 		String maxVisitor = maxVisitorField.getText();
 		String gapForVisitors = gapForVisitorsField.getText();
+		ParkInfo parkInfo = new ParkInfo(ChatClient.worker.getPark().getNumberOfPark(), null, null, null, null);
 		if (maxVisitor.trim().isEmpty() && gapForVisitors.trim().isEmpty() && MaxTime.trim().isEmpty()) {
 //			msgText.setText("Empty Fields");
 			alertBox("Empty Fields");
@@ -112,21 +114,35 @@ public class ManagerManageParkController extends AbstractScenes {
 			if(maxVisitor.trim().isEmpty()) {
 				if(Integer.parseInt(gapForVisitors) < 10) {
 					alertBox("See instruction in help button");
+				}else {
+					parkInfo.setGapOfVisitors(gapForVisitors);
+					thereIsDataToSend = true;
 				}
 			}else if(Integer.parseInt(gapForVisitors) > Integer.parseInt(maxVisitor)) {
 					alertBox("See instruction in help button");
 				}
+			else {
+				parkInfo.setGapOfVisitors(gapForVisitors);
+				parkInfo.setMaxVisitors(maxVisitor);
+				thereIsDataToSend = true;
+			}
+			
 		}else if(!MaxTime.trim().isEmpty()) {
-			if (Integer.parseInt(MaxTime) > 8 || Integer.parseInt(MaxTime) > 1) {
+			if (Integer.parseInt(MaxTime) > 8 || Integer.parseInt(MaxTime) < 1) {
 				alertBox("See instruction in help button");
+			}else {
+				parkInfo.setMaxHourToVisit(MaxTime);
+				thereIsDataToSend = true;
 			}
 		}else if(!maxVisitor.trim().isEmpty()) {
 			if( Integer.parseInt(maxVisitor) < 50) {
 				alertBox("See instruction in help button");
+			}else {
+				parkInfo.setMaxVisitors(maxVisitor);
+				thereIsDataToSend = true;
 			}
 		}
-		else {
-			ParkInfo parkInfo = new ParkInfo(ChatClient.worker.getPark().getNumberOfPark(), null, null, null, null);
+		else{
 			if (!maxVisitor.trim().isEmpty()) {
 				parkInfo.setMaxVisitors(maxVisitor);
 			}
@@ -136,7 +152,10 @@ public class ManagerManageParkController extends AbstractScenes {
 			if (!MaxTime.trim().isEmpty()) {
 				parkInfo.setMaxHourToVisit(MaxTime);
 			}
+			thereIsDataToSend = true;
 //			ParkInfo parkInfo = new ParkInfo(ChatClient.worker.getPark().getNumberOfPark(),maxVisitor , gapForVisitors, MaxTime,null);
+		}
+		if(thereIsDataToSend) {
 			DataTransfer data = new DataTransfer(TypeOfMessage.UPDATEINFO_REQUEST, parkInfo);
 			MaxTimeField.clear();
 			maxVisitorField.clear();

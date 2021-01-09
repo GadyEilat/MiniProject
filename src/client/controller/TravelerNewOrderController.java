@@ -265,13 +265,13 @@ public class TravelerNewOrderController extends AbstractScenes {
 	}
 
 
+
 	/**
 	 * waitingListButton method
 	 * @param event
 	 * This method handling the EnterWaitingList button and saves the Order's details.
 	 * At the end of the actions, the screen return back to the kind of travelers screen.
 	 */
-
 
 	@FXML
 	void waitingListButton(ActionEvent event) {
@@ -362,6 +362,7 @@ public class TravelerNewOrderController extends AbstractScenes {
 	 * @param t an entity that is been use for the waitinglist checks.
 	 */
 	public void checkDate2(maxVis t) {
+
 		maxVis visMax = new maxVis(null, null, null, 0, 0, null, 0);
 		visMax.setDate(t.getDate());
 		visMax.setPark(t.getPark());
@@ -371,4 +372,6 @@ public class TravelerNewOrderController extends AbstractScenes {
 		if (Integer.valueOf(visMax.getVisitorsInOrder() + visMax.getAllowed2()) < visMax.getAllowed1())
 			thereIsSpot = true;
 	}
+
+
 }

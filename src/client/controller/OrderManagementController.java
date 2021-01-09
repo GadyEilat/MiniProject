@@ -35,7 +35,11 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 /**
+ * OrderManagementController Class: 
  * Order Management window tells you the details of your existing order.
+ * it shows details such as order number, park name, date, time, amount of visitors.
+ * the user can change his order details, print them or cancel his order.
+ * The controller expands the AbstractScenes class that replaces the scenes within the main stage. 
  * @author Gady
  *
  */
@@ -100,7 +104,11 @@ public class OrderManagementController extends AbstractScenes {
     private Button cancelOrderBtn;
 
     public static OrderManagementController instance;
-    
+    /**
+     * The button "Approve" lets the user approve his order a day before his arrival time. 
+     * He'll get an alert pop up message if he doesn't need to approve it now.
+     * @param event when you click Approve
+     */
     @FXML
     void Approve(ActionEvent event) {
     	LocalDate today = LocalDate.now();
@@ -130,12 +138,18 @@ public class OrderManagementController extends AbstractScenes {
 		
     	
     }
-    
+    /**
+     * If the order was successfully approved, a message will appear saying it was approved.
+     */
     public void approvedReturn() {
     	approveText.setFill(Color.DARKGREEN);
 		approveText.setText("Order was approved,\nsee you tomorrow!");
     }
-    
+    /**
+     * method for translating String to LocalDate
+     * @param dateString the string we want to translate
+     * @return the returned value is in LocalDate type
+     */
     public static final LocalDate LOCAL_DATE (String dateString){ //method for dealing with dates.
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate localDate = LocalDate.parse(dateString, formatter);
