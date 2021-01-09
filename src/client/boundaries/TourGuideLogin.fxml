@@ -7,17 +7,47 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane prefHeight="600.0" prefWidth="800.0" styleClass="background" stylesheets="@../../../res/mainEnter.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.TourGuideLoginController">
+<BorderPane prefHeight="600.0" prefWidth="800.0" styleClass="background" stylesheets="@mainEnter.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.TourGuideLoginController">
    <top>
-      <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" BorderPane.alignment="CENTER" />
-   </top>
-   <bottom>
-      <AnchorPane prefHeight="43.0" prefWidth="651.0" BorderPane.alignment="CENTER">
+      <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" BorderPane.alignment="CENTER">
          <children>
-            <Button layoutX="37.0" layoutY="13.0" mnemonicParsing="false" onAction="#backButton" prefHeight="43.0" prefWidth="56.0" style="-fx-border-radius: 20;" AnchorPane.bottomAnchor="35.0" AnchorPane.leftAnchor="35.0">
+            <ImageView fitHeight="106.0" fitWidth="155.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="6.0" AnchorPane.topAnchor="7.0">
+               <image>
+                  <Image url="@../../../res/LOGONATURE.png" />
+               </image>
+            </ImageView>
+         </children></AnchorPane>
+   </top>
+   <center>
+      <AnchorPane prefHeight="487.0" prefWidth="800.0" BorderPane.alignment="CENTER">
+         <children>
+            <VBox alignment="CENTER" layoutX="197.0" layoutY="80.0" prefHeight="297.0" prefWidth="407.0" AnchorPane.bottomAnchor="110.0" AnchorPane.leftAnchor="197.0" AnchorPane.rightAnchor="196.0" AnchorPane.topAnchor="80.0">
+               <children>
+                  <HBox alignment="CENTER" prefHeight="309.0" prefWidth="407.0">
+                     <children>
+                        <AnchorPane prefHeight="296.0" prefWidth="429.0">
+                           <children>
+                              <TextField fx:id="GuideID" layoutX="130.0" layoutY="129.0" promptText="Enter Your ID" />
+                              <Label layoutX="92.0" layoutY="67.0" prefHeight="34.0" prefWidth="223.0" text="Tour guides screen" textAlignment="CENTER">
+                                 <font>
+                                    <Font name="Franklin Gothic Heavy" size="24.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="106.0" layoutY="133.0" text="ID" />
+                              <Button fx:id="LogINGuideBtn" layoutX="173.0" layoutY="199.0" mnemonicParsing="false" onAction="#LogINGuideButton" prefHeight="25.0" prefWidth="62.0" text="Log in" />
+                              <Text fx:id="MsgFromController" fill="#ff3333" layoutX="122.0" layoutY="185.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="166.0" />
+                           </children>
+                        </AnchorPane>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+            <Button mnemonicParsing="false" onAction="#backButton" prefHeight="43.0" prefWidth="56.0" style="-fx-border-radius: 20;" AnchorPane.bottomAnchor="35.0" AnchorPane.leftAnchor="35.0">
                <graphic>
                   <ImageView fx:id="BackButton1" fitHeight="35.0" fitWidth="40.0">
                      <image>
@@ -26,26 +56,6 @@
                   </ImageView>
                </graphic>
             </Button>
-         </children>
-      </AnchorPane>
-   </bottom>
-   <center>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-         <children>
-            <TextField fx:id="GuideID" layoutX="327.0" layoutY="231.0" />
-            <Label layoutX="295.0" layoutY="186.0" prefHeight="34.0" prefWidth="210.0" text="Tour guides screen" textAlignment="CENTER">
-               <font>
-                  <Font name="System Bold" size="23.0" />
-               </font>
-            </Label>
-            <Label layoutX="306.0" layoutY="235.0" text="ID" />
-            <Button fx:id="LogINGuideBtn" layoutX="370.0" layoutY="297.0" mnemonicParsing="false" onAction="#LogINGuideButton" prefHeight="25.0" prefWidth="62.0" text="Log in" />
-            <ImageView fitHeight="106.0" fitWidth="155.0" layoutX="21.0" layoutY="14.0">
-               <image>
-                  <Image url="@../../../res/LOGONATURE.png" />
-               </image>
-            </ImageView>
-            <Text fx:id="MsgFromController" fill="#ff3333" layoutX="344.0" layoutY="285.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="112.0" />
          </children>
       </AnchorPane>
    </center>

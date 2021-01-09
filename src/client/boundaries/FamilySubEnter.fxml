@@ -9,27 +9,28 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" styleClass="background" stylesheets="@../../../res/mainEnter.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.SubscriptionEntryController">
+<BorderPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" styleClass="background" stylesheets="@mainEnter.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.SubscriptionEntryController">
    <center>
       <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="362.0" prefWidth="765.0" BorderPane.alignment="CENTER">
          <children>
-            <HBox alignment="CENTER" layoutX="283.0" layoutY="14.0" prefHeight="295.0" prefWidth="240.0" spacing="40.0" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="283.0" AnchorPane.rightAnchor="282.0" AnchorPane.topAnchor="0.0">
+            <HBox alignment="CENTER" layoutX="182.0" layoutY="14.0" prefHeight="363.0" prefWidth="415.0" spacing="40.0" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="182.0" AnchorPane.rightAnchor="168.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <VBox prefHeight="178.0" prefWidth="220.0">
+                  <VBox prefHeight="363.0" prefWidth="450.0">
                      <children>
-                        <AnchorPane prefHeight="297.0" prefWidth="220.0">
+                        <AnchorPane prefHeight="366.0" prefWidth="395.0">
                            <children>
-                              <ImageView fitHeight="160.0" fitWidth="229.0" layoutX="25.0" layoutY="-12.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="/LOGONATURE.png" />
-                                 </image>
-                              </ImageView>
-                              <Button fx:id="btnEnter" layoutX="60.0" layoutY="256.0" mnemonicParsing="false" onAction="#checkSubNumAndEnter" prefHeight="25.0" prefWidth="62.0" text="Enter" />
-                              <TextField fx:id="subNumField" layoutX="18.0" layoutY="194.0" prefHeight="25.0" prefWidth="146.0" />
-                              <Text layoutX="29.0" layoutY="174.0" strokeType="OUTSIDE" strokeWidth="0.0" text="subscription/id number" />
-                              <Text fx:id="msgText" fill="RED" layoutX="17.0" layoutY="244.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="148.13671875" />
+                              <Button fx:id="btnEnter" layoutX="134.0" layoutY="266.0" mnemonicParsing="false" onAction="#checkSubNumAndEnter" prefHeight="25.0" prefWidth="62.0" text="Enter" />
+                              <TextField fx:id="subNumField" layoutX="92.0" layoutY="204.0" prefHeight="25.0" prefWidth="146.0" />
+                              <Text layoutX="103.0" layoutY="184.0" strokeType="OUTSIDE" strokeWidth="0.0" text="subscription/id number" />
+                              <Text fx:id="msgText" fill="RED" layoutX="29.0" layoutY="251.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="271.13671875" />
+                              <Text layoutX="56.0" layoutY="145.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Subscription Log In">
+                                 <font>
+                                    <Font name="Franklin Gothic Heavy" size="24.0" />
+                                 </font>
+                              </Text>
                            </children>
                         </AnchorPane>
                      </children>
@@ -43,7 +44,14 @@
       </AnchorPane>
    </center>
    <top>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+      <AnchorPane prefHeight="18.0" prefWidth="800.0" BorderPane.alignment="CENTER">
+         <children>
+            <ImageView fitHeight="106.0" fitWidth="155.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="6.0" AnchorPane.topAnchor="7.0">
+               <image>
+                  <Image url="/LOGONATURE.png" />
+               </image>
+            </ImageView>
+         </children></AnchorPane>
    </top>
    <bottom>
       <AnchorPane prefHeight="106.0" prefWidth="800.0" BorderPane.alignment="CENTER">
