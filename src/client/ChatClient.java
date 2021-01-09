@@ -48,18 +48,18 @@ public class ChatClient extends AbstractClient {
 	public static Visitor visitor = new Visitor(null, null, null, null, null);
 	public static Order order = new Order(null, null, null, null, null, null, null, null);
 	public static TourGuide tourguide = new TourGuide(null, null, null, null, null);
-	public static TourGuideOrder tourguideorder = new TourGuideOrder(null, null, null, null, null, null, null, null,null,null);
+	public static TourGuideOrder tourguideorder = new TourGuideOrder(null, null, null, null, null, null, null, null,
+			null, null);
 	public static Worker worker;
 	public static ParkInfo parkInfo;
 	public static Subscriber subscriber;
 	public static ObservableList<TourGuideOrder> oblist = FXCollections.observableArrayList();
-    public static maxVis visMax= new maxVis(null, null, null, 0, 0, null, 0);
+	public static maxVis visMax = new maxVis(null, null, null, 0, 0, null, 0);
 	public static String datesToShow[][];
 	public static String datesToApprveShow[][];
 	public static boolean connected = false;
 	ChatIF clientUI;
 	public boolean waitForConnection = false;
-
 
 	public ChatClient(String host, int port, ChatIF clientUI) throws IOException {
 		super(host, port); // Call the superclass constructor
@@ -71,22 +71,22 @@ public class ChatClient extends AbstractClient {
 		Object object = returnData.getObject();
 		switch (returnData.getTypeOfMessageReturn()) {
 		case LOGIN_FAILED:
-			if(object instanceof Worker) {
+			if (object instanceof Worker) {
 				WorkerLogin.instance.logInAnswerFailed();
 			}
-			
+
 			/**
-			 * If the object is a subscription type, it prints a message that a subscription has not been found.
+			 * If the object is a subscription type, it prints a message that a subscription
+			 * has not been found.
 			 */
-			
+
 			if (object instanceof Subscriber) {
 				SubscriptionEntryController.instance.subscriberNotFound();
 			}
-			if(object instanceof TourGuide) {
+			if (object instanceof TourGuide) {
 				TourGuideLoginController.instance.notFound();
 			}
-				
-			
+
 			break;
 		case LOGIN_FAILED_CONNECTED:
 			if (object instanceof Worker) {
@@ -94,24 +94,24 @@ public class ChatClient extends AbstractClient {
 			}
 			break;
 		case LOGIN_SUCCESSFUL:
-			if(object instanceof Worker) {
-				worker = (Worker)object;
+			if (object instanceof Worker) {
+				worker = (Worker) object;
 				connected = true;
 				WorkerLogin.instance.checkLogInAnswer(worker);
 			}
-			
+
 			/**
 			 * If the object is a subscription type, it saves a family subscription data.
 			 * Open a subscription screen
 			 */
-			
+
 			if (object instanceof Subscriber) {
-				subscriber = (Subscriber)object;
+				subscriber = (Subscriber) object;
 				SubscriptionEntryController.instance.subscriberFound();
-			}		
-			
+			}
+
 			break;
-		case APPROVED_RETURN: //display in orderManagement that the order was approved.
+		case APPROVED_RETURN: // display in orderManagement that the order was approved.
 			OrderManagementController.instance.approvedReturn();
 			break;
 		case UPDATE_FAILED:
@@ -121,14 +121,15 @@ public class ChatClient extends AbstractClient {
 			break;
 		case UPDATE_SUCCESS:
 			if (object instanceof Order) {
-			ChangeOrderDetailsController.instance.updated();
+				ChangeOrderDetailsController.instance.updated();
 			}
-			
+
 			/**
 			 * If the object is a subscription type, it saves a family subscription data.
-			 * Opens a PopOut window for the service representative with the subscription number.
+			 * Opens a PopOut window for the service representative with the subscription
+			 * number.
 			 */
-			
+
 			if (object instanceof Subscriber) {
 				subscriber = (Subscriber) object;
 				try {
@@ -139,7 +140,7 @@ public class ChatClient extends AbstractClient {
 				}
 
 			}
-			if(object instanceof TourGuide) {
+			if (object instanceof TourGuide) {
 				try {
 					ServiceRepresentativeController.instance.showNumOfSubPopOut();
 				} catch (IOException e) {
@@ -148,7 +149,7 @@ public class ChatClient extends AbstractClient {
 				}
 			}
 			break;
-			
+
 		case RETURN_ORDER_FAILED:
 			System.out.println("Couldn't recieve details from DB");
 			break;
@@ -160,8 +161,9 @@ public class ChatClient extends AbstractClient {
 					Order recievedOrd = (Order) object;
 					String check = ExistingOrderController.instance.order.getOrderNumber();
 					if (check.equals(recievedOrd.getOrderNumber())) {
-						ExistingOrderController.instance.order = recievedOrd; // update the instance of the order in "existing"
-																		// to be not null...
+						ExistingOrderController.instance.order = recievedOrd; // update the instance of the order in
+																				// "existing"
+						// to be not null...
 						ExistingOrderController.instance.isFound();
 					} else {
 						ExistingOrderController.instance.notFound();
@@ -169,20 +171,20 @@ public class ChatClient extends AbstractClient {
 				}
 			}
 			break;
-			
+
 		case IS_SUBSCRIBER:
-			if (object instanceof Boolean) { //came from OrderManagementController
+			if (object instanceof Boolean) { // came from OrderManagementController
 				Boolean isIt = (Boolean) object;
 				if (isIt == true) {
 					OrderManagementController.instance.isSubscriber(true);
 				}
 			}
-			if (object instanceof Integer) { //came from ChangeOrderDetails
+			if (object instanceof Integer) { // came from ChangeOrderDetails
 				ChangeOrderDetailsController.instance.isOther();
 			}
-				
+
 			break;
-			
+
 		case IS_GUIDE:
 			if (object instanceof Boolean) {
 				Boolean isIt = (Boolean) object;
@@ -190,11 +192,11 @@ public class ChatClient extends AbstractClient {
 					OrderManagementController.instance.isGuide(true);
 				}
 			}
-			if (object instanceof Integer) { //came from ChangeOrderDetails
+			if (object instanceof Integer) { // came from ChangeOrderDetails
 				ChangeOrderDetailsController.instance.isGuide();
 			}
 			break;
-			
+
 		case IS_REGULAR:
 			if (object instanceof Boolean) {
 				Boolean isIt = (Boolean) object;
@@ -202,19 +204,19 @@ public class ChatClient extends AbstractClient {
 					OrderManagementController.instance.isRegular(true);
 				}
 			}
-			if (object instanceof Integer) { //came from ChangeOrderDetails
+			if (object instanceof Integer) { // came from ChangeOrderDetails
 				ChangeOrderDetailsController.instance.isOther();
 			}
 			break;
-			
+
 		case NEWORDER_SUCCESS:
 			if (object instanceof Order) {
-				
-					System.out.println("--> handleMessageFromServer");
-					waitForConnection = false;
-					order = (Order) object;
-					TravelerNewOrderController.instance.TravelerOrder = order;
-					TravelerNewOrderController.instance.isFound();
+
+				System.out.println("--> handleMessageFromServer");
+				waitForConnection = false;
+				order = (Order) object;
+				TravelerNewOrderController.instance.TravelerOrder = order;
+				TravelerNewOrderController.instance.isFound();
 
 			}
 			break;
@@ -225,19 +227,18 @@ public class ChatClient extends AbstractClient {
 			if (object instanceof TourGuide) {
 				System.out.println("--> handleMessageFromServer");
 				// System.out.println("--> HELLLLOOOOO");
-				//waitForConnection = false;
-				this.tourguide=(TourGuide)object;
-					TourGuideLoginController.instance.isFound();
+				// waitForConnection = false;
+				this.tourguide = (TourGuide) object;
+				TourGuideLoginController.instance.isFound();
 
-				
 			}
 			break;
-			
+
 		case HISTORY_ORDERS:
 			if (object instanceof Order) {
 				System.out.println("--> handleMessageFromServer");
 				waitForConnection = false;
-				
+
 				System.out.print(object.toString());
 				FamilySubscriptionHistoryController.instance.getLine((Order) object);
 			}
@@ -254,106 +255,116 @@ public class ChatClient extends AbstractClient {
 			}
 
 			break;
-			 /** Description of TOUR_MAXVISCHECK 
-			  * This case sends the returned checks of 
-			  * an open spot in park to the controller.
-		     */
+		/**
+		 * Description of TOUR_MAXVISCHECK This case sends the returned checks of an
+		 * open spot in park to the controller.
+		 */
 		case TOUR_MAXVISCHECK:
 			if (object instanceof maxVis) {
-				visMax=(maxVis)object;
+				visMax = (maxVis) object;
 				System.out.print(visMax.toString());
 				TourGuideNewOrderController.instance.checkDate2(visMax);
-				//TourGuideNewOrderController.instance.checkDate(null, visMax);
+				// TourGuideNewOrderController.instance.checkDate(null, visMax);
 			}
 			break;
-			
+
 		case NEW_ORDERMAXVISCHECK:
 			if (object instanceof maxVis) {
-				visMax=(maxVis)object;
+				visMax = (maxVis) object;
 				System.out.print(visMax.toString());
 				TravelerNewOrderController.instance.checkDate2(visMax);
 			}
 			break;
-			 /** Description of PARK_STATUS 
-			  * This case sends the returned checks of 
-			  * an the park status to the controllers.
-		     */
-			
+
+		/**
+		 * This case is responsible for checking the correctness and availability of the
+		 * order, if the order is correct and there is place in the park for the
+		 * visitor, a success message is printed
+		 */
+
 		case SUB_NEW_ORDER_SUCCESS:
 			if (object instanceof Order) {
 				order = (Order) object;
 				subscriberNewOrderController.instance.thereIsPlaceForVisitors();
 			}
 			break;
-			
+
+		/**
+		 * This case is responsible for checking the correctness and availability of the
+		 * order, if there is no place in the park for the
+		 * visitor, a failed message is printed
+		 */
+
 		case SUB_NEW_ORDER_FAILED:
 //			if (object instanceof Order) {
-				order = (Order) object;
+			order = (Order) object;
 //				subscriberNewOrderController.instance.TravelerOrder = order;
-				subscriberNewOrderController.instance.thereIsNoPlaceForVisitors();
+			subscriberNewOrderController.instance.thereIsNoPlaceForVisitors();
 //			}			
 			break;
+
+		/**
+		 * Description of PARK_STATUS This case sends the returned checks of an the park
+		 * status to the controllers.
+		 */
+
 		case PARK_STATUS:
-			if(object instanceof ParkStatus) {
-				String t=null;
-				ParkStatus status=(ParkStatus)object;
-				t=status.getDiscount();
+			if (object instanceof ParkStatus) {
+				String t = null;
+				ParkStatus status = (ParkStatus) object;
+				t = status.getDiscount();
 				parkEnterenceController.instance.insertData(status.getAmount(), status.getMaxAmount());
 				parkEnterenceController.instance.getDiscountDay(t);
 				parkEnterenceController2.instance.insertData(status.getAmount(), status.getMaxAmount());
 				parkEnterenceController2.instance.getDiscountDay(t);
 			}
 			break;
-			 /** Description of PARKENTERRETURNORDER 
-			  * This case sends the returned order details 
-			  *  to the controllers.
-		     */
+		/**
+		 * Description of PARKENTERRETURNORDER This case sends the returned order
+		 * details to the controllers.
+		 */
 		case PARKENTERRETURNORDER:
-			if(object instanceof Order) {
-			Order order=(Order)object;
-			parkEnterenceController2.instance.orderDetails(order);
-				
+			if (object instanceof Order) {
+				Order order = (Order) object;
+				parkEnterenceController2.instance.orderDetails(order);
+
 			}
-			
-			 /** Description of PARK_DISCOUNT 
-			  * This case sends the returned discount details 
-			  *  to the controllers.
-		     */
+
+			/**
+			 * Description of PARK_DISCOUNT This case sends the returned discount details to
+			 * the controllers.
+			 */
 			break;
 		case PARK_DISCOUNT:
-			if(object instanceof String) {
-				String t=null;
-			   t=(String)object;
+			if (object instanceof String) {
+				String t = null;
+				t = (String) object;
 				parkEnterenceController.instance.getDiscountDay(t);
 				parkEnterenceController2.instance.getDiscountDay(t);
-			
+
 			}
 			break;
-			/** Description of PARK_EXITSTATUS 
-			  * This case sends the returned status of an exit
-			  * park action (if sucssed or not) to the controller.
-		     */
+		/**
+		 * Description of PARK_EXITSTATUS This case sends the returned status of an exit
+		 * park action (if sucssed or not) to the controller.
+		 */
 		case PARK_EXITSTATUS:
-			if(object instanceof casualOrder) {
-				casualOrder order=(casualOrder)object;
-				if(order.getNumOfVis()=="0")
-					parkEnterenceController3.instance.errorOrder();	
+			if (object instanceof casualOrder) {
+				casualOrder order = (casualOrder) object;
+				if (order.getNumOfVis() == "0")
+					parkEnterenceController3.instance.errorOrder();
 				else
-				parkEnterenceController3.instance.finishExitPark(order);
-				
+					parkEnterenceController3.instance.finishExitPark(order);
+
 			}
 			break;
-			
-			
-			
-			
-			
+
 		case REQUESTINFO_SUCCESS:
-			
+
 			/**
 			 * If the object is a subscription type, it saves a family subscription data.
 			 */
-			
+
 			if (object instanceof Subscriber) {
 				subscriber = (Subscriber) object;
 			}
@@ -369,16 +380,15 @@ public class ChatClient extends AbstractClient {
 			}
 			break;
 		case REQUESTINFO_FAILED:
-			if(object instanceof ParkInfo) {
-				parkInfo = (ParkInfo)object;
+			if (object instanceof ParkInfo) {
+				parkInfo = (ParkInfo) object;
 				if (parkInfo.getRole().equals("Manager")) {
 					DepartmantManagerApproveController.instance.notFond();
-				}
-				else if (parkInfo.getRole().equals("Department Manager")) {
+				} else if (parkInfo.getRole().equals("Department Manager")) {
 					ManagerDiscountController.instance.notFond();
 				}
 			}
-			
+
 		default:
 			break;
 		}
