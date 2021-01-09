@@ -101,8 +101,7 @@ public class EchoServer extends AbstractServer {
 				}
 			}
 			break;
-
-		case GET_INFO:
+		case GET_INFO: //gets info from database and return an order entity with the requested info.
 			if (object instanceof Order) {
 				order = mysqlConnection.getDBOrder(object);
 				if (order != null) {
@@ -144,7 +143,7 @@ public class EchoServer extends AbstractServer {
 
 			break;
 
-		case CHECK_KIND:
+		case CHECK_KIND: //checks if the received order is of kind regular/tourguide/subscriber.
 			if (object instanceof Order) {
 				Order ord = (Order) object;
 				String CheckQuery = "SELECT ID FROM gonature.subscriber WHERE ID ='" + ord.getID() + "';";
@@ -367,9 +366,9 @@ public class EchoServer extends AbstractServer {
 				}
 			}
 
-			if (object instanceof Order) { // delete an order from Orders, check if there's an order in waitinglist good
+			if (object instanceof Order) { // delete an order from Orders, check if there's an order in waiting list good
 				// to advance to
-// orders, move it to orders, delete the order that was moved from waitinglist
+// orders, move it to orders, delete the order that was moved from waiting list
 // table.
 				Order ordToBeDeleted = (Order) object;
 				boolean ans;
@@ -393,8 +392,6 @@ public class EchoServer extends AbstractServer {
 						arrOfAnswer = mysqlConnection.getDB(
 								"select * from manageparks WHERE numberOfPark='" + ordToBeDeleted.getParkName() + "';");
 // // orders Where Date='2020-12-31'");
-// ResultSet rs = conn.createStatement().executeQuery("select * from manageparks
-// WHERE numberOfPark='" + ordToBeDeleted.getParkName() + "';");
 
 						String append = ":00";
 						String twoLetters = ordToBeDeleted.getHour(); // Get hour(12:00 example)
@@ -421,8 +418,6 @@ public class EchoServer extends AbstractServer {
 										.valueOf(numberOfReplacementInWaitingList - numOfVisitorMoved);
 								switch (loopC) {
 								case 1:
-//SELECT OrderNumber FROM gonature.waitinglist WHERE TimeOfEntrance = (SELECT MIN(MinDATE.TimeOfEntrance) FROM (SELECT TimeOfEntrance,OrderNumber, CAST(NumOfVisitors AS UNSIGNED) AS intNumOfVisitors FROM gonature.waitinglist 
-//			WHERE ( Date = '2021-01-09' AND Time IN ('7:00','8:00','9:00','10:00','11:00','12:00','6:00') AND DateOfEntrance = '2021-01-04' AND NumOfVisitors <= 7 ))  AS MinDATE);
 									arrOfAnswer = mysqlConnection.getDB(
 											"SELECT OrderNumber FROM gonature.waitinglist WHERE TimeOfEntrance = (SELECT MIN(MinDATE.TimeOfEntrance) FROM (SELECT TimeOfEntrance,OrderNumber, CAST(NumOfVisitors AS UNSIGNED) AS intNumOfVisitors FROM gonature.waitinglist"
 													+ " WHERE ( Date ='" + saveDate + "'  AND Time IN ('" + arrS[0]
@@ -431,9 +426,6 @@ public class EchoServer extends AbstractServer {
 													+ (numberOfReplacementInWaitingList - numOfVisitorMoved)
 													+ ")) AS MinDATE);");
 
-//					"SELECT MIN(MinDATE.TimeOfEntrance), MinDATE.OrderNumber FROM ( SELECT TimeOfEntrance,OrderNumber FROM gonature.waitinglist WHERE (Date = '"
-//							+ saveDate + "' AND Time IN ('" + arrS[0] + "') AND DateOfEntrance = '"
-//							+ arrOfAnswer.get(0).toString() + "' ))  AS MinDATE;");
 									break;
 								case 3:
 									arrOfAnswer = mysqlConnection.getDB(
@@ -592,8 +584,8 @@ public class EchoServer extends AbstractServer {
 				}
 			}
 			break;
-		case UPDATEINFO:
-			if (object instanceof Order) {
+		case UPDATEINFO: 
+			if (object instanceof Order) { //Handle a query to update something related to an order in the DB.
 				Order ord = (Order) object;
 				String UpdateQuery = "UPDATE gonature.orders SET Park = '" + ord.getParkName() + "'," + " Time= '"
 						+ ord.getHour() + "'," + " Date = '" + ord.getDate() + "'," + " NumOfVisitors = '"
@@ -948,7 +940,8 @@ public class EchoServer extends AbstractServer {
 					ServerController.instance.displayMsg("Discount UPDATEINFO_REQUEST details could not be updated");
 
 			}
-			if (object instanceof Order) {
+			if (object instanceof Order) { //if the object is of type Order, update the table orders, and change the totalPrice according
+				//to the new price we received from object.
 				Order ord = (Order) object;
 				String UpdateQuery = "UPDATE gonature.orders SET totalPrice = '" + ord.getTotalPrice()
 						+ "' WHERE OrderNumber = '" + ord.getOrderNumber() + "';";

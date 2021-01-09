@@ -67,7 +67,13 @@ public class mysqlConnection {
 			e.printStackTrace();
 		}
 	}
-
+/**
+ * Method for getting an order from DataBase.
+ * The method gets the requested order by using the OrderNumber.
+ * The method returns a full order entity including all the details of the order.
+ * @param msg should be an entity of Order.
+ * @return a full order entity from the DB is being returned.
+ */
 	public static Order getDBOrder(Object msg) {
 		if (msg instanceof Order) // if its an order for Gady's screens.
 		{
@@ -151,7 +157,12 @@ public class mysqlConnection {
 
 		return null;
 	}
-
+/**
+ * Method for handling a Query that inserts a new order entity that comes from the waitinglist table into the order table
+ * That query should be made after an order was moved from waiting list into order table.
+ * @param msg the Order details we recieved from waiting list.
+ * @return true if the method succeeded, false otherwise.
+ */
 	public static boolean newDBOrderFromWaitingList(Object msg) {
 		if (msg instanceof Order) // if its an order for Gady's screens.
 		{
@@ -232,6 +243,12 @@ public class mysqlConnection {
 		return null;
 
 	}
+	/**
+	 * This method is used specifically for the little "Check Orders" button in ServerUI.
+	 * The method receives a query to be made and returns an arraylist of recieved Order from the database.
+	 * @param msg a query to be done.
+	 * @return an arrayList of the order.
+	 */
 	//for serverController CheckButton
 	public static ArrayList<Order> getDBArrayOrder(Object msg) {
 		String str = null;
@@ -298,7 +315,12 @@ public class mysqlConnection {
 		return false;
 
 	}
-	
+	/**
+	 * A method for inserting an order that was just canceled/deleted for any reason to the "deletedOrders" table.
+	 * The method gets all the deleted order details, and places it in the deletedOrders table.
+	 * @param msg our Order to be moved to deletedOrders
+	 * @return true for success, false otherwise.
+	 */
 	public static boolean insertIntoDeletedOrders(Object msg) {
 		if (msg instanceof Order) {
 			Order order = (Order) msg;
@@ -428,7 +450,13 @@ public class mysqlConnection {
 		}
 		return false;
 	}
-	
+	/**
+	 * A method for handling a query that should check the kind of traveler in the requested table.
+	 * The method will tell you if the traveler is regular/Guide Order/Subscriber or not.
+	 * @param msg a query requesting information about the orderkind coming from 
+	 * one of the tables: Orders/Subscribers/TourGuide.
+	 * @return returns true if its the traveler kind that was asked, false otherwise.
+	 */
 	public static boolean CheckKind(String msg) {
 		if (conn != null) {
 			try {
@@ -500,7 +528,13 @@ public class mysqlConnection {
 		}
 		return false;
 	}
-
+/**
+ * A method for deleting something from the DB.
+ * Usually used for deleting a row from a certain table.
+ * A Delete query is received and being executed.
+ * @param msg the Delete query to be executed.
+ * @return True if it succeded deleting, false otherwise.
+ */
 	public static boolean deleteFromDB(String msg) {
 		if (conn != null) {
 			try {
@@ -606,49 +640,6 @@ public class mysqlConnection {
 		return null;
 	}
 
-//	public static maxVis checkMaxVisitorsForWaitingList(Object msg) {
-//		maxVis orderC = (maxVis) msg;
-//		maxVis maxNum = new maxVis(null, null, null, 0, 0, null, 0);
-//		try {
-//			ResultSet rs = conn.createStatement()
-//					.executeQuery("select * from manageparks WHERE numberOfPark='" + orderC.getPark() + "';");
-//			while (rs.next()) {
-//				maxNum.setDate(orderC.getDate());
-//				maxNum.setVisitorsInOrder(orderC.getVisitorsInOrder());
-//				maxNum.setPark(orderC.getPark());
-//				maxNum.setTime(orderC.getTime());
-//				maxNum.setAllowed1(Integer.valueOf(rs.getString(2)) - Integer.valueOf(rs.getString(3)));
-//				maxNum.setMaxTime(Integer.valueOf(rs.getString(4)));
-//			}
-//			String append = ":00";
-//			String twoLetters = maxNum.getTime(); // Get hour(12:00 example)
-//			int loopC = Integer.valueOf(Integer.valueOf(maxNum.getMaxTime()) * 2);// 4*2
-//			String hourLoop = twoLetters.substring(0, twoLetters.indexOf(':'));// Seprate till ':'
-//			String[] arrS = new String[Integer.valueOf(maxNum.getMaxTime()) * 2 + 1]; // Array for check
-//			int t = Integer.valueOf(hourLoop) - (loopC / 2); // 12-4
-//			for (int i = 0; i <= loopC; i++) {
-//				arrS[i] = String.valueOf(t) + append;
-//				t++;
-//			}
-//			for (int j = 0; j <= loopC; j++) {
-//				Statement stmt3 = conn.createStatement();
-//				rs = stmt3.executeQuery("select * from orders WHERE Time='" + arrS[j] + "' AND Date='"
-//						+ orderC.getDate() + "' AND Park='" + orderC.getPark() + "';");
-//				while (rs.next()) {
-//					if (rs.getString(4) != null)
-//						maxNum.setAllowed2(Integer.valueOf(rs.getString(4)) + maxNum.getAllowed2());
-//				}
-//
-//			}
-//
-//			rs.close();
-//			return maxNum;
-//		} catch (SQLException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		return null;
-//	}
 	/** Description of checkMaxVisitors
 	 * This function checks if there is a spot to place the order.
 	 * The function checks according to the max visit time the hours before and after

@@ -38,6 +38,9 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 /**
  * Window in which you can change your existing order details.
+ * The user can change his desired park, the date of the arrival, the time and the amount of visitors.
+ * The user can also switch to Order Management window, as well as printing the order details and canceling the order.
+ * The controller expands the AbstractScenes class that replaces the scenes within the main stage.
  * @author Gady
  *
  */
