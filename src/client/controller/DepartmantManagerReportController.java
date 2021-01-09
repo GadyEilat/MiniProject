@@ -96,6 +96,7 @@ public class DepartmantManagerReportController extends AbstractScenes {
     
     @FXML
     void showVisitReport(ActionEvent event) {
+    }
 	/**
 	 * logout method. This method is responsible for disconnecting from the
 	 * department manager user and transferring to the main login screen.
@@ -154,7 +155,7 @@ public class DepartmantManagerReportController extends AbstractScenes {
     	btnCancellationReport.setDisable(false);
     }
     
-	}
+	
 
 	/**
 	 * initialize method. This method is responsible for defining variables by
