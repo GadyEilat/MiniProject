@@ -114,13 +114,13 @@ public class ChatClient extends AbstractClient {
 		case APPROVED_RETURN: //display in orderManagement that the order was approved.
 			OrderManagementController.instance.approvedReturn();
 			break;
-		case UPDATE_FAILED:
+		case UPDATE_FAILED: //go back to change order details and show that the update failed.
 			if (object instanceof Order) {
 				ChangeOrderDetailsController.instance.notUpdated();
 			}
 			break;
 		case UPDATE_SUCCESS:
-			if (object instanceof Order) {
+			if (object instanceof Order) { //go back to change order details and show that the update succeeded
 			ChangeOrderDetailsController.instance.updated();
 			}
 			
@@ -149,11 +149,11 @@ public class ChatClient extends AbstractClient {
 			}
 			break;
 			
-		case RETURN_ORDER_FAILED:
+		case RETURN_ORDER_FAILED: //if we couldn't receive the order back from the server
 			System.out.println("Couldn't recieve details from DB");
 			break;
 		case RETURN_ORDER:
-			if (object instanceof Order) {
+			if (object instanceof Order) { //Update the ExistingOrderController
 				if (object != null) {
 					System.out.println("--> handleMessageFromServer");
 					waitForConnection = false;
@@ -170,7 +170,7 @@ public class ChatClient extends AbstractClient {
 			}
 			break;
 			
-		case IS_SUBSCRIBER:
+		case IS_SUBSCRIBER: //if the checked order was a subscriber
 			if (object instanceof Boolean) { //came from OrderManagementController
 				Boolean isIt = (Boolean) object;
 				if (isIt == true) {
@@ -183,7 +183,7 @@ public class ChatClient extends AbstractClient {
 				
 			break;
 			
-		case IS_GUIDE:
+		case IS_GUIDE: //if the checked order was a guide
 			if (object instanceof Boolean) {
 				Boolean isIt = (Boolean) object;
 				if (isIt == true) {
@@ -195,7 +195,7 @@ public class ChatClient extends AbstractClient {
 			}
 			break;
 			
-		case IS_REGULAR:
+		case IS_REGULAR: //if the checked order was regular
 			if (object instanceof Boolean) {
 				Boolean isIt = (Boolean) object;
 				if (isIt == true) {
