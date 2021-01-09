@@ -106,26 +106,17 @@ public class TravelerNewOrderController extends AbstractScenes {
 	}
 
 	public void isFound() {
-<<<<<<< HEAD
+
 
 		switchScenes("/client/boundaries/TravelerOrderSuccess.fxml", "Order Success");
 		System.out.println("Order Updated Successfully");
-=======
->>>>>>> refs/heads/Aviv_king
 
-<<<<<<< HEAD
-=======
-		switchScenes("/client/boundaries/TravelerOrderSuccess.fxml", "Order Success");
 
-		System.out.println("Order Updated Successfully");
->>>>>>> refs/heads/Aviv_king
 	}
 
-<<<<<<< HEAD
 
-=======
-	  
->>>>>>> refs/heads/Aviv_king
+  
+
 	  /**
 	   * setTimeComboBox method
 	   * This method adding times to the Time combo box in the screen and display it.
