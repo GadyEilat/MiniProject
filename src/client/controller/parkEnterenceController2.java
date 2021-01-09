@@ -65,7 +65,7 @@ public class parkEnterenceController2 extends AbstractScenes {
 	    private TextField txtOrderNumV;
 
 	    @FXML
-	    private Button LogOutBtn;
+	    private Button btnLogout;
 	    
 	    @FXML
 	    private TextField timeTxt;

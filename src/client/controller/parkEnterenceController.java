@@ -64,7 +64,7 @@ public class parkEnterenceController extends AbstractScenes {
 	    private Text getNumPpl;
 
 	    @FXML
-	    private Button LogOutBtn;
+	    private Button btnLogout;
 	    
 	    @FXML
 	    private ComboBox<String> selectT;
