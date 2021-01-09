@@ -13,7 +13,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane prefHeight="600.0" prefWidth="800.0" stylesheets="@DepartmentManagerStyle.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.FamilySubscriptionHistoryController">
+<BorderPane prefHeight="600.0" prefWidth="800.0" stylesheets="@../../../res/mainEnter.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.FamilySubscriptionHistoryController">
    <center>
       <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0">
          <children>
@@ -23,7 +23,7 @@
                      <children>
                         <AnchorPane prefHeight="438.0" prefWidth="473.0">
                            <children>
-                              <TableView fx:id="tableOfHistory" onSort="#showTableOfHistory" prefHeight="438.0" prefWidth="561.0">
+                              <TableView fx:id="tableOfHistory" prefHeight="438.0" prefWidth="561.0">
                                  <columns>
                                     <TableColumn fx:id="col_orderNum" prefWidth="97.0" resizable="false" text="Order Number" />
                                     <TableColumn fx:id="col_Date" maxWidth="500.0" prefWidth="138.0" resizable="false" text="Date" />

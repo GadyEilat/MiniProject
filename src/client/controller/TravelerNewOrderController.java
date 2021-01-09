@@ -1,5 +1,4 @@
 package client.controller;
-
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
@@ -10,7 +9,6 @@ import java.util.ResourceBundle;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import client.ChatClient;
 import client.ClientUI;
 import client.logic.EmailDetails;
@@ -41,17 +39,26 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 
+/**
+ * TravelerNewOrderController class
+ * @author Aviv Kamary
+ * This controller is responsible for the Regular Traveler order screen to create a new order.
+ * The controller expands the AbstractScenes class that replaces the scenes within the main stage. 
+ * It is possible to return back to the kind of travelers screen.
+ */
 public class TravelerNewOrderController extends AbstractScenes {
 	public Order TravelerOrder = new Order(null, null, null, null, null, null, null, null);
 	public String newTravelerID = null;
 	static boolean thereIsSpot = false;
+	Double price = 30.00, pricePerPerson;
+	String strPrice = null;
+	
 	@FXML
 	private ResourceBundle resources;
 
@@ -99,10 +106,30 @@ public class TravelerNewOrderController extends AbstractScenes {
 	}
 
 	public void isFound() {
+<<<<<<< HEAD
+
 		switchScenes("/client/boundaries/TravelerOrderSuccess.fxml", "Order Success");
 		System.out.println("Order Updated Successfully");
+=======
+>>>>>>> refs/heads/Aviv_king
+
+<<<<<<< HEAD
+=======
+		switchScenes("/client/boundaries/TravelerOrderSuccess.fxml", "Order Success");
+
+		System.out.println("Order Updated Successfully");
+>>>>>>> refs/heads/Aviv_king
 	}
 
+<<<<<<< HEAD
+
+=======
+	  
+>>>>>>> refs/heads/Aviv_king
+	  /**
+	   * setTimeComboBox method
+	   * This method adding times to the Time combo box in the screen and display it.
+	   */
 	private void setTimeComboBox() {
 		ArrayList<String> al = new ArrayList<String>();
 		al.add("8:00");
@@ -118,6 +145,10 @@ public class TravelerNewOrderController extends AbstractScenes {
 		chooseTime.setItems(list);
 	}
 
+	/**
+	 * setParkComboBox method
+	 * This method adding the parks names to the Park combo box in the screen and display it.
+	 */
 	private void setParkComboBox() {
 		ArrayList<String> a2 = new ArrayList<String>();
 		a2.add("Park1");
@@ -127,6 +158,10 @@ public class TravelerNewOrderController extends AbstractScenes {
 		parkNameBtn.setItems(list2);
 	}
 
+	/**
+	 * setNumOfVisitorsComboBox method
+	 * This method adding the numbers of visitors that the regular traveler can choose and display it to the screen.
+	 */
 	private void setNumOfVisitorsComboBox() {
 		ArrayList<String> a3 = new ArrayList<String>();
 		a3.add("1");
@@ -146,25 +181,40 @@ public class TravelerNewOrderController extends AbstractScenes {
 		a3.add("15");
 
 		list3 = FXCollections.observableArrayList(a3);
-
 		numVisitorsBtn.setItems(list3);
 		numVisitorsBtn.getSelectionModel().selectFirst();
 	}
 
+	/**
+	 * LogOutButton method
+	 * @param event
+	 * In this method you can log out to the kind of travelers screen.
+	 */
+	
 	@FXML
 	void LogOutButton(ActionEvent event) {
 		switchScenes("/client/boundaries/Travelers.fxml", "");
 	}
 
+	/**
+	 * backButton method
+	 * @param event
+	 * In this method you can return back to the Regular traveler screen to enter another ID.
+	 */
+	
 	@FXML
 	void backButton(ActionEvent event) {
 		switchScenes("/client/boundaries/RegularTraveler.fxml", "");
 	}
 
-	@FXML
-	void chooseDayButton(ActionEvent event) {
 
-	}
+	/**
+	 * continueToPayButton method
+	 * @param event
+	 * This method pull the details that the Traveler enter in the screen and saves it in the Order's Table.
+	 * This method also checking if there is not a place in the parks and if not, he either can join the waiting list or change another date.
+	 */
+
 
 	@FXML
 	void continueToPayButton(ActionEvent event) {
@@ -174,7 +224,11 @@ public class TravelerNewOrderController extends AbstractScenes {
 		String orderNumOfVisitors = numVisitorsBtn.getSelectionModel().getSelectedItem().toString();
 		String orderEmail = (enterEmail.getText());
 		String orderName = (firstName.getText());
-
+		
+		Double dblAmount = Double.valueOf(orderNumOfVisitors);
+		pricePerPerson = price * 0.85;
+		price = pricePerPerson * dblAmount;
+		strPrice=String.valueOf(price);
 		if (java.time.LocalDate.now().isAfter(chooseDayBtn.getValue())) {
 			errorEmail.setText("Invalid Date");
 		}
@@ -192,6 +246,8 @@ public class TravelerNewOrderController extends AbstractScenes {
 				TravelerOrder.setEmail(orderEmail);
 				TravelerOrder.setNameOnOrder(orderName);
 				TravelerOrder.setID(newTravelerID);
+				TravelerOrder.setTotalPrice(strPrice);
+				TravelerOrder.setOrderKind("RegularOrder");
 				checkDate(TravelerOrder, null);
 
 				DataTransfer data = new DataTransfer(TypeOfMessage.NEW_ORDER, TravelerOrder);
@@ -204,8 +260,11 @@ public class TravelerNewOrderController extends AbstractScenes {
 
 				if (thereIsSpot) {
 					ClientUI.chat.accept(data);
-				//	switchScenes("/client/boundaries/TravelerOrderSuccess.fxml", "GoNature Enter");
-					//System.out.println("Order Updated Successfully");
+
+				
+
+
+
 				} else {
 					Alert alert = new Alert(AlertType.INFORMATION);
 					alert.setHeaderText(null);
@@ -218,15 +277,14 @@ public class TravelerNewOrderController extends AbstractScenes {
 
 	}
 
-	@FXML
-	void numVisitorsButton(ActionEvent event) {
 
-	}
 
-	@FXML
-	void parkNameButton(ActionEvent event) {
-
-	}
+	/**
+	 * waitingListButton method
+	 * @param event
+	 * This method handling the EnterWaitingList button and saves the Order's details.
+	 * At the end of the actions, the screen return back to the kind of travelers screen.
+	 */
 
 	@FXML
 	void waitingListButton(ActionEvent event) {
@@ -254,21 +312,42 @@ public class TravelerNewOrderController extends AbstractScenes {
 		switchScenes("/client/boundaries/Travelers.fxml", "New waiting list");
 	}
 
-//Checking if it's a valid Email
+
 	public static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$",
 			Pattern.CASE_INSENSITIVE);
-
+	
+	/**
+	 * validate method
+	 * @param emailStr
+	 * This method checking if the email entered by the user is valid.
+	 * @return true if it is a valid email, false if not.
+	 */
 	public static boolean validate(String emailStr) {
 		Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr);
 		return matcher.find();
 	}
 
+	/**
+	 * LOCAL_DATE method
+	 * @param dateString
+	 * This method making the date as the format we request.
+	 * @return date as a LocalDate.
+	 */
 	public static final LocalDate LOCAL_DATE(String dateString) { // method for dealing with dates.
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		LocalDate localDate = LocalDate.parse(dateString, formatter);
 		return localDate;
 	}
 
+	/**
+	 * initialize method
+	 * @param location
+	 * @param resources
+	 * This method is responsible for defining variables by communicating with the server, 
+	 * is responsible for screen visibility (caption and titles) and on-screen functionality.
+	 * This method taking the RegularTraveler instance the user entered the screen before for saving it in the database.
+	 * Also, this method setting all the combo boxes and display it in the screen for the user.
+	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		instance = this;
@@ -278,6 +357,12 @@ public class TravelerNewOrderController extends AbstractScenes {
 		setNumOfVisitorsComboBox();
 	}
 
+	/**
+	 * checkDate method
+	 * @param s an entity of the order that been checked under this function
+	 * @param t an entity that is been use for the waitinglist checks.
+	 * @return an entity that holds few paramaters of the waiting list check.
+	 */
 	public maxVis checkDate(Order s, maxVis t) {
 		maxVis visMax = new maxVis(null, null, null, 0, 0, null, 0);
 		DataTransfer data2 = new DataTransfer(TypeOfMessage.CHECKMAXVIS, s);
@@ -285,7 +370,12 @@ public class TravelerNewOrderController extends AbstractScenes {
 		return visMax;
 	}
 
+	/**
+	 * checkDate2 method
+	 * @param t an entity that is been use for the waitinglist checks.
+	 */
 	public void checkDate2(maxVis t) {
+
 		maxVis visMax = new maxVis(null, null, null, 0, 0, null, 0);
 		visMax.setDate(t.getDate());
 		visMax.setPark(t.getPark());
@@ -295,4 +385,6 @@ public class TravelerNewOrderController extends AbstractScenes {
 		if (Integer.valueOf(visMax.getVisitorsInOrder() + visMax.getAllowed2()) < visMax.getAllowed1())
 			thereIsSpot = true;
 	}
+
+
 }

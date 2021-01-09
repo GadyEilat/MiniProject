@@ -16,8 +16,12 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 
 /**
- * the window Existing Order relates to an order that was already made, and someone wants to make changes on it.
+ * ExistingOrderController Class:
+ * The window Existing Order relates to an order that was already made, and someone wants to make changes on it.
+ * he needs to enter his order number in order to view his details
+ * The controller expands the AbstractScenes class that replaces the scenes within the main stage. 
  * @author Gady
+ *
  *
  */
 public class ExistingOrderController extends AbstractScenes{

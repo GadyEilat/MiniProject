@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" styleClass="background" stylesheets="@mainEnter.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.SubscriptionEntryController">
+<BorderPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" styleClass="background" stylesheets="@../../../res/mainEnter.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.SubscriptionEntryController">
    <center>
       <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="362.0" prefWidth="765.0" BorderPane.alignment="CENTER">
          <children>
@@ -21,12 +21,12 @@
                      <children>
                         <AnchorPane prefHeight="297.0" prefWidth="220.0">
                            <children>
-                              <ImageView fitHeight="160.0" fitWidth="229.0" layoutX="5.0" layoutY="-12.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="160.0" fitWidth="229.0" layoutX="25.0" layoutY="-12.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="/LOGONATURE.png" />
                                  </image>
                               </ImageView>
-                              <Button fx:id="btnEnter" layoutX="68.0" layoutY="256.0" mnemonicParsing="false" onAction="#checkSubNumAndEnter" text="Enter" />
+                              <Button fx:id="btnEnter" layoutX="60.0" layoutY="256.0" mnemonicParsing="false" onAction="#checkSubNumAndEnter" prefHeight="25.0" prefWidth="62.0" text="Enter" />
                               <TextField fx:id="subNumField" layoutX="18.0" layoutY="194.0" prefHeight="25.0" prefWidth="146.0" />
                               <Text layoutX="29.0" layoutY="174.0" strokeType="OUTSIDE" strokeWidth="0.0" text="subscription/id number" />
                               <Text fx:id="msgText" fill="RED" layoutX="17.0" layoutY="244.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="148.13671875" />
@@ -48,7 +48,7 @@
    <bottom>
       <AnchorPane prefHeight="106.0" prefWidth="800.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="btnHelp" layoutX="650.0" layoutY="41.0" mnemonicParsing="false" onAction="#helpPopOut" AnchorPane.bottomAnchor="35.0" AnchorPane.rightAnchor="35.0">
+            <Button fx:id="btnHelp" layoutX="657.0" layoutY="22.0" mnemonicParsing="false" onAction="#helpPopOut" prefHeight="43.0" prefWidth="56.0" AnchorPane.bottomAnchor="35.0" AnchorPane.rightAnchor="35.0">
                <graphic>
                   <ImageView fx:id="helpButton" fitHeight="35.0" fitWidth="40.0">
                      <image>
@@ -57,7 +57,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button fx:id="btnBack" layoutX="31.0" layoutY="32.0" mnemonicParsing="false" onAction="#backToMain">
+            <Button fx:id="btnBack" layoutX="37.0" layoutY="23.0" mnemonicParsing="false" onAction="#backToMain" AnchorPane.bottomAnchor="35.0" AnchorPane.leftAnchor="35.0">
                <graphic>
                   <ImageView fitHeight="35.0" fitWidth="40.0">
                      <image>

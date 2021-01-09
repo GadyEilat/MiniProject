@@ -14,25 +14,25 @@
    <center>
     <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="467.0" prefWidth="583.0">
          <children>
-            <VBox alignment="CENTER" layoutX="129.0" layoutY="117.0" prefHeight="254.0" prefWidth="543.0" AnchorPane.bottomAnchor="116.0" AnchorPane.leftAnchor="129.0" AnchorPane.rightAnchor="128.0" AnchorPane.topAnchor="117.0">
+            <VBox alignment="CENTER" layoutX="129.0" layoutY="110.0" prefHeight="254.0" prefWidth="543.0" AnchorPane.bottomAnchor="123.0" AnchorPane.leftAnchor="129.0" AnchorPane.rightAnchor="128.0" AnchorPane.topAnchor="110.0">
                <children>
                   <HBox alignment="CENTER" prefHeight="222.0" prefWidth="667.0">
                      <children>
                         <AnchorPane prefHeight="222.0" prefWidth="632.0">
                            <children>
-                              <Button fx:id="familyBtn" layoutX="309.0" layoutY="126.0" mnemonicParsing="false" onAction="#familyButton" prefHeight="68.0" prefWidth="125.0" text="Family Subscription" />
-                              <Button fx:id="newBtn" layoutX="94.0" layoutY="27.0" mnemonicParsing="false" onAction="#newButton" prefHeight="68.0" prefWidth="125.0" text="New Order" />
-                              <Button fx:id="existBtn" layoutX="94.0" layoutY="126.0" mnemonicParsing="false" onAction="#existButton" prefHeight="68.0" prefWidth="125.0" text="Existing Order" />
-                              <Button fx:id="tourBtn" layoutX="309.0" layoutY="27.0" mnemonicParsing="false" onAction="#tourButton" prefHeight="68.0" prefWidth="125.0" text="Tour Guide" />
+                              <Button fx:id="familyBtn" layoutX="287.0" layoutY="126.0" mnemonicParsing="false" onAction="#familyButton" prefHeight="90.0" prefWidth="165.0" text="Family Subscription" />
+                              <Button fx:id="newBtn" layoutX="107.0" layoutY="27.0" mnemonicParsing="false" onAction="#newButton" prefHeight="90.0" prefWidth="165.0" text="New Order" />
+                              <Button fx:id="existBtn" layoutX="107.0" layoutY="126.0" mnemonicParsing="false" onAction="#existButton" prefHeight="90.0" prefWidth="165.0" text="Existing Order" />
+                              <Button fx:id="tourBtn" layoutX="287.0" layoutY="27.0" mnemonicParsing="false" onAction="#tourButton" prefHeight="90.0" prefWidth="165.0" text="Tour Guide" />
                            </children>
                         </AnchorPane>
                      </children>
                   </HBox>
                </children>
             </VBox>
-            <Button fx:id="backBtn" layoutX="55.0" layoutY="394.0" mnemonicParsing="false" onAction="#backButton" AnchorPane.bottomAnchor="35.0" AnchorPane.leftAnchor="35.0">
+            <Button fx:id="backBtn" layoutX="55.0" layoutY="394.0" mnemonicParsing="false" onAction="#backButton" prefHeight="43.0" prefWidth="56.0" AnchorPane.bottomAnchor="35.0" AnchorPane.leftAnchor="35.0">
                <graphic>
-                  <ImageView fx:id="backBtn1" fitHeight="29.0" fitWidth="30.0">
+                  <ImageView fx:id="backBtn1" fitHeight="35.0" fitWidth="40.0">
                      <image>
                         <Image url="@../../../res/return-button-icon.png" />
                      </image>

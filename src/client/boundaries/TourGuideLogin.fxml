@@ -10,14 +10,14 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane prefHeight="600.0" prefWidth="800.0" styleClass="background" stylesheets="@mainEnter.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.TourGuideLoginController">
+<BorderPane prefHeight="600.0" prefWidth="800.0" styleClass="background" stylesheets="@../../../res/mainEnter.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.TourGuideLoginController">
    <top>
       <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" BorderPane.alignment="CENTER" />
    </top>
    <bottom>
       <AnchorPane prefHeight="43.0" prefWidth="651.0" BorderPane.alignment="CENTER">
          <children>
-            <Button layoutX="730.0" layoutY="-2.0" mnemonicParsing="false" onAction="#backButton" prefHeight="31.0" prefWidth="48.0" style="-fx-border-radius: 20;" AnchorPane.bottomAnchor="35.0" AnchorPane.leftAnchor="35.0">
+            <Button layoutX="37.0" layoutY="13.0" mnemonicParsing="false" onAction="#backButton" prefHeight="43.0" prefWidth="56.0" style="-fx-border-radius: 20;" AnchorPane.bottomAnchor="35.0" AnchorPane.leftAnchor="35.0">
                <graphic>
                   <ImageView fx:id="BackButton1" fitHeight="35.0" fitWidth="40.0">
                      <image>
@@ -32,19 +32,14 @@
    <center>
       <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <TextField fx:id="GuideID" layoutX="307.0" layoutY="230.0" />
-            <Label layoutX="285.0" layoutY="186.0" prefHeight="34.0" prefWidth="232.0" text="Tour guides screen" textAlignment="CENTER">
+            <TextField fx:id="GuideID" layoutX="327.0" layoutY="231.0" />
+            <Label layoutX="295.0" layoutY="186.0" prefHeight="34.0" prefWidth="210.0" text="Tour guides screen" textAlignment="CENTER">
                <font>
                   <Font name="System Bold" size="23.0" />
                </font>
             </Label>
-            <Label layoutX="281.0" layoutY="235.0" text="ID" />
-            <Button fx:id="LogINGuideBtn" layoutX="370.0" layoutY="297.0" mnemonicParsing="false" onAction="#LogINGuideButton" text="Log in" />
-            <Label layoutX="38.0" layoutY="529.0" text="Main Menu">
-               <font>
-                  <Font size="11.0" />
-               </font>
-            </Label>
+            <Label layoutX="306.0" layoutY="235.0" text="ID" />
+            <Button fx:id="LogINGuideBtn" layoutX="370.0" layoutY="297.0" mnemonicParsing="false" onAction="#LogINGuideButton" prefHeight="25.0" prefWidth="62.0" text="Log in" />
             <ImageView fitHeight="106.0" fitWidth="155.0" layoutX="21.0" layoutY="14.0">
                <image>
                   <Image url="@../../../res/LOGONATURE.png" />
