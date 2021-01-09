@@ -44,8 +44,8 @@ public class mysqlConnection {
 
 
 //			conn = DriverManager.getConnection("jdbc:mysql://localhost/gonature?serverTimezone=IST", "root","ha89kha89k");
-//			conn = DriverManager.getConnection("jdbc:mysql://localhost/gonature?serverTimezone=IST", "root","Liran159357!");
-			conn = DriverManager.getConnection("jdbc:mysql://localhost/gonature?serverTimezone=IST", "root","Aa123456");
+			conn = DriverManager.getConnection("jdbc:mysql://localhost/gonature?serverTimezone=IST", "root","Liran159357!");
+//			conn = DriverManager.getConnection("jdbc:mysql://localhost/gonature?serverTimezone=IST", "root","Aa123456");
 //			conn = DriverManager.getConnection("jdbc:mysql://localhost/gonature?serverTimezone=IST", "root","DA123456");
 
 
@@ -127,7 +127,7 @@ public class mysqlConnection {
 			String totalPrice = order.getTotalPrice();
 			String prePaid = order.getPrePaid();
 			String orderKind = order.getOrderKind();
-//			String approved = order.getApproved();
+			String approved = order.getApproved();
 			order.setOrderNumber(upOrderNum);
 
 			if (conn != null) {
@@ -146,7 +146,7 @@ public class mysqlConnection {
 					preparedStmt.setString(9, insID);
 					preparedStmt.setString(10, totalPrice);
 					preparedStmt.setString(11, prePaid);
-					preparedStmt.setString(12, "No");
+					preparedStmt.setString(12, approved);
 
 					preparedStmt.execute();
 
@@ -425,24 +425,25 @@ public class mysqlConnection {
 			String nameOnOrder=updOrder.getNameOnOrder();
 			String upOrderNum= generateRandomChars("123456789", 5);
 			String travID=updOrder.getID();
+			String orderKind = updOrder.getOrderKind();
 			String waitingTime=updOrder.getTimeOfEntrance();
-			String hourWait=updOrder.getDateOfEntrance();
+			String dateEntrance=updOrder.getDateOfEntrance();
 			if (conn != null) {
 				try {
 					
-					String query = " insert into waitinglist (Park, Date, Time, NumOfVisitors, Email,OrderKind,orderNumber,NameOnOrder,ID,TimeOfEntrance, DateOfEntrance )"+ " values (?, ?, ?, ?, ?, ?, ?, ?, ?,?,?)";
+					String query = " insert into waitinglist (Park, Time, Date, NumOfVisitors, Email,orderNumber,NameOnOrder,OrderKind,ID,TimeOfEntrance, DateOfEntrance )"+ " values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 					        
 					PreparedStatement preparedStmt = conn.prepareStatement(query);
 				      preparedStmt.setString (1, upPark);
-				      preparedStmt.setString (2, upDate);
-				      preparedStmt.setString (3, upTime);
+				      preparedStmt.setString (2, upTime);
+				      preparedStmt.setString (3, upDate);
 				      preparedStmt.setString (4, upNumOfVisitors);
 				      preparedStmt.setString (5, updEmail);
-				      preparedStmt.setString (6, "RegularOrder");
-				      preparedStmt.setString (7, upOrderNum);
-				      preparedStmt.setString (8, nameOnOrder);
+				      preparedStmt.setString (6, upOrderNum);
+				      preparedStmt.setString (7, nameOnOrder);
+				      preparedStmt.setString (8, orderKind);
 				      preparedStmt.setString (9, travID);
-				      preparedStmt.setString (10, hourWait);
+				      preparedStmt.setString (10, dateEntrance);
 				      preparedStmt.setString (11, waitingTime);
 				      preparedStmt.execute();
 				      

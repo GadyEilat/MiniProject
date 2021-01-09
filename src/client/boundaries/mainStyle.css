@@ -40,6 +40,9 @@
 #btnCancelGapForVisitors {
 	-fx-background-color: RED;	
 }
+#waitingListBtn {
+	-fx-background-color:  lightblue
+}
 #btnCancelOfDiscount:hover {
 	-fx-background-color: #cc2323;	
 }
@@ -51,4 +54,7 @@
 }
 #btnCancelGapForVisitors:hover {
 	-fx-background-color: #cc2323;	
+}
+#waitingListBtn:hover {
+	-fx-background-color:  #2975a7
 }

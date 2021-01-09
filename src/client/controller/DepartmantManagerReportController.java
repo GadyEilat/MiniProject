@@ -22,14 +22,6 @@ import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import javafx.scene.chart.BarChart;
-import javafx.scene.chart.CategoryAxis;
-import javafx.scene.chart.NumberAxis;
-import javafx.scene.chart.XYChart;
-import javafx.stage.Stage;
-import javafx.application.Application;
-import javafx.fxml.FXML;
-import javafx.geometry.Side;
 
 public class DepartmantManagerReportController extends AbstractScenes{
 	public static DepartmantManagerReportController instance;

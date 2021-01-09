@@ -15,11 +15,19 @@ public class WaitingList implements Serializable {
 	private String ID;
 	private String timeOfEntrance;
 	private String dateOfEntrance;
-
-
-	
+	private String orderKind;
 
 	
+
+	
+	public String getOrderKind() {
+		return orderKind;
+	}
+
+	public void setOrderKind(String orderKind) {
+		this.orderKind = orderKind;
+	}
+
 	public WaitingList(String parkName, String time, String date, String numOfVisitors, String email,
 			String orderNumber, String nameOnOrder, String iD, String timeofenterence, String dateofentrance) {
 		this.parkName = parkName;
