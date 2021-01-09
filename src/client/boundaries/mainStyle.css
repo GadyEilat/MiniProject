@@ -25,6 +25,12 @@
 #btnLogout{
 	-fx-background-color: RED;	
 }
+#cancelBtn{
+	-fx-background-color: RED;	
+}
+#cancelBtn:hover{
+	-fx-background-color: #cc2323;	
+}
 #btnLogout:hover {
 	-fx-background-color: #cc2323;	
 }
