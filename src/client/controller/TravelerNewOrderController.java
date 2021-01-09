@@ -106,14 +106,10 @@ public class TravelerNewOrderController extends AbstractScenes {
 	}
 
 	public void isFound() {
-<<<<<<< HEAD
+
 		switchScenes("/client/boundaries/TravelerOrderSuccess.fxml", "Order Success");
 		System.out.println("Order Updated Successfully");
 
-=======
-		switchScenes("/client/boundaries/TravelerOrderSuccess.fxml", "Order Success");
-		System.out.println("Order Updated Successfully");
->>>>>>> refs/heads/daniella
 	}
 
 
@@ -198,15 +194,15 @@ public class TravelerNewOrderController extends AbstractScenes {
 		switchScenes("/client/boundaries/RegularTraveler.fxml", "");
 	}
 
-<<<<<<< HEAD
+
 	/**
 	 * continueToPayButton method
 	 * @param event
 	 * This method pull the details that the Traveler enter in the screen and saves it in the Order's Table.
 	 * This method also checking if there is not a place in the parks and if not, he either can join the waiting list or change another date.
 	 */
-=======
->>>>>>> refs/heads/daniella
+
+
 	@FXML
 	void continueToPayButton(ActionEvent event) {
 		String orderPark = parkNameBtn.getSelectionModel().getSelectedItem().toString();
@@ -251,11 +247,11 @@ public class TravelerNewOrderController extends AbstractScenes {
 
 				if (thereIsSpot) {
 					ClientUI.chat.accept(data);
-<<<<<<< HEAD
-				
-=======
 
->>>>>>> refs/heads/daniella
+				
+
+
+
 				} else {
 					Alert alert = new Alert(AlertType.INFORMATION);
 					alert.setHeaderText(null);
@@ -268,15 +264,15 @@ public class TravelerNewOrderController extends AbstractScenes {
 
 	}
 
-<<<<<<< HEAD
+
 	/**
 	 * waitingListButton method
 	 * @param event
 	 * This method handling the EnterWaitingList button and saves the Order's details.
 	 * At the end of the actions, the screen return back to the kind of travelers screen.
 	 */
-=======
->>>>>>> refs/heads/daniella
+
+
 	@FXML
 	void waitingListButton(ActionEvent event) {
 		Alert alert = new Alert(AlertType.INFORMATION);
