@@ -12,34 +12,25 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane prefHeight="600.0" prefWidth="800.0" stylesheets="@../../../res/mainEnter.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.ExistingOrderController">
+<BorderPane prefHeight="600.0" prefWidth="800.0" styleClass="background" stylesheets="@mainEnter.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.ExistingOrderController">
    <center>
       <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="510.0" prefWidth="732.0">
          <children>
-            <VBox alignment="CENTER" layoutX="-2.0" layoutY="-1.0" prefHeight="514.0" prefWidth="808.0" AnchorPane.bottomAnchor="-3.0" AnchorPane.leftAnchor="-2.0" AnchorPane.rightAnchor="-6.0" AnchorPane.topAnchor="-1.0">
+            <VBox alignment="CENTER" layoutX="146.0" layoutY="61.0" AnchorPane.bottomAnchor="111.0" AnchorPane.leftAnchor="146.0" AnchorPane.rightAnchor="145.0" AnchorPane.topAnchor="61.0">
                <children>
-                  <HBox alignment="CENTER" prefHeight="514.0" prefWidth="1007.0">
+                  <HBox alignment="CENTER">
                      <children>
-                        <AnchorPane prefHeight="514.0" prefWidth="793.0">
+                        <AnchorPane prefHeight="354.0" prefWidth="710.0">
                            <children>
-                              <Button fx:id="BackBtn" layoutX="39.0" layoutY="444.0" mnemonicParsing="false" onAction="#GoBack" prefHeight="43.0" prefWidth="56.0" AnchorPane.bottomAnchor="35.0" AnchorPane.leftAnchor="35.0">
-                                 <graphic>
-                                    <ImageView fx:id="backBtnImage" fitHeight="35.0" fitWidth="40.0">
-                                       <image>
-                                          <Image url="@../../../res/return-button-icon.png" />
-                                       </image>
-                                    </ImageView>
-                                 </graphic>
-                              </Button>
-                              <Label layoutX="222.0" layoutY="142.0" prefHeight="17.0" prefWidth="82.0" text="Order Number" />
-                              <TextField fx:id="OrderNumberTxt" layoutX="322.0" layoutY="138.0" />
-                              <Button fx:id="nextBtn" layoutX="361.0" layoutY="216.0" mnemonicParsing="false" onAction="#NextButton" prefHeight="25.0" prefWidth="62.0" text="Next" />
-                              <Label layoutX="314.0" layoutY="29.0" prefHeight="52.0" prefWidth="177.0" text="Existing Order" AnchorPane.leftAnchor="314.0" AnchorPane.rightAnchor="314.0">
+                              <Label layoutX="94.0" layoutY="146.0" prefHeight="17.0" prefWidth="82.0" text="Order Number" />
+                              <TextField fx:id="OrderNumberTxt" layoutX="194.0" layoutY="142.0" />
+                              <Button fx:id="nextBtn" layoutX="237.0" layoutY="220.0" mnemonicParsing="false" onAction="#NextButton" prefHeight="25.0" prefWidth="62.0" text="Next" />
+                              <Label layoutX="187.0" layoutY="70.0" prefHeight="52.0" prefWidth="195.0" text="Existing Order" textAlignment="CENTER">
                                  <font>
-                                    <Font name="System Bold Italic" size="24.0" />
+                                    <Font name="Franklin Gothic Heavy" size="24.0" />
                                  </font>
                               </Label>
-                              <Text fx:id="msgFromController" fill="RED" layoutX="322.0" layoutY="188.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="148.13671875">
+                              <Text fx:id="msgFromController" fill="RED" layoutX="153.0" layoutY="200.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="230.13671875">
                                  <font>
                                     <Font size="11.0" />
                                  </font></Text>
@@ -49,18 +40,27 @@
                   </HBox>
                </children>
             </VBox>
+            <Button fx:id="BackBtn" mnemonicParsing="false" onAction="#GoBack" prefHeight="43.0" prefWidth="56.0" AnchorPane.bottomAnchor="35.0" AnchorPane.leftAnchor="35.0">
+               <graphic>
+                  <ImageView fx:id="backBtnImage" fitHeight="35.0" fitWidth="40.0">
+                     <image>
+                        <Image url="@../../../res/return-button-icon.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
          </children>
       </AnchorPane>
    </center>
    <top>
-      <AnchorPane style="-fx-background-color: #c9c4c4;" BorderPane.alignment="CENTER">
+      <AnchorPane BorderPane.alignment="CENTER">
          <children>
             <Text layoutX="206.0" layoutY="63.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="106.33984375" AnchorPane.leftAnchor="205.0" AnchorPane.topAnchor="42.0">
                <font>
                   <Font size="18.0" />
                </font>
             </Text>
-            <ImageView fitHeight="106.0" fitWidth="155.0" layoutY="1.0" AnchorPane.leftAnchor="6.0" AnchorPane.topAnchor="7.0">
+            <ImageView fitHeight="106.0" fitWidth="155.0" layoutX="11.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="6.0" AnchorPane.topAnchor="7.0">
                <image>
                   <Image url="@../../../res/LOGONATURE.png" />
                </image>
