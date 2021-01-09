@@ -277,7 +277,7 @@ public class subscriberNewOrderController extends AbstractScenes {
 		alert.setHeaderText(null);
 		alert.setContentText("Entered waiting list sucssesfully");
 		alert.show();
-		WaitingList wait = new WaitingList(null, null, null, null, null, null, null, null, null, null);
+		WaitingList wait = new WaitingList(null, null, null, null, null, null, null, null, null, null,null,null);
 		wait.setParkName(SubscriptionOrder.getParkName());
 		wait.setTime(SubscriptionOrder.getHour());
 		wait.setDate(SubscriptionOrder.getDate());

@@ -88,27 +88,33 @@ public class MyOrdersGuideController extends AbstractScenes {
 ObservableList <TourGuideOrder> oblist=FXCollections.observableArrayList();
     
 /** Description of loadGuide 
-• *
-• * @param tourguideM this function gets an entity of tourguide and prints his details on the screen.
-• */
+ * @param tourguideM this function gets an entity of tourguide and prints his details on the screen.
+ * 
+ */
     
     public void loadGuide(TourGuide tourguideM) {
     	this.tourguide = tourguideM;
-         this.TourNameMy.setText(tourguideM.getFname());
+         this.TourNameMy.setText("Hello"+" "+tourguideM.getFname());
     }
-    
+    /** Description of backButton 
+     * @param event switches screen to TourGuide main menu.
+     */
     
     @FXML
     void backButton(ActionEvent event) {
     	switchScenes("/client/boundaries/TourGuideMainMenu.fxml", "Main Menu");
 
     }
-    
+    /** Description of LogOutButton 
+     * @param event switches screen to TourGuideLogin.
+     */
     @FXML
     void LogOutButton(ActionEvent event) {
     	switchScenes("/client/boundaries/TourGuideLogin.fxml", "Login");
     }
-
+    /** Description of NewOrderButton 
+     * @param event switches screen to TourGuideNewOrder.
+     */
     @FXML
     void NewOrderButton(ActionEvent event) {
     	switchScenes("/client/boundaries/TourGuideNewOrder.fxml", "New Order");
@@ -118,22 +124,26 @@ ObservableList <TourGuideOrder> oblist=FXCollections.observableArrayList();
     void myOrdersButton(ActionEvent event) {
     	
     }
-
+    /** Description of updateDetalisGuideButton 
+     * @param event switches screen to TourGuideChangeDetails.
+     */
     @FXML
     void updateDetalisGuideButton(ActionEvent event) {
     	switchScenes("/client/boundaries/TourGuideChangeDetails.fxml", "GoNature Enter");
     }
 
-    
+    /** Description of backButtonMyOrders 
+     * @param event switches screen to TourGuideMainMenu.
+     */
     @FXML
     void backButtonMyOrders(ActionEvent event) {
     	switchScenes("/client/boundaries/TourGuideMainMenu.fxml", "GoNature Enter");
     }
     
     /** Description of initialize 
-    • *@see https://docs.oracle.com/javase/8/javafx/api/javafx/fxml/Initializable.html
-    • * prints the table.
-    • */
+     *@see https://docs.oracle.com/javase/8/javafx/api/javafx/fxml/Initializable.html
+     * prints the table of the order details from the data base.
+     */
     
     @Override
    	public void initialize(URL location, ResourceBundle resources) {

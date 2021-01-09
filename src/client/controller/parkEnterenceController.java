@@ -28,12 +28,14 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.text.Text;
 import javafx.scene.control.TextField;
 
-/** Description of parkEnterenceController 
-• *
-• * @author Elad Kobi
-• * 
-• * 
-• */
+/**
+ * parkEnterenceController class
+ * @author Elad
+ *This controller is responsible for the screen displaying the entering to the park on a casual visit.
+ *The controller expands the AbstractScenes class that replaces the scenes within the main stage.
+ *It is possible to log out of the main menu. 
+ *It is possible to go to the screen where you can check an order details.
+ */
 
 
 
@@ -43,6 +45,7 @@ public class parkEnterenceController extends AbstractScenes {
 	    //wait.setTimeOfEnterence(dtf.format(now));
 	    public String discountDay=null;
 	    double casualPrice= 30;
+	    public String maxPark;
 
 	    ParkStatus status;
 	    @FXML
@@ -78,12 +81,10 @@ public class parkEnterenceController extends AbstractScenes {
 	    
 	    
 	    
-	    /** Description of resetStatus 
-	    • *
-	    • * @param event Button that resets the park vistors number
-	    • * 
-	    • * 
-	    • */
+	    /** Description of resetStatus
+	     * @param event Button that resets the park vistors number
+	     * on the park 
+	    */
 	    
 	    @FXML
 	    void resetStatus(ActionEvent event) {
@@ -112,11 +113,10 @@ public class parkEnterenceController extends AbstractScenes {
 	    	switchScenes("/client/boundaries/main.fxml", "Enternece");
 	    }
 	    /** Description of completeOrder 
-	    • *
-	    • * @param event Button complete the casual visit at the park
-	    • * 
-	    • * 
-	    • */
+	     * @param event Button complete the casual visit at the park
+	     * The details are inserted into the order entity and
+	     * after that all the details are been sent to the data base.
+	     */
 	    @FXML
 	    void completeOrder(ActionEvent event) {
 	    	DateTimeFormatter drf = DateTimeFormatter.ofPattern("HH:mm:ss");
@@ -166,13 +166,14 @@ public class parkEnterenceController extends AbstractScenes {
         	alert.show();	
 	    }
 	    /** Description of insertData 
-	    • *
-	    • * @param t Gets the number of visitors in park from data base.
-	    • * @param b gets the total number of visitors that allowed in park.
-	    • * 
-	    • */
+	     *
+	     * @param t Gets the number of visitors in park from data base.
+	     * @param b gets the total number of visitors that allowed in park.
+	     * The method will print the total number of visitors in the park.
+	     */
 	    public void insertData(String t, String b) {
 	    	getNumPpl.setText(t+"/"+b);
+	    	maxPark=b;
 	    	//parkEnterenceController2.instance.insertData(t);
 	    	
 	    }
@@ -188,11 +189,11 @@ public class parkEnterenceController extends AbstractScenes {
 	    }
 	    
 	    /** Description of insertData 
-	    • *
-	    • * @param candidateChars Chars for the order number.
-	    • * @param length Length of the order number.
-	    • * @return Returns an order number
-	    • */
+	     *
+	     * @param candidateChars Chars for the order number.
+	     * @param length Length of the order number.
+	     * @return Returns an order number
+	     */
 		public static String generateRandomChars(String candidateChars, int length) {
 		    StringBuilder sb = new StringBuilder();
 		    Random random = new Random();
@@ -204,12 +205,13 @@ public class parkEnterenceController extends AbstractScenes {
 		    return sb.toString();
 		}
 		
-		  /** Description of insertData 
-	    • *@param numofppl number of people in the order.
-	    • * @param type Type of visitor.
-	    • * @param dis Daily discount if there is one.
-	    • * @return Returns an order number
-	    • */
+		  /** Description of insertData
+		   * This method will return the price of the casual visit. 
+	     *@param numofppl number of people in the order.
+	     * @param type Type of visitor.
+	     * @param dis Daily discount if there is one.
+	     * @return Returns an order number
+	    */
 		public double checkFinalPrice(String type, String dis, String numofppl)
 		{
 			if(type=="Regular") {
@@ -247,10 +249,10 @@ public class parkEnterenceController extends AbstractScenes {
 	    
 		  /** Description of initialize 
 	    • *@see https://docs.oracle.com/javase/8/javafx/api/javafx/fxml/Initializable.html
-	    • * 
-	    • * 
-	    • * 
-	    • */
+	     * The worker details are been saved.
+	     * The combo box is beeing initialized.
+	     * The name of the worker is printed on screen.
+	     */
 	    @Override
 	    public void initialize(URL location, ResourceBundle resources) {
 	    	instance = this;

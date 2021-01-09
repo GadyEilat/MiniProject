@@ -52,12 +52,11 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 public class TourGuideNewOrderController extends AbstractScenes {
 	/** Description of TourGuideNewOrderController 
-	• * This controller responsible for the new order screen for the tour guide.
-	• * It is possibole to create a new order or enter a waiting list if chose so.
-	• * @author Elad Kobi
-	• * 
-	• * 
-	• */
+	 * This controller responsible for the new order screen for the tour guide.
+	 * It is possibole to create a new order or enter a waiting list if chose so.
+	 * The controller expands the AbstractScenes class that replaces the scenes within the main stage.
+	 * @author Elad Kobi 
+	 */
 	
 	
 	TourGuide tourguide;
@@ -136,8 +135,8 @@ public class TourGuideNewOrderController extends AbstractScenes {
 	    
 	    ObservableList<String> list,list2,list3,list4;
 		/** Description of prePaidCombo 
-		• * A combo list of pre pay visit
-		• */
+		 * A combo list of pre pay visit
+		 */
 	   
 	    private void prePaidCombo() {
 	    	ArrayList<String> a4 = new ArrayList<String>();	
@@ -148,8 +147,8 @@ public class TourGuideNewOrderController extends AbstractScenes {
 
 	    }
 		/** Description of setTimeComboBox 
-		• * A combo list of visit hours
-		• */
+		 * A combo list of visit hours
+		 */
 	    private void setTimeComboBox() {
 			ArrayList<String> al = new ArrayList<String>();	
 			al.add("8:00");
@@ -166,8 +165,8 @@ public class TourGuideNewOrderController extends AbstractScenes {
 		}
 	    
 	    /** Description of setParkComboBox 
-		• * A combo list of parks
-		• */
+		 * A combo list of parks
+		 */
 	    private void setParkComboBox() {
 			ArrayList<String> a2 = new ArrayList<String>();	
 			a2.add("Park1");
@@ -177,8 +176,8 @@ public class TourGuideNewOrderController extends AbstractScenes {
 			parkNamBtn.setItems(list2);
 		}
 	    /** Description of setNumOfVisitorsComboBox 
-		• * A combo list of number of visitors
-		• */
+		 * A combo list of number of visitors
+		 */
 	    private void setNumOfVisitorsComboBox() {
 			ArrayList<String> a3 = new ArrayList<String>();	
 			a3.add("1");
@@ -201,27 +200,31 @@ public class TourGuideNewOrderController extends AbstractScenes {
 		}
 	    
 	    /** Description of loadGuide 
-		• *@param tourguideO Prints the tourguide details
-		• */
+		 *@param tourguideO Prints the tourguide details
+		 */
 	     
 	    public void loadGuide(TourGuide tourguideO) {
 	    	this.tourguide = tourguideO;
-	         this.TourNo.setText(tourguideO.getFname());
+	         this.TourNo.setText("Hello"+" "+tourguideO.getFname());
 	    }
 	    
 	    
-	    
+	    /** Description of backButton 
+		 *@param event Button that moves to TourGuideMainMenu
+		 */
 	    @FXML
 	    void backButton(ActionEvent event) {
 	    	switchScenes("/client/boundaries/TourGuideMainMenu.fxml", "Main Menu");
 
 	    }
-	    
+	    /** Description of LogOutButton 
+		 * @param event Button that moves to the main menu
+		 */
 	    @FXML
 	    void LogOutButton(ActionEvent event) {
 	    	switchScenes("/client/boundaries/TourGuideLogin.fxml", "Login");
 	    }
-
+        
 	    @FXML
 	    void NewOrderButton(ActionEvent event) {
 
@@ -242,9 +245,9 @@ public class TourGuideNewOrderController extends AbstractScenes {
 
 	    }
 	    /** Description of continueToPayButton 
-		• *@param event This is a button function that gets the order details checks few things, and if
-		• * All the checks are ok it sends a new order.
-		• */
+		 *@param event This is a button function that gets the order details checks few things, and if
+		 * All the checks are ok it sends a new order.
+		 */
 	    @FXML
 	    void continueToPayButton(ActionEvent event) {
 	    	String orderPark =parkNamBtn.getValue();
@@ -316,7 +319,9 @@ public class TourGuideNewOrderController extends AbstractScenes {
             }
 			//}	
 	    }
-
+	    /** Description of continueToPayButton 
+		 *@param event Button that moves to TourGuideMyOrders screen.
+		 */
 	    @FXML
 	    void myOrdersButton(ActionEvent event) {
 	    	switchScenes("/client/boundaries/TourGuideMyOrders.fxml", "My Orders");
@@ -326,7 +331,9 @@ public class TourGuideNewOrderController extends AbstractScenes {
 	    void parkNamButton(ActionEvent event) {
                
 	    }
-
+	    /** Description of CheckPrices 
+		 *@param event button that opens a pop up menu with prices.
+		 */
 	    @FXML
 	    void CheckPrices(ActionEvent event) {
 	    	   try {
@@ -340,7 +347,9 @@ public class TourGuideNewOrderController extends AbstractScenes {
 	    	    e.printStackTrace();
 	    	  }
 	    }
-	    
+	    /** Description of CheckPrices 
+		 *@param event button that moves to TourGuideChangeDetails screen.
+		 */
 	    
 	    @FXML
 	    void updateDetalisGuideButton(ActionEvent event) {
@@ -352,16 +361,16 @@ public class TourGuideNewOrderController extends AbstractScenes {
 	    	switchScenes("/client/boundaries/Existing Order.fxml", "New Order");
 	    }
 	    /** Description of waitingListTourButton 
-	  		• *@param event This is a button function that gets the order details checks few things.
-	  		• * if the user decided to enter the waiting list he can using this button.
-	  		• */
+	  		 *@param event This is a button function that gets the order details checks few things.
+	  		 * if the user decided to enter the waiting list he can using this button.
+	  		 */
 	    @FXML
 	    void waitingListTourButton(ActionEvent event) {
 	    	Alert alert = new Alert(AlertType.INFORMATION);
         	alert.setHeaderText(null);
         	alert.setContentText("Enterd waiting list sucssesfully.");
         	alert.show();
-        	WaitingList wait= new WaitingList(null, null, null ,null ,null ,null, null, null, null,null);
+        	WaitingList wait= new WaitingList(null, null, null ,null ,null ,null, null, null, null,null,null,null);
         	wait.setDate(tourguideorderr.getDate());
         	wait.setEmail(tourguideorderr.getEmail());
         	wait.setID(tourguideorderr.getID());
@@ -383,8 +392,8 @@ public class TourGuideNewOrderController extends AbstractScenes {
            	switchScenes("/client/boundaries/TourGuideMainMenu.fxml", "New waiting list"); 	
 	    }
 	    /** Description of initialize 
-	    • *@see https://docs.oracle.com/javase/8/javafx/api/javafx/fxml/Initializable.html
-	    • */
+	     *@see https://docs.oracle.com/javase/8/javafx/api/javafx/fxml/Initializable.html
+	     */
 	    @Override
 		public void initialize(URL location, ResourceBundle resources) {
 	    	instance = this;
@@ -407,11 +416,11 @@ public class TourGuideNewOrderController extends AbstractScenes {
 	    }
 	    
 	    /** Description of checkDate 
-		• *
-		• * @param s an entity of the order that been checked under this function
-		• * @param t an entity that is been use for the waitinglist checks.
-		• * @return this function returns an entity that holds few parmaters of the waiting list check.
-		• */
+		 *
+		 * @param s an entity of the order that been checked under this function
+		 * @param t an entity that is been use for the waitinglist checks.
+		 * @return this function returns an entity that holds few parmaters of the waiting list check.
+		 */
 	    
 	    public maxVis checkDate(TourGuideOrder s, maxVis t) {
 	    	 maxVis visMax= new maxVis(null, null, null, 0, 0, null, 0);
@@ -420,10 +429,10 @@ public class TourGuideNewOrderController extends AbstractScenes {
 	    	return visMax;
 	    }
 	    /** Description of checkDate2 
-		• *
-		• * @param t an entity that is been use for the waitinglist checks.
-		• * @return this function changes a boolean value that checks if the dates are avilable.
-		• */
+		 *
+		 * @param t an entity that is been use for the waitinglist checks.
+		 * @return this function changes a boolean value that checks if the dates are avilable.
+		 */
 	    public void checkDate2(maxVis t) {
 	    	 maxVis visMax= new maxVis(null, null, null, 0, 0, null, 0);
 		    	visMax.setDate(t.getDate());

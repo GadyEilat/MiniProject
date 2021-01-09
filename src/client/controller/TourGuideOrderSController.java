@@ -38,10 +38,11 @@ import javafx.scene.control.Button;
 public class TourGuideOrderSController extends AbstractScenes {
 	
 	/** Description of TourGuideOrderSController 
-	• * This controller responsible to show the user his new order details.
-	• * After that he can either move to main menu or see his orders.
-	• * @author Elad Kobi
-	• */
+	 * This controller responsible to show the user his new order details.
+	 * After that he can either move to main menu or see his orders.
+	 * The controller expands the AbstractScenes class that replaces the scenes within the main stage.
+	 * @author Elad Kobi
+	 */
 	
 	
 	
@@ -95,11 +96,11 @@ public class TourGuideOrderSController extends AbstractScenes {
 //        this.orderNumberGuide.setText(orderup.tourguideorderr.getOrderNumber());
 //    }
     /** Description of loadGuide 
-    • * This function shows the order details and sends a mail to the user about it.
-    • * @param  tourguideO the tourguide who made the order.
-    • * @param newOrderG the order that has been made.
-    • * 
-    • */
+     * This function shows the order details and sends a mail to the user about it.
+     * @param  tourguideO the tourguide who made the order.
+     * @param newOrderG the order that has been made.
+     * 
+     */
     
     public void loadGuide(TourGuide tourguideO, TourGuideOrder newOrederG) {
     	this.tourguide = tourguideO;
@@ -130,32 +131,44 @@ public class TourGuideOrderSController extends AbstractScenes {
 	        ClientUI.chat.accept(maildata);
 
     }
-
+    /** Description of LogOutButton 
+	 *@param button that moves to the main menu details.
+	 */
     @FXML
     void LogOutButton(ActionEvent event) {
     	switchScenes("/client/boundaries/TourGuideLogin.fxml", "Login");
     }
-
+    /** Description of NewOrderButton 
+	 *@param button that moves to the TourGuideNewOrder screen.
+	 */
     @FXML
     void NewOrderButton(ActionEvent event) {
     	switchScenes("/client/boundaries/TourGuideNewOrder.fxml", "New Order");
     }
-
+    /** Description of myOrdersButton 
+   	 *@param button that moves to the TourGuideNewOrder screen.
+   	 */
     @FXML
     void myOrdersButton(ActionEvent event) {
     	switchScenes("/client/boundaries/TourGuideMyOrders.fxml", "My Orders");
     }
-
+    /** Description of returnToMenuTourButton 
+   	 *@param button that moves to the TourGuideMainMenu screen.
+   	 */
     @FXML
     void returnToMenuTourButton(ActionEvent event) {
     	switchScenes("/client/boundaries/TourGuideMainMenu.fxml", "Main Menu");
     }
-
+    /** Description of updateDetalisGuideButton 
+   	 *@param button that moves to the TourGuideChangeDetails screen.
+   	 */
     @FXML
     void updateDetalisGuideButton(ActionEvent event) {
     	switchScenes("/client/boundaries/TourGuideChangeDetails.fxml", "Change Details");
     }
-
+    /** Description of viewOrderTourButton 
+   	 *@param button that moves to the TourGuideMyOrders screen.
+   	 */
     @FXML
     void viewOrderTourButton(ActionEvent event) {
     	switchScenes("/client/boundaries/TourGuideMyOrders.fxml", "My Orders");
@@ -166,8 +179,9 @@ public class TourGuideOrderSController extends AbstractScenes {
     	switchScenes("/client/boundaries/Existing Order.fxml", "New Order");
     }
 	  /** Description of initialize 
-    • *@see https://docs.oracle.com/javase/8/javafx/api/javafx/fxml/Initializable.html
-    • */
+     *@see https://docs.oracle.com/javase/8/javafx/api/javafx/fxml/Initializable.html
+     * That method calls the loadGuide method.
+     */
     
     @Override
   		public void initialize(URL location, ResourceBundle resources) {
