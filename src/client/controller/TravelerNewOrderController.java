@@ -240,7 +240,7 @@ public class TravelerNewOrderController extends AbstractScenes {
     	alert.setHeaderText(null);
     	alert.setContentText("Entered waiting list sucssesfully.");
     	alert.show();
-    	WaitingList wait= new WaitingList(null, null, null ,null ,null ,null, null, null, null, null);
+    	WaitingList wait= new WaitingList(null, null, null ,null ,null ,null, null, null, null, null,null,null);
     	wait.setDate(TravelerOrder.getDate());
     	wait.setEmail(TravelerOrder.getEmail());
     	wait.setID(TravelerOrder.getID());

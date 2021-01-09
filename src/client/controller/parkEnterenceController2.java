@@ -22,12 +22,14 @@ import javafx.scene.control.Button;
 import javafx.scene.text.Text;
 import javafx.scene.control.TextField;
 
-/** Description of parkEnterenceController2 
-• *
-• * @author Elad Kobi
-• * 
-• * 
-• */
+/**
+ * parkEnterenceController2 class
+ * @author Elad
+ *This controller is responsible for the screen displaying the entering to the park screen using order or an id
+ *The controller expands the AbstractScenes class that replaces the scenes within the main stage.
+ *It is possible to log out of the main menu. 
+ *It is possible to go to the screen where you can create a new casual vist.
+ */
 
 
 public class parkEnterenceController2 extends AbstractScenes {
@@ -106,17 +108,18 @@ public class parkEnterenceController2 extends AbstractScenes {
 
 	    	switchScenes("/client/boundaries/main.fxml", "Enternece");
 	    }
-	    /** Description of completeOrder 
-	    • *
-	    • * @param event Button that checks the order details for the worker
-	    • * 
-	    • * 
-	    • */
+	    /** Description of completeOrder
+	     * @param event Button that checks the order details for the worker
+	     * upon clicking the button the details will apper on screen. 
+	     */
 	    @FXML
 	    void checkDetails(ActionEvent event) {
+	    	
 	        Order order=new Order(null,null,null,null,null,null,null,null);
 	          order.setOrderNumber(txtOrderNumber.getText());
-	          if (order.getOrderNumber().trim().isEmpty()) {
+	          boolean checkTheID=checkID(order.getOrderNumber());
+
+	          if (order.getOrderNumber().trim().isEmpty() || checkTheID==false ) {
 	  			errormsg.setText("Please enter an existing order number");
 	  		}
 	  		else { 
@@ -127,11 +130,11 @@ public class parkEnterenceController2 extends AbstractScenes {
 
 	    
 	    /** Description of completeOrder 
-	    • *
-	    • * @param event Button that finish the visit order
-	    • * 
-	    • * 
-	    • */
+	     *
+	     * @param event Button that finish the visit order
+	     * The order details will be updated at the data base
+	     * and the park status will be change according to the number of visitors.
+	     */
 	    
 	    
 	    @FXML
@@ -146,21 +149,20 @@ public class parkEnterenceController2 extends AbstractScenes {
 	    	finishOrder();
 	    }
 	    /** Description of insertData 
-	    • *
-	    • * @param t Gets the number of visitors in park from data base.
-	    • * @param b gets the total number of visitors that allowed in park.
-	    • * 
-	    • */
+	     *
+	     * @param t Gets the number of visitors in park from data base.
+	     * @param b gets the total number of visitors that allowed in park.
+	     * 
+	     */
 	    public void insertData(String t, String b) {
 	    	getNumPpl2.setText(t+"/"+b);
 	    }
 	    
 	    /** Description of insertData 
-	    • *
-	    • * @param t an order entity that prints all the details
-	    • * 
-	    • * 
-	    • */
+	     *
+	     * @param t an order entity that prints all the details
+	     * of the order to the screen.
+	     */
 	    
 	    public void orderDetails(Order t) {
 	    	txtDateOrder.setText(t.getDate());
@@ -195,11 +197,10 @@ public class parkEnterenceController2 extends AbstractScenes {
 	    	}
 	    }
 	    /** Description of continueOrder 
-	    • *
-	    • * @param t an order entity that prints all the details
-	    • * 
-	    • * 
-	    • */
+	     *
+	     * @param t that holds all the order details.
+	     * This method will set the order details inside the entity of the order.
+	     */
 	    public void continueOrder(Order t) {
 	    	DateTimeFormatter drf = DateTimeFormatter.ofPattern("HH:mm:ss");
   		    LocalDateTime noww = LocalDateTime.now();
@@ -210,6 +211,7 @@ public class parkEnterenceController2 extends AbstractScenes {
             order.setOrderNumber(t.getOrderNumber());
             order.setOrderKind(t.getOrderKind());
             order.setNumOfVis(t.getNumOfVisitors());
+            
            
             //DataTransfer data2 = new DataTransfer(TypeOfMessage.CASUALVISITUPDATE,order);
 	    	//ClientUI.chat.accept(data2);
@@ -217,7 +219,6 @@ public class parkEnterenceController2 extends AbstractScenes {
 	    
 	    
 	    
-	    //רעיון למחר: לעשות פונקצייה שתרוץ באינטשלייז שתחזיר משתנה לקליינט שיחזיק הנחה יומית ואז אמשוך אותו ואחשב הנחה
 	    /** Description of insertData 
 	    • * @param t String from the data base that holds a discount if there is one. 
 	    • */
@@ -225,18 +226,13 @@ public class parkEnterenceController2 extends AbstractScenes {
 	    	discountDay=t;	
 	    }
 	    
-//	    private void alertMessage(){
-//	    	Alert alert = new Alert(AlertType.INFORMATION);
-//        	alert.setHeaderText(null);
-//        	alert.setContentText("Fields missing");
-//        	alert.show();	
-//	    }
+
 		  /** Description of insertData 
-	    • *@param numofppl number of people in the order.
-	    • * @param type Type of visitor.
-	    • * @param dis Daily discount if there is one.
-	    • * @return Returns an order number
-	    • */
+	     *@param numofppl number of people in the order.
+	     * @param type Type of visitor.
+	     * @param dis Daily discount if there is one.
+	     * @return Returns an order number
+	     */
 		public double checkFinalPrice(String type, String dis, String numofppl)
 		{
 			if(type.compareTo("Regular")==0) {
@@ -271,14 +267,26 @@ public class parkEnterenceController2 extends AbstractScenes {
 		
 			return 0;
 		}
-	    
-	    
+		
+		
+	   	 /** Description of checkID 
+         *@param ID gets an ID and  
+         * checking if it's a valid ID 
+         */
+   public static boolean checkID(String ID) {
+	   if(ID.length()==9 || ID.length()==5  && ID.matches("[0-9]+"))
+		   return true;
+	   return false;
+   }
+   
+	
+	    	    
 		  /** Description of initialize 
-	    • *@see https://docs.oracle.com/javase/8/javafx/api/javafx/fxml/Initializable.html
-	    • * 
-	    • * 
-	    • * 
-	    • */
+	     *@see https://docs.oracle.com/javase/8/javafx/api/javafx/fxml/Initializable.html
+	     * This method will get the worker details.  
+	     * This method will check the park status.
+	     * This method will print the name of the user.
+	     */
 	
 
 	    @Override

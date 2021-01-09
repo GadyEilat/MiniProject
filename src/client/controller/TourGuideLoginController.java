@@ -32,11 +32,11 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 /** Description of TourGuideLoginController 
-• * This controller responsible of getting the id from the user
-• * And if the id matches the id that is written in the data base
-• * The user can carry on to the main menu.
-• * @author Elad Kobi 
-• */
+ * This controller responsible of getting the id from the user
+ * And if the id matches the id that is written in the data base
+ * The user can carry on to the main menu.
+ * @author Elad Kobi 
+ */
 public class TourGuideLoginController extends AbstractScenes {
       TourGuide tourguide;
     @FXML
@@ -54,15 +54,15 @@ public class TourGuideLoginController extends AbstractScenes {
     private TextField GuideID;
     
     /** Description of notFound - ID not found 
-    • *
-    • */
+     *
+     */
     public void notFound() {
 
 		MsgFromController.setText("Visitor ID Not Found");
 	}
     /** Description of isFound - ID is found 
-    • *
-    • */
+     *
+     */
     public void isFound(){
     	switchScenes("/client/boundaries/TourGuideMainMenu.fxml", "Main Menu");
 	}
@@ -70,8 +70,8 @@ public class TourGuideLoginController extends AbstractScenes {
     public Object gID="4";
     
     /** Description of LogINGuideButton - ID is found 
-    • *@param event A button that logs into the system.
-    • */
+     *@param event A button that logs into the system.
+     */
     
     @FXML
     void LogINGuideButton(ActionEvent event) {
@@ -94,8 +94,8 @@ public class TourGuideLoginController extends AbstractScenes {
     	switchScenes("/client/boundaries/main.fxml", "Main Menu");
     }
     /** Description of initialize 
-    • *@see https://docs.oracle.com/javase/8/javafx/api/javafx/fxml/Initializable.html
-    • */
+     *@see https://docs.oracle.com/javase/8/javafx/api/javafx/fxml/Initializable.html
+     */
     
     @Override
     public void initialize(URL location, ResourceBundle resources) {

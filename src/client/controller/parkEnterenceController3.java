@@ -20,13 +20,14 @@ import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 
 
-/** Description of parkEnterenceController3 
-• *
-• * @author Elad Kobi
-• * 
-• * 
-• */
-
+/**
+ * parkEnterenceController2 class
+ * @author Elad
+ *This controller is responsible for the screen displaying the exiting the park process screen using order number.
+ *The controller expands the AbstractScenes class that replaces the scenes within the main stage.
+ *It is possible to log out of the main menu. 
+ *It is possible to go to the screen where you can create a new casual vist.
+ */
 public class parkEnterenceController3 extends AbstractScenes {
 	DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     LocalDateTime now = LocalDateTime.now();
@@ -61,9 +62,8 @@ public class parkEnterenceController3 extends AbstractScenes {
 
 	    
 	    /** Description of LogOut 
-	    • *
-	    • * @param LogOut button logs out to the main menu.
-	    • */
+	     * @param LogOut button logs out to the main menu.
+	    */
 	    
 	    
 	    
@@ -83,9 +83,8 @@ public class parkEnterenceController3 extends AbstractScenes {
 	    	
 	    }
 	    /** Description of completeOrder2 
-	    • *@param Button that checks if first the order number is in the park
-	    • * 
-	    • */
+	     *@param Button that checks if first the order number is in the park
+	     */
 	    @FXML
 	    void completeOrder2(ActionEvent event) {
            status.setAmount(txtOrderNumber.getText());
@@ -93,9 +92,9 @@ public class parkEnterenceController3 extends AbstractScenes {
 	    	ClientUI.chat.accept(data);
 	    }
 	    /** Description of finishExitPark 
-	    • *@param order finish the exit park process
-	    • * 
-	    • */
+	    *@param order finish the exit park process
+	    * The details will be sent to the data base.
+	    */
 	   public void finishExitPark(casualOrder order) {
 	    	String check=order.getOrderNumber();
 	    	if(check == null)
@@ -112,9 +111,9 @@ public class parkEnterenceController3 extends AbstractScenes {
 	   }
 
 	    /** Description of initialize 
-	    • *@see https://docs.oracle.com/javase/8/javafx/api/javafx/fxml/Initializable.html
-	 
-	    • */
+	     *@see https://docs.oracle.com/javase/8/javafx/api/javafx/fxml/Initializable.html
+	     *The worker status is saved.
+	     */
 	    @Override
 	    public void initialize(URL location, ResourceBundle resources) {
 	    	instance = this;

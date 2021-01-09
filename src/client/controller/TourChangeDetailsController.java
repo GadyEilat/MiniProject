@@ -41,12 +41,12 @@ import javafx.scene.control.Button;
 public class TourChangeDetailsController extends AbstractScenes {
 	
 	/** Description of TourChangeDetailsController 
-	• * This controller responsible Of change details screen.
-	• * The user can change few details and send them to the data base.
-	• * @author Elad Kobi
-	• * 
-	• * 
-	• */
+	 * This controller responsible Of change details screen.
+	 * The user can change few details and send them to the data base.
+	 * @author Elad Kobi
+	 * The controller expands the AbstractScenes class that replaces the scenes within the main stage.
+	 * The user can logout and move to other screens using buttons.
+	 */
 	
 	
 	
@@ -94,13 +94,13 @@ public class TourChangeDetailsController extends AbstractScenes {
     
     public void loadGuide(TourGuide tourguideM) {
     	this.tourguide = tourguideM;
-         this.tourNameM.setText(tourguideM.getFname());
+         this.tourNameM.setText("Hello"+" "+tourguideM.getFname());
     }
     
     /** Description of loadGuideMenuChange 
-    • *@param tourguide this function gets an entity on a TourGuide
-    • *  and prints his details to the screen.
-    • */
+     *@param tourguide this function gets an entity on a TourGuide
+     *  and prints his details to the screen.
+     */
     
     public void loadGuideMenuChange(TourGuide tourguide) {
 		this.tourguide = tourguide;
@@ -109,31 +109,39 @@ public class TourChangeDetailsController extends AbstractScenes {
 		this.changeEmailTour.setText(tourguide.getEmail());
 		this.changePhoneTour.setText(tourguide.getTeln());
 	}
-    
+    /** Description of backButton 
+     *@param Back button to TourGuideMainMenu. 
+     */
     @FXML
     void backButton(ActionEvent event) {
     	switchScenes("/client/boundaries/TourGuideMainMenu.fxml", "Main Menu");
     }
-
+    /** Description of LogOutButton 
+     *@param Logout button to TourGuideLogin. 
+     */
     @FXML
     void LogOutButton(ActionEvent event) {
     	switchScenes("/client/boundaries/TourGuideLogin.fxml", "Login");
     }
-
+    /** Description of LogOutButton 
+     *@param Button moves to TourGuideNewOrder. 
+     */
     @FXML
     void NewOrderButton(ActionEvent event) {
     	switchScenes("/client/boundaries/TourGuideNewOrder.fxml", "New Order");
     }
-
+    /** Description of myOrdersButton 
+     *@param Button moves to TourGuideMyOrders. 
+     */
     @FXML
     void myOrdersButton(ActionEvent event) {
     	switchScenes("/client/boundaries/TourGuideMyOrders.fxml", "My Orders");
     }
 
     /** Description of updateDetailsTourButton 
-    • *@param event button thats gets the new details  
-    • *  and updates the tourguide details on db
-    • */
+     *@param event button thats gets the new details  
+     *  and updates the tourguide details on db
+     */
     
     
     @FXML
@@ -164,7 +172,9 @@ public class TourChangeDetailsController extends AbstractScenes {
          }
     }
 
-    
+    /** Description of changeOrder 
+     *@param Button moves to TourGuideMyOrders. 
+     */
     @FXML
     void changeOrder(ActionEvent event) {
     	switchScenes("/client/boundaries/Existing Order.fxml", "New Order");
@@ -196,9 +206,9 @@ public class TourChangeDetailsController extends AbstractScenes {
     
     
     /** Description of validate 
-    • *@param emailrStr gets an email and  
-    • * checking if it's a valid Email 
-    • */
+     *@param emailrStr gets an email and  
+     * checking if it's a valid Email 
+     */
   
   	public static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$",
   			Pattern.CASE_INSENSITIVE);
