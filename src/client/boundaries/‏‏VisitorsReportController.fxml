@@ -4,8 +4,6 @@
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
@@ -33,15 +31,8 @@
                   <Font size="36.0" />
                </font>
             </Text>
-            <Button fx:id="printReport" layoutX="705.0" layoutY="50.0" mnemonicParsing="false" onAction="#printCancelReport" prefHeight="40.0" prefWidth="44.0">
-               <graphic>
-                  <ImageView fitHeight="40.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../../res/print.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
+            <Button fx:id="saveReport" layoutX="703.0" layoutY="37.0" mnemonicParsing="false" onAction="#saveToPDF" text="save" />
+            <Button fx:id="printReport" layoutX="703.0" layoutY="76.0" mnemonicParsing="false" onAction="#printCancelReport" text="print" />
          </children>
       </AnchorPane>
    </center>

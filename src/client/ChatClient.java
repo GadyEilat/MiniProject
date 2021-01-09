@@ -22,6 +22,7 @@ import client.controller.SubscriptionEntryController;
 import client.controller.ClientGUIController;
 import client.controller.DepartmantManagerApproveController;
 import client.controller.DepartmantManagerController;
+import client.controller.DepartmantManagerReportController;
 import client.controller.TourGuideLoginController;
 import client.controller.TourGuideNewOrderController;
 import client.controller.TravelerNewOrderController;
@@ -36,6 +37,7 @@ import client.logic.Worker;
 import client.logic.Order;
 import client.logic.ParkInfo;
 import client.logic.ParkStatus;
+import client.logic.ReportsData;
 import client.logic.Subscriber;
 import java.io.*;
 import common.TypeOfMessageReturn;
@@ -54,6 +56,7 @@ public class ChatClient extends AbstractClient {
     public static maxVis visMax= new maxVis(null, null, null, 0, 0, null, 0);
 	public static String datesToShow[][];
 	public static String datesToApprveShow[][];
+	public static ReportsData reportsData;
 	public static boolean connected = false;
 	ChatIF clientUI;
 	public boolean waitForConnection = false;
@@ -326,6 +329,11 @@ public class ChatClient extends AbstractClient {
 					DepartmantManagerApproveController.instance.loadData();
 				}
 			}
+			if (object instanceof ReportsData) {
+				reportsData = (ReportsData) object;
+				DepartmantManagerReportController.instance.anableReportsButtons();
+			}
+			
 			break;
 		case REQUESTINFO_FAILED:
 			if(object instanceof ParkInfo) {

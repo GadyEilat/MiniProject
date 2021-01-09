@@ -7,6 +7,7 @@ import java.util.ResourceBundle;
 import client.ChatClient;
 import client.ClientUI;
 import client.logic.ParkInfo;
+import client.logic.ReportsData;
 import client.logic.Worker;
 import common.DataTransfer;
 import common.TypeOfMessage;
@@ -74,38 +75,11 @@ public class DepartmantManagerReportController extends AbstractScenes{
 		helpWindow.setMaxWidth(800);
 		helpWindow.setScene(scene);
 		helpWindow.show();
-    	  
-//		final CategoryAxis xAxis = new CategoryAxis();
-//		final NumberAxis yAxis = new NumberAxis();
-//		BarChart barCancelation = new BarChart<String, Number>(xAxis, yAxis);
-//
-//		barCancelation.setTitle("Cacnellation Report");
-//		xAxis.setLabel("Traveler kind");
-//		yAxis.setLabel("Number of visitors");
-//		XYChart.Series Canceld = new XYChart.Series();
-//		Canceld.setName("2003");
-//		Canceld.getData().add(new XYChart.Data("austria", 25601.34));
-//		Canceld.getData().add(new XYChart.Data("brazil", 20148.82));
-//		Canceld.getData().add(new XYChart.Data("france", 10000));
-//		
-//		XYChart.Series approvedAndNotArrived = new XYChart.Series();
-//		approvedAndNotArrived.setName("2004");
-//		approvedAndNotArrived.getData().add(new XYChart.Data("austria", 57401.85));
-//		approvedAndNotArrived.getData().add(new XYChart.Data("brazil", 41941.19));
-//		approvedAndNotArrived.getData().add(new XYChart.Data("france", 45263.37));
-//		barCancelation.getData().addAll(Canceld,approvedAndNotArrived);
-//		StackPane pane = new StackPane(barCancelation);
-//		//Setting the Scene
-//    		      Scene scene = new Scene(pane, 595, 300);
-//    		      Stage helpWindow = new Stage();
-//    		      helpWindow.setTitle("Bar Chart");
-//    		      helpWindow.setScene(scene);
-//    		      helpWindow.show();
+
     }
     
     @FXML
     void showVisitReport(ActionEvent event) {
-
     }
 
     @FXML
@@ -133,10 +107,21 @@ public class DepartmantManagerReportController extends AbstractScenes{
     void showStatus(ActionEvent event) {
 		switchScenes("/client/boundaries/mainDepartmantManager.fxml", "Departmant Manager");
     }
+    public void anableReportsButtons() {
+    	btnVisitReport.setDisable(false);
+    	btnCancellationReport.setDisable(false);
+    }
     
 	public void initialize(URL location, ResourceBundle resources) {
 		instance = this;
+    	btnCancellationReport.setDisable(true);
+    	btnVisitReport.setDisable(true);
 		departmentManagerName.setText("Hello " + ChatClient.worker.getWorkerName());
+		ReportsData reportsData = new ReportsData();
+		reportsData.setParkNumber(ChatClient.worker.getPark().getNumberOfPark());
+		DataTransfer data = new DataTransfer(TypeOfMessage.REQUESTINFO, reportsData);
+		ClientUI.chat.accept(data);
+		
 	}
 
 

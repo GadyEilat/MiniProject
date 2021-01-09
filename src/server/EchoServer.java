@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Vector;
 
@@ -17,6 +18,7 @@ import client.logic.EmailDetails;
 import client.logic.Order;
 import client.logic.ParkInfo;
 import client.logic.ParkStatus;
+import client.logic.ReportsData;
 import client.logic.Subscriber;
 import client.logic.TourGuide;
 import client.logic.TourGuideOrder;
@@ -110,11 +112,11 @@ public class EchoServer extends AbstractServer {
 					e.printStackTrace();
 				}
 			}
-			if(object instanceof ParkInfo) {
-				ParkInfo parkInfo = (ParkInfo)object;
+			if (object instanceof ParkInfo) {
+				ParkInfo parkInfo = (ParkInfo) object;
 				arrOfAnswer = mysqlConnection
-						.getDB("SELECT "+parkInfo.getNumberOfPark()+" FROM gonature.parksstatuss;");
-				if(!arrOfAnswer.isEmpty()) {
+						.getDB("SELECT " + parkInfo.getNumberOfPark() + " FROM gonature.parksstatuss;");
+				if (!arrOfAnswer.isEmpty()) {
 					parkInfo.setCurrentVisitors(arrOfAnswer.get(0).toString());
 					returnData = new DataTransfer(TypeOfMessageReturn.UPDATE_SUCCESS, object);
 					try {
@@ -298,6 +300,92 @@ public class EchoServer extends AbstractServer {
 					client.sendToClient(returnData);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			}
+			if (object instanceof ReportsData) {
+				ReportsData reportsData = (ReportsData) object;
+				// take cancel orders from cancel DB
+				arrOfAnswer = mysqlConnection
+						.getDB("SELECT count(OrderKind) FROM gonature.deletedorders where OrderKind = 'Regular';");
+				if (!arrOfAnswer.isEmpty()) {
+					reportsData.setRegularCancel(arrOfAnswer.get(0).toString());
+				}
+				arrOfAnswer = mysqlConnection
+						.getDB("SELECT count(OrderKind) FROM gonature.deletedorders where OrderKind = 'Subscriber';");
+				if (!arrOfAnswer.isEmpty()) {
+					reportsData.setSubCancel(arrOfAnswer.get(0).toString());
+				}
+				arrOfAnswer = mysqlConnection
+						.getDB("SELECT count(OrderKind) FROM gonature.deletedorders where OrderKind = 'TourGuide';");
+				if (!arrOfAnswer.isEmpty()) {
+					reportsData.setGuideCancel(arrOfAnswer.get(0).toString());
+				}
+				// take approved orders that not arrived
+//				ArrayList<String> arrivedOrders;
+				// for sub
+				arrOfAnswer = mysqlConnection
+						.getDB("SELECT count(*) FROM gonature.orders o Join casualinvitation c on o.OrderNumber=c.OrderNumber "
+								+ "and o.OrderKind = 'Subscriber' and o.Park='" + reportsData.getParkNumber() + "';");
+				if (!arrOfAnswer.isEmpty()) {
+//					arrivedOrders = new ArrayList<String>(arrOfAnswer.size());
+//					for (int i = 0; i < arrOfAnswer.size(); i++) {
+//						arrivedOrders.add(arrOfAnswer.get(i).toString());
+//					}
+					int arrived = Integer.valueOf(arrOfAnswer.get(0).toString());
+					arrOfAnswer = mysqlConnection.getDB("SELECT count(*) FROM gonature.orders WHERE " + "Date < '"
+							+ LocalDate.now() + "' And Date > '" + LocalDate.now().withDayOfMonth(1)
+							+ "' And Approved = 'true' And OrderKind = 'Subscriber' And Park='" + reportsData.getParkNumber() + "'");
+					if (!arrOfAnswer.isEmpty()) {
+						int munbersOfOrdersNotArrived =  Integer.valueOf(arrOfAnswer.get(0).toString()) - arrived;
+						reportsData.setSubnotArrived(String.valueOf(munbersOfOrdersNotArrived));
+					}
+				}
+				// for TourGuide
+				arrOfAnswer = mysqlConnection
+						.getDB("SELECT count(*) FROM gonature.orders o Join casualinvitation c on o.OrderNumber=c.OrderNumber "
+								+ "and o.OrderKind = 'TourGuide' and o.Park='" + reportsData.getParkNumber() + "';");
+				if (!arrOfAnswer.isEmpty()) {
+//					arrivedOrders = new ArrayList<String>(arrOfAnswer.size());
+//					for (int i = 0; i < arrOfAnswer.size(); i++) {
+//						arrivedOrders.add(arrOfAnswer.get(i).toString());
+//					}
+					int arrived = Integer.valueOf(arrOfAnswer.get(0).toString());
+					arrOfAnswer = mysqlConnection.getDB("SELECT count(*) FROM gonature.orders WHERE " + "Date < '"
+							+ LocalDate.now() + "' And Date > '" + LocalDate.now().withDayOfMonth(1)
+							+ "' And Approved = 'true' And OrderKind = 'TourGuide' And Park='" + reportsData.getParkNumber() + "'");
+					if (!arrOfAnswer.isEmpty()) {
+						int munbersOfOrdersNotArrived = Integer.valueOf(arrOfAnswer.get(0).toString()) - arrived;
+						reportsData.setGuidenotArrived(String.valueOf(munbersOfOrdersNotArrived));
+					}
+				}
+				// for Regular
+				arrOfAnswer = mysqlConnection
+						.getDB("SELECT count(*) FROM gonature.orders o Join casualinvitation c on o.OrderNumber=c.OrderNumber "
+								+ "and o.OrderKind = 'Regular' and o.Park='" + reportsData.getParkNumber() + "';");
+				if (!arrOfAnswer.isEmpty()) {
+//					arrivedOrders = new ArrayList<String>(arrOfAnswer.size());
+//					for (int i = 0; i < arrOfAnswer.size(); i++) {
+//						arrivedOrders.add(arrOfAnswer.get(i).toString());
+//					}
+					int arrived = Integer.valueOf(arrOfAnswer.get(0).toString());
+					arrOfAnswer = mysqlConnection.getDB("SELECT count(*) FROM gonature.orders WHERE " + "Date < '"
+							+ LocalDate.now() + "' And Date > '" + LocalDate.now().withDayOfMonth(1)
+							+ "' And Approved = 'true' And OrderKind = 'Regular' And Park='" + reportsData.getParkNumber() + "'");
+					if (!arrOfAnswer.isEmpty()) {
+						int munbersOfOrdersNotArrived = Integer.valueOf(arrOfAnswer.get(0).toString()) - arrived;
+						reportsData.setRegularnotArrived(String.valueOf(munbersOfOrdersNotArrived));
+					}
+				}
+
+				// visits reports
+
+				//
+				returnData = new DataTransfer(TypeOfMessageReturn.REQUESTINFO_SUCCESS, reportsData);
+				try {
+					client.sendToClient(returnData);
+				} catch (IOException e) {
 					e.printStackTrace();
 				}
 
