@@ -11,6 +11,8 @@ public class ParkInfo implements Serializable {
 	private String numOfSub;
 	private String discountDates[][];
 	private String Role;
+	private String currentVisitors;
+
 	private boolean changeSettingToTrue = false;
 
 	public ParkInfo(String numberOfPark, String maxVisitors, String gapOfVisitors, String maxHourToVisit,
@@ -100,5 +102,13 @@ public class ParkInfo implements Serializable {
 	public void setNumOfSub(String numOfSub) {
 		this.numOfSub = numOfSub;
 	}
+	public String getCurrentVisitors() {
+		return currentVisitors;
+	}
+
+	public void setCurrentVisitors(String currentVisitors) {
+		this.currentVisitors = currentVisitors;
+	}
+
 
 }

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.CacnellationReport">
+   <center>
+      <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0">
+         <children>
+            <Label fx:id="reportName" layoutX="412.0" layoutY="63.0" text="NAME OF REPORT">
+               <font>
+                  <Font size="36.0" />
+               </font>
+            </Label>
+            <Text fx:id="monthText" layoutX="122.0" layoutY="102.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1-MONTH 2021">
+               <font>
+                  <Font size="36.0" />
+               </font>
+            </Text>
+            <BarChart fx:id="barCancelation" layoutX="150.0" layoutY="137.0" title=" Cacnellation Report" AnchorPane.bottomAnchor="63.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="150.0" AnchorPane.topAnchor="137.0">
+              <xAxis>
+                <CategoryAxis side="BOTTOM" fx:id="xAxis" />
+              </xAxis>
+              <yAxis>
+                <NumberAxis fx:id="yAxis" side="LEFT" />
+              </yAxis>
+            </BarChart>
+         </children>
+      </AnchorPane>
+   </center>
+</BorderPane>

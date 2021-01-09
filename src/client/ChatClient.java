@@ -21,6 +21,7 @@ import client.controller.ChangeOrderDetailsController;
 import client.controller.SubscriptionEntryController;
 import client.controller.ClientGUIController;
 import client.controller.DepartmantManagerApproveController;
+import client.controller.DepartmantManagerController;
 import client.controller.TourGuideLoginController;
 import client.controller.TourGuideNewOrderController;
 import client.controller.TravelerNewOrderController;
@@ -139,6 +140,15 @@ public class ChatClient extends AbstractClient {
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+				}
+			}
+			if(object instanceof ParkInfo) {
+				parkInfo = (ParkInfo)object;
+				if (parkInfo.getRole().equals("Manager")) {
+					ManagerController.instance.updateNumberOfVisitorAndSub();
+				}
+				else if (parkInfo.getRole().equals("Department Manager")) {
+					DepartmantManagerController.instance.updateNumberOfVisitor();
 				}
 			}
 			break;

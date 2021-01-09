@@ -28,6 +28,7 @@ import common.TypeOfMessage;
 import common.TypeOfMessageReturn;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
+import javafx.scene.chart.PieChart.Data;
 import ocsf.server.*;
 import server.Controller.SendEmail;
 import server.Controller.ServerController;
@@ -107,6 +108,20 @@ public class EchoServer extends AbstractServer {
 					client.sendToClient(returnData);
 				} catch (IOException e) {
 					e.printStackTrace();
+				}
+			}
+			if(object instanceof ParkInfo) {
+				ParkInfo parkInfo = (ParkInfo)object;
+				arrOfAnswer = mysqlConnection
+						.getDB("SELECT "+parkInfo.getNumberOfPark()+" FROM gonature.parksstatuss;");
+				if(!arrOfAnswer.isEmpty()) {
+					parkInfo.setCurrentVisitors(arrOfAnswer.get(0).toString());
+					returnData = new DataTransfer(TypeOfMessageReturn.UPDATE_SUCCESS, object);
+					try {
+						client.sendToClient(returnData);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
 				}
 			}
 			break;

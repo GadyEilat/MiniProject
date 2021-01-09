@@ -72,14 +72,17 @@ public class DepartmantManagerController extends AbstractScenes{
     
 
 	public void updateNumberOfVisitor() {
-		
+		progressBar.setProgress(Integer.valueOf(ChatClient.parkInfo.getCurrentVisitors())/Integer.valueOf(ChatClient.worker.getPark().getMaxVisitors()));
+		currentNumOfVisitors.setText(ChatClient.parkInfo.getCurrentVisitors());
 	}
 	
 	public void initialize(URL location, ResourceBundle resources) {
 		instance = this;
 		departmentManagerName.setText("Hello " + ChatClient.worker.getWorkerName());
 		currentMaxOfVisitors.setText(ChatClient.worker.getPark().getMaxVisitors());
-
+		DataTransfer data = new DataTransfer(TypeOfMessage.REQUESTINFO,
+				new ParkInfo(null , ChatClient.worker.getPark().getNumberOfPark(),null,null,null,ChatClient.worker.getRole()));
+		ClientUI.chat.accept(data);
 	}
 
 }
