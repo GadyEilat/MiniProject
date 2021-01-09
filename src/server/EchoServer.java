@@ -119,8 +119,14 @@ public class EchoServer extends AbstractServer {
 				}
 			}
 			break;
+		
+			/**
+			 * This case relates to a family subscriber, 
+			 * requests the server the entire order history of the subscriber and returns the orders as a list of objects
+			 * The server sends the data to the ChatCliant.
+			 */
 
-		case REQUESTINFO_HISTORY:///////////////////////////////////////////////////////////////////////////////////////
+		case REQUESTINFO_HISTORY:
 
 			if (object instanceof Subscriber) {
 				Subscriber subscriber = (Subscriber) object;
@@ -128,7 +134,7 @@ public class EchoServer extends AbstractServer {
 				// DataTransfer data = new DataTransfer(TypeOfMessage.SUCCSESS, ans3);
 
 				if (ans3 != null) {
-					for (int i = 0; i < ans3.size(); i++) {
+					for (int i = 0 ; i < ans3.size(); i++) {
 						try {
 							returnData = new DataTransfer(TypeOfMessageReturn.HISTORY_ORDERS, ans3.get(i));
 							client.sendToClient(returnData);
@@ -199,7 +205,18 @@ public class EchoServer extends AbstractServer {
 			}
 			break;
 
+			/**
+			 * This case requests information from the database.
+			 */
+
 		case REQUESTINFO:
+			
+			/**
+			 * If the object is a subscription type, it requests all the subscriber information from the database by subscription number.
+			 * The server checks whether the database request was successful or failed.
+			 * The server sends the data to the ChatCliant.
+			 */
+			
 			if (object instanceof Subscriber) {
 				Subscriber subscriber = (Subscriber) object;
 				String checkSubExist = "SELECT * FROM gonature.subscriber WHERE subscriberNumber ='"
@@ -297,6 +314,7 @@ public class EchoServer extends AbstractServer {
 
 			}
 			break;
+			
 		case DELETEINFO:
 			if (object instanceof ParkInfo) {
 				ParkInfo parkInfo = (ParkInfo) object;
@@ -612,6 +630,13 @@ public class EchoServer extends AbstractServer {
 					e.printStackTrace();
 				}
 			}
+			
+			/**
+			 * If the object is a subscription type, it updates all the subscriber in the database of the subscriber.
+			 * The server checks to see if the database update was successful or failed.
+			 * The server sends the data to the ChatCliant.
+			 */
+			
 			if (object instanceof Subscriber) {
 				Subscriber subscriber = (Subscriber) object;
 				String upDateSub = "UPDATE `gonature`.`subscriber` SET `ID` = '" + subscriber.getId()
@@ -710,7 +735,19 @@ public class EchoServer extends AbstractServer {
 
 			}
 			break;
+			
+			/**
+			 * This case inserts information into the database.
+			 */
+			
 		case INSERTINFO:
+				
+			/**
+			 * If the object is a subscription type, it inserts information into the database of the subscriber.
+			 * The server creates a family subscription in the database and sends the user an email with his registration data.
+			 * The server sends the data to the ChatCliant.
+			 */
+			
 			if (object instanceof Subscriber) {
 				Subscriber newSubscriber = (Subscriber) object;
 
@@ -763,6 +800,11 @@ public class EchoServer extends AbstractServer {
 				}
 			}
 			break;
+			
+			/**
+			 * This case requests the server to login to the user.
+			 */
+			
 		case LOGIN_REQUEST:
 			if (object instanceof Worker) {
 				Worker worker = (Worker) object;
@@ -844,6 +886,13 @@ public class EchoServer extends AbstractServer {
 				}
 			}
 
+
+			/**
+			 * If the object is a subscription type, it requests the server to login to the subscriber user by the database.
+			 * The server checks if the login was successful or failed.
+			 * The server sends the data to the ChatCliant.
+			 */
+			
 			if (object instanceof Subscriber) {
 				Subscriber subscriber = (Subscriber) object;
 				String checkSubExist = "SELECT * FROM gonature.subscriber WHERE subscriberNumber ='"
@@ -1129,6 +1178,65 @@ public class EchoServer extends AbstractServer {
 				}
 			}
 
+			break;
+			
+			/**
+			 * This case is responsible for placing a new order for a family subscription.
+			 * The server checks whether the new order is approved or not by checking the data with the database.
+			 * The server sends the data to the ChatCliant.
+			 */
+			
+		case SUBSCRIBER_NEWORDER:
+			if (object instanceof Order) {
+				Order order = (Order) object;
+				maxVis visMax = new maxVis(null, null, null, 0, 0, null, 0);
+				maxVis tempMaxVisForCheck = new maxVis(null, null, null, 0, 0, null, 0);
+				tempMaxVisForCheck.setDate(order.getDate());
+				tempMaxVisForCheck.setPark(order.getParkName());
+				tempMaxVisForCheck.setVisitorsInOrder(order.getNumOfVisitors());
+				tempMaxVisForCheck.setTime(order.getHour());
+				
+
+				visMax = mysqlConnection.checkMaxVisitors(tempMaxVisForCheck);
+				if (visMax != null) {
+					if (Integer.valueOf(visMax.getVisitorsInOrder() + visMax.getAllowed2()) < visMax.getAllowed1()) {
+						order = mysqlConnection.newDBOrder(object);
+						if (order != null) {
+							ServerController.instance.displayMsg("New Order created");
+							returnData = new DataTransfer(TypeOfMessageReturn.SUB_NEW_ORDER_SUCCESS, order);
+						} else {
+							ServerController.instance.displayMsg("New Order could not be created");
+							returnData = new DataTransfer(TypeOfMessageReturn.SUB_NEW_ORDER_FAILED, null);
+						}
+						try {
+							client.sendToClient(returnData);
+
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+					} else {
+						// not answer on our check
+						ServerController.instance.displayMsg("New Order could not be created");
+						returnData = new DataTransfer(TypeOfMessageReturn.SUB_NEW_ORDER_FAILED, null);
+						try {
+							client.sendToClient(returnData);
+
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+					}
+				} else {
+					// send fail - visMax empty
+					ServerController.instance.displayMsg("New Order could not be created");
+					returnData = new DataTransfer(TypeOfMessageReturn.SUB_NEW_ORDER_FAILED, null);
+					try {
+						client.sendToClient(returnData);
+
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+			}
 			break;
 		/**
 		 * Description of GETINFOPARKENTER This case sends an order to the sql to check

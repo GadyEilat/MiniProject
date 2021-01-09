@@ -117,17 +117,17 @@ public class mysqlConnection {
 			String upNumOfVisitors=order.getNumOfVisitors();
 			String nameOnOrder=order.getNameOnOrder();
 			String upOrderNum= generateRandomChars("123456789", 5);
-			String upTourGroupString= "RegularOrder";
 			String insID=order.getID();
-			String totPrice=order.getTotalPrice();
-			String prePaid="No";
+			String totalPrice = order.getTotalPrice();
+			String prePaid = order.getPrePaid();
+			String orderKind = order.getOrderKind();
+//			String approved = order.getApproved();
 			order.setOrderNumber(upOrderNum);
 
 			if (conn != null) {
 				try {
-
-					String sql = "INSERT INTO orders (Park, Time, Date, NumOfVisitors, Email,orderNumber,NameOnOrder, OrderKind, ID, totalPrice, prePaid )"
-							+ " values ( ?, ?, ?, ?, ?, ?, ?, ?,?, ?,?)";
+					String sql = "INSERT INTO orders (Park, Time, Date, NumOfVisitors, Email,orderNumber,NameOnOrder, OrderKind, ID, totalPrice, prePaid, Approved )"
+							+ " values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 					PreparedStatement preparedStmt = conn.prepareStatement(sql);
 					preparedStmt.setString(1, upPark);
 					preparedStmt.setString(2, upTime);
@@ -136,10 +136,12 @@ public class mysqlConnection {
 					preparedStmt.setString(5, updEmail);
 					preparedStmt.setString(6, upOrderNum);
 					preparedStmt.setString(7, nameOnOrder);
-					preparedStmt.setString(8, upTourGroupString);
+					preparedStmt.setString(8, orderKind);
 					preparedStmt.setString(9, insID);
-					preparedStmt.setString(10, totPrice);
-					preparedStmt.setString(11,prePaid);
+					preparedStmt.setString(10, totalPrice);
+					preparedStmt.setString(11, prePaid);
+					preparedStmt.setString(12, "No");
+
 					preparedStmt.execute();
 
 					return order;

@@ -28,6 +28,7 @@ import client.controller.WorkerLogin;
 import client.controller.parkEnterenceController;
 import client.controller.parkEnterenceController2;
 import client.controller.parkEnterenceController3;
+import client.controller.subscriberNewOrderController;
 import client.logic.TourGuide;
 import client.logic.TourGuideOrder;
 import client.logic.Visitor;
@@ -73,6 +74,11 @@ public class ChatClient extends AbstractClient {
 			if(object instanceof Worker) {
 				WorkerLogin.instance.logInAnswerFailed();
 			}
+			
+			/**
+			 * If the object is a subscription type, it prints a message that a subscription has not been found.
+			 */
+			
 			if (object instanceof Subscriber) {
 				SubscriptionEntryController.instance.subscriberNotFound();
 			}
@@ -93,6 +99,12 @@ public class ChatClient extends AbstractClient {
 				connected = true;
 				WorkerLogin.instance.checkLogInAnswer(worker);
 			}
+			
+			/**
+			 * If the object is a subscription type, it saves a family subscription data.
+			 * Open a subscription screen
+			 */
+			
 			if (object instanceof Subscriber) {
 				subscriber = (Subscriber)object;
 				SubscriptionEntryController.instance.subscriberFound();
@@ -111,8 +123,14 @@ public class ChatClient extends AbstractClient {
 			if (object instanceof Order) {
 			ChangeOrderDetailsController.instance.updated();
 			}
-			if(object instanceof Subscriber) {
-				subscriber = (Subscriber)object;
+			
+			/**
+			 * If the object is a subscription type, it saves a family subscription data.
+			 * Opens a PopOut window for the service representative with the subscription number.
+			 */
+			
+			if (object instanceof Subscriber) {
+				subscriber = (Subscriber) object;
 				try {
 					ServiceRepresentativeController.instance.showNumOfSubPopOut();
 				} catch (IOException e) {
@@ -261,6 +279,20 @@ public class ChatClient extends AbstractClient {
 			  * an the park status to the controllers.
 		     */
 			
+		case SUB_NEW_ORDER_SUCCESS:
+			if (object instanceof Order) {
+				order = (Order) object;
+				subscriberNewOrderController.instance.thereIsPlaceForVisitors();
+			}
+			break;
+			
+		case SUB_NEW_ORDER_FAILED:
+//			if (object instanceof Order) {
+				order = (Order) object;
+//				subscriberNewOrderController.instance.TravelerOrder = order;
+				subscriberNewOrderController.instance.thereIsNoPlaceForVisitors();
+//			}			
+			break;
 		case PARK_STATUS:
 			if(object instanceof ParkStatus) {
 				String t=null;
@@ -315,7 +347,13 @@ public class ChatClient extends AbstractClient {
 			
 			
 			
+			
 		case REQUESTINFO_SUCCESS:
+			
+			/**
+			 * If the object is a subscription type, it saves a family subscription data.
+			 */
+			
 			if (object instanceof Subscriber) {
 				subscriber = (Subscriber) object;
 			}

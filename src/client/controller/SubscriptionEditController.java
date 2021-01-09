@@ -1,4 +1,5 @@
 package client.controller;
+
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -21,14 +22,14 @@ import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 
 /**
- * SubscriptionEditController class
+ * SubscriptionEditController class. This controller is responsible for the
+ * screen that displays the details of the family subscription in the park. The
+ * controller expands the AbstractScenes class that replaces the scenes within
+ * the main stage. It is possible to edit the details and save. It is possible
+ * to log out of the family subscription account. It is possible to go to the
+ * order history screen for the same subscription and create a new order.
  * 
- * @author Daniella Amdur 
- * This controller is responsible for the screen that displays the details of the family subscription in the park.
- * The controller expands the AbstractScenes class that replaces the scenes within the main stage. 
- * It is possible to edit the details and save. 
- * It is possible to log out of the family subscription account. 
- * It is possible to go to the order history screen for the same subscription and create a new order.
+ * @author Daniella Amdur
  */
 
 public class SubscriptionEditController extends AbstractScenes {
@@ -87,10 +88,11 @@ public class SubscriptionEditController extends AbstractScenes {
 	private Button btnNewOrder;
 
 	/**
-	 * logout method
-	 * @param event 
-	 * This method is responsible for disconnecting from the family subscription user
-	 * and transferring to the main screen by creating a new subscription object and replacing the screen.
+	 * logout method. This method is responsible for disconnecting from the family
+	 * subscription user and transferring to the main screen by creating a new
+	 * subscription object and replacing the screen.
+	 * 
+	 * @param event
 	 */
 
 	@FXML
@@ -98,49 +100,53 @@ public class SubscriptionEditController extends AbstractScenes {
 		ChatClient.subscriber = new Subscriber();
 		switchScenes("/client/boundaries/FamilySubEnter.fxml", "Family Subscription");
 	}
-	
+
 	/**
-	 * showEditInfo method
-	 * @param event  
-	 * This method is responsible for switching the screen to the subscriber's edit details screen.
+	 * showEditInfo method. This method is responsible for switching the screen to
+	 * the subscriber's edit details screen.
+	 * 
+	 * @param event
 	 */
 
 	@FXML
 	void showEditInfo(ActionEvent event) {
 		switchScenes("/client/boundaries/EditInfoFamily.fxml", "Family Subscription");
 	}
-	
+
 	/**
-	 * showHistroryOfVisit method
-	 * @param event  
-	 * This method is responsible for switching the screen to the subscriber's history orders screen.
+	 * showHistroryOfVisit method. This method is responsible for switching the
+	 * screen to the subscriber's history orders screen.
+	 * 
+	 * @param event
 	 */
 
 	@FXML
 	void showHistroryOfVisit(ActionEvent event) {
 		switchScenes("/client/boundaries/HistoryOfFamilyVisits.fxml", "Family Subscription");
 	}
-	
+
 	/**
-	 * showNewOrder method
-	 * @param event  
-	 * This method is responsible for switching the screen to the screen where you can create a new order.
+	 * showNewOrder method. This method is responsible for switching the screen to
+	 * the screen where you can create a new order.
+	 * 
+	 * @param event
 	 */
 
 	@FXML
 	void showNewOrder(ActionEvent event) {
-//		switchScenes("/client/boundaries/EditInfoFamily.fxml", "Family Subscription");
+		switchScenes("/client/boundaries/FamilyNewOrder.fxml", "Family Subscription");
 	}
 
 	/**
-	 * updateFamilyInfo method
-	 * @param event  
-	 * This method is responsible for saving the data after editing. 
-	 * The method receives the data from the fields, makes sure they are all present and valid. 
-	 * The method creates a new subscription object with all of the updated data, the data is sent to the EcoServer 
-	 * and then to the server and entered into the database by the subscription number
+	 * updateFamilyInfo method. This method is responsible for saving the data after
+	 * editing. The method receives the data from the fields, makes sure they are
+	 * all present and valid. The method creates a new subscription object with all
+	 * of the updated data, the data is sent to the EcoServer and then to the server
+	 * and entered into the database by the subscription number.
+	 * 
+	 * @param event
 	 */
-	
+
 	@FXML
 	void updateFamilyInfo(ActionEvent event) {
 		String firstName = firstNameField.getText();
@@ -169,22 +175,23 @@ public class SubscriptionEditController extends AbstractScenes {
 				alert.setContentText("One or more of the fileds are incorrect");
 				alert.show();
 			} else {
-
 				Subscriber subscriber = new Subscriber(idNumber, firstName, lastName, email, telEdit, numofmem, credit,
 						ChatClient.subscriber.getSubscriberNumber());
 				DataTransfer data = new DataTransfer(TypeOfMessage.UPDATEINFO, subscriber);
 				ClientUI.chat.accept(data);
 				familyName.setText("Hello " + lastName + " Family");
+				ChatClient.subscriber.setLname(lastName);
 			}
 		}
 	}
-	
+
 	/**
-	 * initialize method
+	 * initialize method. This method is responsible for defining variables by
+	 * communicating with the server, is responsible for screen visibility and
+	 * on-screen functionality (for example combobox options).
+	 * 
 	 * @param location
 	 * @param resources
-	 * This method is responsible for defining variables by communicating with the server, 
-	 * is responsible for screen visibility and on-screen functionality (for example combobox options)
 	 */
 
 	public void initialize(URL location, ResourceBundle resources) {
@@ -229,19 +236,19 @@ public class SubscriptionEditController extends AbstractScenes {
 		familyName.setText("Hello " + ChatClient.subscriber.getLname() + " Family");
 		subNumber.setText("Subscriber Number: " + ChatClient.subscriber.getSubscriberNumber());
 	}
-	
+
 	/**
 	 * Configuring the email address. Legal characters and desirable structure.
 	 */
 
 	public static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$",
 			Pattern.CASE_INSENSITIVE);
-	
+
 	/**
-	 * validate method
+	 * validate method. The method checks if the email entered is correct.
+	 * 
 	 * @param emailStr
 	 * @return True or False
-	 * The method checks if the email entered is correct.
 	 */
 
 	public static boolean validate(String emailStr) {
