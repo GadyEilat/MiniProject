@@ -33,11 +33,11 @@
                      <children>
                         <AnchorPane prefHeight="146.0" prefWidth="555.0">
                            <children>
-                              <Label layoutX="127.0" layoutY="71.0" prefHeight="17.0" prefWidth="47.0" text="Enter ID:" />
-                              <TextField fx:id="TravelerID" layoutX="203.0" layoutY="67.0" />
+                              <Label layoutX="151.0" layoutY="71.0" prefHeight="17.0" prefWidth="47.0" text="Enter ID:" />
+                              <TextField fx:id="TravelerID" layoutX="220.0" layoutY="67.0" prefHeight="25.0" prefWidth="117.0" />
                               <Button fx:id="NextTravelerID" layoutX="247.0" layoutY="143.0" mnemonicParsing="false" onAction="#NextTravelerID" prefHeight="25.0" prefWidth="62.0" text="Next" />
-                              <Text fx:id="errorLogin" fill="#ee0606" layoutX="179.0" layoutY="126.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="178.13671875" />
-                              <Label layoutX="174.0" layoutY="-9.0" prefHeight="46.0" prefWidth="188.0" text="Regular Traveler" AnchorPane.leftAnchor="174.0" AnchorPane.topAnchor="-9.0">
+                              <Text fx:id="errorLogin" fill="#ee0606" layoutX="190.0" layoutY="127.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="178.13671875" />
+                              <Label layoutX="185.0" layoutY="-9.0" prefHeight="46.0" prefWidth="188.0" text="Regular Traveler" AnchorPane.leftAnchor="185.0" AnchorPane.topAnchor="-9.0">
                                  <font>
                                     <Font name="System Bold Italic" size="24.0" />
                                  </font>

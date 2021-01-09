@@ -1369,6 +1369,73 @@ public class EchoServer extends AbstractServer {
 
 			break;
 
+		case GET_INVITATIONS:
+			if(object instanceof ArrayList<?>) {
+				ArrayList<String> send=(ArrayList<String>)object;
+				String monthChosen=send.get(0);
+				String parkChosen=send.get(1);
+				double sumPayment=0.0;
+				Double convert;
+				String sql= "SELECT Payment FROM gonature.casualinvitation WHERE Date LIKE '" + monthChosen + "%' AND Park = '" + parkChosen + "' ;";
+				arrOfAnswer=mysqlConnection.getDB(sql);
+				for(int i=0;i<arrOfAnswer.size();i++) {
+					convert = Double.valueOf(arrOfAnswer.get(i).toString());
+					sumPayment+=convert;	
+				}
+				try {
+					returnData = new DataTransfer(TypeOfMessageReturn.MONTHLYINCOME, sumPayment);
+					client.sendToClient(returnData);
+				} catch (IOException e) {
+					
+					e.printStackTrace();
+				}	
+			}	
+			break;
+			
+		case GET_TOTALVISITORSREPORT:
+			if(object instanceof ArrayList<?>) {
+				ArrayList<String> send=(ArrayList<String>)object;
+				int convert;
+				int sumRegular=0;
+				int sumTour=0;
+				int sumSub=0;
+						
+				String monthChosen=send.get(0);
+				String parkChosen=send.get(1);
+				String sql1= "SELECT numOfVis FROM gonature.casualinvitation WHERE Date LIKE '" + monthChosen + "%' AND Park = '" + parkChosen + "' AND OrderKind = 'Regular' ;";
+				String sql2= "SELECT numOfVis FROM gonature.casualinvitation WHERE Date LIKE '" + monthChosen + "%' AND Park = '" + parkChosen + "' AND OrderKind = 'TourGuide' ;";
+				String sql3= "SELECT numOfVis FROM gonature.casualinvitation WHERE Date LIKE '" + monthChosen + "%' AND Park = '" + parkChosen + "' AND OrderKind = 'Subscriber' ;";
+				arrOfAnswer=mysqlConnection.getDB(sql1);
+				for(int i=0;i<arrOfAnswer.size();i++) {
+					convert = Integer.valueOf(arrOfAnswer.get(i).toString());
+					sumRegular+=convert;	
+				}
+
+				arrOfAnswer=mysqlConnection.getDB(sql2);
+				for(int i=0;i<arrOfAnswer.size();i++) {
+					convert = Integer.valueOf(arrOfAnswer.get(i).toString());
+					sumTour+=convert;	
+				}
+				
+				arrOfAnswer=mysqlConnection.getDB(sql3);
+				for(int i=0;i<arrOfAnswer.size();i++) {
+					convert = Integer.valueOf(arrOfAnswer.get(i).toString());
+					sumSub+=convert;	
+				}
+				ArrayList<Integer> sendTo=new ArrayList<Integer>();
+				sendTo.add(sumRegular);
+				sendTo.add(sumTour);
+				sendTo.add(sumSub);
+				try {
+					returnData = new DataTransfer(TypeOfMessageReturn.VISITORS_AMOUNT, sendTo);
+					client.sendToClient(returnData);
+				} catch (IOException e) {
+					
+					e.printStackTrace();
+				}	
+			}
+			break;
+			
 		case SENDMAIL:
 			if (object instanceof EmailDetails) {
 				EmailDetails emailDetails = (EmailDetails) object;

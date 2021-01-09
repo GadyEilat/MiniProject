@@ -14,7 +14,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane prefHeight="600.0" prefWidth="800.0" stylesheets="@../../../res/mainEnter.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.TravelerNewOrderController">
+<BorderPane maxHeight="600.0" prefHeight="600.0" prefWidth="800.0" stylesheets="@../../../res/mainEnter.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.TravelerNewOrderController">
    <center>
       <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="499.0" prefWidth="596.0">
          <children>
@@ -36,10 +36,10 @@
                               </Label>
                               <Label layoutX="141.0" layoutY="216.0" text="Email" />
                               <Button fx:id="waitingListBtn" layoutX="349.0" layoutY="268.0" mnemonicParsing="false" onAction="#waitingListButton" style="-fx-background-color: lightblue;" text="Enter waiting list" />
-                              <ComboBox fx:id="numVisitorsBtn" layoutX="192.0" layoutY="179.0" prefHeight="25.0" prefWidth="34.0" />
-                              <ComboBox fx:id="parkNameBtn" layoutX="192.0" layoutY="110.0" prefHeight="25.0" prefWidth="90.0" />
-                              <ComboBox fx:id="chooseTime" layoutX="192.0" layoutY="145.0" prefHeight="25.0" prefWidth="89.0" />
-                              <DatePicker fx:id="chooseDayBtn" layoutX="298.0" layoutY="145.0" prefHeight="25.0" prefWidth="109.0" promptText="dd/mm/yyyy" />
+                              <ComboBox fx:id="numVisitorsBtn" layoutX="192.0" layoutY="179.0" prefHeight="25.0" prefWidth="117.0" />
+                              <ComboBox fx:id="parkNameBtn" layoutX="192.0" layoutY="110.0" prefHeight="25.0" prefWidth="117.0" />
+                              <ComboBox fx:id="chooseTime" layoutX="192.0" layoutY="145.0" prefHeight="25.0" prefWidth="117.0" />
+                              <DatePicker fx:id="chooseDayBtn" layoutX="330.0" layoutY="145.0" prefHeight="25.0" prefWidth="109.0" promptText="dd/mm/yyyy" />
                               <Text fx:id="errorEmail" fill="#eb0707" layoutX="179.0" layoutY="256.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="174.13671875" />
                               <Label layoutX="112.0" layoutY="77.0" prefHeight="17.0" prefWidth="64.0" text="First Name" />
                               <TextField fx:id="firstName" layoutX="191.0" layoutY="73.0" prefHeight="25.0" prefWidth="118.0" />
