@@ -112,6 +112,10 @@ public class mysqlConnection {
 		return null;
 	}
 
+	/** Description of newDBOrder method
+	 * This method making a new order and saves all the details in the database.
+     * @param msg gets the order details.
+     */
 	public static Order newDBOrder(Object msg) {
 		if (msg instanceof Order) // if its an order for Aviv's screens.
 		{
@@ -414,6 +418,11 @@ public class mysqlConnection {
 		return false;
 	}
 
+	/**
+	 * updateWaitingListNewOrder method 
+	 * @param updatedWaitingList gets the details of the order that needs to be set in the waiting list table.
+	 * @return true of it could connect to db. else, return false.
+	 */
 	public static boolean updateWaitingListNewOrder(Object updatedWaitingList) {
 		if (updatedWaitingList instanceof WaitingList) {
 			WaitingList updOrder= (WaitingList)updatedWaitingList;

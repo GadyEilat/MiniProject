@@ -27,10 +27,13 @@ import client.controller.TourGuideLoginController;
 import client.controller.TourGuideNewOrderController;
 import client.controller.TravelerNewOrderController;
 import client.controller.WorkerLogin;
+import client.controller.monthlyIncomeReportController;
 import client.controller.parkEnterenceController;
 import client.controller.parkEnterenceController2;
 import client.controller.parkEnterenceController3;
 import client.controller.subscriberNewOrderController;
+
+import client.controller.totalVisitorsAmountController;
 import client.logic.TourGuide;
 import client.logic.TourGuideOrder;
 import client.logic.Visitor;
@@ -414,6 +417,24 @@ public class ChatClient extends AbstractClient {
 			}
 			
 			break;
+			
+		case MONTHLYINCOME:
+			if(object instanceof Double) {
+				monthlyIncomeReportController.instance.printReport((Double)object);	
+			}
+			break;
+			
+		case VISITORS_AMOUNT:
+			if(object instanceof ArrayList<?>) {
+				ArrayList<Integer> sum=(ArrayList<Integer>)object;
+				int sumReg=sum.get(0);
+				int sumTour=sum.get(1);
+				int sumSub=sum.get(2);
+				
+				totalVisitorsAmountController.instance.getAmount(sumReg,sumTour,sumSub);
+			}
+			break;
+			
 		case REQUESTINFO_FAILED:
 			if (object instanceof ParkInfo) {
 				parkInfo = (ParkInfo) object;
