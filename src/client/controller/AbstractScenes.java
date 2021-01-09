@@ -12,8 +12,22 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+/**
+ * AbstractScenes class. This class replaces the scenes within the main stage.
+ * 
+ * @author Liran Amilov
+ */
+
 public abstract class AbstractScenes implements Initializable {
-	
+
+	/**
+	 * switchScenes method. This method is responsible for replacing the screens
+	 * from one screen to another by FXML files. This class implements Initializable.
+	 * 
+	 * @param fxmlFile
+	 * @param Title
+	 */
+
 	public void switchScenes(String fxmlFile, String Title) {
 		Platform.runLater(new Runnable() {
 
@@ -35,11 +49,11 @@ public abstract class AbstractScenes implements Initializable {
 					e.printStackTrace();
 				}
 			}
-			
+
 		});
-		
+
 	}
-	
+
 //	public void switchScenesSmall(String fxmlFile, String Title)
 //	{
 //		Platform.runLater(new Runnable() {

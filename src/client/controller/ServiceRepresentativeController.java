@@ -35,6 +35,17 @@ import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+/**
+ * ServiceRepresentativeController class. This class expands the AbstractScenes
+ * class that replaces the scenes within the main stage. This class is
+ * responsible for the screen of the service representative. He can create a new
+ * subscription with all his data. It is possible to logout from the service
+ * representative user and it is possible to save the details of the new
+ * subscriber he entered.
+ * 
+ * @author Liran Amilov
+ */
+
 public class ServiceRepresentativeController extends AbstractScenes {
 
 	public static ServiceRepresentativeController instance;
@@ -88,6 +99,13 @@ public class ServiceRepresentativeController extends AbstractScenes {
 	private Button btnLogout;
 	boolean isFamily = true;
 
+	/**
+	 * logout method. This method is responsible for disconnecting from the
+	 * department manager user and transferring to the main login screen.
+	 * 
+	 * @param event
+	 */
+
 	@FXML
 	void logout(ActionEvent event) {
 		// exit Logout
@@ -98,6 +116,15 @@ public class ServiceRepresentativeController extends AbstractScenes {
 		ChatClient.connected = false;
 		switchScenes("/client/boundaries/workerLogin.fxml", "Worker Login");
 	}
+
+	/**
+	 * saveSubAndGetSubNumber method. This method is responsible for the save button
+	 * that saves all the data entered by the service representative and thus
+	 * creates a new subscription in the database. The data is sent to the EcoServer
+	 * and then to the server and entered into the database
+	 * 
+	 * @param event
+	 */
 
 	@FXML
 	void saveSubAndGetSubNumber(ActionEvent event) {
@@ -118,23 +145,24 @@ public class ServiceRepresentativeController extends AbstractScenes {
 		}
 
 		if (isFamily) {// RadioGroup.getSelectedToggle().equals(btnRadioFamily)
-			String credit = credit4Digit1.getText() + "-" + credit4Digit2.getText() + "-" + credit4Digit3.getText() + "-"
-					+ credit4Digit4.getText();
-			if(!credit.trim().isEmpty()) {
-			String numOfMembers = choiceNumberOfMembers.getValue();
-			Subscriber newSubscriber = new Subscriber(id, firstName, lasttName, email, telNumber, numOfMembers, credit,
-					null);
-			DataTransfer data = new DataTransfer(TypeOfMessage.INSERTINFO, newSubscriber);
-			ClientUI.chat.accept(data);
-			choiceNumberOfMembers.getSelectionModel().clearSelection();
-			}else {
+			String credit = credit4Digit1.getText() + "-" + credit4Digit2.getText() + "-" + credit4Digit3.getText()
+					+ "-" + credit4Digit4.getText();
+			if (!credit.trim().isEmpty()) {
+				String numOfMembers = choiceNumberOfMembers.getValue();
+				Subscriber newSubscriber = new Subscriber(id, firstName, lasttName, email, telNumber, numOfMembers,
+						credit, null);
+				DataTransfer data = new DataTransfer(TypeOfMessage.INSERTINFO, newSubscriber);
+				ClientUI.chat.accept(data);
+				choiceNumberOfMembers.getSelectionModel().clearSelection();
+			} else {
 				Alert alert = new Alert(AlertType.INFORMATION);
 				alert.setHeaderText(null);
 				alert.setContentText("Please enter all the field");
 				alert.show();
 			}
 		} else if (!isFamily) {// RadioGroup.getSelectedToggle().equals(btnRadioGroup)
-			TourGuide newTourGuide = new TourGuide(id,firstName,lasttName,email,telNumber); // add credit card !!!!!!!!!!!!!!!!!
+			TourGuide newTourGuide = new TourGuide(id, firstName, lasttName, email, telNumber); // add credit card
+																								// !!!!!!!!!!!!!!!!!
 			DataTransfer data = new DataTransfer(TypeOfMessage.INSERTINFO, newTourGuide);
 			ClientUI.chat.accept(data);
 		}
@@ -149,6 +177,12 @@ public class ServiceRepresentativeController extends AbstractScenes {
 		credit4Digit4.clear();
 	}
 
+	/**
+	 * showNumOfSubPopOut method. This method is responsible for displaying the
+	 * subscription number for the newly entered subscription.
+	 * 
+	 * @throws IOException
+	 */
 
 	public void showNumOfSubPopOut() throws IOException {
 		Platform.runLater(new Runnable() {
@@ -176,6 +210,15 @@ public class ServiceRepresentativeController extends AbstractScenes {
 			}
 		});
 	}
+
+	/**
+	 * initialize method. This method is responsible for defining variables by
+	 * communicating with the server, is responsible for screen visibility (caption
+	 * and titles) and on-screen functionality.
+	 * 
+	 * @param location
+	 * @param resources
+	 */
 
 	public void initialize(URL location, ResourceBundle resources) {
 		instance = this;
