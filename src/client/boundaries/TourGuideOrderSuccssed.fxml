@@ -35,20 +35,17 @@
                               <TextField fx:id="orderNumberGuide" editable="false" layoutX="187.0" layoutY="57.0" />
                               <TextField fx:id="guideNameOrderS" editable="false" layoutX="187.0" layoutY="143.0" />
                               <Button fx:id="viewOrderTourBtn" layoutX="84.0" layoutY="240.0" mnemonicParsing="false" onAction="#viewOrderTourButton" text="Move to my orders" />
-
                               <Button fx:id="returnToMenuTourBTN" layoutX="261.0" layoutY="240.0" mnemonicParsing="false" onAction="#returnToMenuTourButton" text="Return to main menu" />
-
                               <Button fx:id="returnToMenuTourBTN" layoutX="261.0" layoutY="240.0" mnemonicParsing="false" onAction="#returnToMenuTourButton" text="Return to maim menu" />
                               <Label layoutX="79.0" layoutY="185.0" text="Order Number" />
                               <TextField fx:id="txtOrderNum" layoutX="187.0" layoutY="180.0" />
-
                            </children>
                         </AnchorPane>
                      </children>
                   </HBox>
                </children>
             </VBox>
-            <Button layoutX="14.0" layoutY="438.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="56.0" style="-fx-border-radius: 20;">
+            <Button layoutX="14.0" layoutY="438.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="56.0" style="-fx-border-radius: 20;" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0">
                <graphic>
                   <ImageView fx:id="BackButton1" fitHeight="35.0" fitWidth="40.0">
                      <image>

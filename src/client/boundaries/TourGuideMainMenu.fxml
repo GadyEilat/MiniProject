@@ -36,7 +36,7 @@
                   <Image url="@../../../res/LOGONATURE.png" />
                </image>
             </ImageView>
-            <Text fx:id="tourName" layoutX="206.0" layoutY="63.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="122.6708984375" AnchorPane.leftAnchor="205.0" AnchorPane.topAnchor="45.0">
+            <Text fx:id="tourName" layoutX="206.0" layoutY="63.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="303.6708984375" AnchorPane.leftAnchor="205.0" AnchorPane.topAnchor="45.0">
                <font>
                   <Font size="18.0" />
                </font></Text>

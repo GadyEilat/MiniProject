@@ -104,13 +104,19 @@ public class TravelerNewOrderController extends AbstractScenes {
 	public void notFound() {
 		errorEmail.setText("Error! cannot create Order");
 	}
+
 	public void isFound() {
+
+
 		switchScenes("/client/boundaries/TravelerOrderSuccess.fxml", "Order Success");
 		System.out.println("Order Updated Successfully");
+
+
 	}
 
 
-	  
+  
+
 	  /**
 	   * setTimeComboBox method
 	   * This method adding times to the Time combo box in the screen and display it.
@@ -273,24 +279,28 @@ public class TravelerNewOrderController extends AbstractScenes {
 
 	@FXML
 	void waitingListButton(ActionEvent event) {
-		
-    	WaitingList wait= new WaitingList(null, null, null ,null ,null ,null, null, null, null, null,null,null);
-    	wait.setDate(TravelerOrder.getDate());
-    	wait.setEmail(TravelerOrder.getEmail());
-    	wait.setID(TravelerOrder.getID());
-    	wait.setNameOnOrder(TravelerOrder.getNameOnOrder());
-    	wait.setNumOfVisitors(TravelerOrder.getNumOfVisitors());
-        wait.setParkName(TravelerOrder.getParkName());
-        wait.setTime(TravelerOrder.getHour());
-    	DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-		    LocalDateTime now = LocalDateTime.now();
-		    wait.setTimeOfEntrance(dtf.format(now));
-       	DataTransfer data = new DataTransfer(TypeOfMessage.NEW_ORDERWAITINGLIST,wait);
-       	ClientUI.chat.accept(data);
-       	Alert alert = new Alert(AlertType.INFORMATION);
-    	alert.setHeaderText(null);
-    	alert.setContentText("Entered waiting list sucssesfully.");
-    	alert.show();
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setHeaderText(null);
+		alert.setContentText("Entered waiting list sucssesfully.");
+		alert.show();
+		WaitingList wait = new WaitingList(null, null, null, null, null, null, null, null, null, null);
+		wait.setDate(TravelerOrder.getDate());
+		wait.setEmail(TravelerOrder.getEmail());
+		wait.setID(TravelerOrder.getID());
+		wait.setNameOnOrder(TravelerOrder.getNameOnOrder());
+		wait.setNumOfVisitors(TravelerOrder.getNumOfVisitors());
+		wait.setParkName(TravelerOrder.getParkName());
+		wait.setTime(TravelerOrder.getHour());
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		LocalDateTime now = LocalDateTime.now();
+		wait.setTimeOfEntrance(dtf.format(now));
+
+		DateTimeFormatter dtf1 = DateTimeFormatter.ofPattern("HH:mm:ss");
+		LocalDateTime dateNow = LocalDateTime.now();
+		wait.setDateOfEntrance(dtf1.format(dateNow));
+		DataTransfer data = new DataTransfer(TypeOfMessage.NEW_ORDERWAITINGLIST, wait);
+		ClientUI.chat.accept(data);
+		switchScenes("/client/boundaries/Travelers.fxml", "New waiting list");
 	}
 
 

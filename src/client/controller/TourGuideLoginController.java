@@ -91,7 +91,7 @@ public class TourGuideLoginController extends AbstractScenes {
     
     @FXML
     void backButton(ActionEvent event) {
-    	switchScenes("/client/boundaries/main.fxml", "Main Menu");
+    	switchScenes("/client/boundaries/Travelers.fxml", "Teavelers");
     }
     /** Description of initialize 
      *@see https://docs.oracle.com/javase/8/javafx/api/javafx/fxml/Initializable.html

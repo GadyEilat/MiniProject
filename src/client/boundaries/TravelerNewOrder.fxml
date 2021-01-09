@@ -14,13 +14,13 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane prefHeight="600.0" prefWidth="800.0" stylesheets="@../../../res/mainEnter.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.TravelerNewOrderController">
+<BorderPane prefHeight="600.0" prefWidth="800.0" stylesheets="@mainStyle.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.TravelerNewOrderController">
    <center>
-      <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="499.0" prefWidth="596.0">
+      <AnchorPane maxHeight="-1.0" maxWidth="-1.0">
          <children>
-            <VBox alignment="CENTER" layoutX="29.0" layoutY="60.0" prefHeight="278.0" prefWidth="467.0" AnchorPane.bottomAnchor="149.0" AnchorPane.leftAnchor="29.0" AnchorPane.rightAnchor="104.0" AnchorPane.topAnchor="60.0">
+            <VBox alignment="CENTER" layoutX="81.0" layoutY="105.0" prefHeight="293.0" prefWidth="586.0" AnchorPane.bottomAnchor="104.0" AnchorPane.leftAnchor="81.0" AnchorPane.rightAnchor="133.0" AnchorPane.topAnchor="105.0">
                <children>
-                  <HBox alignment="CENTER" prefHeight="309.0" prefWidth="667.0">
+                  <HBox alignment="CENTER" prefHeight="293.0" prefWidth="638.0">
                      <children>
                         <AnchorPane prefHeight="299.0" prefWidth="467.0">
                            <children>
@@ -35,11 +35,11 @@
                                  </font>
                               </Label>
                               <Label layoutX="141.0" layoutY="216.0" text="Email" />
-                              <Button fx:id="waitingListBtn" layoutX="349.0" layoutY="268.0" mnemonicParsing="false" onAction="#waitingListButton" style="-fx-background-color: lightblue;" text="Enter waiting list" />
-                             <ComboBox fx:id="numVisitorsBtn" layoutX="192.0" layoutY="179.0" prefHeight="25.0" prefWidth="117.0" />
-                              <ComboBox fx:id="parkNameBtn" layoutX="192.0" layoutY="110.0" prefHeight="25.0" prefWidth="117.0" />
-                              <ComboBox fx:id="chooseTime" layoutX="192.0" layoutY="145.0" prefHeight="25.0" prefWidth="117.0" />
-                              <DatePicker fx:id="chooseDayBtn" layoutX="330.0" layoutY="145.0" prefHeight="25.0" prefWidth="109.0" promptText="dd/mm/yyyy" />
+                              <Button fx:id="waitingListBtn" layoutX="349.0" layoutY="268.0" mnemonicParsing="false" onAction="#waitingListButton" text="Enter waiting list" />
+                              <ComboBox fx:id="numVisitorsBtn" layoutX="192.0" layoutY="179.0" prefHeight="25.0" prefWidth="34.0" />
+                              <ComboBox fx:id="parkNameBtn" layoutX="192.0" layoutY="110.0" prefHeight="25.0" prefWidth="90.0" />
+                              <ComboBox fx:id="chooseTime" layoutX="192.0" layoutY="145.0" prefHeight="25.0" prefWidth="89.0" />
+                              <DatePicker fx:id="chooseDayBtn" layoutX="298.0" layoutY="145.0" prefHeight="25.0" prefWidth="109.0" promptText="dd/mm/yyyy" />
                               <Text fx:id="errorEmail" fill="#eb0707" layoutX="179.0" layoutY="256.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="174.13671875" />
                               <Label layoutX="112.0" layoutY="77.0" prefHeight="17.0" prefWidth="64.0" text="First Name" />
                               <TextField fx:id="firstName" layoutX="191.0" layoutY="73.0" prefHeight="25.0" prefWidth="118.0" />
@@ -49,15 +49,6 @@
                   </HBox>
                </children>
             </VBox>
-            <Button fx:id="backBtn" layoutX="35.0" layoutY="409.0" mnemonicParsing="false" onAction="#backButton" prefHeight="43.0" prefWidth="56.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="35.0">
-               <graphic>
-                  <ImageView fx:id="backBtn1" fitHeight="35.0" fitWidth="40.0">
-                     <image>
-                        <Image url="@../../../res/return-button-icon.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
          </children>
       </AnchorPane>
    </center>
@@ -72,4 +63,19 @@
          </children>
       </AnchorPane>
    </top>
+   <bottom>
+      <AnchorPane BorderPane.alignment="CENTER">
+         <children>
+            <Button fx:id="backBtn" layoutX="35.0" layoutY="9.0" mnemonicParsing="false" onAction="#backButton" prefHeight="43.0" prefWidth="56.0" AnchorPane.bottomAnchor="35.0" AnchorPane.leftAnchor="35.0">
+               <graphic>
+                  <ImageView fx:id="backBtn1" fitHeight="35.0" fitWidth="40.0">
+                     <image>
+                        <Image url="@../../../res/return-button-icon.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+         </children>
+      </AnchorPane>
+   </bottom>
 </BorderPane>
