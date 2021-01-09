@@ -21,6 +21,17 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 
+/**
+ * ManagerController class. This class expands the AbstractScenes class that
+ * replaces the scenes within the main stage. This class is responsible for the
+ * status screen of the park manager where he can see the number of park
+ * visitors and the number of subscribers. It is possible to log out of the park
+ * manager user, it is possible to go to the reports screen, the management
+ * screen and the discounts screen.
+ * 
+ * @author Liran Amilov
+ */
+
 public class ManagerController extends AbstractScenes {
 	public static ManagerController instance;
 
@@ -35,7 +46,7 @@ public class ManagerController extends AbstractScenes {
 
 	@FXML
 	private ProgressBar progressBar;
-    
+
 	@FXML
 	private Text managerName;
 
@@ -54,6 +65,13 @@ public class ManagerController extends AbstractScenes {
 	@FXML
 	private Button btnDiscount;
 
+	/**
+	 * logout method. This method is responsible for disconnecting from the
+	 * department manager user and transferring to the main login screen.
+	 * 
+	 * @param event
+	 */
+
 	@FXML
 	void logout(ActionEvent event) {
 //    	exitConnection
@@ -64,31 +82,73 @@ public class ManagerController extends AbstractScenes {
 		switchScenes("/client/boundaries/workerLogin.fxml", "Worker Login");
 	}
 
+	/**
+	 * showDiscount method. This method is responsible for transferring the screen
+	 * to the discount screen.
+	 * 
+	 * @param event
+	 */
+
 	@FXML
 	void showDiscount(ActionEvent event) {
 		switchScenes("/client/boundaries/DiscountManager.fxml", "Manager");
 	}
+
+	/**
+	 * showManagingPark method. This method is responsible for transferring the
+	 * screen to the park management screen.
+	 * 
+	 * @param event
+	 * @throws IOException
+	 */
 
 	@FXML
 	void showManagingPark(ActionEvent event) throws IOException {
 		switchScenes("/client/boundaries/managingPark.fxml", "Manager");
 	}
 
+	/**
+	 * showReport method. This method is responsible for transferring the screen to
+	 * the reports screen.
+	 * 
+	 * @param event
+	 */
+
 	@FXML
 	void showReport(ActionEvent event) {
 		switchScenes("/client/boundaries/reportManager.fxml", "Manager");
 	}
+
+	/**
+	 * showStatus method. This method is responsible for transferring the screen to
+	 * the status screen.
+	 * 
+	 * @param event
+	 */
 
 	@FXML
 	void showStatus(ActionEvent event) {
 		switchScenes("/client/boundaries/manager.fxml", "Manager");
 	}
 
+	/**
+	 * updateNumberOfVisitorAndSub method. This method is responsible for updating
+	 * the bar showing the number of visitors on the status screen
+	 */
 
 	public void updateNumberOfVisitorAndSub() {
 		progressBar.setProgress(Integer.valueOf(ChatClient.parkInfo.getCurrentVisitors())/Integer.valueOf(ChatClient.worker.getPark().getMaxVisitors()));
 		currentVisitors.setText(ChatClient.parkInfo.getCurrentVisitors());
 	}
+
+	/**
+	 * initialize method. This method is responsible for defining variables by
+	 * communicating with the server, is responsible for screen visibility (caption
+	 * and titles) and on-screen functionality.
+	 * 
+	 * @param location
+	 * @param resources
+	 */
 
 	public void initialize(URL location, ResourceBundle resources) {
 		instance = this;

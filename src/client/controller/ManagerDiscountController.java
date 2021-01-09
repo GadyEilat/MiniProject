@@ -37,6 +37,17 @@ import javafx.util.Callback;
 import java.time.LocalDate;
 import java.time.MonthDay;
 
+/**
+ * ManagerDiscountController class. This class expands the AbstractScenes class
+ * that replaces the scenes within the main stage. This class is responsible for
+ * the discounts the park manager wants to enter. It must enter the discount
+ * percentage and the intended date. It is possible to disconnect from the park
+ * manager user, it is possible to go to the status screen, the reports screen
+ * and the park management screen.
+ * 
+ * @author Liran Amilov
+ */
+
 public class ManagerDiscountController extends AbstractScenes {
 	public static ManagerDiscountController instance;
 	Integer month;
@@ -69,6 +80,13 @@ public class ManagerDiscountController extends AbstractScenes {
 
 	@FXML
 	private Button btmManagingPark;
+
+	/**
+	 * logout method. This method is responsible for disconnecting from the
+	 * department manager user and transferring to the main login screen.
+	 * 
+	 * @param event
+	 */
 
 	@FXML
 	void logout(ActionEvent event) {
@@ -107,6 +125,11 @@ public class ManagerDiscountController extends AbstractScenes {
 			ClientUI.chat.accept(data);
 		}
 	}
+	
+	/**
+	 * notFond method. This method displays an error message stating that the data
+	 * could not be taken from the database because it was not found.
+	 */
 
 	public void notFond() {
 		Alert alert = new Alert(AlertType.ERROR);
@@ -115,21 +138,48 @@ public class ManagerDiscountController extends AbstractScenes {
 		alert.show();
 	}
 
+	/**
+	 * showManagingPark method. This method is responsible for transferring the
+	 * screen to the park management screen.
+	 * 
+	 * @param event
+	 * @throws IOException
+	 */
+
 	@FXML
 	void showManagingPark(ActionEvent event) throws IOException {
 
 		switchScenes("/client/boundaries/managingPark.fxml", "Manager");
 	}
 
+	/**
+	 * showReport method. This method is responsible for transferring the screen to
+	 * the reports screen.
+	 * 
+	 * @param event
+	 */
+
 	@FXML
 	void showReport(ActionEvent event) {
 		switchScenes("/client/boundaries/reportManager.fxml", "Manager");
 	}
 
+	/**
+	 * showStatus method. This method is responsible for transferring the screen to
+	 * the status screen.
+	 * 
+	 * @param event
+	 */
+
 	@FXML
 	void showStatus(ActionEvent event) {
 		switchScenes("/client/boundaries/manager.fxml", "Manager");
 	}
+
+	/**
+	 * This method is responsible for classifying colors according to approved or
+	 * not checked yet.
+	 */
 
 	final Callback<DatePicker, DateCell> dayCellFactory = new Callback<DatePicker, DateCell>() {
 		public DateCell call(final DatePicker datePicker) {
@@ -157,9 +207,22 @@ public class ManagerDiscountController extends AbstractScenes {
 		}
 	};
 
+	/**
+	 * convertToMonth method. This method is responsible for displaying the calendar
+	 * in order to select a date.
+	 * 
+	 * @param month
+	 * @return Calendar
+	 */
+
 	private Month convertToMonth(int month) {
 		return map.get(month);
 	}
+
+	/**
+	 * updateDatePicker method. This method is responsible for updating the selected
+	 * date.
+	 */
 
 	public void updateDatePicker() {
 		this.datesToShow = ChatClient.datesToShow;
@@ -199,11 +262,25 @@ public class ManagerDiscountController extends AbstractScenes {
 		});
 	}
 	
+	/**
+	 * checkIfThereNewDatesToShow method. This method is responsible for checking
+	 * new dates in order to display them.
+	 */
+
 	private void checkIfThereNewDatesToShow() {
 		DataTransfer data = new DataTransfer(TypeOfMessage.REQUESTINFO, new ParkInfo(null,
 				ChatClient.worker.getPark().getNumberOfPark(), null, null, null, ChatClient.worker.getRole()));
 		ClientUI.chat.accept(data);
 	}
+
+	/**
+	 * initialize method. This method is responsible for defining variables by
+	 * communicating with the server, is responsible for screen visibility (caption
+	 * and titles) and on-screen functionality.
+	 * 
+	 * @param location
+	 * @param resources
+	 */
 
 	public void initialize(URL location, ResourceBundle resources) {
 		instance = this;
