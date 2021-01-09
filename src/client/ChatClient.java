@@ -21,6 +21,8 @@ import client.controller.ChangeOrderDetailsController;
 import client.controller.SubscriptionEntryController;
 import client.controller.ClientGUIController;
 import client.controller.DepartmantManagerApproveController;
+import client.controller.DepartmantManagerController;
+import client.controller.DepartmantManagerReportController;
 import client.controller.TourGuideLoginController;
 import client.controller.TourGuideNewOrderController;
 import client.controller.TravelerNewOrderController;
@@ -38,6 +40,7 @@ import client.logic.casualOrder;
 import client.logic.Order;
 import client.logic.ParkInfo;
 import client.logic.ParkStatus;
+import client.logic.ReportsData;
 import client.logic.Subscriber;
 import java.io.*;
 import common.TypeOfMessageReturn;
@@ -56,6 +59,7 @@ public class ChatClient extends AbstractClient {
     public static maxVis visMax= new maxVis(null, null, null, 0, 0, null, 0);
 	public static String datesToShow[][];
 	public static String datesToApprveShow[][];
+	public static ReportsData reportsData;
 	public static boolean connected = false;
 	ChatIF clientUI;
 	public boolean waitForConnection = false;
@@ -118,6 +122,14 @@ public class ChatClient extends AbstractClient {
 			if (object instanceof Order) {
 				ChangeOrderDetailsController.instance.notUpdated();
 			}
+			if (object instanceof ArrayList<?>) {
+				try {
+					ManagerDiscountController.instance.showAlreadyApprovePopOut();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}////////////// already approved date of discount can not change
+			}
 			break;
 		case UPDATE_SUCCESS:
 			if (object instanceof Order) { //go back to change order details and show that the update succeeded
@@ -139,12 +151,30 @@ public class ChatClient extends AbstractClient {
 				}
 
 			}
+			
+			if (object instanceof ArrayList<?>) {
+				try {
+					ManagerDiscountController.instance.showWaitTOApprovePopOut();;
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}////////////// already approved date of discount can not change
+			}
 			if(object instanceof TourGuide) {
 				try {
 					ServiceRepresentativeController.instance.showNumOfSubPopOut();
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+				}
+			}
+			if(object instanceof ParkInfo) {
+				parkInfo = (ParkInfo)object;
+				if (parkInfo.getRole().equals("Manager")) {
+					ManagerController.instance.updateNumberOfVisitorAndSub();
+				}
+				else if (parkInfo.getRole().equals("Department Manager")) {
+					DepartmantManagerController.instance.updateNumberOfVisitor();
 				}
 			}
 			break;
@@ -367,6 +397,11 @@ public class ChatClient extends AbstractClient {
 					DepartmantManagerApproveController.instance.loadData();
 				}
 			}
+			if (object instanceof ReportsData) {
+				reportsData = (ReportsData) object;
+				DepartmantManagerReportController.instance.anableReportsButtons();
+			}
+			
 			break;
 		case REQUESTINFO_FAILED:
 			if(object instanceof ParkInfo) {

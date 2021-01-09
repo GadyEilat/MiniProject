@@ -8,6 +8,7 @@ import com.gluonhq.charm.glisten.control.ProgressBar;
 
 import client.ChatClient;
 import client.ClientUI;
+import client.logic.ParkInfo;
 import client.logic.Worker;
 import common.DataTransfer;
 import common.TypeOfMessage;
@@ -85,7 +86,8 @@ public class ManagerController extends AbstractScenes {
 
 
 	public void updateNumberOfVisitorAndSub() {
-
+		progressBar.setProgress(Integer.valueOf(ChatClient.parkInfo.getCurrentVisitors())/Integer.valueOf(ChatClient.worker.getPark().getMaxVisitors()));
+		currentVisitors.setText(ChatClient.parkInfo.getCurrentVisitors());
 	}
 
 	public void initialize(URL location, ResourceBundle resources) {
@@ -93,6 +95,10 @@ public class ManagerController extends AbstractScenes {
 		managerName.setText("Hello " + ChatClient.worker.getWorkerName());
 		maxVisitors.setText(ChatClient.worker.getPark().getMaxVisitors());
 		numOfSubscribers.setText(ChatClient.worker.getPark().getNumOfSub());
+		DataTransfer data = new DataTransfer(TypeOfMessage.REQUESTINFO,
+				new ParkInfo(null , ChatClient.worker.getPark().getNumberOfPark(),null,null,null,ChatClient.worker.getRole()));
+		ClientUI.chat.accept(data);
+		
 	}
 
 }

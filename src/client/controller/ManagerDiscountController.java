@@ -16,8 +16,12 @@ import client.logic.ParkInfo;
 import client.logic.Worker;
 import common.DataTransfer;
 import common.TypeOfMessage;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.DateCell;
@@ -26,6 +30,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
@@ -99,16 +104,12 @@ public class ManagerDiscountController extends AbstractScenes {
 			DataTransfer data = new DataTransfer(TypeOfMessage.UPDATEINFO_REQUEST, dateAndDiscount);
 			discountField.clear();
 			datePicker.setValue(null);
-			Alert alert = new Alert(AlertType.INFORMATION);
-			alert.setHeaderText(null);
-			alert.setContentText("Wait To Department Manager To Approve");
-			alert.show();
 			ClientUI.chat.accept(data);
 		}
 	}
 
 	public void notFond() {
-		Alert alert = new Alert(AlertType.INFORMATION);
+		Alert alert = new Alert(AlertType.ERROR);
 		alert.setHeaderText(null);
 		alert.setContentText("Can not take data from DataBase!");
 		alert.show();
@@ -172,6 +173,32 @@ public class ManagerDiscountController extends AbstractScenes {
 		datePicker.setDayCellFactory(dayCellFactory);
 	}
 
+	public void showWaitTOApprovePopOut() throws IOException {
+		Platform.runLater(new Runnable() {
+
+			@Override
+			public void run() {
+				Alert alert = new Alert(AlertType.INFORMATION);
+				alert.setHeaderText("Success");
+				alert.setContentText("Wait To Department Manager To Approve");
+				alert.show();
+			}
+		});
+	}
+	
+	public void showAlreadyApprovePopOut() throws IOException {
+		Platform.runLater(new Runnable() {
+
+			@Override
+			public void run() {
+				Alert alert = new Alert(AlertType.ERROR);
+				alert.setHeaderText(null);
+				alert.setContentText("Can not change Approved dates!");
+				alert.show();
+			}
+		});
+	}
+	
 	private void checkIfThereNewDatesToShow() {
 		DataTransfer data = new DataTransfer(TypeOfMessage.REQUESTINFO, new ParkInfo(null,
 				ChatClient.worker.getPark().getNumberOfPark(), null, null, null, ChatClient.worker.getRole()));

@@ -194,6 +194,7 @@ public class TravelerNewOrderController extends AbstractScenes {
 		switchScenes("/client/boundaries/RegularTraveler.fxml", "");
 	}
 
+<<<<<<< HEAD
 
 	/**
 	 * continueToPayButton method
@@ -203,6 +204,8 @@ public class TravelerNewOrderController extends AbstractScenes {
 	 */
 
 
+=======
+>>>>>>> refs/heads/Liran
 	@FXML
 	void continueToPayButton(ActionEvent event) {
 		String orderPark = parkNameBtn.getSelectionModel().getSelectedItem().toString();
@@ -264,6 +267,7 @@ public class TravelerNewOrderController extends AbstractScenes {
 
 	}
 
+<<<<<<< HEAD
 
 	/**
 	 * waitingListButton method
@@ -273,6 +277,8 @@ public class TravelerNewOrderController extends AbstractScenes {
 	 */
 
 
+=======
+>>>>>>> refs/heads/Liran
 	@FXML
 	void waitingListButton(ActionEvent event) {
 		Alert alert = new Alert(AlertType.INFORMATION);
@@ -362,6 +368,7 @@ public class TravelerNewOrderController extends AbstractScenes {
 	 * @param t an entity that is been use for the waitinglist checks.
 	 */
 	public void checkDate2(maxVis t) {
+<<<<<<< HEAD
 		maxVis visMax = new maxVis(null, null, null, 0, 0, null, 0);
 		visMax.setDate(t.getDate());
 		visMax.setPark(t.getPark());
@@ -371,4 +378,15 @@ public class TravelerNewOrderController extends AbstractScenes {
 		if (Integer.valueOf(visMax.getVisitorsInOrder() + visMax.getAllowed2()) < visMax.getAllowed1())
 			thereIsSpot = true;
 	}
+=======
+   	 maxVis visMax= new maxVis(null, null, null, 0, 0, null, 0);
+	    	visMax.setDate(t.getDate());
+	    	visMax.setPark(t.getPark());
+	    	visMax.setVisitorsInOrder(t.getVisitorsInOrder());
+	    	visMax.setAllowed1(t.getAllowed1());
+	    	visMax.setAllowed2(t.getAllowed2());
+	    	if(Integer.valueOf(visMax.getVisitorsInOrder()+visMax.getAllowed2()) < visMax.getAllowed1())
+	    		thereIsSpot=true;
+   } 
+>>>>>>> refs/heads/Liran
 }
