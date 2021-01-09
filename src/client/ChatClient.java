@@ -72,6 +72,11 @@ public class ChatClient extends AbstractClient {
 			if (object instanceof Worker) {
 				WorkerLogin.instance.logInAnswerFailed();
 			}
+			
+			/**
+			 * If the object is a subscription type, it prints a message that a subscription has not been found.
+			 */
+			
 			if (object instanceof Subscriber) {
 				SubscriptionEntryController.instance.subscriberNotFound();
 			}
@@ -80,17 +85,25 @@ public class ChatClient extends AbstractClient {
 			}
 
 			break;
+			
 		case LOGIN_FAILED_CONNECTED:
 			if (object instanceof Worker) {
 				WorkerLogin.instance.alreadyConnected();
 			}
 			break;
+			
 		case LOGIN_SUCCESSFUL:
 			if (object instanceof Worker) {
 				worker = (Worker) object;
 				connected = true;
 				WorkerLogin.instance.checkLogInAnswer(worker);
 			}
+			
+			/**
+			 * If the object is a subscription type, it saves a family subscription data.
+			 * Open a subscription screen
+			 */
+			
 			if (object instanceof Subscriber) {
 				subscriber = (Subscriber) object;
 				SubscriptionEntryController.instance.subscriberFound();
@@ -108,6 +121,12 @@ public class ChatClient extends AbstractClient {
 			if (object instanceof Order) {
 				ChangeOrderDetailsController.instance.updated();
 			}
+			
+			/**
+			 * If the object is a subscription type, it saves a family subscription data.
+			 * Opens a PopOut window for the service representative with the subscription number.
+			 */
+			
 			if (object instanceof Subscriber) {
 				subscriber = (Subscriber) object;
 				try {
@@ -131,6 +150,7 @@ public class ChatClient extends AbstractClient {
 		case RETURN_ORDER_FAILED:
 			System.out.println("Couldn't recieve details from DB");
 			break;
+			
 		case RETURN_ORDER:
 			if (object instanceof Order) {
 				if (object != null) {
@@ -236,6 +256,7 @@ public class ChatClient extends AbstractClient {
 			}
 
 			break;
+			
 		case TOUR_MAXVISCHECK:
 			if (object instanceof maxVis) {
 				visMax = (maxVis) object;
@@ -252,16 +273,22 @@ public class ChatClient extends AbstractClient {
 				TravelerNewOrderController.instance.checkDate2(visMax);
 			}
 			break;
+			
 		case SUB_NEW_ORDER_SUCCESS:
 			if (object instanceof Order) {
 				order = (Order) object;
-//				subscriberNewOrderController.instance.TravelerOrder = order;
-				subscriberNewOrderController.instance.isFound();
+				subscriberNewOrderController.instance.thereIsPlaceForVisitors();
 			}
 			break;
+			
 		case SUB_NEW_ORDER_FAILED:
-			//cannot make new order output to user
+//			if (object instanceof Order) {
+				order = (Order) object;
+//				subscriberNewOrderController.instance.TravelerOrder = order;
+				subscriberNewOrderController.instance.thereIsNoPlaceForVisitors();
+//			}			
 			break;
+			
 		case PARK_STATUS:
 			if (object instanceof ParkStatus) {
 				String t = null;
@@ -282,6 +309,7 @@ public class ChatClient extends AbstractClient {
 			}
 
 			break;
+			
 		case PARK_DISCOUNT:
 			if (object instanceof String) {
 				String t = null;
@@ -293,6 +321,11 @@ public class ChatClient extends AbstractClient {
 			break;
 
 		case REQUESTINFO_SUCCESS:
+			
+			/**
+			 * If the object is a subscription type, it saves a family subscription data.
+			 */
+			
 			if (object instanceof Subscriber) {
 				subscriber = (Subscriber) object;
 			}
@@ -307,6 +340,7 @@ public class ChatClient extends AbstractClient {
 				}
 			}
 			break;
+			
 		case REQUESTINFO_FAILED:
 			if (object instanceof ParkInfo) {
 				parkInfo = (ParkInfo) object;
@@ -320,7 +354,6 @@ public class ChatClient extends AbstractClient {
 		default:
 			break;
 		}
-
 	}
 
 	public void handleMessageFromClientUI(Object msg) {
