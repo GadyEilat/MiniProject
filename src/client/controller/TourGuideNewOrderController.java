@@ -361,7 +361,7 @@ public class TourGuideNewOrderController extends AbstractScenes {
         	alert.setHeaderText(null);
         	alert.setContentText("Enterd waiting list sucssesfully.");
         	alert.show();
-        	WaitingList wait= new WaitingList(null, null, null ,null ,null ,null, null, null, null,null);
+        	WaitingList wait= new WaitingList(null, null, null ,null ,null ,null, null, null, null,null,null,null);
         	wait.setDate(tourguideorderr.getDate());
         	wait.setEmail(tourguideorderr.getEmail());
         	wait.setID(tourguideorderr.getID());
