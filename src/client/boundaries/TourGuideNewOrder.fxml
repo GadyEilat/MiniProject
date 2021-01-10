@@ -71,7 +71,7 @@
    <top>
       <AnchorPane style="-fx-background-color: #c9c4c4;" BorderPane.alignment="CENTER">
          <children>
-            <Text fx:id="TourNo" layoutX="206.0" layoutY="63.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="106.33984375" AnchorPane.leftAnchor="205.0" AnchorPane.topAnchor="42.0">
+            <Text fx:id="TourNo" layoutX="206.0" layoutY="63.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="308.33984375" AnchorPane.leftAnchor="205.0" AnchorPane.topAnchor="42.0">
                <font>
                   <Font size="18.0" />
                </font>

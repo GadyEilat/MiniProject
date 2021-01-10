@@ -14,14 +14,21 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.print.PageLayout;
+import javafx.print.PageRange;
+import javafx.print.PrinterJob;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
+import javafx.scene.image.ImageView;
+import javafx.scene.image.WritableImage;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
+import javafx.scene.transform.Scale;
+import javafx.stage.Window;
 
 public class VisitorPerHourReport implements Initializable {
 	public static VisitorPerHourReport instance;
@@ -54,11 +61,35 @@ public class VisitorPerHourReport implements Initializable {
 	final static String hour7 = "14:00";
 	final static String hour8 = "15:00";
 
-	@FXML
-	void printVisitReport(ActionEvent event) {
-
+	
+	public static void printCurrWindow(Window myWindow) {
+		print(myWindow, myWindow.getScene().getRoot().snapshot(null, null));
 	}
 
+	@FXML
+	void printVisitReport(ActionEvent event) {
+		printCurrWindow(printReport.getScene().getWindow());
+	}
+
+	private static void print(Window myWindow, WritableImage screenshot) {
+		PrinterJob job = PrinterJob.createPrinterJob();
+		if (job != null) {
+			job.getJobSettings().setPageRanges(new PageRange(1, 1));
+			if (!job.showPageSetupDialog(myWindow) || !job.showPrintDialog(myWindow)) {
+				return;
+			}
+			final PageLayout pageLayout = job.getJobSettings().getPageLayout();
+			final double sizeX = pageLayout.getPrintableWidth() / screenshot.getWidth();
+			final double sizeY = pageLayout.getPrintableHeight() / screenshot.getHeight();
+			final double size = Math.min(sizeX, sizeY);
+			final ImageView print_node = new ImageView(screenshot);
+			print_node.getTransforms().add(new Scale(size, size));
+			job.printPage(print_node);
+			job.endJob();
+
+		}
+	}
+	
 	@FXML
 	void showTimeChart(ActionEvent event) {
 		LocalDate date = pickDate.getValue();
@@ -84,7 +115,7 @@ public class VisitorPerHourReport implements Initializable {
 			public void run() {
 				showHourandAmount.getData().removeAll(Collections.singleton(showHourandAmount.getData().setAll()));
 				String[][] dataToShow = ChatClient.reportsDataforvisitors.getAmountPerOrderKind();
-				showHourandAmount.setTitle("Cacnellation Report");
+				showHourandAmount.setTitle("Visit Per Hour");
 				openHourOfPark.setLabel("Traveler kind");
 				amountOfPeople.setLabel("Number of visitors");
 				XYChart.Series Regular_Traveler = new XYChart.Series<>();
@@ -121,7 +152,7 @@ public class VisitorPerHourReport implements Initializable {
 				Group.getData().add(new XYChart.Data(hour7, Integer.valueOf(dataToShow[6][0])));
 				Group.getData().add(new XYChart.Data(hour8, Integer.valueOf(dataToShow[7][0])));
 
-				showHourandAmount.getData().addAll(Group);
+				showHourandAmount.getData().addAll(Regular_Traveler,Family_subscription,Group);
 			}
 
 		});
@@ -131,6 +162,7 @@ public class VisitorPerHourReport implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		instance = this;
+		reportName.setText("Visit Per Hour");
 
 	}
 

@@ -234,7 +234,7 @@ public class TravelerNewOrderController extends AbstractScenes {
 				TravelerOrder.setNameOnOrder(orderName);
 				TravelerOrder.setID(newTravelerID);
 				TravelerOrder.setTotalPrice(strPrice);
-				TravelerOrder.setOrderKind("RegularOrder");
+				TravelerOrder.setOrderKind("Regular");
 				TravelerOrder.setPrePaid("No");
 				TravelerOrder.setApproved("false");
 				checkDate(TravelerOrder, null);
@@ -289,6 +289,7 @@ public class TravelerNewOrderController extends AbstractScenes {
 		wait.setNumOfVisitors(TravelerOrder.getNumOfVisitors());
 		wait.setParkName(TravelerOrder.getParkName());
 		wait.setTime(TravelerOrder.getHour());
+		wait.setOrderKind("Regular");
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		LocalDateTime now = LocalDateTime.now();
 		wait.setTimeOfEntrance(dtf.format(now));

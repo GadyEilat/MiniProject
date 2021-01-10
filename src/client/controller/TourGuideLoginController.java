@@ -25,81 +25,92 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-/** Description of TourGuideLoginController 
- * This controller responsible of getting the id from the user
- * And if the id matches the id that is written in the data base
- * The user can carry on to the main menu.
- * @author Elad Kobi 
+
+/**
+ * Description of TourGuideLoginController This controller responsible of
+ * getting the id from the user And if the id matches the id that is written in
+ * the data base The user can carry on to the main menu.
+ * 
+ * @author Elad Kobi
  */
 public class TourGuideLoginController extends AbstractScenes {
-      TourGuide tourguide;
-    @FXML
-    private ResourceBundle resources;
+	TourGuide tourguide;
+	@FXML
+	private ResourceBundle resources;
 
-    @FXML
-    private URL location;
-    @FXML
-    private Text MsgFromController;
+	@FXML
+	private URL location;
+	@FXML
+	private Text MsgFromController;
 
-    @FXML
-    private Button LogINGuideBtn;
+	@FXML
+	private Button LogINGuideBtn;
 
-    @FXML
-    private TextField GuideID;
-    
-    /** Description of notFound - ID not found 
-     *
-     */
-    public void notFound() {
+	@FXML
+	private TextField GuideID;
+
+	/**
+	 * Description of notFound - ID not found
+	 *
+	 */
+	public void notFound() {
 
 		MsgFromController.setText("Visitor ID Not Found");
 	}
-    /** Description of isFound - ID is found 
-     *
-     */
-    public void isFound(){
-    	switchScenes("/client/boundaries/TourGuideMainMenu.fxml", "Main Menu");
+
+	/**
+	 * Description of isFound - ID is found
+	 *
+	 */
+	public void isFound() {
+		switchScenes("/client/boundaries/TourGuideMainMenu.fxml", "Main Menu");
 	}
-    public static TourGuideLoginController instance;
-    public Object gID="4";
-    
-    /** Description of LogINGuideButton - ID is found 
+
+	public static TourGuideLoginController instance;
+	public Object gID = "4";
+
+	/** Description of LogINGuideButton - ID is found 
      *@param event A button that logs into the system.
      */
     
     @FXML
     void LogINGuideButton(ActionEvent event) {
     	String guideID = GuideID.getText();
-    	if (guideID.trim().isEmpty()) {
+    	boolean check=checkID(guideID);
+    	if (guideID.trim().isEmpty()||check==false) {
     		MsgFromController.setText("You must enter an ID number");
     	}
         else {
         	TourGuide tourguide= new TourGuide(guideID,null,null,null,null);
            	DataTransfer data = new DataTransfer(TypeOfMessage.TOURGUIDELOGIN,tourguide);
-	
 		ClientUI.chat.accept(data);
-		//switchScenes("/client/boundaries/TourGuideMainMenu.fxml", "");
 		}
-    	
     }
-    
-    @FXML
-    void backButton(ActionEvent event) {
-    	switchScenes("/client/boundaries/Travelers.fxml", "Teavelers");
-    }
-    /** Description of initialize 
-     *@see https://docs.oracle.com/javase/8/javafx/api/javafx/fxml/Initializable.html
-     */
-    
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
+
+	public static boolean checkID(String ID) {
+		if (ID.length() == 9 && ID.matches("[0-9]+"))
+			return true;
+		return false;
+	}
+
+	@FXML
+	void backButton(ActionEvent event) {
+		switchScenes("/client/boundaries/Travelers.fxml", "Teavelers");
+	}
+
+	/**
+	 * Description of initialize
+	 * 
+	 * @see https://docs.oracle.com/javase/8/javafx/api/javafx/fxml/Initializable.html
+	 */
+
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
 		instance = this;
 	}
 }
-

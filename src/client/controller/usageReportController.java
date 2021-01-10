@@ -2,6 +2,7 @@ package client.controller;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.ResourceBundle;
 
 import client.ChatClient;
@@ -127,9 +128,10 @@ public class usageReportController extends AbstractScenes {
 	public void setTimesUsage(Object object) {
 		Platform.runLater(new Runnable() {
 
-			@SuppressWarnings("unchecked")
+			@SuppressWarnings({ "unchecked", "unlikely-arg-type" })
 			@Override
 			public void run() {
+				UsageChart.getData().removeAll(Collections.singleton(UsageChart.getData().setAll()));
 				NumberAxis.setLabel("Hours");
 				CategoryAxis.setLabel("Days");
 				

@@ -340,7 +340,7 @@ public class ChangeOrderDetailsController extends AbstractScenes{
     	setTimeComboBox(); // call func above.
     	timeComboBox.getSelectionModel().select(ord.getHour());
     	priceTxt.setText(String.format("Price: %.2f", OrderManagementController.instance.price));
-    	ord.setTotalPrice(priceTxt.getText());
+    	ord.setTotalPrice(String.format("%.2f",OrderManagementController.instance.price));
     	try {
             datePicker.setValue(LOCAL_DATE(ord.getDate()));
         } catch (NullPointerException e) {}

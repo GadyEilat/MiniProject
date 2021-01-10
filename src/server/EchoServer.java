@@ -1481,6 +1481,7 @@ public class EchoServer extends AbstractServer {
 				}
 			}
 			if (object instanceof Order) {
+				
 				Object visMax= new maxVis(null, null, null, 0, 0, null, 0);
 				maxVis t = new maxVis(null, null, null, 0, 0, null, 0);
 				t.setDate(((Order) object).getDate());
@@ -1489,7 +1490,7 @@ public class EchoServer extends AbstractServer {
 				t.setTime(((Order) object).getHour());
 				
 				visMax = mysqlConnection.checkMaxVisitors(t);
-				visMax = (Object) visMax;
+				visMax = (maxVis)visMax;
 				if(visMax != null) {
 					try {
 						returnData = new DataTransfer(TypeOfMessageReturn.NEW_ORDERMAXVISCHECK, visMax);

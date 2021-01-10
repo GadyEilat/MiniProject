@@ -211,7 +211,8 @@ public class parkEnterenceController2 extends AbstractScenes {
             order.setOrderNumber(t.getOrderNumber());
             order.setOrderKind(t.getOrderKind());
             order.setNumOfVis(t.getNumOfVisitors());
-            
+            order.setPayment(t.getTotalPrice());
+
            
             //DataTransfer data2 = new DataTransfer(TypeOfMessage.CASUALVISITUPDATE,order);
 	    	//ClientUI.chat.accept(data2);
