@@ -113,10 +113,6 @@ public class TravelerNewOrderController extends AbstractScenes {
 
 
 	}
-
-
-  
-
 	  /**
 	   * setTimeComboBox method
 	   * This method adding times to the Time combo box in the screen and display it.
@@ -351,8 +347,8 @@ public class TravelerNewOrderController extends AbstractScenes {
 	/**
 	 * checkDate method
 	 * @param s an entity of the order that been checked under this function
-	 * @param t an entity that is been use for the waitinglist checks.
-	 * @return an entity that holds few paramaters of the waiting list check.
+	 * @param t an entity that is been use for the waiting list checks.
+	 * @return an entity that holds few parameters of the waiting list check.
 	 */
 	public maxVis checkDate(Order s, maxVis t) {
 		maxVis visMax = new maxVis(null, null, null, 0, 0, null, 0);
@@ -363,7 +359,7 @@ public class TravelerNewOrderController extends AbstractScenes {
 
 	/**
 	 * checkDate2 method
-	 * @param t an entity that is been use for the waitinglist checks.
+	 * @param t an entity that is been use for the waiting list checks.
 	 */
 	public void checkDate2(maxVis t) {
 

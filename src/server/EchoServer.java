@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ import client.logic.EmailDetails;
 import client.logic.Order;
 import client.logic.ParkInfo;
 import client.logic.ParkStatus;
+import client.logic.ReportsData;
 import client.logic.Subscriber;
 import client.logic.TourGuide;
 import client.logic.TourGuideOrder;
@@ -35,6 +37,7 @@ import common.TypeOfMessage;
 import common.TypeOfMessageReturn;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
+import javafx.scene.chart.PieChart.Data;
 import ocsf.server.*;
 import server.Controller.SendEmail;
 import server.Controller.ServerController;
@@ -266,8 +269,19 @@ public class EchoServer extends AbstractServer {
 				}
 			}
 			break;
-			
+
+			/**
+			 * This case requests information from the database.
+			 */
+
 		case REQUESTINFO:
+			
+			/**
+			 * If the object is a subscription type, it requests all the subscriber information from the database by subscription number.
+			 * The server checks whether the database request was successful or failed.
+			 * The server sends the data to the ChatCliant.
+			 */
+			
 			if (object instanceof Subscriber) {
 				Subscriber subscriber = (Subscriber) object;
 				String checkSubExist = "SELECT * FROM gonature.subscriber WHERE subscriberNumber ='"
@@ -848,6 +862,13 @@ public class EchoServer extends AbstractServer {
 					e.printStackTrace();
 				}
 			}
+			
+			/**
+			 * If the object is a subscription type, it updates all the subscriber in the database of the subscriber.
+			 * The server checks to see if the database update was successful or failed.
+			 * The server sends the data to the ChatCliant.
+			 */
+			
 			if (object instanceof Subscriber) {
 				Subscriber subscriber = (Subscriber) object;
 				String upDateSub = "UPDATE `gonature`.`subscriber` SET `ID` = '" + subscriber.getId()
@@ -1232,6 +1253,10 @@ public class EchoServer extends AbstractServer {
 			}
 
 			break;
+			/**
+			 * Description of NEW_ORDERWAITINGLIST This case gets all the order details that
+			 * the user inserted and sends it to database to add the details.
+			 */
 		case NEW_ORDERWAITINGLIST:
 			if (object instanceof WaitingList) {
 				boolean ans2 = mysqlConnection.updateWaitingListNewOrder(object);
@@ -1391,20 +1416,37 @@ public class EchoServer extends AbstractServer {
 			 * according to the details it got from the client.
 		     */
 		case PARKENTERSENDSTATUS:
-			if(object instanceof ParkStatus)
-			{
-				ParkStatus status= (ParkStatus)object;
-				String t= status.getPark();
-				int x=Integer.valueOf(status.getAmount());
-				//String query ="UPDATE parksstatus SET "+t+"="+t+"+ "+x+" WHERE DATE='"+status.getDate()+"';";
-				String query ="UPDATE parksstatuss SET "+t+"="+t+"+ "+x+ ";";
+			if (object instanceof ParkStatus) {
+				ParkStatus status = (ParkStatus) object;
+				String t = status.getPark();
+				int x = Integer.valueOf(status.getAmount());
+				String query = "UPDATE parksstatuss SET " + t + "=" + t + "+ " + x + ";";
 				boolean ans2 = mysqlConnection.updateDB(query);
 				if (ans2)
 					ServerController.instance.displayMsg("Park Status details updated");
 				else
 					ServerController.instance.displayMsg("Park Statust details could not be updated");
+				String sql1 = "SELECT " + t +  " FROM gonature.parksstatuss;";
+				arrOfAnswer=mysqlConnection.getDB(sql1);
+				String amount=(String) arrOfAnswer.get(0);
+				String sql2= "select * from manageparks WHERE numberOfPark='" + status.getPark() + "';";
+				arrOfAnswer=mysqlConnection.getDB(sql2);
+				String maxAmount=(String)arrOfAnswer.get(1);
+				if(amount.equals(maxAmount)) {
+					DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+				    LocalDateTime now = LocalDateTime.now();
+				    String dateNow=dtf.format(now);			//The Date
+				    String appendSt=":00";
+				   
+				    DateTimeFormatter dtf1 = DateTimeFormatter.ofPattern("HH");
+				    LocalDateTime now1 = LocalDateTime.now();
+				    String timeNow=dtf1.format(now1);			//The Time
+				    String newTime=timeNow.concat(appendSt);
+				    boolean ans=mysqlConnection.updateMaxPark(t,dateNow,newTime);
+				    
+
+				}
 			}
-			
 			break;
 			/** Description of PARTKENTERGETSTATUS
 			 * This case gets updates the park status.
@@ -1537,7 +1579,101 @@ public class EchoServer extends AbstractServer {
 			}
 			
 			break;
+			/**
+			 * GET_INVITATIONS This case gets monthly income of the specified park and then
+			 * display it.
+			 * 
+			 */
+		case GET_INVITATIONS:
+			if(object instanceof ArrayList<?>) {
+				ArrayList<String> send=(ArrayList<String>)object;
+				String monthChosen=send.get(0);
+				String parkChosen=send.get(1);
+				double sumPayment=0.0;
+				Double convert;
+				String sql= "SELECT Payment FROM gonature.casualinvitation WHERE Date LIKE '" + monthChosen + "%' AND Park = '" + parkChosen + "' ;";
+				arrOfAnswer=mysqlConnection.getDB(sql);
+				for(int i=0;i<arrOfAnswer.size();i++) {
+					convert = Double.valueOf(arrOfAnswer.get(i).toString());
+					sumPayment+=convert;	
+				}
+				try {
+					returnData = new DataTransfer(TypeOfMessageReturn.MONTHLYINCOME, sumPayment);
+					client.sendToClient(returnData);
+				} catch (IOException e) {
+					
+					e.printStackTrace();
+				}	
+			}	
+			break;
 			
+			/**
+			 * USAGEREPORT This case sends the usage income per month and display it.
+			 * 
+			 */
+		case GET_USAGEREPORT:
+			if(object instanceof ArrayList<?>) {
+				ArrayList<String> send=(ArrayList<String>)object;
+				String monthChosen=send.get(0);
+				String parkChosen=send.get(1);
+				String sql= "SELECT * FROM gonature.maxpark WHERE Date LIKE '" + monthChosen + "%' AND Park = '" + parkChosen + "' ;";
+				arrOfAnswer=mysqlConnection.getDB(sql);
+				try {
+					returnData = new DataTransfer(TypeOfMessageReturn.USAGEREPORT, arrOfAnswer);
+					client.sendToClient(returnData);
+				} catch (IOException e) {
+					
+					e.printStackTrace();
+				}	
+			}
+			break;
+			/**
+			 * VISITORS_AMOUNT This case sends the amount of visitors and display it.
+			 * 
+			 */
+		case GET_TOTALVISITORSREPORT:
+			if(object instanceof ArrayList<?>) {
+				ArrayList<String> send=(ArrayList<String>)object;
+				int convert;
+				int sumRegular=0;
+				int sumTour=0;
+				int sumSub=0;
+						
+				String monthChosen=send.get(0);
+				String parkChosen=send.get(1);
+				String sql1= "SELECT numOfVis FROM gonature.casualinvitation WHERE Date LIKE '" + monthChosen + "%' AND Park = '" + parkChosen + "' AND OrderKind = 'Regular' ;";
+				String sql2= "SELECT numOfVis FROM gonature.casualinvitation WHERE Date LIKE '" + monthChosen + "%' AND Park = '" + parkChosen + "' AND OrderKind = 'TourGuide' ;";
+				String sql3= "SELECT numOfVis FROM gonature.casualinvitation WHERE Date LIKE '" + monthChosen + "%' AND Park = '" + parkChosen + "' AND OrderKind = 'Subscriber' ;";
+				arrOfAnswer=mysqlConnection.getDB(sql1);
+				for(int i=0;i<arrOfAnswer.size();i++) {
+					convert = Integer.valueOf(arrOfAnswer.get(i).toString());
+					sumRegular+=convert;	
+				}
+
+				arrOfAnswer=mysqlConnection.getDB(sql2);
+				for(int i=0;i<arrOfAnswer.size();i++) {
+					convert = Integer.valueOf(arrOfAnswer.get(i).toString());
+					sumTour+=convert;	
+				}
+				
+				arrOfAnswer=mysqlConnection.getDB(sql3);
+				for(int i=0;i<arrOfAnswer.size();i++) {
+					convert = Integer.valueOf(arrOfAnswer.get(i).toString());
+					sumSub+=convert;	
+				}
+				ArrayList<Integer> sendTo=new ArrayList<Integer>();
+				sendTo.add(sumRegular);
+				sendTo.add(sumTour);
+				sendTo.add(sumSub);
+				try {
+					returnData = new DataTransfer(TypeOfMessageReturn.VISITORS_AMOUNT, sendTo);
+					client.sendToClient(returnData);
+				} catch (IOException e) {
+					
+					e.printStackTrace();
+				}	
+			}
+			break;
 
 			
 		case SENDMAIL:
