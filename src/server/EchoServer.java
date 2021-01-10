@@ -1120,63 +1120,78 @@ public class EchoServer extends AbstractServer {
 		case LOGIN_REQUEST:
 			if (object instanceof Worker) {
 				Worker worker = (Worker) object;
+//				boolean alreadyConnect = false;
 				Worker RoleAndPark = null;
 				ParkInfo parkInfo;
-				String checkUserAndPassword = "SELECT Role, Park, name,LogIn FROM gonature.worker WHERE UserName = '" + worker.getUserName()
-						+ "' AND Password = '" + worker.getPassword() + "';";
+				String checkUserAndPassword = "SELECT Role, Park, name, LogIn FROM gonature.worker WHERE UserName = '"
+						+ worker.getUserName() + "' AND Password = '" + worker.getPassword() + "';";
 				arrOfAnswer = mysqlConnection.getDB(checkUserAndPassword);
 				if (!arrOfAnswer.isEmpty()) {
-					String scene;
-					String role = (String) arrOfAnswer.get(0);
-					String park = (String) arrOfAnswer.get(1);
-					String workerName = (String) arrOfAnswer.get(2);
-					arrOfAnswer = mysqlConnection.getDB("SELECT COUNT(*) FROM gonature.subscriber;");
-					String countSub = arrOfAnswer.get(0).toString();
-					String updateCountSub = "UPDATE gonature.manageparks SET numberOfSub = '" + countSub
-							+ "' WHERE numberOfPark = '" + park + "';";
-					boolean Answer = mysqlConnection.updateDB(updateCountSub);
-					if (Answer) {
-						ServerController.instance.displayMsg("manageparks numOfSub UPDATEINFO details updated");
-
+					if (arrOfAnswer.get(3).toString().equals("True")) {
+						returnData = new DataTransfer(TypeOfMessageReturn.LOGIN_FAILED_CONNECTED, new Worker());
+//						alreadyConnect = true;
 					} else {
-						ServerController.instance.displayMsg("manageparks numOfSub UPDATEINFO details failed");
+						String scene;
+						String role = (String) arrOfAnswer.get(0);
+						String park = (String) arrOfAnswer.get(1);
+						String workerName = (String) arrOfAnswer.get(2);
+						boolean connect = mysqlConnection
+								.updateDB("UPDATE gonature.worker SET LogIn = 'True' WHERE UserName = '"
+										+ worker.getUserName() + "' AND Park = '" + park + "';");
+						if (connect) {
+							ServerController.instance.displayMsg(worker.getUserName() + " Connected [UPDATEINFO]");
+							arrOfAnswer = mysqlConnection.getDB("SELECT COUNT(*) FROM gonature.subscriber;");
+							String countSub = arrOfAnswer.get(0).toString();
+							String updateCountSub = "UPDATE gonature.manageparks SET numberOfSub = '" + countSub
+									+ "' WHERE numberOfPark = '" + park + "';";
+							boolean Answer = mysqlConnection.updateDB(updateCountSub);
+							if (Answer) {
+								ServerController.instance.displayMsg("manageparks numOfSub UPDATEINFO details updated");
+
+							} else {
+								ServerController.instance.displayMsg("manageparks numOfSub UPDATEINFO details failed");
+							}
+							arrOfAnswer = mysqlConnection
+									.getDB("SELECT * FROM gonature.manageparks WHERE numberOfPark = '" + park + "'");
+							if (role.equals("Manager")) {
+								scene = "/client/boundaries/manager.fxml";
+								role = "Manager";
+								parkInfo = new ParkInfo((String) arrOfAnswer.get(0), (String) arrOfAnswer.get(1),
+										(String) arrOfAnswer.get(2), (String) arrOfAnswer.get(3),
+										(String) arrOfAnswer.get(4));
+								RoleAndPark = new Worker(worker.getUserName(), null, role, parkInfo, workerName, scene);
+
+							} else if (role.equals("Department Manager")) {
+								scene = "/client/boundaries/mainDepartmantManager.fxml";
+								role = "Department Manager";
+								parkInfo = new ParkInfo((String) arrOfAnswer.get(0), (String) arrOfAnswer.get(1),
+										(String) arrOfAnswer.get(2), (String) arrOfAnswer.get(3), null);
+								RoleAndPark = new Worker(worker.getUserName(), null, role, parkInfo, workerName, scene);
+
+							} else if (role.equals("Service")) {
+								scene = "/client/boundaries/FamilySubscriptionRegistration.fxml";
+								role = "Service Representative";
+								parkInfo = new ParkInfo((String) arrOfAnswer.get(0), null, null, null, null);
+								RoleAndPark = new Worker(worker.getUserName(), null, role, parkInfo, workerName, scene);
+
+							} else if (role.equals("ParkReception")) {
+								scene = "/client/boundaries/WorkerParkEnternece.fxml";
+								role = "Park Reception";
+								parkInfo = new ParkInfo((String) arrOfAnswer.get(0), null, null, null, null);
+								RoleAndPark = new Worker(null, null, role, parkInfo, workerName, scene);
+							} else
+								System.out.println("Error");
+							arrOfAnswer = mysqlConnection
+									.getDB("SELECT " + park + " FROM gonature.parksstatuss;");
+							if (!arrOfAnswer.isEmpty()) 
+								RoleAndPark.getPark().setCurrentVisitors(arrOfAnswer.get(0).toString());
+							returnData = new DataTransfer(TypeOfMessageReturn.LOGIN_SUCCESSFUL, RoleAndPark);
+						} else {
+							ServerController.instance.displayMsg(worker.getUserName() + " UPDATEINFO details failed");
+							returnData = new DataTransfer(TypeOfMessageReturn.LOGIN_FAILED, new Worker());
+						}
 					}
-					arrOfAnswer = mysqlConnection
-							.getDB("SELECT * FROM gonature.manageparks WHERE numberOfPark = '" + park + "'");
-					if (role.equals("Manager")) {
-						scene = "/client/boundaries/manager.fxml";
-						role = "Manager";
-						parkInfo = new ParkInfo((String) arrOfAnswer.get(0), (String) arrOfAnswer.get(1),
-								(String) arrOfAnswer.get(2), (String) arrOfAnswer.get(3), (String) arrOfAnswer.get(4));
-						RoleAndPark = new Worker(null, null, role, parkInfo, workerName, scene);
-
-					} else if (role.equals("Department Manager")) {
-						scene = "/client/boundaries/mainDepartmantManager.fxml";
-						role = "Department Manager";
-						parkInfo = new ParkInfo((String) arrOfAnswer.get(0), (String) arrOfAnswer.get(1),
-								(String) arrOfAnswer.get(2), (String) arrOfAnswer.get(3), null);
-						RoleAndPark = new Worker(null, null, role, parkInfo, workerName, scene);
-
-					} else if (role.equals("Service")) {
-						scene = "/client/boundaries/FamilySubscriptionRegistration.fxml";
-						role = "Service Representative";
-						parkInfo = new ParkInfo((String) arrOfAnswer.get(0), null, null, null, null);
-						RoleAndPark = new Worker(null, null, role, parkInfo, workerName, scene);
-
-					} else if (role.equals("ParkReception")) {
-						scene = "/client/boundaries/WorkerParkEnternece.fxml";
-						role = "Park Reception";
-						parkInfo = new ParkInfo((String) arrOfAnswer.get(0), null, null, null, null);
-						RoleAndPark = new Worker(null, null, role, parkInfo, workerName, scene);
-					} else
-						System.out.println("Error");
-					arrOfAnswer = mysqlConnection
-							.getDB("SELECT " + park + " FROM gonature.parksstatuss;");
-					if (!arrOfAnswer.isEmpty()) 
-						RoleAndPark.getPark().setCurrentVisitors(arrOfAnswer.get(0).toString());
-					returnData = new DataTransfer(TypeOfMessageReturn.LOGIN_SUCCESSFUL, RoleAndPark);
-				} else {
-					ServerController.instance.displayMsg(worker.getUserName() + " UPDATEINFO details failed");
+				} else {// if (!alreadyConnect)
 					returnData = new DataTransfer(TypeOfMessageReturn.LOGIN_FAILED, new Worker());
 				}
 				try {
