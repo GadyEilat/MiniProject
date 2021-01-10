@@ -11,6 +11,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import client.controller.ExistingOrderController;
+import client.controller.ExistingWaitingListOrderController;
 import client.controller.FamilySubscriptionHistoryController;
 import client.controller.ManagerController;
 import client.controller.ManagerDiscountController;
@@ -37,6 +38,7 @@ import client.controller.totalVisitorsAmountController;
 import client.logic.TourGuide;
 import client.logic.TourGuideOrder;
 import client.logic.Visitor;
+import client.logic.WaitingList;
 import client.logic.maxVis;
 import client.logic.Worker;
 import client.logic.casualOrder;
@@ -121,6 +123,17 @@ public class ChatClient extends AbstractClient {
 		case APPROVED_RETURN: // display in orderManagement that the order was approved.
 			OrderManagementController.instance.approvedReturn();
 			break;
+			
+		case APPROVE_WL:
+			if (object instanceof WaitingList) {
+				WaitingList myWL = (WaitingList) object;
+				
+			if (ExistingWaitingListOrderController.instance.orderWL.getOrderNumber()==myWL.getOrderNumber()) {
+				
+			}
+			}
+			break;
+			
 		case UPDATE_FAILED: //go back to change order details and show that the update failed.
 			if (object instanceof Order) {
 				ChangeOrderDetailsController.instance.notUpdated();
@@ -200,6 +213,21 @@ public class ChatClient extends AbstractClient {
 						ExistingOrderController.instance.isFound();
 					} else {
 						ExistingOrderController.instance.notFound();
+					}
+				}
+			}
+			if (object instanceof WaitingList) { //update the ExistingOrderController with the waitinglist order we got.
+				if (object != null) {
+					System.out.println("--> handleMessageFromServer");
+					waitForConnection = false;
+					WaitingList recievedWLOrd = (WaitingList) object;
+					String check = ExistingOrderController.instance.orderWL.getOrderNumber();
+					if (check.equals(recievedWLOrd.getOrderNumber())) {
+						ExistingOrderController.instance.orderWL=recievedWLOrd; // update the instance of the orderWL in "existing"
+																		// to be not null...
+						ExistingOrderController.instance.isFoundWL();
+					} else {
+						ExistingOrderController.instance.notFoundWL();
 					}
 				}
 			}

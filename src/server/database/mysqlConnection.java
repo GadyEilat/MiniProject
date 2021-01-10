@@ -85,7 +85,6 @@ public class mysqlConnection {
 					String sql = ("SELECT * FROM gonature.orders where OrderNumber = " + ord.getOrderNumber() + ";");
 					ResultSet rs = st.executeQuery(sql);
 					ResultSetMetaData metadata = rs.getMetaData();
-					// int columnCount = metadata.getColumnCount();
 					while (rs.next()) {
 						ordInDB.setParkName(rs.getString(1));
 						ordInDB.setHour(rs.getString(2));
@@ -100,7 +99,7 @@ public class mysqlConnection {
 						ordInDB.setApproved(rs.getString(12));
 
 					}
-					// conn.close();
+
 					rs.close();
 					return ordInDB;
 				} catch (SQLException e) {
@@ -112,6 +111,38 @@ public class mysqlConnection {
 		return null;
 	}
 
+	public static WaitingList getDBWaitingList (Object msg) {
+		if (msg instanceof WaitingList) {
+			WaitingList ordWL = (WaitingList)msg;
+			WaitingList ordInWL = new WaitingList(null,null,null,null,null,null,null,null,null,null,null,null);
+			if (conn != null) {
+				try {
+					Statement st = conn.createStatement();
+					String sql = ("SELECT * FROM gonature.waitinglist where OrderNumber = " + ordWL.getOrderNumber() + ";");
+					ResultSet rs = st.executeQuery(sql);
+					while (rs.next()) {
+						ordInWL.setParkName(rs.getString(1));
+						ordInWL.setTime(rs.getString(2));
+						ordInWL.setDate(rs.getString(3));
+						ordInWL.setNumOfVisitors(rs.getString(4));
+						ordInWL.setEmail(rs.getString(5));
+						ordInWL.setOrderNumber(rs.getString(6));
+						ordInWL.setNameOnOrder(rs.getString(7));
+						ordInWL.setOrderKind(rs.getString(8));
+						ordInWL.setID(rs.getString(9));
+						ordInWL.setTimeOfEntrance(rs.getString(10));
+						ordInWL.setDateOfEntrance(rs.getString(11));
+						ordInWL.setNeedsToApprove(rs.getString(12));
+					}
+					rs.close();
+					return ordInWL;
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return null;
+	}
 	/** Description of newDBOrder method
 	 * This method making a new order and saves all the details in the database.
      * @param msg gets the order details.

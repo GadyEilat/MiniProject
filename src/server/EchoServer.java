@@ -6,12 +6,16 @@ package server;
 import java.io.*;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Vector;
+
+import com.mysql.cj.x.protobuf.MysqlxCrud.Delete;
 
 import client.logic.WaitingList;
 import client.ClientUI;
@@ -40,6 +44,7 @@ public class EchoServer extends AbstractServer {
 	// Class variables *************************************************
 	ArrayList<Object> arrOfAnswer = null;
 	Order order = new Order(null, null, null, null, null, null, null, null);
+	WaitingList orderWL = new WaitingList(null, null, null, null, null, null, null, null, null, null, null, null);
 	String visitor = null;
 	String TourID;
 	public static int flag = 0;
@@ -99,7 +104,8 @@ public class EchoServer extends AbstractServer {
 			break;
 
 		case GET_INFO:
-			if (object instanceof Order) {
+			if (object instanceof Order) { // gets info from database and return an order entity with the requested
+											// info.
 				order = mysqlConnection.getDBOrder(object);
 				if (order != null) {
 					ServerController.instance.displayMsg("Got Existing Order Details");
@@ -114,6 +120,23 @@ public class EchoServer extends AbstractServer {
 					e.printStackTrace();
 				}
 			}
+			if (object instanceof WaitingList) { // gets info from database and return a WaitingList entity with the
+													// requested info.
+				orderWL = mysqlConnection.getDBWaitingList(object);
+				if (orderWL != null) {
+					ServerController.instance.displayMsg("Got Order from waiting list Details");
+					returnData = new DataTransfer(TypeOfMessageReturn.RETURN_ORDER, orderWL);
+				} else {
+					ServerController.instance.displayMsg("Couldn't recieve waiting list order details");
+					returnData = new DataTransfer(TypeOfMessageReturn.RETURN_ORDER_FAILED, null);
+				}
+				try {
+					client.sendToClient(returnData);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+
 			break;
 			
 		case REQUESTINFO_HISTORY:///////////////////////////////////////////////////////////////////////////////////////
@@ -137,11 +160,10 @@ public class EchoServer extends AbstractServer {
 					}
 				}
 			}
-						
+
 			break;
-			
-			
-		case CHECK_KIND:
+
+		case CHECK_KIND: // checks if the received order is of kind regular/tourguide/subscriber.
 			if (object instanceof Order) {
 				Order ord = (Order) object;
 				String CheckQuery = "SELECT ID FROM gonature.subscriber WHERE ID ='" + ord.getID() + "';";
@@ -360,63 +382,401 @@ public class EchoServer extends AbstractServer {
 				}
 			}
 			
-			if (object instanceof Order) {
-				Order ordToBeDeleted = (Order) object;
-				Order orderFromWaitingList = new Order(null, null, null, null, null, null, null, null, null, null,null,null);
-				String saveDate = ordToBeDeleted.getDate();
-				String saveTime = ordToBeDeleted.getHour();
-				
-				String DeleteQuery = "DELETE FROM gonature.orders WHERE (OrderNumber = "
-						+ ordToBeDeleted.getOrderNumber() + ");";
-				boolean ans = mysqlConnection.updateDB(DeleteQuery);
-				if (ans) {
-					ServerController.instance.displayMsg("Order was deleted");
-				} else {
-					ServerController.instance.displayMsg("Order could not be deleted");
-				}
-				// getting the first in line from the waiting list which fits the time and date.
-				arrOfAnswer = mysqlConnection.getDB("SELECT MIN(DateOfEntrance)  FROM gonature.waitinglist;");
-				if (!arrOfAnswer.isEmpty()) {
-					arrOfAnswer = mysqlConnection.getDB(
-							"SELECT MIN(MinDATE.TimeOfEntrance), MinDATE.OrderNumber FROM ( SELECT TimeOfEntrance,OrderNumber FROM gonature.waitinglist WHERE (Date = '"
-									+ saveDate + "' AND Time = '" + saveTime + "' AND DateOfEntrance = '"
-									+ arrOfAnswer.get(0).toString() + "' ))  AS MinDATE;");
-					// fix here.
-					if (arrOfAnswer.get(0) != null) {
-						arrOfAnswer = mysqlConnection.getDB("SELECT * FROM gonature.waitinglist WHERE OrderNumber = '"
-								+ arrOfAnswer.get(1).toString() + "';");
-						if (!arrOfAnswer.isEmpty()) {
-							orderFromWaitingList.setParkName((String) arrOfAnswer.get(0));
-							orderFromWaitingList.setHour((String) arrOfAnswer.get(1));
-							orderFromWaitingList.setDate((String) arrOfAnswer.get(2));
-							orderFromWaitingList.setNumOfVisitors((String) arrOfAnswer.get(3));
-							orderFromWaitingList.setEmail((String) arrOfAnswer.get(4));
-							orderFromWaitingList.setOrderNumber((String) arrOfAnswer.get(5));
-							orderFromWaitingList.setNameOnOrder((String) arrOfAnswer.get(6));
-							orderFromWaitingList.setOrderKind((String)arrOfAnswer.get(7));
-							orderFromWaitingList.setID((String) arrOfAnswer.get(8));
-							
-							ans = mysqlConnection.newDBOrderFromWaitingList(orderFromWaitingList);
-							if (ans) {
-								ServerController.instance.displayMsg("Order from waiting list was added");
+			class myInnerClass implements Runnable {
+				Order innerClassOrder;
+
+				@Override
+				public void run() {
+					ArrayList<Object> arrOfAnswer = null;
+					Order ordToBeDeleted = innerClassOrder;
+					boolean ans;
+					Order orderFromWaitingList = new Order(null, null, null, null, null, null, null, null, null, null,
+							null, null);
+					WaitingList WLOrder = new WaitingList(null, null, null, null, null, null, null, null, null, null,
+							null, null);
+					String saveDate = ordToBeDeleted.getDate();
+					String saveTime = ordToBeDeleted.getHour();
+					int numberOfReplacementInWaitingList = Integer.valueOf(ordToBeDeleted.getNumOfVisitors());
+					int myFlag = 0; // for checking if an order from waitinglist should be moved to orders or not.
+
+					ans = mysqlConnection.insertIntoDeletedOrders(ordToBeDeleted);
+					if (ans) {
+						ServerController.instance.displayMsg("Deleted order was added to deletedOrder table");
+						String DeleteQuery = "DELETE FROM gonature.orders WHERE (OrderNumber = '"
+								+ ordToBeDeleted.getOrderNumber() + "');";
+						ans = mysqlConnection.updateDB(DeleteQuery);
+						if (ans) {
+							ServerController.instance.displayMsg("Order was deleted");
+
+							// getting the first in line from the waiting list which fits the time and date.
+
+							arrOfAnswer = mysqlConnection.getDB("select * from manageparks WHERE numberOfPark='"
+									+ ordToBeDeleted.getParkName() + "';");
+							//// orders Where Date='2020-12-31'");
+
+							String append = ":00";
+							String twoLetters = ordToBeDeleted.getHour(); // Get hour(12:00 example)
+							int loopC = Integer.valueOf(Integer.valueOf((String) arrOfAnswer.get(3)) * 2 - 1);// 4*2
+							String hourLoop = twoLetters.substring(0, twoLetters.indexOf(':'));// Seperate till ':'
+							String[] arrS = new String[Integer.valueOf((String) arrOfAnswer.get(3)) * 2 - 1]; // Array
+																												// for
+																												// check
+							int t = Integer.valueOf(hourLoop) - (loopC / 2); // 12-4
+							for (int i = 0; i < arrS.length; i++) {
+								// int t=loopC/2;
+								arrS[i] = String.valueOf(t) + append;
+								t++;
 							}
-							else {
-								ServerController.instance.displayMsg("Order from waiting list couldn't be added");
-							} //Query to delete the order from waitinglist table that was moved to the orders table
-							String DeleteQuery2 = "DELETE FROM gonature.waitinglist WHERE (OrderNumber = '" + orderFromWaitingList.getOrderNumber() + "');";
-							 ans = mysqlConnection.updateDB(DeleteQuery2);
-							 if (ans) {
-									ServerController.instance.displayMsg("Order was deleted from waiting list");
-								} else {
-									ServerController.instance.displayMsg("Order could not be deleted from waiting list");
+							for (int numOfVisitorMoved = 0; numOfVisitorMoved < numberOfReplacementInWaitingList; numOfVisitorMoved++) {
+								arrOfAnswer = mysqlConnection.getDB(
+										"SELECT MIN(DateOfEntrance) AS MinDate, Time, CAST(NumOfVisitors AS UNSIGNED) AS intNumOfVisitors FROM gonature.waitinglist WHERE Date = '"
+												+ saveDate + "' AND Park = '" + ordToBeDeleted.getParkName() + "';");
+								if (arrOfAnswer != null) {
+									if (!arrOfAnswer.isEmpty()) {
+										int substructIfWeFoundInWaitingList = Integer
+												.valueOf(arrOfAnswer.get(2).toString());
+										String numOfVisitorsToCheck = String
+												.valueOf(numberOfReplacementInWaitingList - numOfVisitorMoved);
+										switch (loopC) {
+										case 1:
+											arrOfAnswer = mysqlConnection.getDB(
+													"SELECT OrderNumber FROM gonature.waitinglist WHERE TimeOfEntrance = (SELECT MIN(MinDATE.TimeOfEntrance) FROM (SELECT TimeOfEntrance,OrderNumber, CAST(NumOfVisitors AS UNSIGNED) AS intNumOfVisitors FROM gonature.waitinglist"
+															+ " WHERE ( Date ='" + saveDate + "'  AND Time IN ('"
+															+ arrS[0] + "') AND DateOfEntrance = '"
+															+ arrOfAnswer.get(0).toString() + "' AND NumOfVisitors <="
+															+ (numberOfReplacementInWaitingList - numOfVisitorMoved)
+															+ ")) AS MinDATE);");
+
+											break;
+										case 3:
+											arrOfAnswer = mysqlConnection.getDB(
+													"SELECT OrderNumber FROM gonature.waitinglist WHERE TimeOfEntrance = (SELECT MIN(MinDATE.TimeOfEntrance) FROM (SELECT TimeOfEntrance,OrderNumber, CAST(NumOfVisitors AS UNSIGNED) AS intNumOfVisitors FROM gonature.waitinglist"
+															+ " WHERE ( Date ='" + saveDate + "'  AND Time IN ('"
+															+ arrS[0] + "','" + arrS[1] + "','" + arrS[2]
+															+ "') AND DateOfEntrance = '"
+															+ arrOfAnswer.get(0).toString() + "' AND NumOfVisitors <="
+															+ (numberOfReplacementInWaitingList - numOfVisitorMoved)
+															+ ")) AS MinDATE);");
+											break;
+										case 5:
+											arrOfAnswer = mysqlConnection.getDB(
+													"SELECT OrderNumber FROM gonature.waitinglist WHERE TimeOfEntrance = (SELECT MIN(MinDATE.TimeOfEntrance) FROM (SELECT TimeOfEntrance,OrderNumber, CAST(NumOfVisitors AS UNSIGNED) AS intNumOfVisitors FROM gonature.waitinglist"
+															+ " WHERE ( Date ='" + saveDate + "'  AND Time IN ('"
+															+ arrS[0] + "','" + arrS[1] + "','" + arrS[2] + "','"
+															+ arrS[3] + "','" + arrS[4] + "') AND DateOfEntrance = '"
+															+ arrOfAnswer.get(0).toString() + "' AND NumOfVisitors <="
+															+ (numberOfReplacementInWaitingList - numOfVisitorMoved)
+															+ ")) AS MinDATE);");
+											break;
+										case 7:
+											int y;
+											arrOfAnswer = mysqlConnection
+													.getDB("SELECT OrderNumber FROM gonature.waitinglist "
+															+ " WHERE TimeOfEntrance = (SELECT MIN(MinDATE.TimeOfEntrance) "
+															+ "FROM (SELECT TimeOfEntrance,OrderNumber, CAST(NumOfVisitors AS UNSIGNED) AS intNumOfVisitors "
+															+ "FROM gonature.waitinglist WHERE ( Date ='" + saveDate
+															+ "'  AND Time IN ('" + arrS[0] + "','" + arrS[1] + "','"
+															+ arrS[2] + "','" + arrS[3] + "','" + arrS[4] + "','"
+															+ arrS[5] + "','" + arrS[6] + "') AND DateOfEntrance = '"
+															+ arrOfAnswer.get(0).toString() + "' AND NumOfVisitors <="
+															+ (numOfVisitorsToCheck) + ")) AS MinDATE);");
+											break;
+										case 9:
+											arrOfAnswer = mysqlConnection.getDB(
+													"SELECT OrderNumber FROM gonature.waitinglist WHERE TimeOfEntrance = (SELECT MIN(MinDATE.TimeOfEntrance) FROM (SELECT TimeOfEntrance,OrderNumber, CAST(NumOfVisitors AS UNSIGNED) AS intNumOfVisitors FROM gonature.waitinglist"
+															+ " WHERE ( Date ='" + saveDate + "'  AND Time IN ('"
+															+ arrS[0] + "','" + arrS[1] + "','" + arrS[2] + "','"
+															+ arrS[3] + "','" + arrS[4] + "','" + arrS[5] + "','"
+															+ arrS[6] + "','" + arrS[7] + "','" + arrS[8]
+															+ "') AND DateOfEntrance = '"
+															+ arrOfAnswer.get(0).toString() + "' AND NumOfVisitors <="
+															+ (numberOfReplacementInWaitingList - numOfVisitorMoved)
+															+ ")) AS MinDATE);");
+											break;
+										case 11:
+											arrOfAnswer = mysqlConnection.getDB(
+													"SELECT OrderNumber FROM gonature.waitinglist WHERE TimeOfEntrance = (SELECT MIN(MinDATE.TimeOfEntrance) FROM (SELECT TimeOfEntrance,OrderNumber, CAST(NumOfVisitors AS UNSIGNED) AS intNumOfVisitors FROM gonature.waitinglist"
+															+ " WHERE ( Date ='" + saveDate + "'  AND Time IN ('"
+															+ arrS[0] + "','" + arrS[1] + "','" + arrS[2] + "','"
+															+ arrS[3] + "','" + arrS[4] + "','" + arrS[5] + "','"
+															+ arrS[6] + "','" + arrS[7] + "','" + arrS[8] + "','"
+															+ arrS[9] + "','" + arrS[10] + "') AND DateOfEntrance = '"
+															+ arrOfAnswer.get(0).toString() + "' AND NumOfVisitors <="
+															+ (numberOfReplacementInWaitingList - numOfVisitorMoved)
+															+ ")) AS MinDATE);");
+											break;
+										case 13:
+											arrOfAnswer = mysqlConnection.getDB(
+													"SELECT OrderNumber FROM gonature.waitinglist WHERE TimeOfEntrance = (SELECT MIN(MinDATE.TimeOfEntrance) FROM (SELECT TimeOfEntrance,OrderNumber, CAST(NumOfVisitors AS UNSIGNED) AS intNumOfVisitors FROM gonature.waitinglist"
+															+ " WHERE ( Date ='" + saveDate + "'  AND Time IN ('"
+															+ arrS[0] + "','" + arrS[1] + "','" + arrS[2] + "','"
+															+ arrS[3] + "','" + arrS[4] + "','" + arrS[5] + "','"
+															+ arrS[6] + "','" + arrS[7] + "','" + arrS[8] + "','"
+															+ arrS[9] + "','" + arrS[10] + "','" + arrS[11] + "','"
+															+ arrS[12] + "') AND DateOfEntrance = '"
+															+ arrOfAnswer.get(0).toString() + "' AND NumOfVisitors <="
+															+ (numberOfReplacementInWaitingList - numOfVisitorMoved)
+															+ ")) AS MinDATE);");
+											break;
+										case 15:
+											arrOfAnswer = mysqlConnection.getDB(
+													"SELECT OrderNumber FROM gonature.waitinglist WHERE TimeOfEntrance = (SELECT MIN(MinDATE.TimeOfEntrance) FROM (SELECT TimeOfEntrance,OrderNumber, CAST(NumOfVisitors AS UNSIGNED) AS intNumOfVisitors FROM gonature.waitinglist"
+															+ " WHERE ( Date ='" + saveDate + "'  AND Time IN ('"
+															+ arrS[0] + "','" + arrS[1] + "','" + arrS[2] + "','"
+															+ arrS[3] + "','" + arrS[4] + "','" + arrS[5] + "','"
+															+ arrS[6] + "','" + arrS[7] + "','" + arrS[8] + "','"
+															+ arrS[9] + "','" + arrS[10] + "','" + arrS[11] + "','"
+															+ arrS[12] + "','" + arrS[13] + "','" + arrS[14]
+															+ "') AND DateOfEntrance = '"
+															+ arrOfAnswer.get(0).toString() + "' AND NumOfVisitors <="
+															+ (numberOfReplacementInWaitingList - numOfVisitorMoved)
+															+ ")) AS MinDATE);");
+											break;
+										default:
+											System.out.println("ERROR");
+											arrOfAnswer = mysqlConnection.getDB(
+													"SELECT MIN(MinDATE.TimeOfEntrance), MinDATE.OrderNumber FROM ( SELECT TimeOfEntrance,OrderNumber FROM gonature.waitinglist WHERE (Date = '"
+															+ saveDate + "' AND Time = '" + saveTime
+															+ "' AND DateOfEntrance = '" + arrOfAnswer.get(0).toString()
+															+ "' ))  AS MinDATE;");
+											break;
+										}
+
+										if (arrOfAnswer.get(0) != null) {
+											arrOfAnswer = mysqlConnection
+													.getDB("SELECT * FROM gonature.waitinglist WHERE OrderNumber = '"
+															+ arrOfAnswer.get(0).toString() + "';");
+											if (!arrOfAnswer.isEmpty()) {
+												orderFromWaitingList.setParkName((String) arrOfAnswer.get(0));
+												orderFromWaitingList.setHour((String) arrOfAnswer.get(1));
+												orderFromWaitingList.setDate((String) arrOfAnswer.get(2));
+												orderFromWaitingList.setNumOfVisitors((String) arrOfAnswer.get(3));
+												orderFromWaitingList.setEmail((String) arrOfAnswer.get(4));
+												orderFromWaitingList.setOrderNumber((String) arrOfAnswer.get(5));
+												orderFromWaitingList.setNameOnOrder((String) arrOfAnswer.get(6));
+												orderFromWaitingList.setOrderKind((String) arrOfAnswer.get(7));
+												orderFromWaitingList.setID((String) arrOfAnswer.get(8));
+
+												WLOrder.setOrderNumber(orderFromWaitingList.getOrderNumber());
+												WLOrder.setNeedsToApprove("NeedsTo");
+												// query to update this WL order to be NeedsToApprove.
+												mysqlConnection.updateDB(
+														"UPDATE gonature.waitinglist SET NeedsToApprove = 'NeedsTo' WHERE OrderNumber = '"
+																+ WLOrder.getOrderNumber() + "';");
+
+												// send mail here
+												String toSend = "Hello dear " + orderFromWaitingList.getNameOnOrder()
+														+ ".<br>A room has became available for you! You need to approve your arrival by entering GoNature software and visiting the Existing Order section.<br>"
+														+ "The order details are:<br>Order Number: "
+														+ orderFromWaitingList.getOrderNumber() + "<br>Park: "
+														+ orderFromWaitingList.getParkName() + "<br>Date: "
+														+ orderFromWaitingList.getDate() + "<br>Time: "
+														+ orderFromWaitingList.getHour() + "<br>Amount of visitors: "
+														+ orderFromWaitingList.getNumOfVisitors();
+
+												new SendEmail(orderFromWaitingList.getEmail(), "GoNature Approve Order",
+														toSend);
+
+												// now we got all the details of the order we want to add from waiting
+												// list into
+												// orders table.
+												// before moving it to orders, we should wait 1 hour to let him approve
+												// that.
+
+												// i'm here - fix.
+
+												try {
+													Thread.sleep(3600000); // wait for a hour till the user in WL approves his
+													// transfer
+													// to orders
+													// now check if the current WL order was updated to be Approved in the
+													// right
+													// column.
+
+												} catch (InterruptedException e) {
+													// TODO Auto-generated catch block
+													e.printStackTrace();
+												}
+
+												arrOfAnswer = mysqlConnection.getDB(
+														"SELECT * FROM gonature.waitinglist WHERE OrderNumber = '"
+																+ orderFromWaitingList.getOrderNumber() + "';");
+												if (!arrOfAnswer.isEmpty()) {
+													String isItApproved = (String) arrOfAnswer.get(11);
+													if (isItApproved.equals("Approved")) {
+														WLOrder.setNeedsToApprove("Approved");
+													} else { // it wasn't updated.
+														myFlag = 1;
+													}
+												}
+											}
+
+											if (myFlag == 1) { // need to move the order to the next 1 in line, so only
+																// delete
+																// this waitinglist order.
+
+												String DeleteQuery2 = "DELETE FROM gonature.waitinglist WHERE (OrderNumber = '"
+														+ orderFromWaitingList.getOrderNumber() + "');";
+												ans = mysqlConnection.updateDB(DeleteQuery2); //// if was added then
+																								//// delete
+												if (ans) {
+													ServerController.instance
+															.displayMsg("Order was deleted from waiting list");
+													numOfVisitorMoved += substructIfWeFoundInWaitingList;
+													// if delete add the num of visitors that moved
+												} else {
+													ServerController.instance
+															.displayMsg("Order could not be deleted from waiting list");
+												}
+											} else { // (myFlag == 0) both delete the order from waiting list, as well
+														// as move
+														// it to the orders table.
+												ans = mysqlConnection.newDBOrderFromWaitingList(orderFromWaitingList);
+												if (ans) {
+													ServerController.instance
+															.displayMsg("Order from waiting list was added");
+													String DeleteQuery2 = "DELETE FROM gonature.waitinglist WHERE (OrderNumber = '"
+															+ orderFromWaitingList.getOrderNumber() + "');";
+													ans = mysqlConnection.updateDB(DeleteQuery2); //// if was added then
+																									//// delete
+													if (ans) {
+														ServerController.instance
+																.displayMsg("Order was deleted from waiting list");
+														numOfVisitorMoved += substructIfWeFoundInWaitingList;
+														// if delete add the num of visitors that moved
+													} else {
+														ServerController.instance.displayMsg(
+																"Order could not be deleted from waiting list");
+													}
+												} else {
+													ServerController.instance
+															.displayMsg("Order from waiting list couldn't be added");
+													// Query to delete the order from waitinglist table that was moved
+													// to
+													// the
+													// orders
+													// table
+
+												}
+											}
+										}
+									}
 								}
+							}
+
+						} else {
+							ServerController.instance.displayMsg("Order could not be deleted");
+
 						}
+
+					} else
+
+					{
+						ServerController.instance.displayMsg("Deleted order couldn't be moved to deletedOrder table");
+					}
+					myFlag = 0;
+				}
+
+				public void deleteInstanceOrder(Object object) {
+					Order ordToBeDeleted = (Order) object;
+					innerClassOrder = ordToBeDeleted;
+					Thread t = new Thread(this);
+					t.start();
+				}
+
+			}
+
+			if (object instanceof Order) { // delete an order from Orders, check if there's an order in waiting list
+				// good
+// to advance to
+//orders, move it to orders, delete the order that was moved from waiting list
+//table.
+				myInnerClass deleteClass = new myInnerClass();
+				deleteClass.deleteInstanceOrder(object);
+			}
+			break;
+
+		case APPROVED: // order was approved a day before the arrival day.
+			if (object instanceof String) {
+				String orderNumberApproved = (String) object;
+				boolean ans = mysqlConnection.updateDB("UPDATE gonature.orders SET Approved = 'true' WHERE "
+						+ "OrderNumber = '" + orderNumberApproved + "';");
+				returnData = new DataTransfer(TypeOfMessageReturn.APPROVED_RETURN, null);
+				try {
+					client.sendToClient(returnData);
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+			break;
+
+		case APPROVED_WL: // The waitingList order was approved before a hour had passed since a place
+							// became available
+			// update the table column needstoapprove to be approved.
+			if (object instanceof WaitingList) {
+				WaitingList orderWL = (WaitingList) object;
+				mysqlConnection
+						.updateDB("UPDATE gonature.waitinglist SET NeedsToApprove = 'Approved' WHERE OrderNumber = '"
+								+ orderWL.getOrderNumber() + "';");
+			} // now we can go back above. (WORKS!!)
+			break;
+
+		case INSERTINFO:
+			if (object instanceof Subscriber) {
+				Subscriber newSubscriber = (Subscriber) object;
+
+				arrOfAnswer = mysqlConnection.getDB("SELECT COUNT(*)+11111 FROM `gonature`.`subscriber`");
+				String subscriberNumber = "S" + arrOfAnswer.get(0).toString();
+				boolean subAdded = mysqlConnection.updateDB(
+						"INSERT INTO `gonature`.`subscriber` (`ID`, `FirstName`, `LastName`, `Email`, `Telephone`, `AmountOfFamilyMembers`, `CreditCard`, `subscriberNumber`) "
+								+ "VALUES ('" + newSubscriber.getId() + "', '" + newSubscriber.getFname() + "', '"
+								+ newSubscriber.getLname() + "'," + " '" + newSubscriber.getEmail() + "', '"
+								+ newSubscriber.getTeln() + "', '" + newSubscriber.getAmountOfFamilyMember() + "',"
+								+ " '" + newSubscriber.getCreditCard() + "', '" + subscriberNumber + "');");
+				if (subAdded) {
+					new SendEmail(newSubscriber.getEmail(),
+							"Welcome " + newSubscriber.getFname() + " " + newSubscriber.getLname(),
+							"Your subscription number: " + subscriberNumber + "\n" + "Your ID : "
+									+ newSubscriber.getId() + "\n" + "Amount of family members: "
+									+ newSubscriber.getAmountOfFamilyMember() + "\n"
+									+ "The subscription is free, you can now enter and place an order.\n"
+									+ "Enjoy the discounts :)");
+					newSubscriber.setSubscriberNumber(subscriberNumber);
+					returnData = new DataTransfer(TypeOfMessageReturn.UPDATE_SUCCESS, newSubscriber);
+					try {
+						client.sendToClient(returnData);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+
+			}
+			if (object instanceof TourGuide) {
+				TourGuide newTourGuide = (TourGuide) object;
+				boolean tourAdded = mysqlConnection.updateDB(
+						"INSERT INTO `gonature`.`tourguides` (`Name`, `LastName`, `ID`, `Email`, `PhoneNumber`) "
+								+ "VALUES ('" + newTourGuide.getFname() + "', '" + newTourGuide.getLname() + "', '"
+								+ newTourGuide.getId() + "'," + " '" + newTourGuide.getEmail() + "', '"
+								+ newTourGuide.getTeln() + "');");
+				if (tourAdded) {
+					new SendEmail(newTourGuide.getEmail(),
+							"Welcome " + newTourGuide.getFname() + " " + newTourGuide.getLname(),
+							"You are now part of GoNature Family!\n" + "Your ID : " + newTourGuide.getId() + "\n"
+									+ "You can now enter and place an order.\n" + "Enjoy the discounts :)");
+					returnData = new DataTransfer(TypeOfMessageReturn.UPDATE_SUCCESS, newTourGuide);
+					try {
+						client.sendToClient(returnData);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
 					}
 				}
 			}
 			break;
+			
 		case UPDATEINFO:
-			if (object instanceof Order) {
+			if (object instanceof Order) { // Handle a query to update something related to an order in the DB.
 				Order ord = (Order) object;
 				String UpdateQuery = "UPDATE gonature.orders SET Park = '" + ord.getParkName() + "'," + " Time= '"
 						+ ord.getHour() + "'," + " Date = '" + ord.getDate() + "'," + " NumOfVisitors = '"
@@ -691,7 +1051,9 @@ public class EchoServer extends AbstractServer {
 					ServerController.instance.displayMsg("Discount UPDATEINFO_REQUEST details could not be updated");
 
 			}
-			if (object instanceof Order) {
+			if (object instanceof Order) { // if the object is of type Order, update the table orders, and change the
+				// totalPrice according
+// to the new price we received from object.
 				Order ord = (Order) object;
 				String UpdateQuery = "UPDATE gonature.orders SET totalPrice = '" + ord.getTotalPrice()
 						+ "' WHERE OrderNumber = '" + ord.getOrderNumber() + "';";

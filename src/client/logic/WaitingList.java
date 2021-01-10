@@ -12,19 +12,28 @@ public class WaitingList implements Serializable {
 	private String email;
 	private String orderNumber;
 	private String nameOnOrder;
+	private String orderKind;
 	private String ID;
 	private String timeOfEntrance;
 	private String dateOfEntrance;
+<<<<<<< HEAD
     private String orderKind;
     private String needsToApprove;
 
 	
 
+=======
+	private String needsToApprove;
+>>>>>>> refs/heads/GadyUpdated
 	
 
 
 	public WaitingList(String parkName, String time, String date, String numOfVisitors, String email,
+<<<<<<< HEAD
 			String orderNumber, String nameOnOrder, String iD, String timeofenterence, String dateofentrance, String orderKind, String needsToApprove) {
+=======
+			String orderNumber, String nameOnOrder, String orderKind, String iD, String timeofenterence, String dateofentrance, String needsToApprove) {
+>>>>>>> refs/heads/GadyUpdated
 		this.parkName = parkName;
 		this.time = time;
 		this.date = date;
@@ -32,11 +41,32 @@ public class WaitingList implements Serializable {
 		this.email = email;
 		this.orderNumber = orderNumber;
 		this.nameOnOrder = nameOnOrder;
+		this.orderKind=orderKind;
 		this.ID = iD;
 		this.timeOfEntrance= timeofenterence;
 		this.dateOfEntrance=dateofentrance;
+<<<<<<< HEAD
 		this.orderKind=orderKind;
 		this.needsToApprove=needsToApprove;
+=======
+		this.needsToApprove=needsToApprove;
+	}
+
+	public String getNeedsToApprove() {
+		return needsToApprove;
+	}
+
+	public void setNeedsToApprove(String needsToApprove) {
+		this.needsToApprove = needsToApprove;
+	}
+
+	public String getOrderKind() {
+		return orderKind;
+	}
+
+	public void setOrderKind(String orderKind) {
+		this.orderKind = orderKind;
+>>>>>>> refs/heads/GadyUpdated
 	}
 
 	public String getParkName() {

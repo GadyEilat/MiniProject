@@ -117,7 +117,8 @@ public class OrderManagementController extends AbstractScenes {
 		LocalTime timeNow = LocalTime.now();
 		LocalTime time8 = LocalTime.MIDNIGHT.plusHours(8);
 		LocalTime time10 = LocalTime.MIDNIGHT.plusHours(10);
-		//LocalTime time23 = LocalTime.MIDNIGHT.plusHours(23);
+		//LocalTime time23 = LocalTime.MIDNIGHT.plusHours(23); //for testing
+		//LocalTime time1 = LocalTime.MIDNIGHT.plusHours(1); //for testing
 		if (!ordDate.isEqual(tomorrow)) {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setHeaderText(null);
