@@ -471,7 +471,7 @@ public class mysqlConnection {
 			String orderKind = updOrder.getOrderKind();
 			String waitingTime=updOrder.getTimeOfEntrance();
 			String dateEntrance=updOrder.getDateOfEntrance();
-			String upApprove = updOrder.getNeedsToApprove();
+			String upApprove = "false";
 			if (conn != null) {
 				try {
 					
