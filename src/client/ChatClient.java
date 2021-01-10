@@ -92,12 +92,31 @@ public class ChatClient extends AbstractClient {
 			}
 
 			break;
+
+		/**
+		 * LOGIN_FAILED_CONNECTED case. This case is responsible for an incorrect login
+		 * message.
+		 */
+
 		case LOGIN_FAILED_CONNECTED:
 			if (object instanceof Worker) {
 				WorkerLogin.instance.alreadyConnected();
 			}
+
 			break;
+
+		/**
+		 * LOGIN_SUCCESSFUL case. This case is responsible for a successful login
+		 * message.
+		 */
+
 		case LOGIN_SUCCESSFUL:
+
+			/**
+			 * If the object is a Worker type, It checks whether the employee has been able
+			 * to connect to his user
+			 */
+
 			if (object instanceof Worker) {
 				worker = (Worker) object;
 				connected = true;
@@ -118,7 +137,7 @@ public class ChatClient extends AbstractClient {
 		case APPROVED_RETURN: // display in orderManagement that the order was approved.
 			OrderManagementController.instance.approvedReturn();
 			break;
-		case UPDATE_FAILED: //go back to change order details and show that the update failed.
+		case UPDATE_FAILED: // go back to change order details and show that the update failed.
 			if (object instanceof Order) {
 				ChangeOrderDetailsController.instance.notUpdated();
 			}
@@ -128,11 +147,11 @@ public class ChatClient extends AbstractClient {
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}////////////// already approved date of discount can not change
+				} ////////////// already approved date of discount can not change
 			}
 			break;
 		case UPDATE_SUCCESS:
-			if (object instanceof Order) { //go back to change order details and show that the update succeeded
+			if (object instanceof Order) { // go back to change order details and show that the update succeeded
 				ChangeOrderDetailsController.instance.updated();
 			}
 
@@ -152,14 +171,15 @@ public class ChatClient extends AbstractClient {
 				}
 
 			}
-			
+
 			if (object instanceof ArrayList<?>) {
 				try {
-					ManagerDiscountController.instance.showWaitTOApprovePopOut();;
+					ManagerDiscountController.instance.showWaitTOApprovePopOut();
+					;
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}////////////// already approved date of discount can not change
+				} ////////////// already approved date of discount can not change
 			}
 			if (object instanceof TourGuide) {
 				try {
@@ -169,22 +189,21 @@ public class ChatClient extends AbstractClient {
 					e.printStackTrace();
 				}
 			}
-			if(object instanceof ParkInfo) {
-				parkInfo = (ParkInfo)object;
+			if (object instanceof ParkInfo) {
+				parkInfo = (ParkInfo) object;
 				if (parkInfo.getRole().equals("Manager")) {
 					ManagerController.instance.updateNumberOfVisitorAndSub();
-				}
-				else if (parkInfo.getRole().equals("Department Manager")) {
+				} else if (parkInfo.getRole().equals("Department Manager")) {
 					DepartmantManagerController.instance.updateNumberOfVisitor();
 				}
 			}
 			break;
 
-		case RETURN_ORDER_FAILED: //if we couldn't receive the order back from the server
+		case RETURN_ORDER_FAILED: // if we couldn't receive the order back from the server
 			System.out.println("Couldn't recieve details from DB");
 			break;
 		case RETURN_ORDER:
-			if (object instanceof Order) { //Update the ExistingOrderController
+			if (object instanceof Order) { // Update the ExistingOrderController
 				if (object != null) {
 					System.out.println("--> handleMessageFromServer");
 					waitForConnection = false;
@@ -202,7 +221,7 @@ public class ChatClient extends AbstractClient {
 			}
 			break;
 
-		case IS_SUBSCRIBER: //if the checked order was a subscriber
+		case IS_SUBSCRIBER: // if the checked order was a subscriber
 			if (object instanceof Boolean) { // came from OrderManagementController
 				Boolean isIt = (Boolean) object;
 				if (isIt == true) {
@@ -215,7 +234,7 @@ public class ChatClient extends AbstractClient {
 
 			break;
 
-		case IS_GUIDE: //if the checked order was a guide
+		case IS_GUIDE: // if the checked order was a guide
 			if (object instanceof Boolean) {
 				Boolean isIt = (Boolean) object;
 				if (isIt == true) {
@@ -227,7 +246,7 @@ public class ChatClient extends AbstractClient {
 			}
 			break;
 
-		case IS_REGULAR: //if the checked order was regular
+		case IS_REGULAR: // if the checked order was regular
 			if (object instanceof Boolean) {
 				Boolean isIt = (Boolean) object;
 				if (isIt == true) {
@@ -321,8 +340,8 @@ public class ChatClient extends AbstractClient {
 
 		/**
 		 * This case is responsible for checking the correctness and availability of the
-		 * order, if there is no place in the park for the
-		 * visitor, a failed message is printed
+		 * order, if there is no place in the park for the visitor, a failed message is
+		 * printed
 		 */
 
 		case SUB_NEW_ORDER_FAILED:
@@ -398,6 +417,11 @@ public class ChatClient extends AbstractClient {
 			if (object instanceof Subscriber) {
 				subscriber = (Subscriber) object;
 			}
+
+			/**
+			 * If the object is a ParkInfo type, it saves the ParkInfo data.
+			 */
+
 			if (object instanceof ParkInfo) {
 				parkInfo = (ParkInfo) object;
 				if (parkInfo.getRole().equals("Manager")) {
@@ -408,12 +432,23 @@ public class ChatClient extends AbstractClient {
 					DepartmantManagerApproveController.instance.loadData();
 				}
 			}
+
+			/**
+			 * If the object is a ReportsData type, it saves the data of the report.
+			 */
+
 			if (object instanceof ReportsData) {
 				reportsData = (ReportsData) object;
 				DepartmantManagerReportController.instance.anableReportsButtons();
 			}
-			
+
 			break;
+
+		/**
+		 * REQUESTINFO_FAILED case. This case is responsible for displaying an error
+		 * message in saving the data from the database
+		 */
+
 		case REQUESTINFO_FAILED:
 			if (object instanceof ParkInfo) {
 				parkInfo = (ParkInfo) object;

@@ -1,6 +1,5 @@
 package client.controller;
 
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -37,6 +36,13 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.text.Text;
 import javafx.scene.transform.Scale;
 
+/**
+ * CacnellationReport class. The class implements Serializable which transmits
+ * the information from the client to the server. The class is responsible for
+ * presenting the cancellation report.
+ * 
+ * @author Liran Amilov
+ */
 
 public class CacnellationReport implements Initializable {
 
@@ -68,14 +74,25 @@ public class CacnellationReport implements Initializable {
 	int subNumNotArrived;
 	int guideNumNotArrived;
 
-	public static void printCurrWindow(Window myWindow) {
-		print(myWindow, myWindow.getScene().getRoot().snapshot(null, null));
-	}
+	/**
+	 * printCancelReport method. This method is an auxiliary function for the
+	 * process of printing the cancellation report.
+	 * 
+	 * @param event
+	 */
 
 	@FXML
 	void printCancelReport(ActionEvent event) {
-		printCurrWindow(printReport.getScene().getWindow());
+		print(printReport.getScene().getWindow(),
+				printReport.getScene().getWindow().getScene().getRoot().snapshot(null, null));
 	}
+
+	/**
+	 * print method. This method is responsible for printing the report.
+	 * 
+	 * @param myWindow
+	 * @param screenshot
+	 */
 
 	private static void print(Window myWindow, WritableImage screenshot) {
 		PrinterJob job = PrinterJob.createPrinterJob();
@@ -96,7 +113,14 @@ public class CacnellationReport implements Initializable {
 		}
 	}
 
-
+	/**
+	 * initialize method. This method is responsible for defining variables by
+	 * communicating with the server, is responsible for report visibility (caption
+	 * and titles) and on-screen functionality.
+	 * 
+	 * @param location
+	 * @param resources
+	 */
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void initialize(URL location, ResourceBundle resources) {
