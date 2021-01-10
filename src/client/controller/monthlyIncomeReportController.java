@@ -21,6 +21,13 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 
+/**
+ * monthlyIncomeReportController class
+ * @author Aviv Kamary
+ * This controller is responsible for the Monthly Report screen to the Park Manager.
+ * The controller expands the AbstractScenes class that replaces the scenes within the main stage. 
+ * It is possible to return back to the manager park reports screen.
+ */
 public class monthlyIncomeReportController extends AbstractScenes {
 	public static monthlyIncomeReportController monthlyIncome;
 	private String mChoosen;
@@ -56,14 +63,25 @@ public class monthlyIncomeReportController extends AbstractScenes {
     private ComboBox<String> selectMonth;
     @FXML
     private Text requestedMonth;
-    ObservableList<String> list, list2, list3;
+    ObservableList<String> list;
     public static monthlyIncomeReportController instance;
-    @FXML
     
+    /**
+	 * GoBack method
+	 * @param event
+	 * In this method you can return to the manager report screen.
+	 */
+    @FXML
     void GoBack(ActionEvent event) {
-    	switchScenes("/client/boundaries/reportManager.fxml", "New waiting list");
+    	switchScenes("/client/boundaries/reportManager.fxml", "Park Manager");
     }
 
+    /**
+	 * getReport method
+	 * @param event
+	 * This method gets the date chosen and taking for the park selected of the park manager and then sends it to the server
+	 * for taking the values from the database
+	 */
     @FXML
     void getReport(ActionEvent event) {
     	mChoosen=selectMonth.getValue();
@@ -74,6 +92,11 @@ public class monthlyIncomeReportController extends AbstractScenes {
     	ClientUI.chat.accept(data);
     }
 
+    /**
+	 * setMonthComboBox method
+	 * @param object
+	 * This method received all the data sent from the server and then display the Usage Chart to the screen
+	 */
     private void setMonthComboBox() {
 		ArrayList<String> al = new ArrayList<String>();
 		al.add("2021-01");
@@ -94,11 +117,24 @@ public class monthlyIncomeReportController extends AbstractScenes {
 		selectMonth.setItems(list);
 	}
 
-    
+    /**
+     * printReport method
+     * @param income
+     * This method receive the monthly income and display it on the screen
+     */
     public void printReport(double income) {
     	requestedMonth.setText(String.valueOf(income));
     }
     
+    /**
+	 * initialize method
+	 * @param location
+	 * @param resources
+	 * This method is responsible for defining variables by communicating with the server, 
+	 * is responsible for screen visibility (caption and titles) and on-screen functionality.
+	 * This method holding the usageReport instance
+	 * Also, this method setting the combo box and display it in the screen.
+	 */
     @Override
     public void initialize(URL location, ResourceBundle resources){
     	instance = this;

@@ -28,7 +28,13 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-
+	/**
+	 * RegularTravelerController class
+	 * @author Aviv Kamary
+	 * This controller is responsible for the Regular Traveler order screen to create a new order.
+	 * The controller expands the AbstractScenes class that replaces the scenes within the main stage. 
+	 * It is possible to return back to the kind of travelers screen.
+	 */
 public class RegularTravelerController extends AbstractScenes {
 	public String ID=null;
 	@FXML
@@ -55,12 +61,16 @@ public class RegularTravelerController extends AbstractScenes {
 	}
 
 	public void isFound() {
-		// switchScenes("/client/boundaries/TravelerNewOrder.fxml", "");
 	}
 
 	public static RegularTravelerController instance;
-	public Object gID = "4";
 
+	/**
+	 * NextTravelerID method
+	 * @param event
+	 * This method taking the ID the user entered in the screen to save it in the database.
+	 * This method also checks if it's a valid ID between 0-9.
+	 */
 	@FXML
 	void NextTravelerID(ActionEvent event) {
 		String guideID = TravelerID.getText();
@@ -73,12 +83,24 @@ public class RegularTravelerController extends AbstractScenes {
 			errorLogin.setText("You must enter a valid ID number");
 		}
 	}
-
+	/**
+	 * backButton method
+	 * @param event
+	 * In this method you can return back to the kind of travelers screen to choose another kind of entrance.
+	 */
 	@FXML
 	void backButton(ActionEvent event) {
 		switchScenes("/client/boundaries/Travelers.fxml", "Traveler");
 	}
-
+	/**
+	 * initialize method
+	 * @param location
+	 * @param resources
+	 * This method is responsible for defining variables by communicating with the server, 
+	 * is responsible for screen visibility (caption and titles) and on-screen functionality.
+	 * This method taking the RegularTraveler instance the user entered the screen.
+	
+	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		instance = this;

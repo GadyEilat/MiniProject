@@ -34,6 +34,7 @@ import client.controller.parkEnterenceController3;
 import client.controller.subscriberNewOrderController;
 
 import client.controller.totalVisitorsAmountController;
+import client.controller.usageReportController;
 import client.logic.TourGuide;
 import client.logic.TourGuideOrder;
 import client.logic.Visitor;
@@ -241,7 +242,10 @@ public class ChatClient extends AbstractClient {
 				ChangeOrderDetailsController.instance.isOther();
 			}
 			break;
-
+			/**
+			 * NEWORDER_SUCCESS This case sends an order to the controller
+			 * 
+			 */
 		case NEWORDER_SUCCESS:
 			if (object instanceof Order) {
 
@@ -259,8 +263,6 @@ public class ChatClient extends AbstractClient {
 		case TOUR_DETAILS:
 			if (object instanceof TourGuide) {
 				System.out.println("--> handleMessageFromServer");
-				// System.out.println("--> HELLLLOOOOO");
-				// waitForConnection = false;
 				this.tourguide = (TourGuide) object;
 				TourGuideLoginController.instance.isFound();
 
@@ -281,8 +283,6 @@ public class ChatClient extends AbstractClient {
 			if (object instanceof TourGuideOrder) {
 				System.out.println("--> handleMessageFromServer");
 				waitForConnection = false;
-				// ObservableList <TourGuideOrder> oblistt=FXCollections.observableArrayList();
-				// oblist=(ObservableList <TourGuideOrder>)msg;
 				System.out.print(object.toString());
 				MyOrdersGuideController.instance.getLine((TourGuideOrder) object);
 			}
@@ -297,10 +297,12 @@ public class ChatClient extends AbstractClient {
 				visMax = (maxVis) object;
 				System.out.print(visMax.toString());
 				TourGuideNewOrderController.instance.checkDate2(visMax);
-				// TourGuideNewOrderController.instance.checkDate(null, visMax);
 			}
 			break;
-
+			/**
+			 * NEW_ORDERMAXVISCHECK This case sends the returned checks if there is
+			 * open spot in the park and sends it to the controller.
+			 */
 		case NEW_ORDERMAXVISCHECK:
 			if (object instanceof maxVis) {
 				visMax = (maxVis) object;
@@ -418,12 +420,28 @@ public class ChatClient extends AbstractClient {
 			
 			break;
 			
+			/**
+			 * USAGEREPORT This case sends the usage income per month in the park to the controller.
+			 * 
+			 */
+		case USAGEREPORT:
+			if(object instanceof ArrayList<?>) {
+				usageReportController.instance.setTimesUsage(object);
+			}
+			break;
+			/**
+			 * MONTHLYINCOME This case sends the monthly income per month in the park to the controller.
+			 * 
+			 */
 		case MONTHLYINCOME:
 			if(object instanceof Double) {
 				monthlyIncomeReportController.instance.printReport((Double)object);	
 			}
 			break;
-			
+			/**
+			 * VISITORS_AMOUNT This case sends the amount of visitors in the park to the controller.
+			 * 
+			 */
 		case VISITORS_AMOUNT:
 			if(object instanceof ArrayList<?>) {
 				ArrayList<Integer> sum=(ArrayList<Integer>)object;

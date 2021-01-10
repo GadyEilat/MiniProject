@@ -44,8 +44,8 @@ public class mysqlConnection {
 
 
 //			conn = DriverManager.getConnection("jdbc:mysql://localhost/gonature?serverTimezone=IST", "root","ha89kha89k");
-			conn = DriverManager.getConnection("jdbc:mysql://localhost/gonature?serverTimezone=IST", "root","Liran159357!");
-//			conn = DriverManager.getConnection("jdbc:mysql://localhost/gonature?serverTimezone=IST", "root","Aa123456");
+//			conn = DriverManager.getConnection("jdbc:mysql://localhost/gonature?serverTimezone=IST", "root","Liran159357!");
+			conn = DriverManager.getConnection("jdbc:mysql://localhost/gonature?serverTimezone=IST", "root","Aa123456");
 //			conn = DriverManager.getConnection("jdbc:mysql://localhost/gonature?serverTimezone=IST", "root","DA123456");
 
 
@@ -827,6 +827,27 @@ public class mysqlConnection {
 		
 		
 		return null;
+	}
+
+	public static boolean updateMaxPark(String t, String dateNow, String timeNow) {
+try {
+			
+			String sql = "INSERT INTO gonature.maxpark (Park,Time, Date)" + " values ( ?, ?, ?)";
+			PreparedStatement preparedStmt = conn.prepareStatement(sql);
+		      preparedStmt.setString (1, t);
+		      preparedStmt.setString (2, timeNow);
+		      preparedStmt.setString (3, dateNow);
+		    
+		      preparedStmt.execute();
+			
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		
+		return false;
+		
 	}
 
 }

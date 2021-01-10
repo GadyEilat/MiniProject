@@ -1239,6 +1239,10 @@ public class EchoServer extends AbstractServer {
 			}
 
 			break;
+			/**
+			 * Description of NEW_ORDERWAITINGLIST This case gets all the order details that
+			 * the user inserted and sends it to database to add the details.
+			 */
 		case NEW_ORDERWAITINGLIST:
 			if (object instanceof WaitingList) {
 				boolean ans2 = mysqlConnection.updateWaitingListNewOrder(object);
@@ -1459,17 +1463,37 @@ public class EchoServer extends AbstractServer {
 				ParkStatus status = (ParkStatus) object;
 				String t = status.getPark();
 				int x = Integer.valueOf(status.getAmount());
-				// String query ="UPDATE parksstatus SET "+t+"="+t+"+ "+x+" WHERE
-				// DATE='"+status.getDate()+"';";
 				String query = "UPDATE parksstatuss SET " + t + "=" + t + "+ " + x + ";";
 				boolean ans2 = mysqlConnection.updateDB(query);
 				if (ans2)
 					ServerController.instance.displayMsg("Park Status details updated");
 				else
 					ServerController.instance.displayMsg("Park Statust details could not be updated");
-			}
+				String sql1 = "SELECT " + t +  " FROM gonature.parksstatuss;";
+				arrOfAnswer=mysqlConnection.getDB(sql1);
+				String amount=(String) arrOfAnswer.get(0);
+				String sql2= "select * from manageparks WHERE numberOfPark='" + status.getPark() + "';";
+				arrOfAnswer=mysqlConnection.getDB(sql2);
+				String maxAmount=(String)arrOfAnswer.get(1);
+				if(amount.equals(maxAmount)) {
+					DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+				    LocalDateTime now = LocalDateTime.now();
+				    String dateNow=dtf.format(now);			//The Date
+				    String appendSt=":00";
+				   
+				    DateTimeFormatter dtf1 = DateTimeFormatter.ofPattern("HH");
+				    LocalDateTime now1 = LocalDateTime.now();
+				    String timeNow=dtf1.format(now1);			//The Time
+				    String newTime=timeNow.concat(appendSt);
+				    boolean ans=mysqlConnection.updateMaxPark(t,dateNow,newTime);
+				    
 
+				}
+			}
 			break;
+			
+			
+			
 		/**
 		 * Description of PARTKENTERGETSTATUS This case gets updates the park status. it
 		 * updates the number of visitors inside the park according to the details it
@@ -1597,6 +1621,11 @@ public class EchoServer extends AbstractServer {
 
 			break;
 
+			/**
+			 * GET_INVITATIONS This case gets monthly income of the specified park and then
+			 * display it.
+			 * 
+			 */
 		case GET_INVITATIONS:
 			if(object instanceof ArrayList<?>) {
 				ArrayList<String> send=(ArrayList<String>)object;
@@ -1620,6 +1649,30 @@ public class EchoServer extends AbstractServer {
 			}	
 			break;
 			
+			/**
+			 * USAGEREPORT This case sends the usage income per month and display it.
+			 * 
+			 */
+		case GET_USAGEREPORT:
+			if(object instanceof ArrayList<?>) {
+				ArrayList<String> send=(ArrayList<String>)object;
+				String monthChosen=send.get(0);
+				String parkChosen=send.get(1);
+				String sql= "SELECT * FROM gonature.maxpark WHERE Date LIKE '" + monthChosen + "%' AND Park = '" + parkChosen + "' ;";
+				arrOfAnswer=mysqlConnection.getDB(sql);
+				try {
+					returnData = new DataTransfer(TypeOfMessageReturn.USAGEREPORT, arrOfAnswer);
+					client.sendToClient(returnData);
+				} catch (IOException e) {
+					
+					e.printStackTrace();
+				}	
+			}
+			break;
+			/**
+			 * VISITORS_AMOUNT This case sends the amount of visitors and display it.
+			 * 
+			 */
 		case GET_TOTALVISITORSREPORT:
 			if(object instanceof ArrayList<?>) {
 				ArrayList<String> send=(ArrayList<String>)object;

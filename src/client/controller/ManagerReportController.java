@@ -79,7 +79,7 @@ public class ManagerReportController extends AbstractScenes {
 
 	@FXML
 	void makeReportNumOfVisitors(ActionEvent event) {
-
+		switchScenes("/client/boundaries/MonthlyIncomeReport.fxml", "Manager");
 	}
 
 	/**
@@ -101,7 +101,7 @@ public class ManagerReportController extends AbstractScenes {
     	
 	@FXML
 	void makeReportUsage(ActionEvent event) {
-		switchScenes("/client/boundaries/MonthlyIncomeReport.fxml", "Manager");
+		switchScenes("/client/boundaries/UsageReport.fxml", "Manager");
 	}
 
 	/**
