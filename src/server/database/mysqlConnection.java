@@ -43,9 +43,9 @@ public class mysqlConnection {
 		try {
 
 
-			conn = DriverManager.getConnection("jdbc:mysql://localhost/gonature?serverTimezone=IST", "root","ha89kha89k");
+//			conn = DriverManager.getConnection("jdbc:mysql://localhost/gonature?serverTimezone=IST", "root","ha89kha89k");
 //			conn = DriverManager.getConnection("jdbc:mysql://localhost/gonature?serverTimezone=IST", "root","Liran159357!");
-//			conn = DriverManager.getConnection("jdbc:mysql://localhost/gonature?serverTimezone=IST", "root","Aa123456");
+			conn = DriverManager.getConnection("jdbc:mysql://localhost/gonature?serverTimezone=IST", "root","Aa123456");
 //			conn = DriverManager.getConnection("jdbc:mysql://localhost/gonature?serverTimezone=IST", "root","DA123456");
 
 
@@ -162,7 +162,7 @@ public class mysqlConnection {
 			String totalPrice = order.getTotalPrice();
 			String prePaid = order.getPrePaid();
 			String orderKind = order.getOrderKind();
-			String approved = order.getApproved();
+			String approved = "false";
 			order.setOrderNumber(upOrderNum);
 
 			if (conn != null) {
@@ -323,6 +323,7 @@ public class mysqlConnection {
 						ordInDB.setID(rs.getString(9));
 						ordInDB.setTotalPrice(rs.getString(10));
 						ordInDB.setPrePaid(rs.getString(11));
+						ordInDB.setApproved(rs.getString(12));
 						answer.add(ordInDB);
 					}
 					//conn.close();
@@ -417,13 +418,14 @@ public class mysqlConnection {
 			String tourID = updGuide.getID();
 			String waitingTime = updGuide.getTimeOfEntrance();
 			String waitingDate = updGuide.getDateOfEntrance();
+			String upApprove = updGuide.getNeedsToApprove();
 			// string upOrderNumber=
 			// String updID=updGuide.getId();
 			if (conn != null) {
 				try {
 
-					String query = " insert into waitinglist (Park, Date, Time, NumOfVisitors, Email,OrderKind,orderNumber,NameOnOrder,ID,TimeOfEntrance,DateOfEntrance )"
-							+ " values (?, ?, ?, ?, ?, ?, ?, ?, ?,?,?)";
+					String query = " insert into waitinglist (Park, Date, Time, NumOfVisitors, Email,OrderKind,orderNumber,NameOnOrder,ID,TimeOfEntrance,DateOfEntrance, NeedsToApprove )"
+							+ " values (?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?)";
 
 					PreparedStatement preparedStmt = conn.prepareStatement(query);
 					preparedStmt.setString(1, upPark);
@@ -437,6 +439,7 @@ public class mysqlConnection {
 					preparedStmt.setString(9, tourID);
 					preparedStmt.setString (10, waitingTime);
 				    preparedStmt.setString (11, waitingDate);
+				    preparedStmt.setString (12, upApprove);
 					preparedStmt.execute();
 
 					return true;
@@ -468,10 +471,11 @@ public class mysqlConnection {
 			String orderKind = updOrder.getOrderKind();
 			String waitingTime=updOrder.getTimeOfEntrance();
 			String dateEntrance=updOrder.getDateOfEntrance();
+			String upApprove = updOrder.getNeedsToApprove();
 			if (conn != null) {
 				try {
 					
-					String query = " insert into waitinglist (Park, Time, Date, NumOfVisitors, Email,orderNumber,NameOnOrder,OrderKind,ID,TimeOfEntrance, DateOfEntrance )"+ " values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+					String query = " insert into waitinglist (Park, Time, Date, NumOfVisitors, Email,orderNumber,NameOnOrder,OrderKind,ID,TimeOfEntrance, DateOfEntrance, NeedsToApprove )"+ " values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
 					        
 					PreparedStatement preparedStmt = conn.prepareStatement(query);
 				      preparedStmt.setString (1, upPark);
@@ -485,6 +489,7 @@ public class mysqlConnection {
 				      preparedStmt.setString (9, travID);
 				      preparedStmt.setString (10, dateEntrance);
 				      preparedStmt.setString (11, waitingTime);
+				      preparedStmt.setString (12, upApprove);
 				      preparedStmt.execute();
 				      
 				     // conn.close();
@@ -540,7 +545,7 @@ public class mysqlConnection {
 			String upTime=updGuide.getTime();
 			String upNumOfVisitors=updGuide.getNumOfVisitors();
 			String nameOnOrder=updGuide.getNameOnOrder();
-			String upOrderNum= generateRandomChars("123456789", 5);
+			String upOrderNum= updGuide.getOrderNumber();
 			String tourID=updGuide.getID();
 			String isPrepaid=updGuide.getPrePaid();
 			String tourPayment=updGuide.getPayment();
@@ -623,15 +628,6 @@ public class mysqlConnection {
 				Order newS = new Order(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(5),
 						rs.getString(6), rs.getString(4), rs.getString(7), rs.getString(9));
 
-//				newT.setParkName(rs.getString(1));
-//				newT.setHour(rs.getString(2));
-//				newT.setDate(rs.getString(3));
-//				newT.setEmail(rs.getString(4));
-//				newT.setOrderNumber(rs.getString(5));
-//				newT.setNumOfVisitors(rs.getString(6));
-//				newT.setNameOnOrder(rs.getString(7));
-//				newT.setID(rs.getString(8));
-
 				oblist.add(newS);
 
 			}
@@ -639,7 +635,6 @@ public class mysqlConnection {
 			return oblist;
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -655,8 +650,6 @@ public class mysqlConnection {
 		ObservableList<Object> oblist = FXCollections.observableArrayList();
 		String TourID = (String) msg;
 		try {
-			// ResultSet rs= conn.createStatement().executeQuery("select * from orders WHERE
-			// NameOnOrder='Zvika'");
 
 			Statement st = conn.createStatement();
 			String sql = ("SELECT * FROM gonature.orders where ID = '" + TourID + "';");
