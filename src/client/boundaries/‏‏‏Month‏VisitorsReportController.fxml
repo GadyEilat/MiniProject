@@ -31,7 +31,6 @@
                   <Font size="36.0" />
                </font>
             </Text>
-            <Button fx:id="saveReport" layoutX="703.0" layoutY="37.0" mnemonicParsing="false" onAction="#saveToPDF" text="save" />
             <Button fx:id="printReport" layoutX="703.0" layoutY="76.0" mnemonicParsing="false" onAction="#printCancelReport" text="print" />
          </children>
       </AnchorPane>

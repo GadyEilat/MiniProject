@@ -21,7 +21,7 @@
             <Button fx:id="dontCancelBtn" layoutX="174.0" layoutY="135.0" mnemonicParsing="false" onAction="#DontCancel" text="No, Don't Cancel" />
             <ImageView fitHeight="56.0" fitWidth="75.0" AnchorPane.leftAnchor="1.0" AnchorPane.topAnchor="1.0">
                <image>
-                  <Image url="@../../../res/LOGONATURE.png" />
+                  <Image url="@/LOGONATURE.png" />
                </image>
             </ImageView>
          </children>

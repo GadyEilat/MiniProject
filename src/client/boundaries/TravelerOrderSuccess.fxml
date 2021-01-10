@@ -52,7 +52,7 @@
             <Button fx:id="btnLogout" layoutX="707.0" layoutY="42.0" mnemonicParsing="false" onAction="#LogOutButton" text="Log Out" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="40.0" />
             <ImageView fitHeight="106.0" fitWidth="155.0" AnchorPane.leftAnchor="6.0" AnchorPane.topAnchor="7.0">
                <image>
-                  <Image url="@../../../res/LOGONATURE.png" />
+                  <Image url="@/LOGONATURE.png" />
                </image>
             </ImageView>
          </children>

@@ -12,7 +12,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane prefHeight="600.0" prefWidth="800.0" stylesheets="@../../../res/mainEnter.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.TourGuideMenuController">
+<BorderPane prefHeight="600.0" prefWidth="800.0" stylesheets="@/mainEnter.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.TourGuideMenuController">
    <center>
     <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0">
          <children>
@@ -39,7 +39,7 @@
             <Button fx:id="LogOutBtn" layoutX="707.0" layoutY="42.0" mnemonicParsing="false" onAction="#LogOutButton" style="-fx-background-color: red;" text="Log Out" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="40.0" />
             <ImageView fitHeight="106.0" fitWidth="155.0" AnchorPane.leftAnchor="6.0" AnchorPane.topAnchor="7.0">
                <image>
-                  <Image url="@../../../res/LOGONATURE.png" />
+                  <Image url="@/LOGONATURE.png" />
                </image>
             </ImageView>
             <Text fx:id="tourName" layoutX="206.0" layoutY="63.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="303.6708984375" AnchorPane.leftAnchor="205.0" AnchorPane.topAnchor="45.0">

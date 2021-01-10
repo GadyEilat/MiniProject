@@ -12,7 +12,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane prefHeight="600.0" prefWidth="800.0" stylesheets="@../../../res/mainEnter.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.totalVisitorsAmountController">
+<BorderPane prefHeight="600.0" prefWidth="800.0" stylesheets="@/mainEnter.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.totalVisitorsAmountController">
    <center>
       <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="510.0" prefWidth="732.0">
          <children>
@@ -26,7 +26,7 @@
                                  <graphic>
                                     <ImageView fx:id="backBtnImage" fitHeight="35.0" fitWidth="40.0">
                                        <image>
-                                          <Image url="@../../../res/return-button-icon.png" />
+                                          <Image url="@/return-button-icon.png" />
                                        </image>
                                     </ImageView>
                                  </graphic>
@@ -86,7 +86,7 @@
             </Text>
             <ImageView fitHeight="106.0" fitWidth="155.0" layoutY="1.0" AnchorPane.leftAnchor="6.0" AnchorPane.topAnchor="7.0">
                <image>
-                  <Image url="@../../../res/LOGONATURE.png" />
+                  <Image url="@/LOGONATURE.png" />
                </image>
             </ImageView>
             <Label layoutX="257.0" layoutY="31.0" prefHeight="52.0" prefWidth="295.0" text="Total Amount of Visitors" AnchorPane.leftAnchor="257.0" AnchorPane.rightAnchor="248.0">

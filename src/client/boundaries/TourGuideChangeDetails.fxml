@@ -47,7 +47,7 @@
                <graphic>
                   <ImageView fitHeight="35.0" fitWidth="40.0" onMouseClicked="#backButton">
                      <image>
-                        <Image url="@../../../res/return-button-icon.png" />
+                        <Image url="@/return-button-icon.png" />
                      </image>
                   </ImageView>
                </graphic></Button>

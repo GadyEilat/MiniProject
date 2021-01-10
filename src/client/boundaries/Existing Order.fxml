@@ -46,7 +46,7 @@
                <graphic>
                   <ImageView fx:id="backBtnImage" fitHeight="35.0" fitWidth="40.0">
                      <image>
-                        <Image url="@../../../res/return-button-icon.png" />
+                        <Image url="@/return-button-icon.png" />
                      </image>
                   </ImageView>
                </graphic>
@@ -64,7 +64,7 @@
             </Text>
             <ImageView fitHeight="106.0" fitWidth="155.0" layoutX="11.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="6.0" AnchorPane.topAnchor="7.0">
                <image>
-                  <Image url="@../../../res/LOGONATURE.png" />
+                  <Image url="@/LOGONATURE.png" />
                </image>
             </ImageView>
          </children>

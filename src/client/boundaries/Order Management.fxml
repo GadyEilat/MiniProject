@@ -60,7 +60,7 @@
             </Text>
             <ImageView fitHeight="106.0" fitWidth="155.0" layoutY="1.0" AnchorPane.leftAnchor="6.0" AnchorPane.topAnchor="7.0">
                <image>
-                  <Image url="@../../../res/LOGONATURE.png" />
+                  <Image url="@/LOGONATURE.png" />
                </image>
             </ImageView>
             <Button fx:id="btnLogout" layoutX="709.0" layoutY="42.0" mnemonicParsing="false" onAction="#Exit" prefHeight="25.0" prefWidth="59.0" stylesheets="@DepartmentManagerStyle.css" text="Log Out" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="40.0" />
