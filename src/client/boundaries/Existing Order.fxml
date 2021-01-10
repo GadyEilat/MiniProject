@@ -34,8 +34,8 @@
                                  <font>
                                     <Font size="11.0" />
                                  </font></Text>
-                              <Button fx:id="hereBtn" layoutX="700.0" layoutY="422.0" mnemonicParsing="false" onAction="#waitingListDetails" text="Here!" />
-                              <Label layoutX="470.0" layoutY="402.0" prefHeight="65.0" prefWidth="224.0" text="If you're in a waiting list, please click here: &#10;(Please enter your Order Number above.)" />
+                              <Button fx:id="hereBtn" layoutX="450.0" layoutY="267.0" mnemonicParsing="false" onAction="#waitingListDetails" text="Here!" />
+                              <Label layoutX="378.0" layoutY="266.0" prefHeight="27.0" prefWidth="72.0" text="Waiting List:" />
                            </children>
                         </AnchorPane>
                      </children>

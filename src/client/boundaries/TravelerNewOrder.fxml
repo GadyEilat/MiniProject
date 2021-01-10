@@ -49,6 +49,15 @@
                   </HBox>
                </children>
             </VBox>
+            <Button fx:id="backBtn" mnemonicParsing="false" onAction="#backButton" prefHeight="43.0" prefWidth="56.0" AnchorPane.bottomAnchor="35.0" AnchorPane.leftAnchor="35.0">
+               <graphic>
+                  <ImageView fx:id="backBtn1" fitHeight="35.0" fitWidth="40.0">
+                     <image>
+                        <Image url="@../../../res/return-button-icon.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
          </children>
       </AnchorPane>
    </center>
@@ -63,19 +72,4 @@
          </children>
       </AnchorPane>
    </top>
-   <bottom>
-      <AnchorPane BorderPane.alignment="CENTER">
-         <children>
-            <Button fx:id="backBtn" layoutX="35.0" layoutY="9.0" mnemonicParsing="false" onAction="#backButton" prefHeight="43.0" prefWidth="56.0" AnchorPane.bottomAnchor="35.0" AnchorPane.leftAnchor="35.0">
-               <graphic>
-                  <ImageView fx:id="backBtn1" fitHeight="35.0" fitWidth="40.0">
-                     <image>
-                        <Image url="@../../../res/return-button-icon.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
-         </children>
-      </AnchorPane>
-   </bottom>
 </BorderPane>

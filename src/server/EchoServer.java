@@ -103,6 +103,59 @@ public class EchoServer extends AbstractServer {
 			}
 			break;
 
+		case SUBSCRIBER_NEWORDER:
+			if (object instanceof Order) {
+				Order order = (Order) object;
+				maxVis visMax = new maxVis(null, null, null, 0, 0, null, 0);
+				maxVis tempMaxVisForCheck = new maxVis(null, null, null, 0, 0, null, 0);
+				tempMaxVisForCheck.setDate(order.getDate());
+				tempMaxVisForCheck.setPark(order.getParkName());
+				tempMaxVisForCheck.setVisitorsInOrder(order.getNumOfVisitors());
+				tempMaxVisForCheck.setTime(order.getHour());
+				
+
+				visMax = mysqlConnection.checkMaxVisitors(tempMaxVisForCheck);
+				if (visMax != null) {
+					if (Integer.valueOf(visMax.getVisitorsInOrder() + visMax.getAllowed2()) < visMax.getAllowed1()) {
+						order = mysqlConnection.newDBOrder(object);
+						if (order != null) {
+							ServerController.instance.displayMsg("New Order created");
+							returnData = new DataTransfer(TypeOfMessageReturn.SUB_NEW_ORDER_SUCCESS, order);
+						} else {
+							ServerController.instance.displayMsg("New Order could not be created");
+							returnData = new DataTransfer(TypeOfMessageReturn.SUB_NEW_ORDER_FAILED, null);
+						}
+						try {
+							client.sendToClient(returnData);
+
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+					} else {
+						// not answer on our check
+						ServerController.instance.displayMsg("New Order could not be created");
+						returnData = new DataTransfer(TypeOfMessageReturn.SUB_NEW_ORDER_FAILED, null);
+						try {
+							client.sendToClient(returnData);
+
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+					}
+				} else {
+					// send fail - visMax empty
+					ServerController.instance.displayMsg("New Order could not be created");
+					returnData = new DataTransfer(TypeOfMessageReturn.SUB_NEW_ORDER_FAILED, null);
+					try {
+						client.sendToClient(returnData);
+
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+			break;
+			
 		case GET_INFO:
 			if (object instanceof Order) { // gets info from database and return an order entity with the requested
 											// info.
