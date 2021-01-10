@@ -235,6 +235,8 @@ public class TravelerNewOrderController extends AbstractScenes {
 				TravelerOrder.setID(newTravelerID);
 				TravelerOrder.setTotalPrice(strPrice);
 				TravelerOrder.setOrderKind("RegularOrder");
+				TravelerOrder.setPrePaid("No");
+				TravelerOrder.setApproved("false");
 				checkDate(TravelerOrder, null);
 
 				DataTransfer data = new DataTransfer(TypeOfMessage.NEW_ORDER, TravelerOrder);
@@ -290,7 +292,6 @@ public class TravelerNewOrderController extends AbstractScenes {
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		LocalDateTime now = LocalDateTime.now();
 		wait.setTimeOfEntrance(dtf.format(now));
-
 		DateTimeFormatter dtf1 = DateTimeFormatter.ofPattern("HH:mm:ss");
 		LocalDateTime dateNow = LocalDateTime.now();
 		wait.setDateOfEntrance(dtf1.format(dateNow));

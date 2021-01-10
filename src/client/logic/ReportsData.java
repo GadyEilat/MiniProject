@@ -18,7 +18,21 @@ public class ReportsData  implements Serializable {
 	private String regularArrived = null;
 	private String guideArrived = null;
 	private String parkNumber = null;
+	private String date;
+	private String[][] amountPerOrderKind;
 	
+	public String[][] getAmountPerOrderKind() {
+		return amountPerOrderKind;
+	}
+	public void setAmountPerOrderKind(String[][] amountPerOrderKind) {
+		this.amountPerOrderKind = amountPerOrderKind;
+	}
+	public String getDate() {
+		return date;
+	}
+	public void setDate(String date) {
+		this.date = date;
+	}
 	public String getParkNumber() {
 		return parkNumber;
 	}

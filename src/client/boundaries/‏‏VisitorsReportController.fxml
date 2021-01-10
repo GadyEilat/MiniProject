@@ -4,35 +4,41 @@
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.CacnellationReport">
+<BorderPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.VisitorPerHourReport">
    <center>
       <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0">
          <children>
-            <Text fx:id="monthText" layoutX="70.0" layoutY="64.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1-MONTH 2021" textAlignment="CENTER" wrappingWidth="659.10546875">
+            <Text fx:id="reportName" layoutX="70.0" layoutY="70.0" strokeType="OUTSIDE" strokeWidth="0.0" text="reportName" textAlignment="CENTER" wrappingWidth="659.10546875">
                <font>
                   <Font size="36.0" />
                </font>
             </Text>
-            <BarChart fx:id="barCancelation" layoutX="150.0" layoutY="137.0" title=" Cacnellation Report" AnchorPane.bottomAnchor="63.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="150.0" AnchorPane.topAnchor="137.0">
+            <Button fx:id="printReport" layoutX="701.0" layoutY="48.0" mnemonicParsing="false" onAction="#printVisitReport">
+               <graphic>
+                  <ImageView fitHeight="46.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../res/print.png" />
+                     </image>
+                  </ImageView>
+               </graphic></Button>
+            <BarChart fx:id="showHourandAmount" layoutX="58.0" layoutY="157.0" prefHeight="287.0" prefWidth="702.0">
               <xAxis>
-                <CategoryAxis side="BOTTOM" fx:id="xAxis" />
+                <CategoryAxis fx:id="openHourOfPark" side="BOTTOM" />
               </xAxis>
               <yAxis>
-                <NumberAxis fx:id="yAxis" side="LEFT" />
+                <NumberAxis fx:id="amountOfPeople" side="LEFT" />
               </yAxis>
             </BarChart>
-            <Text fx:id="reportName" layoutX="70.0" layoutY="115.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1-MONTH 2021" textAlignment="CENTER" wrappingWidth="659.10546875">
-               <font>
-                  <Font size="36.0" />
-               </font>
-            </Text>
-            <Button fx:id="saveReport" layoutX="703.0" layoutY="37.0" mnemonicParsing="false" onAction="#saveToPDF" text="save" />
-            <Button fx:id="printReport" layoutX="703.0" layoutY="76.0" mnemonicParsing="false" onAction="#printCancelReport" text="print" />
+            <DatePicker fx:id="pickDate" layoutX="92.0" layoutY="98.0" />
+            <Button fx:id="showData" layoutX="292.0" layoutY="98.0" mnemonicParsing="false" onAction="#showTimeChart" text="Show" />
          </children>
       </AnchorPane>
    </center>

@@ -26,6 +26,7 @@ import client.controller.DepartmantManagerReportController;
 import client.controller.TourGuideLoginController;
 import client.controller.TourGuideNewOrderController;
 import client.controller.TravelerNewOrderController;
+import client.controller.VisitorPerHourReport;
 import client.controller.WorkerLogin;
 import client.controller.monthlyIncomeReportController;
 import client.controller.parkEnterenceController;
@@ -66,6 +67,7 @@ public class ChatClient extends AbstractClient {
 	public static String datesToShow[][];
 	public static String datesToApprveShow[][];
 	public static ReportsData reportsData;
+	public static ReportsData reportsDataforvisitors;
 	public static boolean connected = false;
 	ChatIF clientUI;
 	public boolean waitForConnection = false;
@@ -134,7 +136,14 @@ public class ChatClient extends AbstractClient {
 			}
 			break;
 			
-		case UPDATE_FAILED: //go back to change order details and show that the update failed.
+		case REQUEST_VISITREPORT_RETURN:
+			if (object instanceof ReportsData) { /// first place TourGuide SECOND Subscriber third Regular // on array
+													/// of 8 hours
+				reportsDataforvisitors = (ReportsData) object;
+				VisitorPerHourReport.instance.showChart();
+			}
+			break;
+		case UPDATE_FAILED: // go back to change order details and show that the update failed.
 			if (object instanceof Order) {
 				ChangeOrderDetailsController.instance.notUpdated();
 			}
@@ -171,7 +180,7 @@ public class ChatClient extends AbstractClient {
 			
 			if (object instanceof ArrayList<?>) {
 				try {
-					ManagerDiscountController.instance.showWaitTOApprovePopOut();;
+					ManagerDiscountController.instance.showWaitTOApprovePopOut();
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -183,15 +192,6 @@ public class ChatClient extends AbstractClient {
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}
-			}
-			if(object instanceof ParkInfo) {
-				parkInfo = (ParkInfo)object;
-				if (parkInfo.getRole().equals("Manager")) {
-					ManagerController.instance.updateNumberOfVisitorAndSub();
-				}
-				else if (parkInfo.getRole().equals("Department Manager")) {
-					DepartmantManagerController.instance.updateNumberOfVisitor();
 				}
 			}
 			break;

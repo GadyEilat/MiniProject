@@ -194,11 +194,17 @@ public class EchoServer extends AbstractServer {
 			}
 
 			break;
-			
-		case REQUESTINFO_HISTORY:///////////////////////////////////////////////////////////////////////////////////////
-			
-			if(object instanceof Subscriber){
-				Subscriber subscriber = (Subscriber)object;
+		
+			/**
+			 * This case relates to a family subscriber, 
+			 * requests the server the entire order history of the subscriber and returns the orders as a list of objects
+			 * The server sends the data to the ChatCliant.
+			 */
+
+		case REQUESTINFO_HISTORY:
+
+			if (object instanceof Subscriber) {
+				Subscriber subscriber = (Subscriber) object;
 				ObservableList<Object> ans3 = mysqlConnection.getHistorySubOrders(subscriber.getId());
 				//DataTransfer data = new DataTransfer(TypeOfMessage.SUCCSESS, ans3);
 
@@ -273,7 +279,57 @@ public class EchoServer extends AbstractServer {
 			/**
 			 * This case requests information from the database.
 			 */
+		case REQUEST_VISITREPORT:
+			if (object instanceof ReportsData) {     /// first place TourGuide SECOND Subscriber third Regular // on array of 8 hours
+				ReportsData reportsData = (ReportsData) object;
+				String[][] amountPerOrderKind = new String[8][3];
+				for (int hour = 8; hour < 16; hour++) {
+					if(hour == 8) {
+						arrOfAnswer = mysqlConnection.getDB("SELECT count(*) FROM gonature.casualinvitation WHERE Date = '"+reportsData.getDate()+"' AND "
+								+ "OrderKind = 'TourGuide'  AND Park = '"+reportsData.getParkNumber()+"' AND Time BETWEEN '08:00:00' AND '09:00:00';");
+						amountPerOrderKind[0][0] = arrOfAnswer.get(0).toString();
+						arrOfAnswer = mysqlConnection.getDB("SELECT count(*) FROM gonature.casualinvitation WHERE Date = '"+reportsData.getDate()+"' AND "
+								+ "OrderKind = 'Subscriber'  AND Park = '"+reportsData.getParkNumber()+"' AND Time BETWEEN '08:00:00' AND '09:00:00';");
+						amountPerOrderKind[0][1] = arrOfAnswer.get(0).toString();
+						arrOfAnswer = mysqlConnection.getDB("SELECT count(*) FROM gonature.casualinvitation WHERE Date = '"+reportsData.getDate()+"' AND "
+								+ "OrderKind = 'Regular'  AND Park = '"+reportsData.getParkNumber()+"' AND Time BETWEEN '08:00:00' AND '09:00:00';");
+						amountPerOrderKind[0][2] = arrOfAnswer.get(0).toString();
+					}
+					else if(hour == 9){
+						arrOfAnswer = mysqlConnection.getDB("SELECT count(*) FROM gonature.casualinvitation WHERE Date = '"+reportsData.getDate()+"' AND "
+								+ "OrderKind = 'TourGuide'  AND Park = '"+reportsData.getParkNumber()+"' AND Time BETWEEN '09:00:00' AND '10:00:00';");
+						amountPerOrderKind[1][0] = arrOfAnswer.get(0).toString();
+						arrOfAnswer = mysqlConnection.getDB("SELECT count(*) FROM gonature.casualinvitation WHERE Date = '"+reportsData.getDate()+"' AND "
+								+ "OrderKind = 'Subscriber'  AND Park = '"+reportsData.getParkNumber()+"' AND Time BETWEEN '09:00:00' AND '10:00:00';");
+						amountPerOrderKind[1][1] = arrOfAnswer.get(0).toString();
+						arrOfAnswer = mysqlConnection.getDB("SELECT count(*) FROM gonature.casualinvitation WHERE Date = '"+reportsData.getDate()+"' AND "
+								+ "OrderKind = 'Regular'  AND Park = '"+reportsData.getParkNumber()+"' AND Time BETWEEN '09:00:00' AND '10:00:00';");
+						amountPerOrderKind[1][2] = arrOfAnswer.get(0).toString();
+					}
+					else {
+						arrOfAnswer = mysqlConnection.getDB("SELECT count(*) FROM gonature.casualinvitation WHERE Date = '"+reportsData.getDate()+"' AND "
+								+ "OrderKind = 'TourGuide'  AND Park = '"+reportsData.getParkNumber()+"' AND Time BETWEEN '"+hour+":00:00' AND '"+(hour+1)+":00:00';");
+						amountPerOrderKind[hour-8][0] = arrOfAnswer.get(0).toString();
+						arrOfAnswer = mysqlConnection.getDB("SELECT count(*) FROM gonature.casualinvitation WHERE Date = '"+reportsData.getDate()+"' AND "
+								+ "OrderKind = 'Subscriber'  AND Park = '"+reportsData.getParkNumber()+"' AND Time BETWEEN '"+hour+":00:00' AND '"+(hour+1)+":00:00';");
+						amountPerOrderKind[hour-8][1] = arrOfAnswer.get(0).toString();
+						arrOfAnswer = mysqlConnection.getDB("SELECT count(*) FROM gonature.casualinvitation WHERE Date = '"+reportsData.getDate()+"' AND "
+								+ "OrderKind = 'Regular'  AND Park = '"+reportsData.getParkNumber()+"' AND Time BETWEEN '"+hour+":00:00' AND '"+(hour+1)+":00:00';");
+						amountPerOrderKind[hour-8][2] = arrOfAnswer.get(0).toString();
+					}
 
+				}
+				reportsData.setAmountPerOrderKind(amountPerOrderKind);
+				returnData = new DataTransfer(TypeOfMessageReturn.REQUEST_VISITREPORT_RETURN, reportsData);
+				try {
+					client.sendToClient(returnData);
+
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				
+			}
+			break;
 		case REQUESTINFO:
 			
 			/**
@@ -374,6 +430,89 @@ public class EchoServer extends AbstractServer {
 					client.sendToClient(returnData);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			}
+
+			if (object instanceof ReportsData) {
+				ReportsData reportsData = (ReportsData) object;
+				// take cancel orders from cancel DB
+				arrOfAnswer = mysqlConnection
+						.getDB("SELECT count(OrderKind) FROM gonature.deletedorders where OrderKind = 'Regular';");
+				if (!arrOfAnswer.isEmpty()) {
+					reportsData.setRegularCancel(arrOfAnswer.get(0).toString());
+				}
+				arrOfAnswer = mysqlConnection
+						.getDB("SELECT count(OrderKind) FROM gonature.deletedorders where OrderKind = 'Subscriber';");
+				if (!arrOfAnswer.isEmpty()) {
+					reportsData.setSubCancel(arrOfAnswer.get(0).toString());
+				}
+				arrOfAnswer = mysqlConnection
+						.getDB("SELECT count(OrderKind) FROM gonature.deletedorders where OrderKind = 'TourGuide';");
+				if (!arrOfAnswer.isEmpty()) {
+					reportsData.setGuideCancel(arrOfAnswer.get(0).toString());
+				}
+				// take approved orders that not arrived
+//				ArrayList<String> arrivedOrders;
+				// for sub
+				arrOfAnswer = mysqlConnection
+						.getDB("SELECT count(*) FROM gonature.orders o Join casualinvitation c on o.OrderNumber=c.OrderNumber "
+								+ "and o.OrderKind = 'Subscriber' and o.Park='" + reportsData.getParkNumber() + "';");
+				if (!arrOfAnswer.isEmpty()) {
+//					arrivedOrders = new ArrayList<String>(arrOfAnswer.size());
+//					for (int i = 0; i < arrOfAnswer.size(); i++) {
+//						arrivedOrders.add(arrOfAnswer.get(i).toString());
+//					}
+					int arrived = Integer.valueOf(arrOfAnswer.get(0).toString());
+					arrOfAnswer = mysqlConnection.getDB("SELECT count(*) FROM gonature.orders WHERE " + "Date < '"
+							+ LocalDate.now() + "' And Date > '" + LocalDate.now().withDayOfMonth(1)
+							+ "' And Approved = 'true' And OrderKind = 'Subscriber' And Park='" + reportsData.getParkNumber() + "'");
+					if (!arrOfAnswer.isEmpty()) {
+						int munbersOfOrdersNotArrived =  Integer.valueOf(arrOfAnswer.get(0).toString()) - arrived;
+						reportsData.setSubnotArrived(String.valueOf(munbersOfOrdersNotArrived));
+					}
+				}
+				// for TourGuide
+				arrOfAnswer = mysqlConnection
+						.getDB("SELECT count(*) FROM gonature.orders o Join casualinvitation c on o.OrderNumber=c.OrderNumber "
+								+ "and o.OrderKind = 'TourGuide' and o.Park='" + reportsData.getParkNumber() + "';");
+				if (!arrOfAnswer.isEmpty()) {
+//					arrivedOrders = new ArrayList<String>(arrOfAnswer.size());
+//					for (int i = 0; i < arrOfAnswer.size(); i++) {
+//						arrivedOrders.add(arrOfAnswer.get(i).toString());
+//					}
+					int arrived = Integer.valueOf(arrOfAnswer.get(0).toString());
+					arrOfAnswer = mysqlConnection.getDB("SELECT count(*) FROM gonature.orders WHERE " + "Date < '"
+							+ LocalDate.now() + "' And Date > '" + LocalDate.now().withDayOfMonth(1)
+							+ "' And Approved = 'true' And OrderKind = 'TourGuide' And Park='" + reportsData.getParkNumber() + "'");
+					if (!arrOfAnswer.isEmpty()) {
+						int munbersOfOrdersNotArrived = Integer.valueOf(arrOfAnswer.get(0).toString()) - arrived;
+						reportsData.setGuidenotArrived(String.valueOf(munbersOfOrdersNotArrived));
+					}
+				}
+				// for Regular
+				arrOfAnswer = mysqlConnection
+						.getDB("SELECT count(*) FROM gonature.orders o Join casualinvitation c on o.OrderNumber=c.OrderNumber "
+								+ "and o.OrderKind = 'Regular' and o.Park='" + reportsData.getParkNumber() + "';");
+				if (!arrOfAnswer.isEmpty()) {
+//					arrivedOrders = new ArrayList<String>(arrOfAnswer.size());
+//					for (int i = 0; i < arrOfAnswer.size(); i++) {
+//						arrivedOrders.add(arrOfAnswer.get(i).toString());
+//					}
+					int arrived = Integer.valueOf(arrOfAnswer.get(0).toString());
+					arrOfAnswer = mysqlConnection.getDB("SELECT count(*) FROM gonature.orders WHERE " + "Date < '"
+							+ LocalDate.now() + "' And Date > '" + LocalDate.now().withDayOfMonth(1)
+							+ "' And Approved = 'true' And OrderKind = 'Regular' And Park='" + reportsData.getParkNumber() + "'");
+					if (!arrOfAnswer.isEmpty()) {
+						int munbersOfOrdersNotArrived = Integer.valueOf(arrOfAnswer.get(0).toString()) - arrived;
+						reportsData.setRegularnotArrived(String.valueOf(munbersOfOrdersNotArrived));
+					}
+				}
+				returnData = new DataTransfer(TypeOfMessageReturn.REQUESTINFO_SUCCESS, reportsData);
+				try {
+					client.sendToClient(returnData);
+				} catch (IOException e) {
 					e.printStackTrace();
 				}
 
@@ -788,7 +927,17 @@ public class EchoServer extends AbstractServer {
 			} // now we can go back above. (WORKS!!)
 			break;
 
+			/**
+			 * This case inserts information into the database.
+			 */
+			
 		case INSERTINFO:
+				
+			/**
+			 * If the object is a subscription type, it inserts information into the database of the subscriber.
+			 * The server creates a family subscription in the database and sends the user an email with his registration data.
+			 * The server sends the data to the ChatCliant.
+			 */
 			if (object instanceof Subscriber) {
 				Subscriber newSubscriber = (Subscriber) object;
 
@@ -1016,15 +1165,20 @@ public class EchoServer extends AbstractServer {
 
 					} else if (role.equals("ParkReception")) {
 						scene = "/client/boundaries/WorkerParkEnternece.fxml";
-						role="Park Reception";
+						role = "Park Reception";
 						parkInfo = new ParkInfo((String) arrOfAnswer.get(0), null, null, null, null);
 						RoleAndPark = new Worker(null, null, role, parkInfo, workerName, scene);
 					} else
 						System.out.println("Error");
-
+					arrOfAnswer = mysqlConnection
+							.getDB("SELECT " + park + " FROM gonature.parksstatuss;");
+					if (!arrOfAnswer.isEmpty()) 
+						RoleAndPark.getPark().setCurrentVisitors(arrOfAnswer.get(0).toString());
 					returnData = new DataTransfer(TypeOfMessageReturn.LOGIN_SUCCESSFUL, RoleAndPark);
-				} else
+				} else {
+					ServerController.instance.displayMsg(worker.getUserName() + " UPDATEINFO details failed");
 					returnData = new DataTransfer(TypeOfMessageReturn.LOGIN_FAILED, new Worker());
+				}
 				try {
 					client.sendToClient(returnData);
 
@@ -1033,6 +1187,14 @@ public class EchoServer extends AbstractServer {
 				}
 			}
 
+
+
+			/**
+			 * If the object is a subscription type, it requests the server to login to the subscriber user by the database.
+			 * The server checks if the login was successful or failed.
+			 * The server sends the data to the ChatCliant.
+			 */
+			
 			if (object instanceof Subscriber) {
 				Subscriber subscriber = (Subscriber) object;
 				String checkSubExist = "SELECT * FROM gonature.subscriber WHERE subscriberNumber ='"
@@ -1112,17 +1274,40 @@ public class EchoServer extends AbstractServer {
 				String updateExistDiscount = "UPDATE gonature.discountdates SET Discount ='" + discount.get(0)
 						+ "' , Approve = 'toCheck' WHERE" + " numOfPark = '" + discount.get(2) + "' AND Dates = '"
 						+ discount.get(1) + "';";
-				arrOfAnswer = mysqlConnection
-						.getDB("SELECT Dates FROM gonature.discountdates WHERE Dates ='" + discount.get(1) + "';");
+				arrOfAnswer = mysqlConnection.getDB("SELECT Dates,Approve FROM gonature.discountdates WHERE Dates ='"
+						+ discount.get(1) + "' AND numOfPark = '" + discount.get(2) + "';");
 				if (arrOfAnswer.isEmpty()) {
 					answer = mysqlConnection.updateDB(insertNewDiscount);
-				} else {
+					try {
+						client.sendToClient(returnData = new DataTransfer(TypeOfMessageReturn.UPDATE_SUCCESS,
+								new ArrayList<String>()));
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				} else if (arrOfAnswer.get(1).toString().equals("toCheck")) {
 					answer = mysqlConnection.updateDB(updateExistDiscount);
+					if (answer) {
+						try {
+							client.sendToClient(returnData = new DataTransfer(TypeOfMessageReturn.UPDATE_SUCCESS,
+									new ArrayList<String>()));
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						ServerController.instance.displayMsg("Discount UPDATEINFO_REQUEST details updated");
+					} else
+						ServerController.instance
+								.displayMsg("Discount UPDATEINFO_REQUEST details could not be updated");
+				} else {
+					try {
+						client.sendToClient(returnData = new DataTransfer(TypeOfMessageReturn.UPDATE_FAILED,
+								new ArrayList<String>()));
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
-				if (answer)
-					ServerController.instance.displayMsg("Discount UPDATEINFO_REQUEST details updated");
-				else
-					ServerController.instance.displayMsg("Discount UPDATEINFO_REQUEST details could not be updated");
 
 			}
 			if (object instanceof Order) { // if the object is of type Order, update the table orders, and change the

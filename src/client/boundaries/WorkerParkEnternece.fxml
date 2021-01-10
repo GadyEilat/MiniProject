@@ -44,7 +44,7 @@
                   </HBox>
                </children>
             </VBox>
-            <Button layoutX="463.0" layoutY="27.0" mnemonicParsing="false" onAction="#resetStatus" text="Reset status" />
+            <Button layoutX="463.0" layoutY="27.0" mnemonicParsing="false" onAction="#resetStatus" text="Reset status" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="30.0" />
          </children>
       </AnchorPane>
    </center>

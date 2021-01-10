@@ -96,6 +96,23 @@ public class DepartmantManagerReportController extends AbstractScenes {
     
     @FXML
     void showVisitReport(ActionEvent event) {
+		Stage helpWindow = new Stage();
+		FXMLLoader fxmlLoad = new FXMLLoader(getClass().getResource("/client/boundaries/þþVisitorsReportController.fxml"));
+		Parent current = null;
+		try {
+			current = fxmlLoad.load();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		helpWindow.setTitle("Visitors Report");
+		Scene scene = new Scene(current);
+		helpWindow.setMinHeight(600);
+		helpWindow.setMinWidth(800);
+		helpWindow.setMaxHeight(600);
+		helpWindow.setMaxWidth(800);
+		helpWindow.setScene(scene);
+		helpWindow.show();
     }
 	/**
 	 * logout method. This method is responsible for disconnecting from the
