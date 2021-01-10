@@ -142,7 +142,7 @@ public class subscriberNewOrderController extends AbstractScenes {
 				pricePerPerson = price * 0.85 * 0.80;
 				price = pricePerPerson * Double.valueOf(orderNumOfVisitors);
 				pricePerPerson = 0.0;
-				SubscriptionOrder.setTotalPrice(String.format("Price: %.2f", price));
+				SubscriptionOrder.setTotalPrice(String.format("%.2f", price));
 				price = 30.0;
 				SubscriptionOrder.setOrderKind("Subscriber");
 				SubscriptionOrder.setPrePaid("No");

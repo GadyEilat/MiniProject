@@ -26,6 +26,7 @@ import client.controller.DepartmantManagerReportController;
 import client.controller.TourGuideLoginController;
 import client.controller.TourGuideNewOrderController;
 import client.controller.TravelerNewOrderController;
+import client.controller.VisitorPerHourReport;
 import client.controller.WorkerLogin;
 import client.controller.monthlyIncomeReportController;
 import client.controller.parkEnterenceController;
@@ -64,6 +65,7 @@ public class ChatClient extends AbstractClient {
 	public static String datesToShow[][];
 	public static String datesToApprveShow[][];
 	public static ReportsData reportsData;
+	public static ReportsData reportsDataforvisitors;
 	public static boolean connected = false;
 	ChatIF clientUI;
 	public boolean waitForConnection = false;
@@ -121,7 +123,14 @@ public class ChatClient extends AbstractClient {
 		case APPROVED_RETURN: // display in orderManagement that the order was approved.
 			OrderManagementController.instance.approvedReturn();
 			break;
-		case UPDATE_FAILED: //go back to change order details and show that the update failed.
+		case REQUEST_VISITREPORT_RETURN:
+			if (object instanceof ReportsData) { /// first place TourGuide SECOND Subscriber third Regular // on array
+													/// of 8 hours
+				reportsDataforvisitors = (ReportsData) object;
+				VisitorPerHourReport.instance.showChart();
+			}
+			break;
+		case UPDATE_FAILED: // go back to change order details and show that the update failed.
 			if (object instanceof Order) {
 				ChangeOrderDetailsController.instance.notUpdated();
 			}
@@ -131,11 +140,11 @@ public class ChatClient extends AbstractClient {
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}////////////// already approved date of discount can not change
+				} ////////////// already approved date of discount can not change
 			}
 			break;
 		case UPDATE_SUCCESS:
-			if (object instanceof Order) { //go back to change order details and show that the update succeeded
+			if (object instanceof Order) { // go back to change order details and show that the update succeeded
 				ChangeOrderDetailsController.instance.updated();
 			}
 
@@ -155,14 +164,15 @@ public class ChatClient extends AbstractClient {
 				}
 
 			}
-			
+
 			if (object instanceof ArrayList<?>) {
 				try {
-					ManagerDiscountController.instance.showWaitTOApprovePopOut();;
+					ManagerDiscountController.instance.showWaitTOApprovePopOut();
+					;
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}////////////// already approved date of discount can not change
+				} ////////////// already approved date of discount can not change
 			}
 			if (object instanceof TourGuide) {
 				try {
@@ -172,22 +182,13 @@ public class ChatClient extends AbstractClient {
 					e.printStackTrace();
 				}
 			}
-			if(object instanceof ParkInfo) {
-				parkInfo = (ParkInfo)object;
-				if (parkInfo.getRole().equals("Manager")) {
-					ManagerController.instance.updateNumberOfVisitorAndSub();
-				}
-				else if (parkInfo.getRole().equals("Department Manager")) {
-					DepartmantManagerController.instance.updateNumberOfVisitor();
-				}
-			}
 			break;
 
-		case RETURN_ORDER_FAILED: //if we couldn't receive the order back from the server
+		case RETURN_ORDER_FAILED: // if we couldn't receive the order back from the server
 			System.out.println("Couldn't recieve details from DB");
 			break;
 		case RETURN_ORDER:
-			if (object instanceof Order) { //Update the ExistingOrderController
+			if (object instanceof Order) { // Update the ExistingOrderController
 				if (object != null) {
 					System.out.println("--> handleMessageFromServer");
 					waitForConnection = false;
@@ -205,7 +206,7 @@ public class ChatClient extends AbstractClient {
 			}
 			break;
 
-		case IS_SUBSCRIBER: //if the checked order was a subscriber
+		case IS_SUBSCRIBER: // if the checked order was a subscriber
 			if (object instanceof Boolean) { // came from OrderManagementController
 				Boolean isIt = (Boolean) object;
 				if (isIt == true) {
@@ -218,7 +219,7 @@ public class ChatClient extends AbstractClient {
 
 			break;
 
-		case IS_GUIDE: //if the checked order was a guide
+		case IS_GUIDE: // if the checked order was a guide
 			if (object instanceof Boolean) {
 				Boolean isIt = (Boolean) object;
 				if (isIt == true) {
@@ -230,7 +231,7 @@ public class ChatClient extends AbstractClient {
 			}
 			break;
 
-		case IS_REGULAR: //if the checked order was regular
+		case IS_REGULAR: // if the checked order was regular
 			if (object instanceof Boolean) {
 				Boolean isIt = (Boolean) object;
 				if (isIt == true) {
@@ -324,8 +325,8 @@ public class ChatClient extends AbstractClient {
 
 		/**
 		 * This case is responsible for checking the correctness and availability of the
-		 * order, if there is no place in the park for the
-		 * visitor, a failed message is printed
+		 * order, if there is no place in the park for the visitor, a failed message is
+		 * printed
 		 */
 
 		case SUB_NEW_ORDER_FAILED:
@@ -406,35 +407,37 @@ public class ChatClient extends AbstractClient {
 				if (parkInfo.getRole().equals("Manager")) {
 					datesToShow = parkInfo.getDiscountDates();
 					ManagerDiscountController.instance.updateDatePicker();
+
 				} else if (parkInfo.getRole().equals("Department Manager")) {
 					datesToApprveShow = parkInfo.getDiscountDates();
 					DepartmantManagerApproveController.instance.loadData();
+
 				}
 			}
 			if (object instanceof ReportsData) {
 				reportsData = (ReportsData) object;
 				DepartmantManagerReportController.instance.anableReportsButtons();
 			}
-			
+
 			break;
-			
+
 		case MONTHLYINCOME:
-			if(object instanceof Double) {
-				monthlyIncomeReportController.instance.printReport((Double)object);	
+			if (object instanceof Double) {
+				monthlyIncomeReportController.instance.printReport((Double) object);
 			}
 			break;
-			
+
 		case VISITORS_AMOUNT:
-			if(object instanceof ArrayList<?>) {
-				ArrayList<Integer> sum=(ArrayList<Integer>)object;
-				int sumReg=sum.get(0);
-				int sumTour=sum.get(1);
-				int sumSub=sum.get(2);
-				
-				totalVisitorsAmountController.instance.getAmount(sumReg,sumTour,sumSub);
+			if (object instanceof ArrayList<?>) {
+				ArrayList<Integer> sum = (ArrayList<Integer>) object;
+				int sumReg = sum.get(0);
+				int sumTour = sum.get(1);
+				int sumSub = sum.get(2);
+
+				totalVisitorsAmountController.instance.getAmount(sumReg, sumTour, sumSub);
 			}
 			break;
-			
+
 		case REQUESTINFO_FAILED:
 			if (object instanceof ParkInfo) {
 				parkInfo = (ParkInfo) object;

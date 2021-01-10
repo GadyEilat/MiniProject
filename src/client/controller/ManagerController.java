@@ -12,6 +12,7 @@ import client.logic.ParkInfo;
 import client.logic.Worker;
 import common.DataTransfer;
 import common.TypeOfMessage;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -43,9 +44,6 @@ public class ManagerController extends AbstractScenes {
 
 	@FXML
 	private Text numOfSubscribers;
-
-	@FXML
-	private ProgressBar progressBar;
 
 	@FXML
 	private Text managerName;
@@ -137,8 +135,17 @@ public class ManagerController extends AbstractScenes {
 	 */
 
 	public void updateNumberOfVisitorAndSub() {
-		progressBar.setProgress(Integer.valueOf(ChatClient.parkInfo.getCurrentVisitors())/Integer.valueOf(ChatClient.worker.getPark().getMaxVisitors()));
-		currentVisitors.setText(ChatClient.parkInfo.getCurrentVisitors());
+
+		Platform.runLater(new Runnable() {
+
+			@Override
+			public void run() {
+
+				currentVisitors.setText(ChatClient.worker.getPark().getCurrentVisitors());
+			}
+
+		});
+
 	}
 
 	/**
@@ -155,10 +162,12 @@ public class ManagerController extends AbstractScenes {
 		managerName.setText("Hello " + ChatClient.worker.getWorkerName());
 		maxVisitors.setText(ChatClient.worker.getPark().getMaxVisitors());
 		numOfSubscribers.setText(ChatClient.worker.getPark().getNumOfSub());
-		DataTransfer data = new DataTransfer(TypeOfMessage.REQUESTINFO,
-				new ParkInfo(null , ChatClient.worker.getPark().getNumberOfPark(),null,null,null,ChatClient.worker.getRole()));
+		DataTransfer data = new DataTransfer(TypeOfMessage.REQUESTINFO, new ParkInfo(null,
+				ChatClient.worker.getPark().getNumberOfPark(), null, null, null, ChatClient.worker.getRole()));
 		ClientUI.chat.accept(data);
-		
+
+		updateNumberOfVisitorAndSub();
+
 	}
 
 }

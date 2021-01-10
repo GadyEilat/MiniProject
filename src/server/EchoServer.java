@@ -120,20 +120,7 @@ public class EchoServer extends AbstractServer {
 					e.printStackTrace();
 				}
 			}
-			if (object instanceof ParkInfo) {
-				ParkInfo parkInfo = (ParkInfo) object;
-				arrOfAnswer = mysqlConnection
-						.getDB("SELECT " + parkInfo.getNumberOfPark() + " FROM gonature.parksstatuss;");
-				if (!arrOfAnswer.isEmpty()) {
-					parkInfo.setCurrentVisitors(arrOfAnswer.get(0).toString());
-					returnData = new DataTransfer(TypeOfMessageReturn.UPDATE_SUCCESS, object);
-					try {
-						client.sendToClient(returnData);
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				}
-			}
+
 			break;
 		
 			/**
@@ -224,7 +211,57 @@ public class EchoServer extends AbstractServer {
 			/**
 			 * This case requests information from the database.
 			 */
+		case REQUEST_VISITREPORT:
+			if (object instanceof ReportsData) {     /// first place TourGuide SECOND Subscriber third Regular // on array of 8 hours
+				ReportsData reportsData = (ReportsData) object;
+				String[][] amountPerOrderKind = new String[8][3];
+				for (int hour = 8; hour < 16; hour++) {
+					if(hour == 8) {
+						arrOfAnswer = mysqlConnection.getDB("SELECT count(*) FROM gonature.casualinvitation WHERE Date = '"+reportsData.getDate()+"' AND "
+								+ "OrderKind = 'TourGuide'  AND Park = '"+reportsData.getParkNumber()+"' AND Time BETWEEN '08:00:00' AND '09:00:00';");
+						amountPerOrderKind[0][0] = arrOfAnswer.get(0).toString();
+						arrOfAnswer = mysqlConnection.getDB("SELECT count(*) FROM gonature.casualinvitation WHERE Date = '"+reportsData.getDate()+"' AND "
+								+ "OrderKind = 'Subscriber'  AND Park = '"+reportsData.getParkNumber()+"' AND Time BETWEEN '08:00:00' AND '09:00:00';");
+						amountPerOrderKind[0][1] = arrOfAnswer.get(0).toString();
+						arrOfAnswer = mysqlConnection.getDB("SELECT count(*) FROM gonature.casualinvitation WHERE Date = '"+reportsData.getDate()+"' AND "
+								+ "OrderKind = 'Regular'  AND Park = '"+reportsData.getParkNumber()+"' AND Time BETWEEN '08:00:00' AND '09:00:00';");
+						amountPerOrderKind[0][2] = arrOfAnswer.get(0).toString();
+					}
+					else if(hour == 9){
+						arrOfAnswer = mysqlConnection.getDB("SELECT count(*) FROM gonature.casualinvitation WHERE Date = '"+reportsData.getDate()+"' AND "
+								+ "OrderKind = 'TourGuide'  AND Park = '"+reportsData.getParkNumber()+"' AND Time BETWEEN '09:00:00' AND '10:00:00';");
+						amountPerOrderKind[1][0] = arrOfAnswer.get(0).toString();
+						arrOfAnswer = mysqlConnection.getDB("SELECT count(*) FROM gonature.casualinvitation WHERE Date = '"+reportsData.getDate()+"' AND "
+								+ "OrderKind = 'Subscriber'  AND Park = '"+reportsData.getParkNumber()+"' AND Time BETWEEN '09:00:00' AND '10:00:00';");
+						amountPerOrderKind[1][1] = arrOfAnswer.get(0).toString();
+						arrOfAnswer = mysqlConnection.getDB("SELECT count(*) FROM gonature.casualinvitation WHERE Date = '"+reportsData.getDate()+"' AND "
+								+ "OrderKind = 'Regular'  AND Park = '"+reportsData.getParkNumber()+"' AND Time BETWEEN '09:00:00' AND '10:00:00';");
+						amountPerOrderKind[1][2] = arrOfAnswer.get(0).toString();
+					}
+					else {
+						arrOfAnswer = mysqlConnection.getDB("SELECT count(*) FROM gonature.casualinvitation WHERE Date = '"+reportsData.getDate()+"' AND "
+								+ "OrderKind = 'TourGuide'  AND Park = '"+reportsData.getParkNumber()+"' AND Time BETWEEN '"+hour+":00:00' AND '"+(hour+1)+":00:00';");
+						amountPerOrderKind[hour-8][0] = arrOfAnswer.get(0).toString();
+						arrOfAnswer = mysqlConnection.getDB("SELECT count(*) FROM gonature.casualinvitation WHERE Date = '"+reportsData.getDate()+"' AND "
+								+ "OrderKind = 'Subscriber'  AND Park = '"+reportsData.getParkNumber()+"' AND Time BETWEEN '"+hour+":00:00' AND '"+(hour+1)+":00:00';");
+						amountPerOrderKind[hour-8][1] = arrOfAnswer.get(0).toString();
+						arrOfAnswer = mysqlConnection.getDB("SELECT count(*) FROM gonature.casualinvitation WHERE Date = '"+reportsData.getDate()+"' AND "
+								+ "OrderKind = 'Regular'  AND Park = '"+reportsData.getParkNumber()+"' AND Time BETWEEN '"+hour+":00:00' AND '"+(hour+1)+":00:00';");
+						amountPerOrderKind[hour-8][2] = arrOfAnswer.get(0).toString();
+					}
 
+				}
+				reportsData.setAmountPerOrderKind(amountPerOrderKind);
+				returnData = new DataTransfer(TypeOfMessageReturn.REQUEST_VISITREPORT_RETURN, reportsData);
+				try {
+					client.sendToClient(returnData);
+
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				
+			}
+			break;
 		case REQUESTINFO:
 			
 			/**
@@ -403,10 +440,6 @@ public class EchoServer extends AbstractServer {
 						reportsData.setRegularnotArrived(String.valueOf(munbersOfOrdersNotArrived));
 					}
 				}
-
-				// visits reports
-
-				//
 				returnData = new DataTransfer(TypeOfMessageReturn.REQUESTINFO_SUCCESS, reportsData);
 				try {
 					client.sendToClient(returnData);
@@ -964,6 +997,10 @@ public class EchoServer extends AbstractServer {
 								RoleAndPark = new Worker(null, null, role, parkInfo, workerName, scene);
 							} else
 								System.out.println("Error");
+							arrOfAnswer = mysqlConnection
+									.getDB("SELECT " + park + " FROM gonature.parksstatuss;");
+							if (!arrOfAnswer.isEmpty()) 
+								RoleAndPark.getPark().setCurrentVisitors(arrOfAnswer.get(0).toString());
 							returnData = new DataTransfer(TypeOfMessageReturn.LOGIN_SUCCESSFUL, RoleAndPark);
 						} else {
 							ServerController.instance.displayMsg(worker.getUserName() + " UPDATEINFO details failed");

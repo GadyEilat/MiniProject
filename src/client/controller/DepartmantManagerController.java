@@ -11,6 +11,7 @@ import client.logic.ParkInfo;
 import client.logic.Worker;
 import common.DataTransfer;
 import common.TypeOfMessage;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -31,29 +32,26 @@ import javafx.scene.text.Text;
 public class DepartmantManagerController extends AbstractScenes {
 	public static DepartmantManagerController instance;
 
-    @FXML
-    private Text currentNumOfVisitors;
+	@FXML
+	private Text currentNumOfVisitors;
 
-    @FXML
-    private Text currentMaxOfVisitors;
+	@FXML
+	private Text currentMaxOfVisitors;
 
-    @FXML
-    private ProgressBar progressBar;
+	@FXML
+	private Text departmentManagerName;
 
-    @FXML
-    private Text departmentManagerName;
+	@FXML
+	private Button btnLogout;
 
-    @FXML
-    private Button btnLogout;
+	@FXML
+	private Button btnStatus;
 
-    @FXML
-    private Button btnStatus;
+	@FXML
+	private Button btnReports;
 
-    @FXML
-    private Button btnReports;
-
-    @FXML
-    private Button btnApproval;
+	@FXML
+	private Button btnApproval;
 
 	/**
 	 * logout method. This method is responsible for disconnecting from the
@@ -61,10 +59,10 @@ public class DepartmantManagerController extends AbstractScenes {
 	 * 
 	 * @param event
 	 */
-    
-    @FXML
-    void logout(ActionEvent event) {
-    	//exit Logout
+
+	@FXML
+	void logout(ActionEvent event) {
+		// exit Logout
 		DataTransfer data = new DataTransfer(TypeOfMessage.LOGOUT, ChatClient.worker);
 		ClientUI.chat.accept(data);
 		ChatClient.worker = new Worker(null, null, null, null, null, null);
@@ -80,8 +78,8 @@ public class DepartmantManagerController extends AbstractScenes {
 	 * @param event
 	 */
 
-    @FXML
-    void showApproval(ActionEvent event) {
+	@FXML
+	void showApproval(ActionEvent event) {
 		switchScenes("/client/boundaries/approveManagerChanges.fxml", "Departmant Manager");
 	}
 
@@ -92,8 +90,8 @@ public class DepartmantManagerController extends AbstractScenes {
 	 * @param event
 	 */
 
-    @FXML
-    void showReports(ActionEvent event) {
+	@FXML
+	void showReports(ActionEvent event) {
 		switchScenes("/client/boundaries/reportsDM.fxml", "Departmant Manager");
 	}
 
@@ -104,8 +102,8 @@ public class DepartmantManagerController extends AbstractScenes {
 	 * @param event
 	 */
 
-    @FXML
-    void showStatus(ActionEvent event) {
+	@FXML
+	void showStatus(ActionEvent event) {
 		switchScenes("/client/boundaries/mainDepartmantManager.fxml", "Departmant Manager");
 	}
 
@@ -115,8 +113,16 @@ public class DepartmantManagerController extends AbstractScenes {
 	 */
 
 	public void updateNumberOfVisitor() {
-		progressBar.setProgress(Integer.valueOf(ChatClient.parkInfo.getCurrentVisitors())/Integer.valueOf(ChatClient.worker.getPark().getMaxVisitors()));
-		currentNumOfVisitors.setText(ChatClient.parkInfo.getCurrentVisitors());
+		Platform.runLater(new Runnable() {
+
+			@Override
+			public void run() {
+
+				currentNumOfVisitors.setText(ChatClient.worker.getPark().getCurrentVisitors());
+			}
+
+		});
+
 	}
 
 	/**
@@ -130,11 +136,21 @@ public class DepartmantManagerController extends AbstractScenes {
 
 	public void initialize(URL location, ResourceBundle resources) {
 		instance = this;
-		departmentManagerName.setText("Hello " + ChatClient.worker.getWorkerName());
-		currentMaxOfVisitors.setText(ChatClient.worker.getPark().getMaxVisitors());
-		DataTransfer data = new DataTransfer(TypeOfMessage.REQUESTINFO,
-				new ParkInfo(null , ChatClient.worker.getPark().getNumberOfPark(),null,null,null,ChatClient.worker.getRole()));
-		ClientUI.chat.accept(data);
+		Platform.runLater(new Runnable() {
+
+			@Override
+			public void run() {
+
+				
+				departmentManagerName.setText("Hello " + ChatClient.worker.getWorkerName());
+				currentMaxOfVisitors.setText(ChatClient.worker.getPark().getMaxVisitors());
+				DataTransfer data = new DataTransfer(TypeOfMessage.REQUESTINFO, new ParkInfo(null,
+						ChatClient.worker.getPark().getNumberOfPark(), null, null, null, ChatClient.worker.getRole()));
+				ClientUI.chat.accept(data);
+				updateNumberOfVisitor();
+			}
+
+		});
 	}
 
 }
