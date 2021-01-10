@@ -46,9 +46,9 @@
       <AnchorPane style="-fx-background-color: #c9c4c4;" BorderPane.alignment="CENTER">
          <children>
             <Button fx:id="LogOutBtn" layoutX="707.0" layoutY="42.0" mnemonicParsing="false" onAction="#LogOutButton" style="-fx-background-color: red;" text="Log Out" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="40.0" />
-            <ImageView fitHeight="106.0" fitWidth="155.0" layoutX="14.0" layoutY="14.0">
+            <ImageView fitHeight="106.0" fitWidth="155.0" layoutX="14.0" layoutY="14.0" AnchorPane.leftAnchor="6.0" AnchorPane.topAnchor="7.0">
                <image>
-                  <Image url="/LOGONATURE.png" />
+                  <Image url="@../../../res/LOGONATURE.png" />
                </image>
             </ImageView>
             <Text fx:id="txtWorkerName" layoutX="235.0" layoutY="77.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="131.6708984375" AnchorPane.leftAnchor="235.0" AnchorPane.topAnchor="57.0">

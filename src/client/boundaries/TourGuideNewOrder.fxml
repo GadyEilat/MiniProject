@@ -54,7 +54,7 @@
                   </HBox>
                </children>
             </VBox>
-            <Button fx:id="backButton" layoutX="14.0" layoutY="438.0" mnemonicParsing="false" onAction="#backButton" prefHeight="43.0" prefWidth="56.0" style="-fx-border-radius: 20;" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0">
+            <Button fx:id="backButton" layoutX="14.0" layoutY="438.0" mnemonicParsing="false" onAction="#backButton" prefHeight="43.0" prefWidth="56.0" style="-fx-border-radius: 20;" AnchorPane.bottomAnchor="35.0" AnchorPane.leftAnchor="35.0">
                <graphic>
                   <ImageView fitHeight="35.0" fitWidth="40.0" onMouseClicked="#backButton">
                      <image>

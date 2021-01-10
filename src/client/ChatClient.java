@@ -308,9 +308,6 @@ public class ChatClient extends AbstractClient {
 			if (object instanceof TourGuideOrder) {
 				System.out.println("--> handleMessageFromServer");
 				waitForConnection = false;
-				// ObservableList <TourGuideOrder> oblistt=FXCollections.observableArrayList();
-				// oblist=(ObservableList <TourGuideOrder>)msg;
-				System.out.print(object.toString());
 				MyOrdersGuideController.instance.getLine((TourGuideOrder) object);
 			}
 

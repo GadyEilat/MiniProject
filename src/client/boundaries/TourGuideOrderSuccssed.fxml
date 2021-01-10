@@ -45,15 +45,6 @@
                   </HBox>
                </children>
             </VBox>
-            <Button layoutX="14.0" layoutY="438.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="56.0" style="-fx-border-radius: 20;" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0">
-               <graphic>
-                  <ImageView fx:id="BackButton1" fitHeight="35.0" fitWidth="40.0">
-                     <image>
-                        <Image url="@../../../res/return-button-icon.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
          </children>
       </AnchorPane>
    </center>

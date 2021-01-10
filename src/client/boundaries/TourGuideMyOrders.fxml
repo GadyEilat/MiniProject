@@ -24,12 +24,7 @@
                      <children>
                         <AnchorPane prefHeight="389.0" prefWidth="515.0">
                            <children>
-                              <Label layoutX="186.0" layoutY="14.0" text="My orders">
-                                 <font>
-                                    <Font name="System Bold" size="18.0" />
-                                 </font>
-                              </Label>
-                              <TableView fx:id="TableOrders" layoutX="14.0" layoutY="73.0" prefHeight="302.0" prefWidth="431.0">
+                              <TableView fx:id="TableOrders" layoutX="14.0" layoutY="3.0" prefHeight="288.0" prefWidth="431.0">
                                 <columns>
                                   <TableColumn fx:id="col_orderNum" minWidth="0.0" prefWidth="161.0" text="Order Number" />
                                   <TableColumn fx:id="col_Date" prefWidth="133.0" text="Date" />
@@ -42,7 +37,7 @@
                   </HBox>
                </children>
             </VBox>
-            <Button fx:id="backButton" layoutX="19.0" layoutY="445.0" mnemonicParsing="false" onAction="#backButton" prefHeight="43.0" prefWidth="56.0" style="-fx-border-radius: 20;" AnchorPane.bottomAnchor="19.0" AnchorPane.leftAnchor="19.0">
+            <Button fx:id="backButton" layoutX="19.0" layoutY="445.0" mnemonicParsing="false" onAction="#backButton" prefHeight="43.0" prefWidth="56.0" style="-fx-border-radius: 20;" AnchorPane.bottomAnchor="35.0" AnchorPane.leftAnchor="35.0">
                <graphic>
                   <ImageView fx:id="BackButton1" fitHeight="35.0" fitWidth="40.0" onMouseClicked="#backButton">
                      <image>
@@ -51,6 +46,11 @@
                   </ImageView>
                </graphic>
             </Button>
+            <Label layoutX="251.0" layoutY="41.0" text="My orders">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
          </children>
       </AnchorPane>
    </center>
