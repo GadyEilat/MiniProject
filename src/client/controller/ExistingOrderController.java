@@ -73,7 +73,9 @@ public class ExistingOrderController extends AbstractScenes {
 	public void notFound() {
 		msgFromController.setText("Order Number Not Found");
 	}
-
+/**
+ * get here from chat client if no such order number from waiting list was found
+ */
 	public void notFoundWL() {
 		msgFromController.setText("Order Number from waiting list doesn't match.");
 	}

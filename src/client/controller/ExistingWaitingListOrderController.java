@@ -26,7 +26,14 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-
+/**
+ * ExistingWaitingListOrderController Class: The window relates to an existing order that is in the waiting list
+ * he gets here by entering his order number in the previous window. In this window he can check his
+ * order details and approve his arrival if a place became available for him.
+ * The controller expands the AbstractScenes class that replaces the scenes within the main stage.
+ * @author Gady
+ *
+ */
 public class ExistingWaitingListOrderController extends AbstractScenes{
 	
 	public WaitingList orderWL = new WaitingList(null,null ,null ,null ,null ,null ,null ,null ,null ,null ,null, null);
@@ -62,6 +69,11 @@ public class ExistingWaitingListOrderController extends AbstractScenes{
 
     public static ExistingWaitingListOrderController instance;
     
+    /**
+     * try to approve the arrival, will only work if you received a mail for approval
+     * not more than a hour ago.
+     * @param event
+     */
     @FXML
     void Approve(ActionEvent event) {
 		if (!(orderWL.getNeedsToApprove().equals("NeedsTo")) && myFlag==0) { //if it ain't true. (false/null)
@@ -78,19 +90,29 @@ public class ExistingWaitingListOrderController extends AbstractScenes{
 		}
 
     }
-    
+    /**
+     * method for translating String to LocalDate
+     * @param dateString
+     * @return
+     */
     public static final LocalDate LOCAL_DATE (String dateString){ //method for dealing with dates.
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate localDate = LocalDate.parse(dateString, formatter);
         return localDate;
     }
 
+    /**
+     * Exit the current stage and go back to Existing order window.
+     * @param event
+     */
     @FXML
     void Exit(ActionEvent event) {
     	ChatClient.order = new Order();
     	switchScenes("/client/boundaries/Existing Order.fxml", "Existing Order");
     }
-    
+    /**
+     * initialize the window.
+     */
     public void initialize(URL location, ResourceBundle resources) {
     	instance=this;
     	orderWL=ExistingOrderController.instance.orderWL;
