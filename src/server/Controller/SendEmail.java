@@ -13,6 +13,13 @@ import javax.mail.util.ByteArrayDataSource;
 
 import sun.misc.IOUtils;
 
+/**
+ * SendEmail class. This class is responsible for sending the email with all the
+ * order data of the visitor.
+ * 
+ * @author Liran Amilov
+ */
+
 public class SendEmail {
 	// Recipient's email
 	String mailTo;
@@ -22,6 +29,16 @@ public class SendEmail {
 	final String password = "G5@GoNature!s";
 	final String port = "587";
 	String host = "smtp.gmail.com";
+
+	/**
+	 * SendEmail method. This method is responsible for sending the email to the
+	 * traveler along with all his booking details. The method builds the body of
+	 * the email and sends it to the address entered.
+	 * 
+	 * @param mailTo
+	 * @param subject
+	 * @param text
+	 */
 
 	public SendEmail(String mailTo, String subject, String text) {
 		this.mailTo = mailTo;
@@ -59,12 +76,12 @@ public class SendEmail {
 //
 //	         // Send the complete message parts
 //	         message.setContent(multipart );
-	 
+
 			BodyPart messageBodyPart = new MimeBodyPart();
 //	         messageBodyPart.setText("This is message body");
 
 			String htmlText = "<img src=\"cid:image\">"; ////// if we want head <H1>Hello</H1>
-			messageBodyPart.setContent("<p>"+text+"</p>"+htmlText, "text/html");
+			messageBodyPart.setContent("<p>" + text + "</p>" + htmlText, "text/html");
 			// add it
 			MimeMultipart multipart = new MimeMultipart("related");
 

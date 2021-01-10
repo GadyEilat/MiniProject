@@ -96,12 +96,30 @@ public class ChatClient extends AbstractClient {
 			}
 
 			break;
+
+		/**
+		 * LOGIN_FAILED_CONNECTED case. This case is responsible for an incorrect login
+		 * message.
+		 */
+
 		case LOGIN_FAILED_CONNECTED:
 			if (object instanceof Worker) {
 				WorkerLogin.instance.alreadyConnected();
 			}
 			break;
+
+		/**
+		 * LOGIN_SUCCESSFUL case. This case is responsible for a successful login
+		 * message.
+		 */
+
 		case LOGIN_SUCCESSFUL:
+
+			/**
+			 * If the object is a Worker type, It checks whether the employee has been able
+			 * to connect to his user
+			 */
+
 			if (object instanceof Worker) {
 				worker = (Worker) object;
 				connected = true;
@@ -133,7 +151,7 @@ public class ChatClient extends AbstractClient {
 			}
 			break;
 			
-		case UPDATE_FAILED: //go back to change order details and show that the update failed.
+		case UPDATE_FAILED: // go back to change order details and show that the update failed.
 			if (object instanceof Order) {
 				ChangeOrderDetailsController.instance.notUpdated();
 			}
@@ -143,11 +161,11 @@ public class ChatClient extends AbstractClient {
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}////////////// already approved date of discount can not change
+				} ////////////// already approved date of discount can not change
 			}
 			break;
 		case UPDATE_SUCCESS:
-			if (object instanceof Order) { //go back to change order details and show that the update succeeded
+			if (object instanceof Order) { // go back to change order details and show that the update succeeded
 				ChangeOrderDetailsController.instance.updated();
 			}
 
@@ -351,8 +369,8 @@ public class ChatClient extends AbstractClient {
 
 		/**
 		 * This case is responsible for checking the correctness and availability of the
-		 * order, if there is no place in the park for the
-		 * visitor, a failed message is printed
+		 * order, if there is no place in the park for the visitor, a failed message is
+		 * printed
 		 */
 
 		case SUB_NEW_ORDER_FAILED:
@@ -428,6 +446,11 @@ public class ChatClient extends AbstractClient {
 			if (object instanceof Subscriber) {
 				subscriber = (Subscriber) object;
 			}
+
+			/**
+			 * If the object is a ParkInfo type, it saves the ParkInfo data.
+			 */
+
 			if (object instanceof ParkInfo) {
 				parkInfo = (ParkInfo) object;
 				if (parkInfo.getRole().equals("Manager")) {
@@ -438,6 +461,11 @@ public class ChatClient extends AbstractClient {
 					DepartmantManagerApproveController.instance.loadData();
 				}
 			}
+
+			/**
+			 * If the object is a ReportsData type, it saves the data of the report.
+			 */
+
 			if (object instanceof ReportsData) {
 				reportsData = (ReportsData) object;
 				DepartmantManagerReportController.instance.anableReportsButtons();
@@ -461,6 +489,11 @@ public class ChatClient extends AbstractClient {
 				totalVisitorsAmountController.instance.getAmount(sumReg,sumTour,sumSub);
 			}
 			break;
+			
+			/**
+			 * REQUESTINFO_FAILED case. This case is responsible for displaying an error
+			 * message in saving the data from the database
+			 */
 			
 		case REQUESTINFO_FAILED:
 			if (object instanceof ParkInfo) {
