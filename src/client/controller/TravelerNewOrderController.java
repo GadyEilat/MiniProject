@@ -205,25 +205,26 @@ public class TravelerNewOrderController extends AbstractScenes {
 
 	@FXML
 	void continueToPayButton(ActionEvent event) {
-		String orderPark = parkNameBtn.getSelectionModel().getSelectedItem().toString();
+		String orderPark = parkNameBtn.getValue();
 		LocalDate orderDate = chooseDayBtn.getValue();
-		String ordeTime = chooseTime.getSelectionModel().getSelectedItem().toString();
-		String orderNumOfVisitors = numVisitorsBtn.getSelectionModel().getSelectedItem().toString();
+		String ordeTime = chooseTime.getValue();
+		String orderNumOfVisitors = numVisitorsBtn.getValue();
 		String orderEmail = (enterEmail.getText());
-		String orderName = (firstName.getText());
-		
+		String orderName = (firstName.getText());	
 		Double dblAmount = Double.valueOf(orderNumOfVisitors);
 		pricePerPerson = price * 0.85;
 		price = pricePerPerson * dblAmount;
 		strPrice=String.valueOf(price);
-		if (java.time.LocalDate.now().isAfter(chooseDayBtn.getValue())) {
+		if (orderName.trim().isEmpty() || orderDate==null || ordeTime==null ||orderNumOfVisitors==null || chooseDayBtn==null) {
+			errorEmail.setText("Fields missing");
+		}
+		else if (java.time.LocalDate.now().isAfter(chooseDayBtn.getValue())) {
 			errorEmail.setText("Invalid Date");
 		}
-
-		else if (!validate(orderEmail))
+		else if (!validate(orderEmail)) {
 			errorEmail.setText("You must enter a valid Email");
+		}
 		else {
-
 			if (validate(orderEmail)) {
 				String ordDate = orderDate.toString();
 				TravelerOrder.setParkName(orderPark);
