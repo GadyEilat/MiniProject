@@ -79,17 +79,28 @@ public class WorkerLogin extends AbstractScenes {
 
 	@FXML
 	void checkLogIn(ActionEvent event) {
-		userName = userNameField.getText();
-		password = passwordField.getText();
-		if (userName.trim().isEmpty()) {
+		String answer = getStringField(userNameField.getText(),passwordField.getText());
+		if (answer.equals("user name empty")) {
 			msgText.setText("You must enter User Name");
-		} else if (password.trim().isEmpty()) {
+		} else if (answer.equals("password empty")) {
 			msgText.setText("You must enter Password");
 		} else {
 			usrAndPass = new Worker(userName, password, null, null);
 			DataTransfer data = new DataTransfer(TypeOfMessage.LOGIN_REQUEST, usrAndPass);
 			ClientUI.chat.accept(data);
 		}
+	}
+	
+	public String getStringField(String user, String pass) {
+		if(user.trim().isEmpty()) {
+			return "user name empty";
+		}
+		else if(pass.trim().isEmpty()) {
+			return "password empty";
+		}
+		userName = user;
+		password = pass;
+		return "user name and password set";
 	}
 
 	/**
@@ -133,7 +144,7 @@ public class WorkerLogin extends AbstractScenes {
 	@FXML
 	void helpWindowPopOut(ActionEvent event) throws IOException {
 		Stage helpWindow = new Stage();
-		FXMLLoader fxmlLoad = new FXMLLoader(getClass().getResource("/client/boundaries/help.fxml"));
+		FXMLLoader fxmlLoad = new FXMLLoader(getClass().getResource("/client/boundaries/Help.fxml"));
 		Parent current = fxmlLoad.load();
 		helpWindow.initModality(Modality.APPLICATION_MODAL);
 		helpWindow.setTitle("Help");

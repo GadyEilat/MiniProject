@@ -38,8 +38,14 @@ public class EntranceController extends AbstractScenes{
     @FXML
 	void helpWindowPopOut(ActionEvent event) throws IOException {
     	Stage helpWindow = new Stage();
-    	FXMLLoader fxmlLoad = new FXMLLoader(getClass().getResource("/client/boundaries/help.fxml"));
-    	Parent current = fxmlLoad.load();
+    	FXMLLoader fxmlLoad = new FXMLLoader(getClass().getResource("/client/boundaries/Help.fxml"));
+		Parent current = null;
+		try {
+			current = fxmlLoad.load();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		};
     	helpWindow.initModality(Modality.APPLICATION_MODAL);
     	helpWindow.setTitle("Help");
     	Scene scene = new Scene(current);

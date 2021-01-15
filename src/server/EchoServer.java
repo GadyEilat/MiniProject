@@ -1147,7 +1147,6 @@ public class EchoServer extends AbstractServer {
 							boolean Answer = mysqlConnection.updateDB(updateCountSub);
 							if (Answer) {
 								ServerController.instance.displayMsg("manageparks numOfSub UPDATEINFO details updated");
-
 							} else {
 								ServerController.instance.displayMsg("manageparks numOfSub UPDATEINFO details failed");
 							}
@@ -1238,7 +1237,16 @@ public class EchoServer extends AbstractServer {
 			}
 			break;
 		case LOGOUT:
-
+			if(object instanceof Worker) {
+				Worker worker = (Worker)object;
+				boolean answer = mysqlConnection.updateDB("UPDATE gonature.worker SET LogIn = 'False' WHERE UserName = '"+worker.getUserName()+"'");
+				if (answer) {
+					
+				}else {
+					
+				}
+			}
+			
 			break;
 		case UPDATEINFO_REQUEST:
 			if (object instanceof ParkInfo) {
